@@ -1,24 +1,26 @@
 from typing import List, Dict
+
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.rules.azure.azure_base_rule import AzureBaseRule
 from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
 
 
-class FunctionAppUseLatestTlsVersionRule(AzureBaseRule):
-
+class EmailNotificationHighSeverityAlertsEnabledRule(AzureBaseRule):
     def get_id(self) -> str:
-        return 'non_car_function_app_using_latest_tls_version'
+        return 'non_car_email_notification_high_severity_alerts_enabled'
 
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
-        for func_app in env_context.function_apps:
-            if func_app.site_config.minimum_tls_version != '1.2':
+        for security_center_contact in env_context.security_center_contacts:
+            if not security_center_contact.alert_notifications:
                 issues.append(
                     Issue(
-                        f'The {func_app.get_type()} `{func_app.get_friendly_name()}` uses `{func_app.minimum_tls_version}` for '
-                        f'the minimum TLS version, instead of 1.2.', func_app, func_app))
+                        f'The email notification for high severity alerts is not enabled for '
+                        f'the subscription {security_center_contact.subscription_id}',
+                        security_center_contact,
+                        security_center_contact))
         return issues
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
-        return bool(environment_context.function_apps)
+        return bool(environment_context.security_center_contacts)

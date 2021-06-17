@@ -1,24 +1,27 @@
-from typing import List, Dict
+from typing import Dict, List
+
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
+from cloudrail.knowledge.context.azure.network.azure_vnet_gateway import VirtualNetworkGatewayType
 from cloudrail.knowledge.rules.azure.azure_base_rule import AzureBaseRule
 from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
 
 
-class FunctionAppUseLatestTlsVersionRule(AzureBaseRule):
+class VpnGatewayDisallowBasicSkuRule(AzureBaseRule):
 
     def get_id(self) -> str:
-        return 'non_car_function_app_using_latest_tls_version'
+        return 'non_car_vpn_gateway_disallow_basic_sku'
 
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
-        for func_app in env_context.function_apps:
-            if func_app.site_config.minimum_tls_version != '1.2':
+        for vnet_gw in env_context.vnet_gateways:
+            if vnet_gw.gateway_type == VirtualNetworkGatewayType.VPN and vnet_gw.sku_tier == 'Basic':
                 issues.append(
                     Issue(
-                        f'The {func_app.get_type()} `{func_app.get_friendly_name()}` uses `{func_app.minimum_tls_version}` for '
-                        f'the minimum TLS version, instead of 1.2.', func_app, func_app))
+                        f'{vnet_gw.get_type()} `{vnet_gw.get_friendly_name()}` uses "basic" SKU',
+                        vnet_gw,
+                        vnet_gw))
         return issues
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
-        return bool(environment_context.function_apps)
+        return bool(environment_context.vnet_gateways)
