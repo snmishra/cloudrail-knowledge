@@ -137,4 +137,9 @@ class DummyArnObject:
     def __init__(self, arn_str: str):
         splitted_arn = arn_str.split(':')
         for item in splitted_arn:
-            setattr(self, item, item)
+            if '/' in item:
+                split_slash = item.split('/')
+                for item_split in split_slash:
+                    setattr(self, item_split, item_split)
+            else:
+                setattr(self, item, item)
