@@ -16,7 +16,7 @@ class FunctionAppUseLatestTlsVersionRule(AzureBaseRule):
             if func_app.site_config.minimum_tls_version != '1.2':
                 issues.append(
                     Issue(
-                        f'The {func_app.get_type()} `{func_app.get_friendly_name()}` uses `{func_app.minimum_tls_version}` for '
+                        f'The {func_app.get_type()} `{func_app.get_friendly_name()}` uses `{func_app.site_config.minimum_tls_version}` for '
                         f'the minimum TLS version, instead of 1.2.', func_app, func_app))
         return issues
 
