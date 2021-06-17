@@ -134,7 +134,7 @@ def are_arns_intersected_for_tf(resource_arn: str, target_arn: str):
 
 
 class DummyArnObject:
-    def __init__(self, str):
-        splitted_arn = str.split(':')
+    def __init__(self, arn_str: str):
+        splitted_arn = arn_str.split(':')
         for item in splitted_arn:
             setattr(self, item, item)
