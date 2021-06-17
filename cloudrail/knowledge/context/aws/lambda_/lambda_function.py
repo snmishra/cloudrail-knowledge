@@ -10,7 +10,7 @@ from cloudrail.knowledge.context.aws.networking_config.network_configuration imp
 from cloudrail.knowledge.context.aws.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.service_name import AwsServiceAttributes, AwsServiceName, AwsServiceType
-from cloudrail.knowledge.utils.arn_utils import are_arns_intersected, is_valid_arn
+from cloudrail.knowledge.utils.arn_utils import are_arns_intersected, are_arns_intersected_for_tf, is_valid_arn
 
 
 class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
@@ -60,7 +60,10 @@ class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
         return self.arn
 
     def is_arn_match(self, arn: str):
-        return any(arn == a or are_arns_intersected(arn, a) for a in self.lambda_func_arn_set)
+        if self.is_managed_by_iac:
+            return any(arn == a or are_arns_intersected_for_tf(arn, a) for a in self.lambda_func_arn_set)
+        else:
+            return any(arn == a or are_arns_intersected(arn, a) for a in self.lambda_func_arn_set)
 
     def get_qualifier(self) -> str:
         if self.lambda_func_alias:
