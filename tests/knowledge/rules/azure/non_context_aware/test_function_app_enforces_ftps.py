@@ -16,7 +16,7 @@ class TestFunctionAppEnforcesFtps(TestCase):
 
     def test_ftps_enabled(self):
         # Arrange
-        site_config: SiteConfig = SiteConfig(FtpsState.FTPS_ONLY, True)
+        site_config: SiteConfig = SiteConfig(FtpsState.FTPS_ONLY, True, '1.2')
         app: AzureFunctionApp = create_empty_entity(AzureFunctionApp)
         app.site_config = site_config
         app.name = 'my-app'
