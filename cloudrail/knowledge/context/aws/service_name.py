@@ -188,3 +188,4 @@ class AwsServiceType(Enum):
     LAMBDA = "lambda"
     ECS = "ecs"
     SQS = "sqs"
+    CLOUDFORMATION = "cloudformation"

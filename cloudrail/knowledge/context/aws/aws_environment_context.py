@@ -20,6 +20,8 @@ from cloudrail.knowledge.context.aws.autoscaling.launch_template import LaunchTe
 from cloudrail.knowledge.context.aws.aws_client import AwsClient
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.batch.batch_compute_environment import BatchComputeEnvironment
+from cloudrail.knowledge.context.aws.cfn.cfn_resource_info import CfnResourceInfo
+from cloudrail.knowledge.context.aws.cfn.cfn_stack import CfnStack
 from cloudrail.knowledge.context.aws.cloudfront.cloud_front_distribution_list import CloudFrontDistribution
 from cloudrail.knowledge.context.aws.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
 from cloudrail.knowledge.context.aws.cloudfront.origin_access_identity import OriginAccessIdentity
@@ -331,7 +333,9 @@ class AwsEnvironmentContext(BaseEnvironmentContext):
                  global_accelerator_attributes: List[GlobalAcceleratorAttribute] = None,
                  redshift_logs: List[RedshiftLogging] = None,
                  s3_bucket_logs: List[S3BucketLogging] = None,
-                 athena_databases: List[AthenaDatabase] = None):
+                 athena_databases: List[AthenaDatabase] = None,
+                 cfn_stacks: AliasesDict[CfnStack] = None,
+                 cfn_resources_info: List[CfnResourceInfo] = None):
         BaseEnvironmentContext.__init__(self, invalidated_resources=invalidated_resources, unknown_blocks=unknown_blocks,
                                         managed_resources_summary=managed_resources_summary)
         self.athena_databases = athena_databases or []
@@ -497,6 +501,8 @@ class AwsEnvironmentContext(BaseEnvironmentContext):
         self.assume_role_policies = assume_role_policies or []
         self.dms_replication_instance_subnet_groups = dms_replication_instance_subnet_groups or []
         self.invalidated_resources = invalidated_resources or set()
+        self.cfn_stacks: AliasesDict[CfnStack] = cfn_stacks or AliasesDict()
+        self.cfn_resources_info: List[CfnResourceInfo] = cfn_resources_info or []
 
     @functools.lru_cache(maxsize=None)
     def get_used_network_interfaces(self) -> AliasesDict[NetworkInterface]:
