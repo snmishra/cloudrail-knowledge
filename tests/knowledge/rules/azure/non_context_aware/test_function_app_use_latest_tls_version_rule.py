@@ -5,19 +5,19 @@ from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnv
 from cloudrail.knowledge.context.azure.webapp.azure_function_app import AzureFunctionApp
 from cloudrail.knowledge.context.azure.webapp.constants import FtpsState
 from cloudrail.knowledge.context.azure.webapp.site_config import SiteConfig
-from cloudrail.knowledge.rules.azure.non_context_aware.function_app_use_latest_http_version_rule import FunctionAppUseLatestHttpVersionRule
+from cloudrail.knowledge.rules.azure.non_context_aware.function_app_use_latest_tls_version_rule import FunctionAppUseLatestTlsVersionRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 
 
-class TestFunctionAppUseLatestHttpVersionRule(TestCase):
+class TestFunctionAppUseLatestTlsVersionRule(TestCase):
 
     def setUp(self):
-        self.rule = FunctionAppUseLatestHttpVersionRule()
+        self.rule = FunctionAppUseLatestTlsVersionRule()
 
-    def test_non_car_http_latest_in_function_app_fail(self):
+    def test_non_car_function_app_using_latest_tls_version_fail(self):
         # Arrange
         func_app: AzureFunctionApp = create_empty_entity(AzureFunctionApp)
-        site_config: SiteConfig = SiteConfig(FtpsState.FTPS_ONLY, False, '1.2')
+        site_config: SiteConfig = SiteConfig(FtpsState.FTPS_ONLY, True, '1.1')
         func_app.site_config = site_config
         context = AzureEnvironmentContext(function_apps=AliasesDict(func_app))
         # Act
@@ -26,7 +26,7 @@ class TestFunctionAppUseLatestHttpVersionRule(TestCase):
         self.assertEqual(RuleResultType.FAILED, result.status)
         self.assertEqual(1, len(result.issues))
 
-    def test_non_car_http_latest_in_function_app_pass(self):
+    def test_non_car_function_app_using_latest_tls_version_pass(self):
         # Arrange
         func_app: AzureFunctionApp = create_empty_entity(AzureFunctionApp)
         site_config: SiteConfig = SiteConfig(FtpsState.FTPS_ONLY, True, '1.2')
