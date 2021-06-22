@@ -342,7 +342,11 @@ EOF
 ```shell
 docker run --rm -it  -v $PWD:/data -v cloudrail:/indeni indeni/cloudrail-cli run -p plan.out --auto-approve -v --custom-rules src
 ```
-Note the `--custom-rules` at the end, with the directory where the rule is located.
+Note the `--custom-rules` at the end, with the directory where the rule is located. By default, any custom rule that triggers will be under the "advise" enforcement mode (which means it will be viewed as a warning and not cause a non-zero exit code). To change the enforcement mode of the custom rules, you can supply the enforcement mode together with the directory, for example:
+```shell
+docker run --rm -it  -v $PWD:/data -v cloudrail:/indeni indeni/cloudrail-cli run -p plan.out --auto-approve -v --custom-rules "advise:src"
+```
+(one of `advise`, `mandate`, `mandate_new_resources` can be used)
 
 Your results should look like this:
 
