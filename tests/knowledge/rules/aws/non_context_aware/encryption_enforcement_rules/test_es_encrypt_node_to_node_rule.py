@@ -3,7 +3,7 @@ import unittest
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 from cloudrail.knowledge.context.aws.es.elastic_search_domain import ElasticSearchDomain
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
-from cloudrail.knowledge.context.terraform_state import TerraformState
+from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.rules.aws.non_context_aware.encryption_enforcement_rules.es_encrypt_node_to_node_rule import EsEncryptNodeToNodeRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 
@@ -15,7 +15,7 @@ class TestEsEncryptNodeToNodeRule(unittest.TestCase):
     def test_not_car_elasticsearch_domains_encrypted_note_to_node_fail(self):
         # Arrange
         es_domain: ElasticSearchDomain = create_empty_entity(ElasticSearchDomain)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         es_domain.terraform_state = terraform_state
         es_domain.terraform_state.is_new = True
         es_domain.encrypt_node_to_node_state = False
@@ -29,7 +29,7 @@ class TestEsEncryptNodeToNodeRule(unittest.TestCase):
     def test_not_car_elasticsearch_domains_encrypted_note_to_node__not_new__pass(self):
         # Arrange
         es_domain: ElasticSearchDomain = create_empty_entity(ElasticSearchDomain)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         es_domain.terraform_state = terraform_state
         es_domain.terraform_state.is_new = False
         es_domain.encrypt_node_to_node_state = False
@@ -43,7 +43,7 @@ class TestEsEncryptNodeToNodeRule(unittest.TestCase):
     def test_not_car_elasticsearch_domains_encrypted_note_to_node_pass(self):
         # Arrange
         es_domain: ElasticSearchDomain = create_empty_entity(ElasticSearchDomain)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         es_domain.terraform_state = terraform_state
         es_domain.terraform_state.is_new = True
         es_domain.encrypt_node_to_node_state = True

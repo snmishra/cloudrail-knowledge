@@ -4,7 +4,7 @@ from cloudrail.knowledge.context.aws.docdb.docdb_cluster import DocumentDbCluste
 from cloudrail.knowledge.context.aws.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.kms.kms_key_manager import KeyManager
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
-from cloudrail.knowledge.context.terraform_state import TerraformState
+from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.rules.aws.non_context_aware.encryption_enforcement_rules.encrypt_at_rest.ensure_docdb_clusters_encrypted_customer_managed_cmk_rule import \
     EnsureDocdbClustersEncryptedCustomerManagedCmkRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
@@ -18,7 +18,7 @@ class TestEnsureDocdbClustersEncryptedCustomerManagedCmkRule(unittest.TestCase):
     def test_not_car_docdb_cluster_encrypted_at_rest_using_customer_managed_cmk__kms_key_is_not_customer__fail(self):
         # Arrange
         document_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         document_db_cluster.terraform_state = terraform_state
         document_db_cluster.terraform_state.is_new = True
         document_db_cluster.storage_encrypted = True
@@ -36,7 +36,7 @@ class TestEnsureDocdbClustersEncryptedCustomerManagedCmkRule(unittest.TestCase):
     def test_not_car_docdb_cluster_encrypted_at_rest_using_customer_managed_cmk__kms_key_is_missing__fail(self):
         # Arrange
         document_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         document_db_cluster.terraform_state = terraform_state
         document_db_cluster.terraform_state.is_new = True
         document_db_cluster.storage_encrypted = True
@@ -52,7 +52,7 @@ class TestEnsureDocdbClustersEncryptedCustomerManagedCmkRule(unittest.TestCase):
     def test_not_car_docdb_cluster_encrypted_at_rest_using_customer_managed_cmk_pass(self):
         # Arrange
         document_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         document_db_cluster.terraform_state = terraform_state
         document_db_cluster.terraform_state.is_new = True
         document_db_cluster.storage_encrypted = True

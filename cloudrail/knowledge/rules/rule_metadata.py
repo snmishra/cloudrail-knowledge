@@ -70,7 +70,7 @@ class RuleMetadata:
     categories: List[str]
     severity: RuleSeverity
     iac_remediation_steps: str
-    remediation_steps_console: str
+    console_remediation_steps: str
     rule_type: RuleType
     security_layer: SecurityLayer
     resource_types: Set[ResourceType]

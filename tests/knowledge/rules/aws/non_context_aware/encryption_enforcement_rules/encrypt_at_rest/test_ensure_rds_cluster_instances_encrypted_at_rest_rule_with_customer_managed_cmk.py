@@ -5,7 +5,7 @@ from cloudrail.knowledge.context.aws.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.kms.kms_key_manager import KeyManager
 from cloudrail.knowledge.context.aws.rds.rds_instance import RdsInstance
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
-from cloudrail.knowledge.context.terraform_state import TerraformState
+from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.rules.aws.non_context_aware.encryption_enforcement_rules.\
     encrypt_at_rest.ensure_rds_cluster_instances_encrypted_at_rest_rule_with_customer_managed_cmk import \
     EnsureRdsInstancesEncryptedAtRestWithCustomerManagedCmkRule
@@ -19,7 +19,7 @@ class TestEnsureRdsInstancesEncryptedAtRestWithCustomerManagedCmkRule(unittest.T
     def test_non_car_rds_cluster_instance_encrypt_performance_insights_with_customer_managed_cmk_creating_fail(self):
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         rds_instance.terraform_state = terraform_state
         rds_instance.terraform_state.is_new = True
         rds_instance.performance_insights_enabled = True
@@ -35,7 +35,7 @@ class TestEnsureRdsInstancesEncryptedAtRestWithCustomerManagedCmkRule(unittest.T
     def test_non_car_rds_cluster_instance_encrypt_performance_insights_with_customer_managed_cmk_creating__no_kms_data__fail(self):
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         rds_instance.terraform_state = terraform_state
         rds_instance.terraform_state.is_new = True
         rds_instance.performance_insights_enabled = True
@@ -49,7 +49,7 @@ class TestEnsureRdsInstancesEncryptedAtRestWithCustomerManagedCmkRule(unittest.T
     def test_non_car_rds_cluster_instance_encrypt_performance_insights_with_customer_managed_cmk_creating_pass(self):
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         rds_instance.terraform_state = terraform_state
         rds_instance.terraform_state.is_new = True
         rds_instance.performance_insights_enabled = False
@@ -63,7 +63,7 @@ class TestEnsureRdsInstancesEncryptedAtRestWithCustomerManagedCmkRule(unittest.T
     def test_non_car_rds_cluster_instance_encrypt_performance_insights_with_customer_managed_cmk_creating__key_manager_customer__pass(self):
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         rds_instance.terraform_state = terraform_state
         rds_instance.terraform_state.is_new = True
         rds_instance.performance_insights_enabled = True
@@ -79,7 +79,7 @@ class TestEnsureRdsInstancesEncryptedAtRestWithCustomerManagedCmkRule(unittest.T
     def test_non_car_rds_cluster_instance_encrypt_performance_insights_with_customer_managed_cmk_creating__not_new__pass(self):
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         rds_instance.terraform_state = terraform_state
         rds_instance.terraform_state.is_new = False
         rds_instance.performance_insights_enabled = True

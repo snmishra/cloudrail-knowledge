@@ -6,7 +6,7 @@ from cloudrail.knowledge.context.iac_resource_metadata import IacResourceMetadat
 
 
 @dataclass
-class TerraformState:
+class IacState:
     address: str
     action: TerraformActionType
     resource_metadata: Optional[IacResourceMetadata]

@@ -5,7 +5,7 @@ from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement
 from cloudrail.knowledge.context.aws.iam.principal import Principal, PrincipalType
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.terraform_action_type import TerraformActionType
-from cloudrail.knowledge.context.terraform_state import TerraformState
+from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.rules.aws.non_context_aware.access_analyzer_rules.access_analyzer_validation_error_and_security_rule import \
     AccessAnalyzerValidationErrorAndSecurityRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
@@ -21,7 +21,7 @@ class TestAccessAnalyzerValidationErrorAndSecurityRule(unittest.TestCase):
                                               [PolicyStatement(StatementEffect.ALLOW, ['*'],
                                                                ['*'], Principal(PrincipalType.PUBLIC, ['arn:aws:iam::123456789012:root']))],
                                               'state_id')
-        policy.terraform_state = TerraformState(address='address', action=TerraformActionType.CREATE, resource_metadata=None, is_new=True)
+        policy.terraform_state = IacState(address='address', action=TerraformActionType.CREATE, resource_metadata=None, is_new=True)
         policy.access_analyzer_findings = [{
             "findingDetails": "Add a value to the empty string in the Sid element.",
             "findingType": "ERROR",
@@ -69,7 +69,7 @@ class TestAccessAnalyzerValidationErrorAndSecurityRule(unittest.TestCase):
                                               [PolicyStatement(StatementEffect.ALLOW, ['*'],
                                                                ['*'], Principal(PrincipalType.PUBLIC, ['arn:aws:iam::123456789012:root']))],
                                               'state_id')
-        policy.terraform_state = TerraformState(address='address', action=TerraformActionType.CREATE, resource_metadata=None, is_new=True)
+        policy.terraform_state = IacState(address='address', action=TerraformActionType.CREATE, resource_metadata=None, is_new=True)
         policy.access_analyzer_findings = [{
             "findingDetails": "Add a value to the empty string in the Sid element.",
             "findingType": "SECURITY_WARNING",
@@ -120,7 +120,7 @@ class TestAccessAnalyzerValidationErrorAndSecurityRule(unittest.TestCase):
                                               [PolicyStatement(StatementEffect.ALLOW, ['*'],
                                                                ['*'], Principal(PrincipalType.PUBLIC, ['arn:aws:iam::123456789012:root']))],
                                               'state_id')
-        policy.terraform_state = TerraformState(address='address', action=TerraformActionType.CREATE, resource_metadata=None, is_new=True)
+        policy.terraform_state = IacState(address='address', action=TerraformActionType.CREATE, resource_metadata=None, is_new=True)
         policy.access_analyzer_findings = [{
             "findingDetails": "Add a value to the empty string in the Sid element.",
             "findingType": "SUGGESTION",

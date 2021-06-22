@@ -5,7 +5,7 @@ from cloudrail.knowledge.context.aws.cloudwatch.cloud_watch_log_group import Clo
 from cloudrail.knowledge.context.aws.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.kms.kms_key_manager import KeyManager
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
-from cloudrail.knowledge.context.terraform_state import TerraformState
+from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.rules.aws.non_context_aware.encryption_enforcement_rules.encrypt_at_rest.ensure_cloud_watch_log_groups_encrypted_rule import \
     EnsureCloudWatchLogGroupsEncryptedRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
@@ -19,7 +19,7 @@ class TestEnsureCloudWatchLogGroupsEncryptedRule(unittest.TestCase):
     def test_not_car_cloudwatch_log_group_encrypted_at_rest_using_kms_cmk__kms_encryption_missing__fail(self):
         # Arrange
         cloud_watch_log_group: CloudWatchLogGroup = create_empty_entity(CloudWatchLogGroup)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         cloud_watch_log_group.terraform_state = terraform_state
         cloud_watch_log_group.terraform_state.is_new = True
 
@@ -33,7 +33,7 @@ class TestEnsureCloudWatchLogGroupsEncryptedRule(unittest.TestCase):
     def test_not_car_cloudwatch_log_group_encrypted_at_rest_using_kms_cmk__kms_key_manager_is_aws__fail(self):
         # Arrange
         cloud_watch_log_group: CloudWatchLogGroup = create_empty_entity(CloudWatchLogGroup)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         cloud_watch_log_group.terraform_state = terraform_state
         cloud_watch_log_group.terraform_state.is_new = True
         cloud_watch_log_group.kms_encryption = 'kms_encryption'
@@ -51,7 +51,7 @@ class TestEnsureCloudWatchLogGroupsEncryptedRule(unittest.TestCase):
     def test_not_car_cloudwatch_log_group_encrypted_at_rest_using_kms_cmk_pass(self):
         # Arrange
         cloud_watch_log_group: CloudWatchLogGroup = create_empty_entity(CloudWatchLogGroup)
-        terraform_state = create_empty_entity(TerraformState)
+        terraform_state = create_empty_entity(IacState)
         cloud_watch_log_group.terraform_state = terraform_state
         cloud_watch_log_group.terraform_state.is_new = True
         cloud_watch_log_group.kms_encryption = 'kms_encryption'

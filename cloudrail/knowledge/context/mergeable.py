@@ -3,7 +3,7 @@ import re
 from abc import abstractmethod
 from enum import Enum
 from typing import List, Set, Dict, Optional
-from cloudrail.knowledge.context.terraform_state import TerraformState
+from cloudrail.knowledge.context.iac_state import IacState
 
 
 class EntityOrigin(Enum):
@@ -16,7 +16,7 @@ class Mergeable:
 
     def __init__(self):
         self.aliases: Set[str] = set()
-        self.terraform_state: Optional[TerraformState] = None
+        self.terraform_state: Optional[IacState] = None
         self.is_pseudo = False
         self.tags: Dict[str, str] = {}
         self.invalidation: List[str] = []

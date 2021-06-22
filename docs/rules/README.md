@@ -69,7 +69,7 @@ Every rule has metadata information that is required:
     to resolve the issue identified by this rule.
   
 
-* **remediation_steps_console** - the remediation steps to take within the cloud console
+* **console_remediation_steps** - the remediation steps to take within the cloud console
     (such as AWS console or Azure portal) to resolve the issue identified by this rule.
 
 

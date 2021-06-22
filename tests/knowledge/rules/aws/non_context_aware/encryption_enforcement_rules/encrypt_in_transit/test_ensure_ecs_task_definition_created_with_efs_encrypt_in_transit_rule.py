@@ -5,7 +5,7 @@ from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 from cloudrail.knowledge.context.aws.ecs.ecs_task_definition import EcsTaskDefinition, EfsVolume
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.terraform_action_type import TerraformActionType
-from cloudrail.knowledge.context.terraform_state import TerraformState
+from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.rules.aws.non_context_aware.encryption_enforcement_rules.\
     encrypt_in_transit.ensure_ecs_task_definition_created_with_efs_encrypt_in_transit_rule import\
     EnsureEcsTaskDefinitionCreatedWithEfsEncryptInTransitRule
@@ -19,8 +19,8 @@ class TestEnsureEcsTaskDefinitionCreatedWithEfsEncryptInTransitRule(unittest.Tes
     def test_non_car_ecs_task_definition_encrypt_in_transit_with_efs_fail(self):
         # Arrange
         ecs_task_definition: EcsTaskDefinition = create_empty_entity(EcsTaskDefinition)
-        ecs_task_definition.terraform_state = TerraformState(address='address', action=TerraformActionType.CREATE,
-                                                             resource_metadata=None, is_new=True)
+        ecs_task_definition.terraform_state = IacState(address='address', action=TerraformActionType.CREATE,
+                                                       resource_metadata=None, is_new=True)
         efs_volume_data: List[EfsVolume] = [create_empty_entity(EfsVolume)]
         ecs_task_definition.efs_volume_data = efs_volume_data
         ecs_task_definition.is_volume_efs = True
@@ -37,8 +37,8 @@ class TestEnsureEcsTaskDefinitionCreatedWithEfsEncryptInTransitRule(unittest.Tes
     def test_non_car_ecs_task_definition_encrypt_in_transit_with_efs_pass(self):
         # Arrange
         ecs_task_definition: EcsTaskDefinition = create_empty_entity(EcsTaskDefinition)
-        ecs_task_definition.terraform_state = TerraformState(address='address', action=TerraformActionType.CREATE,
-                                                             resource_metadata=None, is_new=True)
+        ecs_task_definition.terraform_state = IacState(address='address', action=TerraformActionType.CREATE,
+                                                       resource_metadata=None, is_new=True)
         efs_volume_data: List[EfsVolume] = [create_empty_entity(EfsVolume)]
         ecs_task_definition.efs_volume_data = efs_volume_data
         ecs_task_definition.is_volume_efs = True
@@ -55,8 +55,8 @@ class TestEnsureEcsTaskDefinitionCreatedWithEfsEncryptInTransitRule(unittest.Tes
     def test_non_car_ecs_task_definition_encrypt_in_transit_with_efs__not_new__pass(self):
         # Arrange
         ecs_task_definition: EcsTaskDefinition = create_empty_entity(EcsTaskDefinition)
-        ecs_task_definition.terraform_state = TerraformState(address='address', action=TerraformActionType.CREATE,
-                                                             resource_metadata=None, is_new=False)
+        ecs_task_definition.terraform_state = IacState(address='address', action=TerraformActionType.CREATE,
+                                                       resource_metadata=None, is_new=False)
         efs_volume_data: List[EfsVolume] = [create_empty_entity(EfsVolume)]
         ecs_task_definition.efs_volume_data = efs_volume_data
         ecs_task_definition.is_volume_efs = True
@@ -73,8 +73,8 @@ class TestEnsureEcsTaskDefinitionCreatedWithEfsEncryptInTransitRule(unittest.Tes
     def test_non_car_ecs_task_definition_encrypt_in_transit_with_efs__not_efs__pass(self):
         # Arrange
         ecs_task_definition: EcsTaskDefinition = create_empty_entity(EcsTaskDefinition)
-        ecs_task_definition.terraform_state = TerraformState(address='address', action=TerraformActionType.CREATE,
-                                                             resource_metadata=None, is_new=True)
+        ecs_task_definition.terraform_state = IacState(address='address', action=TerraformActionType.CREATE,
+                                                       resource_metadata=None, is_new=True)
         efs_volume_data: List[EfsVolume] = [create_empty_entity(EfsVolume)]
         ecs_task_definition.efs_volume_data = efs_volume_data
         ecs_task_definition.is_volume_efs = False
