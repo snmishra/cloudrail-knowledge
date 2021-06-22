@@ -867,8 +867,10 @@ rules_metadata:
     name: Ensure Function App enforces FTPS only
     severity: medium
     description: Cloudrail will review the Function App configuration in your environment.
-     If a function app is not enforcing FTPS only, Cloudrail will highlight it as a violation.
-    human_readable_logic: Cloudrail will review the Function Apps configuration within your Azure subscription and       Terraform plan to check if they are enforcing FTPS only.
+      If a function app has FTP enabled and it is not enforcing FTPS only,
+      Cloudrail will highlight it as a violation.
+    human_readable_logic:  Cloudrail will review the Function Apps configuration within your Azure subscription and
+      Terraform plan to check if they are enforcing FTPS only or if they have FTP disabled.
     remediation_steps_console: Follow the guide at
      https://docs.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#enforce-ftps in order to select
       FTPS Only in FTP state.
@@ -910,6 +912,41 @@ rules_metadata:
     resource_type:
       - compute
 
+
+  - rule_id: non_car_vpn_gateway_disallow_basic_sku
+    cloud_provider: azure
+    name: Ensure Azure VPN gateways don't use the basic SKU
+    severity: medium
+    description:
+      The Azure VPN Gateway has different SKUs to choose from, each with different capabilities.
+      The "basic" one is lacking many features and will generally not support anything beyond the smallest
+      load.
+    human_readable_logic:
+      Cloudrail will review all of the VPN gateways in your Azure environment. If any uses the "basic" SKU, Cloudrail will raise a violation.
+    remediation_steps_console: Change the SKU of the VPN gateway by deleting the old one and creating a new one with a different SKU.
+    remediation_steps_tf: Change the 'sku' in the azurerm_virtual_network_gateway to a value that is not "Basic".
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+    - network
+
+  - rule_id: non_car_auto_provisioning_log_analytics_agent_enabled
+    cloud_provider: azure
+    name: Ensure Auto provisioning of the Log Analytics agent is enabled on your subscription
+    severity: medium
+    description: Cloudrail will review the Security Center Auto Provisioning configuration in your environment.
+      If the auto provision of the Log Analytics agent is not set to On, Cloudrail will highlight it as a violation.
+    human_readable_logic: Cloudrail will review the Function Apps configuration within your Azure subscription and
+      Terraform plan to check if authentication is enabled.
+    remediation_steps_console: Follow the guide at
+      https://docs.microsoft.com/en-us/azure/security-center/security-center-enable-data-collection#enable-auto-provisioning-of-the-log-analytics-agent-and-extensions-
+      in order to enable the automatic provision of the Log Analytics agent.
+    remediation_steps_tf: For the azurerm_security_center_auto_provisioning resource, set the auto_provision argument to “On”.
+    rule_type: non_context_aware
+    security_layer: logging
+    resource_type:
+      - security_services
+
   - rule_id: non_car_client_certificates_required_in_function_app
     cloud_provider: azure
     name: Ensure client certificates are required in Function App
@@ -927,3 +964,56 @@ rules_metadata:
     security_layer: networking
     resource_type:
       - compute
+
+  - rule_id: non_car_http_latest_in_function_app
+    cloud_provider: azure
+    name: Ensure HTTP version is the latest in Function Apps
+    severity: medium
+    description:
+      Cloudrail will review the App Service (Function Apps) configuration in your environment.
+      If an app does not use the latest HTTP version, Cloudrail will highlight it as a violation.
+    human_readable_logic: Cloudrail will review the Function Apps configuration within your Azure subscription and
+      Cloudrail will review the App Service configuration within your Azure subscription and Terraform plan to check
+      if latest http version is configured for web apps.
+    remediation_steps_console:
+      Follow the guide at <https://azure.microsoft.com/en-us/blog/announcing-http-2-support-in-azure-app-service/>
+      in order to configure HTTP version for the web app.
+    remediation_steps_tf:
+      For the azurerm_function_app resource, set the site_config block with http2_enabled argument set to true.
+    rule_type: non_context_aware
+    security_layer: iam
+    resource_type:
+      - compute
+
+  - rule_id: non_car_function_app_using_latest_tls_version
+    cloud_provider: azure
+    name: Ensure Function App is using the latest TLS version
+    severity: major
+    description:
+      Cloudrail will review the Function Apps configuration in your environment.
+      If a function does not use the latest TLS version, Cloudrail will highlight it as a violation.
+    human_readable_logic:
+      Cloudrail will review the Function Apps configuration within your Azure subscription
+      and Terraform plan to ensure they are using the latest TLS version.
+    remediation_steps_console:
+      Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-tls-versions>
+      in order to set the Minimum TLS Version to 1.2 for the Function App.
+    remediation_steps_tf:
+      For the azurerm_function_app resource, in site_config block, set the min_tls_version argument to “1.2”.
+    rule_type: non_context_aware
+    security_layer: encryption
+    resource_type:
+      - compute
+
+  - rule_id: non_car_email_notification_high_severity_alerts_enabled
+    cloud_provider: azure
+    name: Ensure Email notification for high severity alerts is enabled
+    severity: medium
+    description: Cloudrail will review the Security Center configuration in your environment. If email notification of high severity alerts is not enabled, Cloudrail will highlight it as a violation.
+    human_readable_logic: Cloudrail will review the Security Center Contact configuration within your Azure subscription and Terraform plan to ensure email notifications of security alerts is enabled.
+    remediation_steps_console: Follow the guide at https://docs.microsoft.com/en-us/azure/security-center/security-center-provide-security-contact-details in order to enable email notifications for security alerts.
+    remediation_steps_tf: For the azurerm_security_center_contact resource, set the alert_notifications argument to true.
+    rule_type: non_context_aware
+    security_layer: logging
+    resource_type:
+      - security_services
