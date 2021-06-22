@@ -17,8 +17,8 @@ class TestEnsureRedshiftClusterCreatedEncryptedRule(unittest.TestCase):
         # Arrange
         redshift_cluster: RedshiftCluster = create_empty_entity(RedshiftCluster)
         terraform_state = create_empty_entity(IacState)
-        redshift_cluster.terraform_state = terraform_state
-        redshift_cluster.terraform_state.is_new = True
+        redshift_cluster.iac_state = terraform_state
+        redshift_cluster.iac_state.is_new = True
         redshift_cluster.encrypted = False
         context = AwsEnvironmentContext(redshift_clusters=[redshift_cluster])
         # Act
@@ -31,8 +31,8 @@ class TestEnsureRedshiftClusterCreatedEncryptedRule(unittest.TestCase):
         # Arrange
         redshift_cluster: RedshiftCluster = create_empty_entity(RedshiftCluster)
         terraform_state = create_empty_entity(IacState)
-        redshift_cluster.terraform_state = terraform_state
-        redshift_cluster.terraform_state.is_new = True
+        redshift_cluster.iac_state = terraform_state
+        redshift_cluster.iac_state.is_new = True
         redshift_cluster.encrypted = True
         context = AwsEnvironmentContext(redshift_clusters=[redshift_cluster])
         # Act
@@ -45,8 +45,8 @@ class TestEnsureRedshiftClusterCreatedEncryptedRule(unittest.TestCase):
         # Arrange
         redshift_cluster: RedshiftCluster = create_empty_entity(RedshiftCluster)
         terraform_state = create_empty_entity(IacState)
-        redshift_cluster.terraform_state = terraform_state
-        redshift_cluster.terraform_state.is_new = False
+        redshift_cluster.iac_state = terraform_state
+        redshift_cluster.iac_state.is_new = False
         redshift_cluster.encrypted = False
         context = AwsEnvironmentContext(redshift_clusters=[redshift_cluster])
         # Act

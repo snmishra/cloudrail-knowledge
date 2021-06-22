@@ -19,8 +19,8 @@ class TestEnsureDocdbClustersEncryptedCustomerManagedCmkRule(unittest.TestCase):
         # Arrange
         document_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
         terraform_state = create_empty_entity(IacState)
-        document_db_cluster.terraform_state = terraform_state
-        document_db_cluster.terraform_state.is_new = True
+        document_db_cluster.iac_state = terraform_state
+        document_db_cluster.iac_state.is_new = True
         document_db_cluster.storage_encrypted = True
         kms_key: KmsKey = create_empty_entity(KmsKey)
         kms_key.key_manager = KeyManager.AWS
@@ -37,8 +37,8 @@ class TestEnsureDocdbClustersEncryptedCustomerManagedCmkRule(unittest.TestCase):
         # Arrange
         document_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
         terraform_state = create_empty_entity(IacState)
-        document_db_cluster.terraform_state = terraform_state
-        document_db_cluster.terraform_state.is_new = True
+        document_db_cluster.iac_state = terraform_state
+        document_db_cluster.iac_state.is_new = True
         document_db_cluster.storage_encrypted = True
         document_db_cluster.kms_data = None
 
@@ -53,8 +53,8 @@ class TestEnsureDocdbClustersEncryptedCustomerManagedCmkRule(unittest.TestCase):
         # Arrange
         document_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
         terraform_state = create_empty_entity(IacState)
-        document_db_cluster.terraform_state = terraform_state
-        document_db_cluster.terraform_state.is_new = True
+        document_db_cluster.iac_state = terraform_state
+        document_db_cluster.iac_state.is_new = True
         document_db_cluster.storage_encrypted = True
         kms_key: KmsKey = create_empty_entity(KmsKey)
         kms_key.key_manager = KeyManager.CUSTOMER

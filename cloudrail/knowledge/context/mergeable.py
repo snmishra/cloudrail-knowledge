@@ -16,7 +16,7 @@ class Mergeable:
 
     def __init__(self):
         self.aliases: Set[str] = set()
-        self.terraform_state: Optional[IacState] = None
+        self.iac_state: Optional[IacState] = None
         self.is_pseudo = False
         self.tags: Dict[str, str] = {}
         self.invalidation: List[str] = []
@@ -58,7 +58,7 @@ class Mergeable:
         pass
 
     def is_new_resource(self) -> bool:
-        return self.terraform_state is not None and self.terraform_state.is_new
+        return self.iac_state is not None and self.iac_state.is_new
 
     def get_existing_cloud_resource_url(self) -> Optional[str]:
         if not self.is_new_resource():
@@ -80,7 +80,7 @@ class Mergeable:
     def origin(self) -> EntityOrigin:
         if self.is_pseudo:
             return EntityOrigin.PSEUDO
-        elif self.terraform_state:
+        elif self.iac_state:
             return EntityOrigin.TERRAFORM
         else:
             return EntityOrigin.LIVE_ENV

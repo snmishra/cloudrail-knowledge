@@ -22,8 +22,8 @@ class TestEnsureS3BucketsEncryptedRule(unittest.TestCase):
         # Arrange
         s3_bucket = S3Bucket('111111', 's3_bucket_name', 's3_bucket_arn')
         terraform_state = create_empty_entity(IacState)
-        s3_bucket.terraform_state = terraform_state
-        s3_bucket.terraform_state.is_new = True
+        s3_bucket.iac_state = terraform_state
+        s3_bucket.iac_state.is_new = True
         s3_bucket.encryption_data = S3BucketEncryption(bucket_name='s3_bucket', encrypted=False, region='us-east-1', account='111111')
         connection_detail = PrivateConnectionDetail(PolicyConnectionProperty([]), ConnectionDirectionType.INBOUND, ConnectionInstance())
         s3_bucket.inbound_connections.add(connection_detail)
@@ -38,8 +38,8 @@ class TestEnsureS3BucketsEncryptedRule(unittest.TestCase):
         # Arrange
         s3_bucket = S3Bucket('111111', 's3_bucket_name', 's3_bucket_arn')
         terraform_state = create_empty_entity(IacState)
-        s3_bucket.terraform_state = terraform_state
-        s3_bucket.terraform_state.is_new = True
+        s3_bucket.iac_state = terraform_state
+        s3_bucket.iac_state.is_new = True
         s3_bucket.encryption_data = S3BucketEncryption(bucket_name='s3_bucket', encrypted=True, region='us-east-1', account='111111')
         connection_detail = PrivateConnectionDetail(PolicyConnectionProperty([]), ConnectionDirectionType.INBOUND, ConnectionInstance())
         s3_bucket.inbound_connections.add(connection_detail)
@@ -54,8 +54,8 @@ class TestEnsureS3BucketsEncryptedRule(unittest.TestCase):
         # Arrange
         s3_bucket = S3Bucket('111111', 's3_bucket_name', 's3_bucket_arn')
         terraform_state = create_empty_entity(IacState)
-        s3_bucket.terraform_state = terraform_state
-        s3_bucket.terraform_state.is_new = True
+        s3_bucket.iac_state = terraform_state
+        s3_bucket.iac_state.is_new = True
         s3_bucket.encryption_data = S3BucketEncryption(bucket_name='s3_bucket', encrypted=False, region='us-east-1', account='111111')
         connection_detail = PublicConnectionDetail(PolicyConnectionProperty([]), ConnectionDirectionType.INBOUND)
         s3_bucket.inbound_connections.add(connection_detail)

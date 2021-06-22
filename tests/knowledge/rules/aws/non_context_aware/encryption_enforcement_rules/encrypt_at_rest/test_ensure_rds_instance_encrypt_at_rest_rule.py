@@ -19,8 +19,8 @@ class TestRdsEncryptAtRestRule(unittest.TestCase):
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
         terraform_state = create_empty_entity(IacState)
-        rds_instance.terraform_state = terraform_state
-        rds_instance.terraform_state.is_new = True
+        rds_instance.iac_state = terraform_state
+        rds_instance.iac_state.is_new = True
         rds_instance.encrypted_at_rest = False
         context = AwsEnvironmentContext(rds_instances=[rds_instance])
         # Act
@@ -33,8 +33,8 @@ class TestRdsEncryptAtRestRule(unittest.TestCase):
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
         terraform_state = create_empty_entity(IacState)
-        rds_instance.terraform_state = terraform_state
-        rds_instance.terraform_state.is_new = True
+        rds_instance.iac_state = terraform_state
+        rds_instance.iac_state.is_new = True
         rds_instance.encrypted_at_rest = True
         context = AwsEnvironmentContext(rds_instances=[rds_instance])
         # Act
@@ -47,8 +47,8 @@ class TestRdsEncryptAtRestRule(unittest.TestCase):
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
         terraform_state = create_empty_entity(IacState)
-        rds_instance.terraform_state = terraform_state
-        rds_instance.terraform_state.is_new = False
+        rds_instance.iac_state = terraform_state
+        rds_instance.iac_state.is_new = False
         rds_instance.encrypted_at_rest = False
         context = AwsEnvironmentContext(rds_instances=[rds_instance])
         # Act
@@ -61,8 +61,8 @@ class TestRdsEncryptAtRestRule(unittest.TestCase):
         # Arrange
         rds_cluster: RdsCluster = create_empty_entity(RdsCluster)
         terraform_state = create_empty_entity(IacState)
-        rds_cluster.terraform_state = terraform_state
-        rds_cluster.terraform_state.is_new = True
+        rds_cluster.iac_state = terraform_state
+        rds_cluster.iac_state.is_new = True
         rds_cluster.encrypted_at_rest = False
         context = AwsEnvironmentContext(rds_clusters=[rds_cluster])
         # Act
@@ -75,8 +75,8 @@ class TestRdsEncryptAtRestRule(unittest.TestCase):
         # Arrange
         rds_cluster: RdsCluster = create_empty_entity(RdsCluster)
         terraform_state = create_empty_entity(IacState)
-        rds_cluster.terraform_state = terraform_state
-        rds_cluster.terraform_state.is_new = True
+        rds_cluster.iac_state = terraform_state
+        rds_cluster.iac_state.is_new = True
         rds_cluster.encrypted_at_rest = True
         context = AwsEnvironmentContext(rds_clusters=[rds_cluster])
         # Act
@@ -89,8 +89,8 @@ class TestRdsEncryptAtRestRule(unittest.TestCase):
         # Arrange
         rds_cluster: RdsCluster = create_empty_entity(RdsCluster)
         terraform_state = create_empty_entity(IacState)
-        rds_cluster.terraform_state = terraform_state
-        rds_cluster.terraform_state.is_new = False
+        rds_cluster.iac_state = terraform_state
+        rds_cluster.iac_state.is_new = False
         rds_cluster.encrypted_at_rest = False
         context = AwsEnvironmentContext(rds_clusters=[rds_cluster])
         # Act
@@ -103,8 +103,8 @@ class TestRdsEncryptAtRestRule(unittest.TestCase):
         # Arrange
         rds_global_cluster: RdsGlobalCluster = create_empty_entity(RdsGlobalCluster)
         terraform_state = create_empty_entity(IacState)
-        rds_global_cluster.terraform_state = terraform_state
-        rds_global_cluster.terraform_state.is_new = True
+        rds_global_cluster.iac_state = terraform_state
+        rds_global_cluster.iac_state.is_new = True
         rds_global_cluster.encrypted_at_rest = False
         context = AwsEnvironmentContext(rds_global_clusters=[rds_global_cluster])
         # Act
@@ -117,8 +117,8 @@ class TestRdsEncryptAtRestRule(unittest.TestCase):
         # Arrange
         rds_global_cluster: RdsGlobalCluster = create_empty_entity(RdsGlobalCluster)
         terraform_state = create_empty_entity(IacState)
-        rds_global_cluster.terraform_state = terraform_state
-        rds_global_cluster.terraform_state.is_new = True
+        rds_global_cluster.iac_state = terraform_state
+        rds_global_cluster.iac_state.is_new = True
         rds_global_cluster.encrypted_at_rest = True
         context = AwsEnvironmentContext(rds_global_clusters=[rds_global_cluster])
         # Act
@@ -131,8 +131,8 @@ class TestRdsEncryptAtRestRule(unittest.TestCase):
         # Arrange
         rds_global_cluster: RdsGlobalCluster = create_empty_entity(RdsGlobalCluster)
         terraform_state = create_empty_entity(IacState)
-        rds_global_cluster.terraform_state = terraform_state
-        rds_global_cluster.terraform_state.is_new = False
+        rds_global_cluster.iac_state = terraform_state
+        rds_global_cluster.iac_state.is_new = False
         rds_global_cluster.encrypted_at_rest = False
         context = AwsEnvironmentContext(rds_global_clusters=[rds_global_cluster])
         # Act

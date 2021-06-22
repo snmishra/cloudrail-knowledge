@@ -16,8 +16,8 @@ class TestEsEncryptAtRestRule(unittest.TestCase):
         # Arrange
         es_domain: ElasticSearchDomain = create_empty_entity(ElasticSearchDomain)
         terraform_state = create_empty_entity(IacState)
-        es_domain.terraform_state = terraform_state
-        es_domain.terraform_state.is_new = True
+        es_domain.iac_state = terraform_state
+        es_domain.iac_state.is_new = True
         es_domain.encrypt_at_rest_state = False
         context = AwsEnvironmentContext(elastic_search_domains=[es_domain])
         # Act
@@ -30,8 +30,8 @@ class TestEsEncryptAtRestRule(unittest.TestCase):
         # Arrange
         es_domain: ElasticSearchDomain = create_empty_entity(ElasticSearchDomain)
         terraform_state = create_empty_entity(IacState)
-        es_domain.terraform_state = terraform_state
-        es_domain.terraform_state.is_new = True
+        es_domain.iac_state = terraform_state
+        es_domain.iac_state.is_new = True
         es_domain.encrypt_at_rest_state = True
         context = AwsEnvironmentContext(elastic_search_domains=[es_domain])
         # Act
@@ -44,8 +44,8 @@ class TestEsEncryptAtRestRule(unittest.TestCase):
         # Arrange
         es_domain: ElasticSearchDomain = create_empty_entity(ElasticSearchDomain)
         terraform_state = create_empty_entity(IacState)
-        es_domain.terraform_state = terraform_state
-        es_domain.terraform_state.is_new = False
+        es_domain.iac_state = terraform_state
+        es_domain.iac_state.is_new = False
         es_domain.encrypt_at_rest_state = False
         context = AwsEnvironmentContext(elastic_search_domains=[es_domain])
         # Act

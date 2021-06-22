@@ -25,10 +25,10 @@ class TestEnsureNoUnusedSecurityGroups(unittest.TestCase):
         network_interface.add_security_group(security_group_1)
         network_interface.owner = ec2
         ec2.network_resource.network_interfaces.append(network_interface)
-        security_group_2.terraform_state = IacState(address='address',
-                                                    action=TerraformActionType.NO_OP,
-                                                    resource_metadata=None,
-                                                    is_new=False)
+        security_group_2.iac_state = IacState(address='address',
+                                              action=TerraformActionType.NO_OP,
+                                              resource_metadata=None,
+                                              is_new=False)
         context = AwsEnvironmentContext(ec2s=[ec2], network_interfaces=AliasesDict(network_interface),
                                         security_groups=AliasesDict(security_group_1, security_group_2))
         # Act
@@ -64,10 +64,10 @@ class TestEnsureNoUnusedSecurityGroups(unittest.TestCase):
         security_group_1.add_usage(network_interface)
         network_interface.owner = ec2
         ec2.network_resource.network_interfaces.append(network_interface)
-        security_group_2.terraform_state = IacState(address='address',
-                                                    action=TerraformActionType.CREATE,
-                                                    resource_metadata=None,
-                                                    is_new=True)
+        security_group_2.iac_state = IacState(address='address',
+                                              action=TerraformActionType.CREATE,
+                                              resource_metadata=None,
+                                              is_new=True)
         context = AwsEnvironmentContext(ec2s=[ec2], network_interfaces=AliasesDict(network_interface),
                                         security_groups=AliasesDict(security_group_1, security_group_2))
         # Act

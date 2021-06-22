@@ -20,8 +20,8 @@ class TestEnsureRdsInstancesEncryptedAtRestWithCustomerManagedCmkRule(unittest.T
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
         terraform_state = create_empty_entity(IacState)
-        rds_instance.terraform_state = terraform_state
-        rds_instance.terraform_state.is_new = True
+        rds_instance.iac_state = terraform_state
+        rds_instance.iac_state.is_new = True
         rds_instance.performance_insights_enabled = True
         rds_instance.performance_insights_kms_data = KmsKey(key_id='key', arn='arn',
                                                             key_manager=KeyManager.AWS, region='us-east-1', account='111111111')
@@ -36,8 +36,8 @@ class TestEnsureRdsInstancesEncryptedAtRestWithCustomerManagedCmkRule(unittest.T
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
         terraform_state = create_empty_entity(IacState)
-        rds_instance.terraform_state = terraform_state
-        rds_instance.terraform_state.is_new = True
+        rds_instance.iac_state = terraform_state
+        rds_instance.iac_state.is_new = True
         rds_instance.performance_insights_enabled = True
         context = AwsEnvironmentContext(rds_instances=[rds_instance])
         # Act
@@ -50,8 +50,8 @@ class TestEnsureRdsInstancesEncryptedAtRestWithCustomerManagedCmkRule(unittest.T
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
         terraform_state = create_empty_entity(IacState)
-        rds_instance.terraform_state = terraform_state
-        rds_instance.terraform_state.is_new = True
+        rds_instance.iac_state = terraform_state
+        rds_instance.iac_state.is_new = True
         rds_instance.performance_insights_enabled = False
         context = AwsEnvironmentContext(rds_instances=[rds_instance])
         # Act
@@ -64,8 +64,8 @@ class TestEnsureRdsInstancesEncryptedAtRestWithCustomerManagedCmkRule(unittest.T
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
         terraform_state = create_empty_entity(IacState)
-        rds_instance.terraform_state = terraform_state
-        rds_instance.terraform_state.is_new = True
+        rds_instance.iac_state = terraform_state
+        rds_instance.iac_state.is_new = True
         rds_instance.performance_insights_enabled = True
         rds_instance.performance_insights_kms_data = KmsKey(key_id='key', arn='arn',
                                                             key_manager=KeyManager.CUSTOMER, region='us-east-1', account='111111111')
@@ -80,8 +80,8 @@ class TestEnsureRdsInstancesEncryptedAtRestWithCustomerManagedCmkRule(unittest.T
         # Arrange
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
         terraform_state = create_empty_entity(IacState)
-        rds_instance.terraform_state = terraform_state
-        rds_instance.terraform_state.is_new = False
+        rds_instance.iac_state = terraform_state
+        rds_instance.iac_state.is_new = False
         rds_instance.performance_insights_enabled = True
         rds_instance.performance_insights_kms_data = KmsKey(key_id='key', arn='arn',
                                                             key_manager=KeyManager.AWS, region='us-east-1', account='111111111')

@@ -17,8 +17,8 @@ class TestEnsureWorkspaceRootVolumeEncryptedAtRestRule(unittest.TestCase):
         # Arrange
         workspace: Workspace = create_empty_entity(Workspace)
         terraform_state = create_empty_entity(IacState)
-        workspace.terraform_state = terraform_state
-        workspace.terraform_state.is_new = True
+        workspace.iac_state = terraform_state
+        workspace.iac_state.is_new = True
         workspace.root_encryption_enabled = False
         context = AwsEnvironmentContext(workspaces=[workspace])
         # Act
@@ -31,8 +31,8 @@ class TestEnsureWorkspaceRootVolumeEncryptedAtRestRule(unittest.TestCase):
         # Arrange
         workspace: Workspace = create_empty_entity(Workspace)
         terraform_state = create_empty_entity(IacState)
-        workspace.terraform_state = terraform_state
-        workspace.terraform_state.is_new = True
+        workspace.iac_state = terraform_state
+        workspace.iac_state.is_new = True
         workspace.root_encryption_enabled = True
         context = AwsEnvironmentContext(workspaces=[workspace])
         # Act
@@ -45,8 +45,8 @@ class TestEnsureWorkspaceRootVolumeEncryptedAtRestRule(unittest.TestCase):
         # Arrange
         workspace: Workspace = create_empty_entity(Workspace)
         terraform_state = create_empty_entity(IacState)
-        workspace.terraform_state = terraform_state
-        workspace.terraform_state.is_new = False
+        workspace.iac_state = terraform_state
+        workspace.iac_state.is_new = False
         workspace.root_encryption_enabled = False
         context = AwsEnvironmentContext(workspaces=[workspace])
         # Act

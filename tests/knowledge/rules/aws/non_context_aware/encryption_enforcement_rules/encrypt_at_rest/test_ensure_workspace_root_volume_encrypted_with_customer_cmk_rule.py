@@ -19,8 +19,8 @@ class TestEnsureWorkspaceRootVolumeEncryptionCmkRule(unittest.TestCase):
         # Arrange
         workspace: Workspace = create_empty_entity(Workspace)
         terraform_state = create_empty_entity(IacState)
-        workspace.terraform_state = terraform_state
-        workspace.terraform_state.is_new = True
+        workspace.iac_state = terraform_state
+        workspace.iac_state.is_new = True
         workspace.root_encryption_enabled = True
         workspace.keys_data = KmsKey(key_id='key', arn='arn', key_manager=KeyManager.AWS, region='us-east-1', account='111111111')
         context = AwsEnvironmentContext(workspaces=[workspace])
@@ -34,8 +34,8 @@ class TestEnsureWorkspaceRootVolumeEncryptionCmkRule(unittest.TestCase):
         # Arrange
         workspace: Workspace = create_empty_entity(Workspace)
         terraform_state = create_empty_entity(IacState)
-        workspace.terraform_state = terraform_state
-        workspace.terraform_state.is_new = True
+        workspace.iac_state = terraform_state
+        workspace.iac_state.is_new = True
         workspace.root_encryption_enabled = True
         workspace.keys_data = KmsKey(key_id='key', arn='arn', key_manager=KeyManager.CUSTOMER, region='us-east-1', account='111111111')
         context = AwsEnvironmentContext(workspaces=[workspace])
@@ -49,8 +49,8 @@ class TestEnsureWorkspaceRootVolumeEncryptionCmkRule(unittest.TestCase):
         # Arrange
         workspace: Workspace = create_empty_entity(Workspace)
         terraform_state = create_empty_entity(IacState)
-        workspace.terraform_state = terraform_state
-        workspace.terraform_state.is_new = True
+        workspace.iac_state = terraform_state
+        workspace.iac_state.is_new = True
         workspace.root_encryption_enabled = True
         workspace.keys_data = None
         context = AwsEnvironmentContext(workspaces=[workspace])
@@ -64,8 +64,8 @@ class TestEnsureWorkspaceRootVolumeEncryptionCmkRule(unittest.TestCase):
         # Arrange
         workspace: Workspace = create_empty_entity(Workspace)
         terraform_state = create_empty_entity(IacState)
-        workspace.terraform_state = terraform_state
-        workspace.terraform_state.is_new = True
+        workspace.iac_state = terraform_state
+        workspace.iac_state.is_new = True
         workspace.root_encryption_enabled = False
         workspace.keys_data = KmsKey(key_id='key', arn='arn', key_manager=KeyManager.CUSTOMER, region='us-east-1', account='111111111')
         context = AwsEnvironmentContext(workspaces=[workspace])
@@ -79,8 +79,8 @@ class TestEnsureWorkspaceRootVolumeEncryptionCmkRule(unittest.TestCase):
         # Arrange
         workspace: Workspace = create_empty_entity(Workspace)
         terraform_state = create_empty_entity(IacState)
-        workspace.terraform_state = terraform_state
-        workspace.terraform_state.is_new = False
+        workspace.iac_state = terraform_state
+        workspace.iac_state.is_new = False
         workspace.root_encryption_enabled = True
         workspace.keys_data = KmsKey(key_id='key', arn='arn', key_manager=KeyManager.CUSTOMER, region='us-east-1', account='111111111')
         context = AwsEnvironmentContext(workspaces=[workspace])

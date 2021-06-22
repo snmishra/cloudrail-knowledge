@@ -99,10 +99,10 @@ class TestEnsureRdsResourceIamAuthenticationEnabledRule(unittest.TestCase):
         rds_instance.engine_type = 'mysql'
         rds_instance.engine_version = '5.7'
         rds_instance.iam_database_authentication_enabled = False
-        rds_instance.terraform_state = IacState(address='address',
-                                                action=TerraformActionType.CREATE,
-                                                resource_metadata=None,
-                                                is_new=True)
+        rds_instance.iac_state = IacState(address='address',
+                                          action=TerraformActionType.CREATE,
+                                          resource_metadata=None,
+                                          is_new=True)
         context = AwsEnvironmentContext(rds_instances=[rds_instance])
         # Act
         result = self.rule.run(context, {})
@@ -116,10 +116,10 @@ class TestEnsureRdsResourceIamAuthenticationEnabledRule(unittest.TestCase):
         rds_instance.engine_type = 'mysql'
         rds_instance.engine_version = '5.6'
         rds_instance.iam_database_authentication_enabled = False
-        rds_instance.terraform_state = IacState(address='address',
-                                                action=TerraformActionType.CREATE,
-                                                resource_metadata=None,
-                                                is_new=True)
+        rds_instance.iac_state = IacState(address='address',
+                                          action=TerraformActionType.CREATE,
+                                          resource_metadata=None,
+                                          is_new=True)
         context = AwsEnvironmentContext(rds_instances=[rds_instance])
         # Act
         result = self.rule.run(context, {})
@@ -170,10 +170,10 @@ class TestEnsureRdsResourceIamAuthenticationEnabledRule(unittest.TestCase):
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
         rds_instance.engine_type = 'postgresql'
         rds_instance.engine_version = '9.5'
-        rds_instance.terraform_state = IacState(address='address',
-                                                action=TerraformActionType.CREATE,
-                                                resource_metadata=None,
-                                                is_new=True)
+        rds_instance.iac_state = IacState(address='address',
+                                          action=TerraformActionType.CREATE,
+                                          resource_metadata=None,
+                                          is_new=True)
         context = AwsEnvironmentContext(rds_instances=[rds_instance])
         # Act
         result = self.rule.run(context, {})
@@ -198,10 +198,10 @@ class TestEnsureRdsResourceIamAuthenticationEnabledRule(unittest.TestCase):
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
         rds_instance.engine_type = 'postgresql'
         rds_instance.engine_version = '11.2'
-        rds_instance.terraform_state = IacState(address='address',
-                                                action=TerraformActionType.CREATE,
-                                                resource_metadata=None,
-                                                is_new=True)
+        rds_instance.iac_state = IacState(address='address',
+                                          action=TerraformActionType.CREATE,
+                                          resource_metadata=None,
+                                          is_new=True)
         context = AwsEnvironmentContext(rds_instances=[rds_instance])
         # Act
         result = self.rule.run(context, {})
@@ -214,10 +214,10 @@ class TestEnsureRdsResourceIamAuthenticationEnabledRule(unittest.TestCase):
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
         rds_instance.engine_type = 'postgresql'
         rds_instance.engine_version = '14'
-        rds_instance.terraform_state = IacState(address='address',
-                                                action=TerraformActionType.CREATE,
-                                                resource_metadata=None,
-                                                is_new=True)
+        rds_instance.iac_state = IacState(address='address',
+                                          action=TerraformActionType.CREATE,
+                                          resource_metadata=None,
+                                          is_new=True)
         context = AwsEnvironmentContext(rds_instances=[rds_instance])
         # Act
         result = self.rule.run(context, {})
@@ -254,10 +254,10 @@ class TestEnsureRdsResourceIamAuthenticationEnabledRule(unittest.TestCase):
         rds_instance: RdsInstance = create_empty_entity(RdsInstance)
         rds_instance.engine_type = 'postgresql'
         rds_instance.engine_version = '9.5.5'
-        rds_instance.terraform_state = IacState(address='address',
-                                                action=TerraformActionType.CREATE,
-                                                resource_metadata=None,
-                                                is_new=True)
+        rds_instance.iac_state = IacState(address='address',
+                                          action=TerraformActionType.CREATE,
+                                          resource_metadata=None,
+                                          is_new=True)
         context = AwsEnvironmentContext(rds_instances=[rds_instance])
         # Act
         result = self.rule.run(context, {})

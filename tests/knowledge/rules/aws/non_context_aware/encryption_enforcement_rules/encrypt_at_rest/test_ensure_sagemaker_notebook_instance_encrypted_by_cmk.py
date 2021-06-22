@@ -19,8 +19,8 @@ class TestEnsureSageMakerNotebookInstanceEncryptedAtRestByCMKRule(unittest.TestC
         # Arrange
         sagemaker_instance: SageMakerNotebookInstance = create_empty_entity(SageMakerNotebookInstance)
         terraform_state = create_empty_entity(IacState)
-        sagemaker_instance.terraform_state = terraform_state
-        sagemaker_instance.terraform_state.is_new = True
+        sagemaker_instance.iac_state = terraform_state
+        sagemaker_instance.iac_state.is_new = True
         sagemaker_instance.kms_data = KmsKey(key_id='key', arn='arn', key_manager=KeyManager.AWS, region='us-east-1', account='111111111')
         context = AwsEnvironmentContext(sagemaker_notebook_instances=[sagemaker_instance])
         # Act
@@ -33,8 +33,8 @@ class TestEnsureSageMakerNotebookInstanceEncryptedAtRestByCMKRule(unittest.TestC
         # Arrange
         sagemaker_instance: SageMakerNotebookInstance = create_empty_entity(SageMakerNotebookInstance)
         terraform_state = create_empty_entity(IacState)
-        sagemaker_instance.terraform_state = terraform_state
-        sagemaker_instance.terraform_state.is_new = True
+        sagemaker_instance.iac_state = terraform_state
+        sagemaker_instance.iac_state.is_new = True
         sagemaker_instance.kms_data = KmsKey(key_id='key', arn='arn', key_manager=KeyManager.CUSTOMER, region='us-east-1', account='111111111')
         context = AwsEnvironmentContext(sagemaker_notebook_instances=[sagemaker_instance])
         # Act
@@ -47,8 +47,8 @@ class TestEnsureSageMakerNotebookInstanceEncryptedAtRestByCMKRule(unittest.TestC
         # Arrange
         sagemaker_instance: SageMakerNotebookInstance = create_empty_entity(SageMakerNotebookInstance)
         terraform_state = create_empty_entity(IacState)
-        sagemaker_instance.terraform_state = terraform_state
-        sagemaker_instance.terraform_state.is_new = False
+        sagemaker_instance.iac_state = terraform_state
+        sagemaker_instance.iac_state.is_new = False
         sagemaker_instance.kms_data = KmsKey(key_id='key', arn='arn', key_manager=KeyManager.AWS, region='us-east-1', account='111111111')
         context = AwsEnvironmentContext(sagemaker_notebook_instances=[sagemaker_instance])
         # Act

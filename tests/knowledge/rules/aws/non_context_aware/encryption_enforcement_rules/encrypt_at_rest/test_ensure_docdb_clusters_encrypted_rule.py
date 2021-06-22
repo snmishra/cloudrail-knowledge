@@ -17,8 +17,8 @@ class TestEnsureDocdbClustersEncryptedRule(unittest.TestCase):
         # Arrange
         document_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
         terraform_state = create_empty_entity(IacState)
-        document_db_cluster.terraform_state = terraform_state
-        document_db_cluster.terraform_state.is_new = True
+        document_db_cluster.iac_state = terraform_state
+        document_db_cluster.iac_state.is_new = True
         document_db_cluster.storage_encrypted = False
 
         context = AwsEnvironmentContext(docdb_cluster=[document_db_cluster])
@@ -32,8 +32,8 @@ class TestEnsureDocdbClustersEncryptedRule(unittest.TestCase):
         # Arrange
         document_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
         terraform_state = create_empty_entity(IacState)
-        document_db_cluster.terraform_state = terraform_state
-        document_db_cluster.terraform_state.is_new = True
+        document_db_cluster.iac_state = terraform_state
+        document_db_cluster.iac_state.is_new = True
         document_db_cluster.storage_encrypted = True
 
         context = AwsEnvironmentContext(docdb_cluster=[document_db_cluster])

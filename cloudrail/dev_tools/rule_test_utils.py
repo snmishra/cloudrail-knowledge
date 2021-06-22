@@ -29,4 +29,4 @@ def create_empty_entity(class_type: Type[_T], **kwargs) -> _T:
 
 def add_terraform_state(resource: Mergeable, friendly_name: str, as_new_resource: bool = True):
     action_type = TerraformActionType.CREATE if as_new_resource else TerraformActionType.UPDATE
-    resource.terraform_state = IacState(friendly_name, action_type, None, as_new_resource)
+    resource.iac_state = IacState(friendly_name, action_type, None, as_new_resource)

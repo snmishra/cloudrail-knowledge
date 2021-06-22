@@ -17,8 +17,8 @@ class TestEnsureElasticacheReplicationGroupsEncryptedInTransitRule(unittest.Test
     def test_non_car_elasticache_replication_group_encrypt_in_transit_creating_fail(self):
         # Arrange
         elasti_cache_replication_group: ElastiCacheReplicationGroup = create_empty_entity(ElastiCacheReplicationGroup)
-        elasti_cache_replication_group.terraform_state = IacState(address='address', action=TerraformActionType.CREATE,
-                                                                  resource_metadata=None, is_new=True)
+        elasti_cache_replication_group.iac_state = IacState(address='address', action=TerraformActionType.CREATE,
+                                                            resource_metadata=None, is_new=True)
         elasti_cache_replication_group.encrypted_in_transit = False
         context = AwsEnvironmentContext(elasti_cache_replication_groups=[elasti_cache_replication_group])
         # Act
@@ -30,8 +30,8 @@ class TestEnsureElasticacheReplicationGroupsEncryptedInTransitRule(unittest.Test
     def test_non_car_elasticache_replication_group_encrypt_in_transit_creating_pass(self):
         # Arrange
         elasti_cache_replication_group: ElastiCacheReplicationGroup = create_empty_entity(ElastiCacheReplicationGroup)
-        elasti_cache_replication_group.terraform_state = IacState(address='address', action=TerraformActionType.CREATE,
-                                                                  resource_metadata=None, is_new=True)
+        elasti_cache_replication_group.iac_state = IacState(address='address', action=TerraformActionType.CREATE,
+                                                            resource_metadata=None, is_new=True)
         elasti_cache_replication_group.encrypted_in_transit = True
         context = AwsEnvironmentContext(elasti_cache_replication_groups=[elasti_cache_replication_group])
         # Act
@@ -43,8 +43,8 @@ class TestEnsureElasticacheReplicationGroupsEncryptedInTransitRule(unittest.Test
     def test_non_car_elasticache_replication_group_encrypt_in_transit_creating__not_new__pass(self):
         # Arrange
         elasti_cache_replication_group: ElastiCacheReplicationGroup = create_empty_entity(ElastiCacheReplicationGroup)
-        elasti_cache_replication_group.terraform_state = IacState(address='address', action=TerraformActionType.CREATE,
-                                                                  resource_metadata=None, is_new=False)
+        elasti_cache_replication_group.iac_state = IacState(address='address', action=TerraformActionType.CREATE,
+                                                            resource_metadata=None, is_new=False)
         elasti_cache_replication_group.encrypted_in_transit = False
         context = AwsEnvironmentContext(elasti_cache_replication_groups=[elasti_cache_replication_group])
         # Act

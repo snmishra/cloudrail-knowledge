@@ -19,8 +19,8 @@ class TestEnsureEcrRepositoriesEncryptedAtRestWithCustomerManagedCmkRule(unittes
         # Arrange
         ecr_repo: EcrRepository = create_empty_entity(EcrRepository)
         terraform_state = create_empty_entity(IacState)
-        ecr_repo.terraform_state = terraform_state
-        ecr_repo.terraform_state.is_new = True
+        ecr_repo.iac_state = terraform_state
+        ecr_repo.iac_state.is_new = True
         ecr_repo.encryption_type = 'AES256'
 
         context = AwsEnvironmentContext(ecr_repositories=[ecr_repo])
@@ -36,8 +36,8 @@ class TestEnsureEcrRepositoriesEncryptedAtRestWithCustomerManagedCmkRule(unittes
         terraform_state = create_empty_entity(IacState)
         kms_key: KmsKey = create_empty_entity(KmsKey)
         kms_key.key_manager = KeyManager.AWS
-        ecr_repo.terraform_state = terraform_state
-        ecr_repo.terraform_state.is_new = True
+        ecr_repo.iac_state = terraform_state
+        ecr_repo.iac_state.is_new = True
         ecr_repo.encryption_type = 'KMS'
         ecr_repo.kms_data = kms_key
 
@@ -54,8 +54,8 @@ class TestEnsureEcrRepositoriesEncryptedAtRestWithCustomerManagedCmkRule(unittes
         terraform_state = create_empty_entity(IacState)
         kms_key: KmsKey = create_empty_entity(KmsKey)
         kms_key.key_manager = KeyManager.AWS
-        ecr_repo.terraform_state = terraform_state
-        ecr_repo.terraform_state.is_new = False
+        ecr_repo.iac_state = terraform_state
+        ecr_repo.iac_state.is_new = False
         ecr_repo.encryption_type = 'KMS'
         ecr_repo.kms_data = kms_key
 
@@ -72,8 +72,8 @@ class TestEnsureEcrRepositoriesEncryptedAtRestWithCustomerManagedCmkRule(unittes
         terraform_state = create_empty_entity(IacState)
         kms_key: KmsKey = create_empty_entity(KmsKey)
         kms_key.key_manager = KeyManager.CUSTOMER
-        ecr_repo.terraform_state = terraform_state
-        ecr_repo.terraform_state.is_new = True
+        ecr_repo.iac_state = terraform_state
+        ecr_repo.iac_state.is_new = True
         ecr_repo.encryption_type = 'KMS'
         ecr_repo.kms_data = kms_key
 

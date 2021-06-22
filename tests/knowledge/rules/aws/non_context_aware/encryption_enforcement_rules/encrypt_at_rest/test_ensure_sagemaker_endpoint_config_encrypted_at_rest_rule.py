@@ -17,8 +17,8 @@ class TestEnsureSageMakerEndpointConfigEncryptedAtRestRule(unittest.TestCase):
         # Arrange
         sagemaker_endpoint: SageMakerEndpointConfig = create_empty_entity(SageMakerEndpointConfig)
         terraform_state = create_empty_entity(IacState)
-        sagemaker_endpoint.terraform_state = terraform_state
-        sagemaker_endpoint.terraform_state.is_new = True
+        sagemaker_endpoint.iac_state = terraform_state
+        sagemaker_endpoint.iac_state.is_new = True
         sagemaker_endpoint.encrypted = False
         context = AwsEnvironmentContext(sagemaker_endpoint_config_list=[sagemaker_endpoint])
         # Act
@@ -31,8 +31,8 @@ class TestEnsureSageMakerEndpointConfigEncryptedAtRestRule(unittest.TestCase):
         # Arrange
         sagemaker_endpoint: SageMakerEndpointConfig = create_empty_entity(SageMakerEndpointConfig)
         terraform_state = create_empty_entity(IacState)
-        sagemaker_endpoint.terraform_state = terraform_state
-        sagemaker_endpoint.terraform_state.is_new = True
+        sagemaker_endpoint.iac_state = terraform_state
+        sagemaker_endpoint.iac_state.is_new = True
         sagemaker_endpoint.encrypted = True
         context = AwsEnvironmentContext(sagemaker_endpoint_config_list=[sagemaker_endpoint])
         # Act
@@ -45,8 +45,8 @@ class TestEnsureSageMakerEndpointConfigEncryptedAtRestRule(unittest.TestCase):
         # Arrange
         sagemaker_endpoint: SageMakerEndpointConfig = create_empty_entity(SageMakerEndpointConfig)
         terraform_state = create_empty_entity(IacState)
-        sagemaker_endpoint.terraform_state = terraform_state
-        sagemaker_endpoint.terraform_state.is_new = False
+        sagemaker_endpoint.iac_state = terraform_state
+        sagemaker_endpoint.iac_state.is_new = False
         sagemaker_endpoint.encrypted = False
         context = AwsEnvironmentContext(sagemaker_endpoint_config_list=[sagemaker_endpoint])
         # Act

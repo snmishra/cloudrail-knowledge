@@ -17,8 +17,8 @@ class TestEnsureEfsFilesystemsEncryptedAtRestRule(unittest.TestCase):
         # Arrange
         efs: ElasticFileSystem = create_empty_entity(ElasticFileSystem)
         terraform_state = create_empty_entity(IacState)
-        efs.terraform_state = terraform_state
-        efs.terraform_state.is_new = True
+        efs.iac_state = terraform_state
+        efs.iac_state.is_new = True
         efs.encrypted = False
 
         context = AwsEnvironmentContext(efs_file_systems=[efs])
@@ -32,8 +32,8 @@ class TestEnsureEfsFilesystemsEncryptedAtRestRule(unittest.TestCase):
         # Arrange
         efs: ElasticFileSystem = create_empty_entity(ElasticFileSystem)
         terraform_state = create_empty_entity(IacState)
-        efs.terraform_state = terraform_state
-        efs.terraform_state.is_new = True
+        efs.iac_state = terraform_state
+        efs.iac_state.is_new = True
         efs.encrypted = True
 
         context = AwsEnvironmentContext(efs_file_systems=[efs])
@@ -47,8 +47,8 @@ class TestEnsureEfsFilesystemsEncryptedAtRestRule(unittest.TestCase):
         # Arrange
         efs: ElasticFileSystem = create_empty_entity(ElasticFileSystem)
         terraform_state = create_empty_entity(IacState)
-        efs.terraform_state = terraform_state
-        efs.terraform_state.is_new = True
+        efs.iac_state = terraform_state
+        efs.iac_state.is_new = True
         efs.encrypted = True
 
         context = AwsEnvironmentContext(efs_file_systems=[efs])

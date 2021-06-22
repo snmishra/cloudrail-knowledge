@@ -17,8 +17,8 @@ class TestEnsureDaxClustersEncryptedRule(unittest.TestCase):
         # Arrange
         dax_cluster: DaxCluster = create_empty_entity(DaxCluster)
         terraform_state = create_empty_entity(IacState)
-        dax_cluster.terraform_state = terraform_state
-        dax_cluster.terraform_state.is_new = True
+        dax_cluster.iac_state = terraform_state
+        dax_cluster.iac_state.is_new = True
         dax_cluster.server_side_encryption = False
 
         context = AwsEnvironmentContext(dax_cluster=[dax_cluster])
@@ -32,8 +32,8 @@ class TestEnsureDaxClustersEncryptedRule(unittest.TestCase):
         # Arrange
         dax_cluster: DaxCluster = create_empty_entity(DaxCluster)
         terraform_state = create_empty_entity(IacState)
-        dax_cluster.terraform_state = terraform_state
-        dax_cluster.terraform_state.is_new = False
+        dax_cluster.iac_state = terraform_state
+        dax_cluster.iac_state.is_new = False
         dax_cluster.server_side_encryption = True
 
         context = AwsEnvironmentContext(dax_cluster=[dax_cluster])
@@ -47,8 +47,8 @@ class TestEnsureDaxClustersEncryptedRule(unittest.TestCase):
         # Arrange
         dax_cluster: DaxCluster = create_empty_entity(DaxCluster)
         terraform_state = create_empty_entity(IacState)
-        dax_cluster.terraform_state = terraform_state
-        dax_cluster.terraform_state.is_new = True
+        dax_cluster.iac_state = terraform_state
+        dax_cluster.iac_state.is_new = True
         dax_cluster.server_side_encryption = True
 
         context = AwsEnvironmentContext(dax_cluster=[dax_cluster])

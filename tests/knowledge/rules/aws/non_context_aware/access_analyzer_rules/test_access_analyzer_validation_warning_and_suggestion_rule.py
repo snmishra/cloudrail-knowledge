@@ -21,7 +21,7 @@ class TestAccessAnalyzerValidationWarningAndSuggestionRule(unittest.TestCase):
                                               [PolicyStatement(StatementEffect.ALLOW, ['*'],
                                                                ['*'], Principal(PrincipalType.PUBLIC, ['arn:aws:iam::123456789012:root']))],
                                               'state_id')
-        policy.terraform_state = IacState(address='address', action=TerraformActionType.CREATE, resource_metadata=None, is_new=True)
+        policy.iac_state = IacState(address='address', action=TerraformActionType.CREATE, resource_metadata=None, is_new=True)
         policy.access_analyzer_findings = [{
             "findingDetails": "Add a value to the empty string in the Sid element.",
             "findingType": "WARNING",
@@ -69,7 +69,7 @@ class TestAccessAnalyzerValidationWarningAndSuggestionRule(unittest.TestCase):
                                               [PolicyStatement(StatementEffect.ALLOW, ['*'],
                                                                ['*'], Principal(PrincipalType.PUBLIC, ['arn:aws:iam::123456789012:root']))],
                                               'state_id')
-        policy.terraform_state = IacState(address='address', action=TerraformActionType.CREATE, resource_metadata=None, is_new=True)
+        policy.iac_state = IacState(address='address', action=TerraformActionType.CREATE, resource_metadata=None, is_new=True)
         policy.access_analyzer_findings = [{
             "findingDetails": "Add a value to the empty string in the Sid element.",
             "findingType": "SUGGESTION",
@@ -117,7 +117,7 @@ class TestAccessAnalyzerValidationWarningAndSuggestionRule(unittest.TestCase):
                                               [PolicyStatement(StatementEffect.ALLOW, ['*'],
                                                                ['*'], Principal(PrincipalType.PUBLIC, ['arn:aws:iam::123456789012:root']))],
                                               'state_id')
-        policy.terraform_state = IacState(address='address', action=TerraformActionType.CREATE, resource_metadata=None, is_new=True)
+        policy.iac_state = IacState(address='address', action=TerraformActionType.CREATE, resource_metadata=None, is_new=True)
         policy.access_analyzer_findings = [{
             "findingDetails": "Add a value to the empty string in the Sid element.",
             "findingType": "ERROR",

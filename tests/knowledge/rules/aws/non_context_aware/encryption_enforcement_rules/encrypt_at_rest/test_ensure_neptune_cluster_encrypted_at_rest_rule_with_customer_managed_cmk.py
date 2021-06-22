@@ -20,8 +20,8 @@ class TestEnsureNeptuneClusterEncryptedAtRestWithCustomerManagedCmkRule(unittest
         # Arrange
         neptune_cluster: NeptuneCluster = create_empty_entity(NeptuneCluster)
         terraform_state = create_empty_entity(IacState)
-        neptune_cluster.terraform_state = terraform_state
-        neptune_cluster.terraform_state.is_new = True
+        neptune_cluster.iac_state = terraform_state
+        neptune_cluster.iac_state.is_new = True
         neptune_cluster.encrypted_at_rest = True
         neptune_cluster.kms_data = KmsKey(key_id='key', arn='arn', key_manager=KeyManager.AWS, region='us-east-1', account='111111111')
         context = AwsEnvironmentContext(neptune_clusters=[neptune_cluster])
@@ -35,8 +35,8 @@ class TestEnsureNeptuneClusterEncryptedAtRestWithCustomerManagedCmkRule(unittest
         # Arrange
         neptune_cluster: NeptuneCluster = create_empty_entity(NeptuneCluster)
         terraform_state = create_empty_entity(IacState)
-        neptune_cluster.terraform_state = terraform_state
-        neptune_cluster.terraform_state.is_new = True
+        neptune_cluster.iac_state = terraform_state
+        neptune_cluster.iac_state.is_new = True
         neptune_cluster.encrypted_at_rest = True
         neptune_cluster.kms_data = KmsKey(key_id='key', arn='arn', key_manager=KeyManager.CUSTOMER, region='us-east-1', account='111111111')
         context = AwsEnvironmentContext(neptune_clusters=[neptune_cluster])
@@ -50,8 +50,8 @@ class TestEnsureNeptuneClusterEncryptedAtRestWithCustomerManagedCmkRule(unittest
         # Arrange
         neptune_cluster: NeptuneCluster = create_empty_entity(NeptuneCluster)
         terraform_state = create_empty_entity(IacState)
-        neptune_cluster.terraform_state = terraform_state
-        neptune_cluster.terraform_state.is_new = False
+        neptune_cluster.iac_state = terraform_state
+        neptune_cluster.iac_state.is_new = False
         neptune_cluster.encrypted_at_rest = True
         neptune_cluster.kms_data = KmsKey(key_id='key', arn='arn', key_manager=KeyManager.AWS, region='us-east-1', account='111111111')
         context = AwsEnvironmentContext(neptune_clusters=[neptune_cluster])
@@ -65,8 +65,8 @@ class TestEnsureNeptuneClusterEncryptedAtRestWithCustomerManagedCmkRule(unittest
         # Arrange
         neptune_cluster: NeptuneCluster = create_empty_entity(NeptuneCluster)
         terraform_state = create_empty_entity(IacState)
-        neptune_cluster.terraform_state = terraform_state
-        neptune_cluster.terraform_state.is_new = True
+        neptune_cluster.iac_state = terraform_state
+        neptune_cluster.iac_state.is_new = True
         neptune_cluster.encrypted_at_rest = True
         context = AwsEnvironmentContext(neptune_clusters=[neptune_cluster])
         # Act

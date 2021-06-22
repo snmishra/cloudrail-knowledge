@@ -27,10 +27,10 @@ class TestIamNoHumanUsersRule(unittest.TestCase):
         role.creation_date = datetime.strftime(current_date - timedelta(days=100), '%Y-%m-%d')
         last_used_date.last_used_date = datetime.strftime(current_date - timedelta(days=90), '%Y-%m-%d')
         role.last_used_date = last_used_date
-        role.terraform_state = IacState(address='address',
-                                        action=TerraformActionType.NO_OP,
-                                        resource_metadata=None,
-                                        is_new=False)
+        role.iac_state = IacState(address='address',
+                                  action=TerraformActionType.NO_OP,
+                                  resource_metadata=None,
+                                  is_new=False)
         context = AwsEnvironmentContext(roles=[role], accounts=[account])
         # Act
         result = self.rule.run(context, {})
@@ -46,10 +46,10 @@ class TestIamNoHumanUsersRule(unittest.TestCase):
         current_date = datetime.today()
         role.role_id = 'role_id'
         role.creation_date = datetime.strftime(current_date - timedelta(days=100), '%Y-%m-%d')
-        role.terraform_state = IacState(address='address',
-                                        action=TerraformActionType.NO_OP,
-                                        resource_metadata=None,
-                                        is_new=False)
+        role.iac_state = IacState(address='address',
+                                  action=TerraformActionType.NO_OP,
+                                  resource_metadata=None,
+                                  is_new=False)
         context = AwsEnvironmentContext(roles=[role], accounts=[account])
         # Act
         result = self.rule.run(context, {})
@@ -68,10 +68,10 @@ class TestIamNoHumanUsersRule(unittest.TestCase):
         role.creation_date = datetime.strftime(current_date - timedelta(days=100), '%Y-%m-%d')
         last_used_date.last_used_date = datetime.strftime(current_date - timedelta(days=10), '%Y-%m-%d')
         role.last_used_date = last_used_date
-        role.terraform_state = IacState(address='address',
-                                        action=TerraformActionType.NO_OP,
-                                        resource_metadata=None,
-                                        is_new=False)
+        role.iac_state = IacState(address='address',
+                                  action=TerraformActionType.NO_OP,
+                                  resource_metadata=None,
+                                  is_new=False)
         context = AwsEnvironmentContext(roles=[role], accounts=[account])
         # Act
         result = self.rule.run(context, {})
@@ -87,10 +87,10 @@ class TestIamNoHumanUsersRule(unittest.TestCase):
         current_date = datetime.today()
         role.role_id = 'role_id'
         role.creation_date = datetime.strftime(current_date, '%Y-%m-%d')
-        role.terraform_state = IacState(address='address',
-                                        action=TerraformActionType.NO_OP,
-                                        resource_metadata=None,
-                                        is_new=False)
+        role.iac_state = IacState(address='address',
+                                  action=TerraformActionType.NO_OP,
+                                  resource_metadata=None,
+                                  is_new=False)
         context = AwsEnvironmentContext(roles=[role], accounts=[account])
         # Act
         result = self.rule.run(context, {})
@@ -109,10 +109,10 @@ class TestIamNoHumanUsersRule(unittest.TestCase):
         role.creation_date = datetime.strftime(current_date - timedelta(days=100), '%Y-%m-%d')
         last_used_date.last_used_date = datetime.strftime(current_date, '%Y-%m-%d')
         role.last_used_date = last_used_date
-        role.terraform_state = IacState(address='address',
-                                        action=TerraformActionType.NO_OP,
-                                        resource_metadata=None,
-                                        is_new=False)
+        role.iac_state = IacState(address='address',
+                                  action=TerraformActionType.NO_OP,
+                                  resource_metadata=None,
+                                  is_new=False)
         context = AwsEnvironmentContext(roles=[role], accounts=[account])
         # Act
         result = self.rule.run(context, {})
@@ -128,10 +128,10 @@ class TestIamNoHumanUsersRule(unittest.TestCase):
         current_date = datetime.today()
         role.role_id = 'role_id'
         role.creation_date = datetime.strftime(current_date, '%Y-%m-%d')
-        role.terraform_state = IacState(address='address',
-                                        action=TerraformActionType.CREATE,
-                                        resource_metadata=None,
-                                        is_new=True)
+        role.iac_state = IacState(address='address',
+                                  action=TerraformActionType.CREATE,
+                                  resource_metadata=None,
+                                  is_new=True)
         context = AwsEnvironmentContext(roles=[role], accounts=[account])
         # Act
         result = self.rule.run(context, {})

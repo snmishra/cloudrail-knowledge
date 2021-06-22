@@ -20,8 +20,8 @@ class TestEnsureCloudWatchLogGroupsEncryptedRule(unittest.TestCase):
         # Arrange
         cloud_watch_log_group: CloudWatchLogGroup = create_empty_entity(CloudWatchLogGroup)
         terraform_state = create_empty_entity(IacState)
-        cloud_watch_log_group.terraform_state = terraform_state
-        cloud_watch_log_group.terraform_state.is_new = True
+        cloud_watch_log_group.iac_state = terraform_state
+        cloud_watch_log_group.iac_state.is_new = True
 
         context = AwsEnvironmentContext(cloud_watch_log_groups=[cloud_watch_log_group])
         # Act
@@ -34,8 +34,8 @@ class TestEnsureCloudWatchLogGroupsEncryptedRule(unittest.TestCase):
         # Arrange
         cloud_watch_log_group: CloudWatchLogGroup = create_empty_entity(CloudWatchLogGroup)
         terraform_state = create_empty_entity(IacState)
-        cloud_watch_log_group.terraform_state = terraform_state
-        cloud_watch_log_group.terraform_state.is_new = True
+        cloud_watch_log_group.iac_state = terraform_state
+        cloud_watch_log_group.iac_state.is_new = True
         cloud_watch_log_group.kms_encryption = 'kms_encryption'
         kms_key: KmsKey = create_empty_entity(KmsKey)
         kms_key.key_manager = KeyManager.AWS
@@ -52,8 +52,8 @@ class TestEnsureCloudWatchLogGroupsEncryptedRule(unittest.TestCase):
         # Arrange
         cloud_watch_log_group: CloudWatchLogGroup = create_empty_entity(CloudWatchLogGroup)
         terraform_state = create_empty_entity(IacState)
-        cloud_watch_log_group.terraform_state = terraform_state
-        cloud_watch_log_group.terraform_state.is_new = True
+        cloud_watch_log_group.iac_state = terraform_state
+        cloud_watch_log_group.iac_state.is_new = True
         cloud_watch_log_group.kms_encryption = 'kms_encryption'
         kms_key: KmsKey = create_empty_entity(KmsKey)
         kms_key.key_manager = KeyManager.CUSTOMER

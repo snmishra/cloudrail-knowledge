@@ -19,10 +19,10 @@ class TestEnsureAthenaWorkgroupsEncryptionCmkRule(unittest.TestCase):
     def test_non_car_athena_workgroup_query_results_encrypt_at_rest_using_customer_managed_cmk__encryption_option_is_SSE_S3__fail(self):
         # Arrange
         athena_workgroup: AthenaWorkgroup = create_empty_entity(AthenaWorkgroup)
-        athena_workgroup.terraform_state = IacState(address='address',
-                                                    action=TerraformActionType.CREATE,
-                                                    resource_metadata=None,
-                                                    is_new=True)
+        athena_workgroup.iac_state = IacState(address='address',
+                                              action=TerraformActionType.CREATE,
+                                              resource_metadata=None,
+                                              is_new=True)
         athena_workgroup.encryption_option = 'SSE_S3'
 
         context = AwsEnvironmentContext(athena_workgroups=[athena_workgroup])
@@ -35,10 +35,10 @@ class TestEnsureAthenaWorkgroupsEncryptionCmkRule(unittest.TestCase):
     def test_non_car_athena_workgroup_query_results_encrypt_at_rest_using_customer_managed_cmk__key_manager_is_not_customer__fail(self):
         # Arrange
         athena_workgroup: AthenaWorkgroup = create_empty_entity(AthenaWorkgroup)
-        athena_workgroup.terraform_state = IacState(address='address',
-                                                    action=TerraformActionType.CREATE,
-                                                    resource_metadata=None,
-                                                    is_new=True)
+        athena_workgroup.iac_state = IacState(address='address',
+                                              action=TerraformActionType.CREATE,
+                                              resource_metadata=None,
+                                              is_new=True)
         kms_key: KmsKey = create_empty_entity(KmsKey)
         kms_key.key_manager = KeyManager.AWS
         athena_workgroup.kms_data = kms_key
@@ -53,10 +53,10 @@ class TestEnsureAthenaWorkgroupsEncryptionCmkRule(unittest.TestCase):
     def test_non_car_athena_workgroup_query_results_encrypt_at_rest_using_customer_managed_cmk_pass(self):
         # Arrange
         athena_workgroup: AthenaWorkgroup = create_empty_entity(AthenaWorkgroup)
-        athena_workgroup.terraform_state = IacState(address='address',
-                                                    action=TerraformActionType.CREATE,
-                                                    resource_metadata=None,
-                                                    is_new=False)
+        athena_workgroup.iac_state = IacState(address='address',
+                                              action=TerraformActionType.CREATE,
+                                              resource_metadata=None,
+                                              is_new=False)
 
         context = AwsEnvironmentContext(athena_workgroups=[athena_workgroup])
         # Act

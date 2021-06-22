@@ -17,8 +17,8 @@ class TestEnsureNeptuneClusterEncryptedAtRestRule(unittest.TestCase):
         # Arrange
         neptune_cluster: NeptuneCluster = create_empty_entity(NeptuneCluster)
         terraform_state = create_empty_entity(IacState)
-        neptune_cluster.terraform_state = terraform_state
-        neptune_cluster.terraform_state.is_new = True
+        neptune_cluster.iac_state = terraform_state
+        neptune_cluster.iac_state.is_new = True
         neptune_cluster.encrypted_at_rest = False
         context = AwsEnvironmentContext(neptune_clusters=[neptune_cluster])
         # Act
@@ -31,8 +31,8 @@ class TestEnsureNeptuneClusterEncryptedAtRestRule(unittest.TestCase):
         # Arrange
         neptune_cluster: NeptuneCluster = create_empty_entity(NeptuneCluster)
         terraform_state = create_empty_entity(IacState)
-        neptune_cluster.terraform_state = terraform_state
-        neptune_cluster.terraform_state.is_new = True
+        neptune_cluster.iac_state = terraform_state
+        neptune_cluster.iac_state.is_new = True
         neptune_cluster.encrypted_at_rest = True
         context = AwsEnvironmentContext(neptune_clusters=[neptune_cluster])
         # Act
@@ -45,8 +45,8 @@ class TestEnsureNeptuneClusterEncryptedAtRestRule(unittest.TestCase):
         # Arrange
         neptune_cluster: NeptuneCluster = create_empty_entity(NeptuneCluster)
         terraform_state = create_empty_entity(IacState)
-        neptune_cluster.terraform_state = terraform_state
-        neptune_cluster.terraform_state.is_new = False
+        neptune_cluster.iac_state = terraform_state
+        neptune_cluster.iac_state.is_new = False
         neptune_cluster.encrypted_at_rest = False
         context = AwsEnvironmentContext(neptune_clusters=[neptune_cluster])
         # Act

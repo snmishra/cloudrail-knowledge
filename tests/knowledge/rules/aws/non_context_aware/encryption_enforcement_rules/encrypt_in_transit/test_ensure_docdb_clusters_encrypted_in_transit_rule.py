@@ -20,10 +20,10 @@ class TestEnsureDocdbClustersEncryptedInTransitRule(unittest.TestCase):
     def test_not_car_docdb_cluster_encrypted_in_transit_fail(self):
         # Arrange
         doc_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
-        doc_db_cluster.terraform_state = IacState(address='address',
-                                                  action=TerraformActionType.CREATE,
-                                                  resource_metadata=None,
-                                                  is_new=True)
+        doc_db_cluster.iac_state = IacState(address='address',
+                                            action=TerraformActionType.CREATE,
+                                            resource_metadata=None,
+                                            is_new=True)
         docdb_cluster_parameter_group: DocDbClusterParameterGroup = create_empty_entity(DocDbClusterParameterGroup)
         docdb_cluster_parameter_group_params: List[DocDbClusterParameter] = [create_empty_entity(DocDbClusterParameter)]
         docdb_cluster_parameter_group.parameters = docdb_cluster_parameter_group_params
@@ -41,10 +41,10 @@ class TestEnsureDocdbClustersEncryptedInTransitRule(unittest.TestCase):
     def test_not_car_docdb_cluster_encrypted_in_transit_pass(self):
         # Arrange
         doc_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
-        doc_db_cluster.terraform_state = IacState(address='address',
-                                                  action=TerraformActionType.CREATE,
-                                                  resource_metadata=None,
-                                                  is_new=True)
+        doc_db_cluster.iac_state = IacState(address='address',
+                                            action=TerraformActionType.CREATE,
+                                            resource_metadata=None,
+                                            is_new=True)
         docdb_cluster_parameter_group: DocDbClusterParameterGroup = create_empty_entity(DocDbClusterParameterGroup)
         docdb_cluster_parameter_group_params: List[DocDbClusterParameter] = [create_empty_entity(DocDbClusterParameter)]
         docdb_cluster_parameter_group.parameters = docdb_cluster_parameter_group_params
@@ -62,10 +62,10 @@ class TestEnsureDocdbClustersEncryptedInTransitRule(unittest.TestCase):
     def test_not_car_docdb_cluster_encrypted_in_transit__not_new__pass(self):
         # Arrange
         doc_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
-        doc_db_cluster.terraform_state = IacState(address='address',
-                                                  action=TerraformActionType.CREATE,
-                                                  resource_metadata=None,
-                                                  is_new=False)
+        doc_db_cluster.iac_state = IacState(address='address',
+                                            action=TerraformActionType.CREATE,
+                                            resource_metadata=None,
+                                            is_new=False)
         docdb_cluster_parameter_group: DocDbClusterParameterGroup = create_empty_entity(DocDbClusterParameterGroup)
         docdb_cluster_parameter_group_params: List[DocDbClusterParameter] = [create_empty_entity(DocDbClusterParameter)]
         docdb_cluster_parameter_group.parameters = docdb_cluster_parameter_group_params
@@ -83,10 +83,10 @@ class TestEnsureDocdbClustersEncryptedInTransitRule(unittest.TestCase):
     def test_not_car_docdb_cluster_encrypted_in_transit__not_tls__pass(self):
         # Arrange
         doc_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
-        doc_db_cluster.terraform_state = IacState(address='address',
-                                                  action=TerraformActionType.CREATE,
-                                                  resource_metadata=None,
-                                                  is_new=True)
+        doc_db_cluster.iac_state = IacState(address='address',
+                                            action=TerraformActionType.CREATE,
+                                            resource_metadata=None,
+                                            is_new=True)
         docdb_cluster_parameter_group: DocDbClusterParameterGroup = create_empty_entity(DocDbClusterParameterGroup)
         docdb_cluster_parameter_group_params: List[DocDbClusterParameter] = [create_empty_entity(DocDbClusterParameter)]
         docdb_cluster_parameter_group.parameters = docdb_cluster_parameter_group_params
@@ -104,10 +104,10 @@ class TestEnsureDocdbClustersEncryptedInTransitRule(unittest.TestCase):
     def test_not_car_docdb_cluster_encrypted_in_transit__not_same_name__pass(self):
         # Arrange
         doc_db_cluster: DocumentDbCluster = create_empty_entity(DocumentDbCluster)
-        doc_db_cluster.terraform_state = IacState(address='address',
-                                                  action=TerraformActionType.CREATE,
-                                                  resource_metadata=None,
-                                                  is_new=True)
+        doc_db_cluster.iac_state = IacState(address='address',
+                                            action=TerraformActionType.CREATE,
+                                            resource_metadata=None,
+                                            is_new=True)
         docdb_cluster_parameter_group: DocDbClusterParameterGroup = create_empty_entity(DocDbClusterParameterGroup)
         docdb_cluster_parameter_group_params: List[DocDbClusterParameter] = [create_empty_entity(DocDbClusterParameter)]
         docdb_cluster_parameter_group.parameters = docdb_cluster_parameter_group_params
