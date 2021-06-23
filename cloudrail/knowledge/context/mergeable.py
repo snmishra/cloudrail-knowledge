@@ -1,8 +1,9 @@
+# pylint: disable=no-member
 import re
 from abc import abstractmethod
 from enum import Enum
 from typing import List, Set, Dict, Optional
-from cloudrail.knowledge.context.terraform_state import TerraformState
+from cloudrail.knowledge.context.iac_state import IacState
 
 
 class EntityOrigin(Enum):
@@ -15,7 +16,7 @@ class Mergeable:
 
     def __init__(self):
         self.aliases: Set[str] = set()
-        self.terraform_state: Optional[TerraformState] = None
+        self.iac_state: Optional[IacState] = None
         self.is_pseudo = False
         self.tags: Dict[str, str] = {}
         self.invalidation: List[str] = []
@@ -37,13 +38,17 @@ class Mergeable:
             return ' '.join(words) + 's'
 
     def get_name(self) -> str:
-        pass
+        if hasattr(self, 'name'):
+            return self.name
+        return None
 
     def get_id(self) -> str:
         pass
 
     def get_arn(self) -> str:
-        pass
+        if hasattr(self, 'arn'):
+            return self.arn
+        return None
 
     def get_extra_data(self) -> str:
         pass
@@ -53,7 +58,7 @@ class Mergeable:
         pass
 
     def is_new_resource(self) -> bool:
-        return self.terraform_state is not None and self.terraform_state.is_new
+        return self.iac_state is not None and self.iac_state.is_new
 
     def get_existing_cloud_resource_url(self) -> Optional[str]:
         if not self.is_new_resource():
@@ -75,7 +80,7 @@ class Mergeable:
     def origin(self) -> EntityOrigin:
         if self.is_pseudo:
             return EntityOrigin.PSEUDO
-        elif self.terraform_state:
+        elif self.iac_state:
             return EntityOrigin.TERRAFORM
         else:
             return EntityOrigin.LIVE_ENV

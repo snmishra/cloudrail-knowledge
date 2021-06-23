@@ -88,7 +88,7 @@ class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
 
     def get_friendly_name(self) -> str:
         if self.is_managed_by_iac:
-            return self.terraform_state.address
+            return self.iac_state.address
         return self.get_arn()
 
     @property

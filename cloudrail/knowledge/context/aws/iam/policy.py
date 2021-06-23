@@ -77,7 +77,7 @@ class Policy(AwsResource, Cloneable):
                         raw_document=self.raw_document)
         policy.tf_resource_type = self.tf_resource_type
         policy.aliases = self.aliases
-        policy.terraform_state = self.terraform_state
+        policy.iac_state = self.iac_state
         policy.is_pseudo = self.is_pseudo
         policy.aws_service_attributes = self.aws_service_attributes
         policy.tags = self.tags

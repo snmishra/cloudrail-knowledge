@@ -5,7 +5,7 @@ from typing import Optional
 
 @dataclass
 class IacResourceMetadata:
-    cloud_res_locator: str
+    iac_entity_id: str
     file_name: str
     start_line: int
     end_line: int
