@@ -25,8 +25,8 @@ class AzureResource(Mergeable):
         pass
 
     def get_friendly_name(self) -> str:
-        if self.terraform_state:
-            return self.terraform_state.address
+        if self.iac_state:
+            return self.iac_state.address
         return self.get_name() or self.get_id()
 
     @property

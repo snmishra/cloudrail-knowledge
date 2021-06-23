@@ -70,8 +70,8 @@ rules_metadata:
     description: We would like to control which third party accounts can assume roles in our environment.
       This role has an approved-list of accounts which will be expanded over time.
     human_readable_logic: Cloudrail will review all IAM roles' trust policy and look at the accounts allowed.
-    remediation_steps_console: Remove the role, or add its account to the approved list in this rule.
-    remediation_steps_tf: Remove the aws_iam_role, or add the account to the approved list in this rule.
+    console_remediation_steps: Remove the role, or add its account to the approved list in this rule.
+    iac_remediation_steps: Remove the aws_iam_role, or add the account to the approved list in this rule.
     rule_type: non_context_aware
     security_layer: iam
     resource_type:
