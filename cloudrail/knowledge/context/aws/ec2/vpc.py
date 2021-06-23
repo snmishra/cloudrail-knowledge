@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import List, Optional, Dict
-
 from cloudrail.knowledge.context.aws.ec2.internet_gateway import InternetGateway
 from cloudrail.knowledge.context.aws.ec2.subnet import Subnet
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
@@ -126,3 +125,18 @@ class Vpc(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def get_identifier(self) -> str:
+        return self.vpc_id  # todo - if using alias dict need to add alias identifier
+
+    def get_attribute(self, cfn_attribute_name: str):
+        if cfn_attribute_name == "CidrBlock":
+            return self.cidr_block[0] if self.cidr_block else None
+        if cfn_attribute_name == 'CidrBlockAssociations':
+            return None
+        if cfn_attribute_name == "DefaultNetworkAcl":
+            return self.default_nacl.network_acl_id
+        if cfn_attribute_name == "DefaultSecurityGroup":
+            return self.default_security_group.security_group_id
+        if cfn_attribute_name == "Ipv6CidrBlocks":
+            return None

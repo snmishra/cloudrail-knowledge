@@ -168,7 +168,7 @@ from cloudrail.knowledge.context.unknown_block import UnknownBlock
 _TMergeAble = TypeVar('_TMergeAble', bound=Mergeable)
 
 
-class AwsEnvironmentContext(BaseEnvironmentContext):
+class AwsEnvironmentContext(BaseEnvironmentContext): # todo - all resources should be in alias dict
     def __init__(self,
                  vpcs: AliasesDict[Vpc] = None,
                  subnets: AliasesDict[Subnet] = None,
