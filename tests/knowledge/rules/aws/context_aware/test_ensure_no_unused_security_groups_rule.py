@@ -6,7 +6,7 @@ from cloudrail.knowledge.context.aws.ec2.network_interface import NetworkInterfa
 from cloudrail.knowledge.context.aws.ec2.security_group import SecurityGroup
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.terraform_action_type import TerraformActionType
-from cloudrail.knowledge.context.terraform_state import TerraformState
+from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.rules.aws.context_aware.ensure_no_unused_security_groups_rule import EnsureNoUnusedSecurityGroups
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
@@ -25,10 +25,10 @@ class TestEnsureNoUnusedSecurityGroups(unittest.TestCase):
         network_interface.add_security_group(security_group_1)
         network_interface.owner = ec2
         ec2.network_resource.network_interfaces.append(network_interface)
-        security_group_2.terraform_state = TerraformState(address='address',
-                                                          action=TerraformActionType.NO_OP,
-                                                          resource_metadata=None,
-                                                          is_new=False)
+        security_group_2.iac_state = IacState(address='address',
+                                              action=TerraformActionType.NO_OP,
+                                              resource_metadata=None,
+                                              is_new=False)
         context = AwsEnvironmentContext(ec2s=[ec2], network_interfaces=AliasesDict(network_interface),
                                         security_groups=AliasesDict(security_group_1, security_group_2))
         # Act
@@ -64,10 +64,10 @@ class TestEnsureNoUnusedSecurityGroups(unittest.TestCase):
         security_group_1.add_usage(network_interface)
         network_interface.owner = ec2
         ec2.network_resource.network_interfaces.append(network_interface)
-        security_group_2.terraform_state = TerraformState(address='address',
-                                                          action=TerraformActionType.CREATE,
-                                                          resource_metadata=None,
-                                                          is_new=True)
+        security_group_2.iac_state = IacState(address='address',
+                                              action=TerraformActionType.CREATE,
+                                              resource_metadata=None,
+                                              is_new=True)
         context = AwsEnvironmentContext(ec2s=[ec2], network_interfaces=AliasesDict(network_interface),
                                         security_groups=AliasesDict(security_group_1, security_group_2))
         # Act
