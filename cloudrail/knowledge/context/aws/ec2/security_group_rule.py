@@ -110,5 +110,5 @@ class SecurityGroupRule(AwsResource):
         return False
 
     @staticmethod
-    def is_suitable_as_field_for_drift_detection() -> bool:
-        return True
+    def is_standalone() -> bool:
+        return False
