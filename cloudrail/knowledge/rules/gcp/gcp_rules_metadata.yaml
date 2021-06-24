@@ -1,0 +1,13 @@
+rules_metadata:
+  - rule_id: template_rule_id
+    cloud_provider: google_cloud_provider
+    name: A template rule for gcp
+    severity: major
+    description: A template rule for gcp
+    human_readable_logic: A template rule for gcp
+    console_remediation_steps: A template rule for gcp
+    iac_remediation_steps: A template rule for gcp
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - database
