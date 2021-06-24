@@ -108,5 +108,5 @@ class Mergeable:
         return []
 
     @staticmethod
-    def is_suitable_as_field_for_drift_detection() -> bool:
+    def is_standalone() -> bool:
         return False
