@@ -29,7 +29,7 @@ class ApiGatewayVpcLink(AwsResource):
         self.name: str = name
         self.security_group_ids: list = security_group_ids
         self.subnet_ids: list = subnet_ids
-        self.arn: Optional[str] = arn
+        self.arn: Optional[str] = arn if arn else self._create_arn()
 
     def get_keys(self) -> List[str]:
         return [self.account, self.region, self.vpc_link_id]
@@ -43,11 +43,14 @@ class ApiGatewayVpcLink(AwsResource):
         else:
             return 'API Gateway VPC links'
 
-    def get_arn(self) -> str:
-        if self.arn:
-            return self.arn
-        else:
+    def _create_arn(self) -> Optional[str]:
+        if self.vpc_link_id:
             return f'arn:aws:apigateway:{self.region}::/vpclinks/{self.vpc_link_id}'
+        else:
+            return None
+
+    def get_arn(self) -> str:
+        return self.arn
 
     def get_cloud_resource_url(self) -> str:
         return '{0}apigateway/main/vpc-links/list?region={1}&vpcLink={2}'\

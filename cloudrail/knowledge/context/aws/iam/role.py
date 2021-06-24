@@ -11,8 +11,6 @@ class Role(IamIdentity):
     """
         Attributes:
             role_name: THe name of the role.
-            instance_profile_ids: The IDs of the instance profiles the role
-                is used in.
             role_id: The role's ID.
             permission_boundary_arn: The ARN of the permission boundary if one
                 applies (may be None).
@@ -27,14 +25,12 @@ class Role(IamIdentity):
     def __init__(self, account: str,
                  qualified_arn: str,
                  role_name: str,
-                 instance_profile_ids: List[str],
                  role_id: str,
                  permission_boundary_arn: Optional[str],
                  creation_date: str,
                  arn: str = None):
         super().__init__(account, qualified_arn, arn, AwsServiceName.AWS_IAM_ROLE)
         self.role_name: str = role_name
-        self.instance_profile_ids: List[str] = instance_profile_ids
         self.role_id: str = role_id
         self.permission_boundary_arn: Optional[str] = permission_boundary_arn
         self.assume_role_policy: AssumeRolePolicy = None
@@ -63,8 +59,7 @@ class Role(IamIdentity):
         return bool(self.last_used_date and self.last_used_date.last_used_date)
 
     def clone(self):
-        role = Role(account=self.account, qualified_arn=self.qualified_arn, role_name=self.role_name,
-                    instance_profile_ids=list(self.instance_profile_ids), role_id=self.role_id,
+        role = Role(account=self.account, qualified_arn=self.qualified_arn, role_name=self.role_name, role_id=self.role_id,
                     permission_boundary_arn=self.permission_boundary_arn, arn=self.arn, creation_date=self.creation_date)
         role.assume_role_policy = self.assume_role_policy
         return role

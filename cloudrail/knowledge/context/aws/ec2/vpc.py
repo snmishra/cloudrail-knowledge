@@ -60,10 +60,9 @@ class Vpc(AwsResource):
                  region: str,
                  friendly_name: str = None,
                  is_default: bool = False,
-                 tf_resource_type: AwsServiceName = AwsServiceName.AWS_VPC,
                  enable_dns_support: bool = None,
                  enable_dns_hostnames: bool = None):
-        super().__init__(account, region, tf_resource_type)
+        super().__init__(account, region, AwsServiceName.AWS_VPC)
         self.vpc_id: str = vpc_id
         self.aliases.add(vpc_id)
         self.cidr_block: List[str] = cidr_block

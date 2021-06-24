@@ -31,7 +31,7 @@ class ApiGateway(NetworkEntity):
         self.api_gw_id: str = api_gw_id
         self.api_gw_name: str = api_gw_name
         self.protocol_type: str = protocol_type
-        self.arn: Optional[str] = arn
+        self.arn: Optional[str] = arn if arn else self._create_arn()
         self.api_gw_integration: ApiGatewayV2Integration = None
         self.vpc_link: ApiGatewayVpcLink = None
 
@@ -47,11 +47,14 @@ class ApiGateway(NetworkEntity):
         else:
             return 'API Gateways'
 
-    def get_arn(self) -> str:
-        if self.arn:
-            return self.arn
-        else:
+    def _create_arn(self) -> Optional[str]:
+        if self.api_gw_id:
             return f'arn:aws:apigateway:{self.region}::/apis/{self.api_gw_id}'
+        else:
+            return None
+
+    def get_arn(self) -> str:
+        return self.arn
 
     def get_cloud_resource_url(self) -> str:
         return '{0}apigateway/main/api-detail/?api={1}&region={2}'\
