@@ -37,6 +37,7 @@ class SecurityGroupRule(AwsResource):
             connection_type: The type of the rule - inbound or outbound.
             security_group_id: The SG the rule belongs to.
     """
+
     def __init__(self, from_port: int, to_port: int, ip_protocol: str, property_type: SecurityGroupRulePropertyType,
                  property_value: str, has_description: bool, connection_type: ConnectionType,
                  security_group_id: str, region: str, account: str):
@@ -67,7 +68,7 @@ class SecurityGroupRule(AwsResource):
                 self.property_type, self.property_value, self.connection_type.value]
 
     def get_friendly_name(self) -> str:
-        return '{} rule of {} for ports {}:{} using protocol {}'\
+        return '{} rule of {} for ports {}:{} using protocol {}' \
             .format('ingress' if self.connection_type == ConnectionType.INBOUND else 'egress',
                     self.property_value or self.security_group_id,
                     self.from_port,
@@ -98,7 +99,7 @@ class SecurityGroupRule(AwsResource):
             return 'Security group rules'
 
     def get_cloud_resource_url(self) -> str:
-        return '{0}vpc/home?region={1}#SecurityGroup:groupId={2}'\
+        return '{0}vpc/home?region={1}#SecurityGroup:groupId={2}' \
             .format(self.AWS_CONSOLE_URL, self.region, self.security_group_id)
 
     def get_arn(self) -> str:
@@ -107,3 +108,7 @@ class SecurityGroupRule(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    @staticmethod
+    def is_suitable_as_field_for_drift_detection() -> bool:
+        return True
