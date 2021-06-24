@@ -20,6 +20,7 @@ from cloudrail.knowledge.context.aws.autoscaling.launch_template import LaunchTe
 from cloudrail.knowledge.context.aws.aws_client import AwsClient
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.batch.batch_compute_environment import BatchComputeEnvironment
+from cloudrail.knowledge.context.aws.cfn.cfn_constants import CfnResourceType
 from cloudrail.knowledge.context.aws.cfn.cfn_resource_info import CfnResourceInfo
 from cloudrail.knowledge.context.aws.cfn.cfn_stack import CfnStack
 from cloudrail.knowledge.context.aws.cloudfront.cloud_front_distribution_list import CloudFrontDistribution
@@ -168,7 +169,7 @@ from cloudrail.knowledge.context.unknown_block import UnknownBlock
 _TMergeAble = TypeVar('_TMergeAble', bound=Mergeable)
 
 
-class AwsEnvironmentContext(BaseEnvironmentContext): # todo - all resources should be in alias dict
+class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources should be in alias dict
     def __init__(self,
                  vpcs: AliasesDict[Vpc] = None,
                  subnets: AliasesDict[Subnet] = None,
@@ -569,3 +570,9 @@ class AwsEnvironmentContext(BaseEnvironmentContext): # todo - all resources shou
                 if isinstance(resource, Mergeable) and condition(resource):
                     all_resources.append(resource)
         return all_resources
+
+    def create_cfn_resources_by_type_map(self) -> Dict[CfnResourceType, AliasesDict[Mergeable]]:
+        return {
+            CfnResourceType.VPC: self.vpcs,
+            CfnResourceType.EC2_INSTANCE: AliasesDict(*self.ec2s)
+        }

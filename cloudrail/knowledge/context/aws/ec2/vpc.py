@@ -126,9 +126,6 @@ class Vpc(AwsResource):
     def is_tagable(self) -> bool:
         return True
 
-    def get_identifier(self) -> str:
-        return self.vpc_id  # todo - if using alias dict need to add alias identifier
-
     def get_attribute(self, cfn_attribute_name: str):
         if cfn_attribute_name == "CidrBlock":
             return self.cidr_block[0] if self.cidr_block else None
