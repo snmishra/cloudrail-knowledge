@@ -110,5 +110,5 @@ class SecurityGroupRule(AwsResource):
         return False
 
     @staticmethod
-    def execution is_standalone() -> bool:
-        return True
+    def is_standalone() -> bool:
+        return False

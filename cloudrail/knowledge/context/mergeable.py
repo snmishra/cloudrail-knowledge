@@ -109,4 +109,4 @@ class Mergeable:
 
     @staticmethod
     def is_standalone() -> bool:
-        return False
+        return True
