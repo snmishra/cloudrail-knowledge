@@ -17,13 +17,13 @@ class Ec2RoleShareRule(AwsBaseRule):
 
         ec2s: List[Ec2Instance] = env_context.ec2s
         profile_to_public_ec2 = {}
-        for public_ec2 in (x for x in ec2s if x.network_resource.is_inbound_public and x.iam_profile_id):
-            profile_to_public_ec2[public_ec2.iam_profile_id] = public_ec2
-        for private_ec2 in (x for x in ec2s if not x.network_resource.is_inbound_public and x.iam_profile_id):
-            public_ec2 = profile_to_public_ec2.get(private_ec2.iam_profile_id)
+        for public_ec2 in (x for x in ec2s if x.network_resource.is_inbound_public and x.iam_profile_name):
+            profile_to_public_ec2[public_ec2.iam_profile_name] = public_ec2
+        for private_ec2 in (x for x in ec2s if not x.network_resource.is_inbound_public and x.iam_profile_name):
+            public_ec2 = profile_to_public_ec2.get(private_ec2.iam_profile_name)
             profile = private_ec2.iam_role.get_friendly_name() \
                 if private_ec2.iam_role  \
-                else private_ec2.iam_profile_id
+                else private_ec2.iam_profile_name
             if public_ec2:
                 issues.append(
                     Issue(
