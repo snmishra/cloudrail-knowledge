@@ -85,7 +85,13 @@ def rule_matches_query(rule_id: str, rule_name: str, query: Optional[str]) -> bo
 
 
 def get_rule_metadata_content(provider: CloudProvider) -> dict:
-    provider_name = 'aws' if provider == CloudProvider.AMAZON_WEB_SERVICES else 'azure'
+    if provider == CloudProvider.AMAZON_WEB_SERVICES:
+        provider_name = 'aws'
+    elif provider == CloudProvider.AZURE:
+        provider_name = 'azure'
+    else:
+        provider_name = 'gcp'
+
     current_path = os.path.dirname(os.path.abspath(__file__))
     rules_metadata_path = os.path.join(current_path, f'{provider_name}/{provider_name}_rules_metadata.yaml')
     with open(rules_metadata_path, 'r') as file:
