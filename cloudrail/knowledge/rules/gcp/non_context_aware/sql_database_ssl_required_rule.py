@@ -18,7 +18,7 @@ class SqlDatabaseSslRequiredRule(GcpBaseRule):
                 issues.append(
                     Issue(
                         f'~{sql_db_instance.get_type()}~. '
-                        f'The SQL database instance `{sql_db_instance.get_friendly_name()}` is not requiring SSL',
+                        f'The {sql_db_instance.get_type()} `{sql_db_instance.get_friendly_name()}` is not requiring SSL',
                         sql_db_instance,
                         sql_db_instance))
         return issues
