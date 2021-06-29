@@ -67,7 +67,6 @@ class RuleMetadata:
     name: str
     description: str
     logic: str
-    categories: List[str]
     severity: RuleSeverity
     iac_remediation_steps: str
     console_remediation_steps: str
