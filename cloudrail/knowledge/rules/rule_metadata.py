@@ -1,10 +1,9 @@
 import os
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional, Set
+from typing import Optional, Set
 
 import yaml
-
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
 
 
