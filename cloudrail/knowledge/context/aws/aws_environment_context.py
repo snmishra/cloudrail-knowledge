@@ -574,5 +574,6 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
     def create_cfn_resources_by_type_map(self) -> Dict[CfnResourceType, AliasesDict[Mergeable]]:
         return {
             CfnResourceType.VPC: self.vpcs,
-            CfnResourceType.EC2_INSTANCE: AliasesDict(*self.ec2s)
+            CfnResourceType.EC2_INSTANCE: AliasesDict(*self.ec2s),
+            CfnResourceType.SECURITY_GROUP: self.security_groups
         }
