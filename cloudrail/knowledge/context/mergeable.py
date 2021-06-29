@@ -106,3 +106,7 @@ class Mergeable:
         A list of manual reasons why this resource should be invalidated
         """
         return []
+
+    @staticmethod
+    def is_standalone() -> bool:
+        return True
