@@ -89,8 +89,10 @@ def get_rule_metadata_content(provider: CloudProvider) -> dict:
         provider_name = 'aws'
     elif provider == CloudProvider.AZURE:
         provider_name = 'azure'
-    else:
+    elif provider == CloudProvider.GCP:
         provider_name = 'gcp'
+    else:
+        raise ValueError(f'Unrecognized cloud provider: {provider}')
 
     current_path = os.path.dirname(os.path.abspath(__file__))
     rules_metadata_path = os.path.join(current_path, f'{provider_name}/{provider_name}_rules_metadata.yaml')

@@ -27,7 +27,7 @@ class GcpSqlDatabaseInstance(GcpResource):
         return self.name
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        return f'https://console.cloud.google.com/sql/instances/{self.name}/'
+        return f'{self._BASE_URL}/sql/instances/{self.name}/'
 
     def get_type(self, is_plural: bool = False) -> str:
         if not is_plural:

@@ -6,6 +6,7 @@ from cloudrail.knowledge.context.mergeable import Mergeable
 
 
 class GcpResource(Mergeable):
+    _BASE_URL = 'https://console.cloud.google.com/'
 
     def __init__(self, resource_type: GcpResourceType):
         super().__init__()
