@@ -54,7 +54,7 @@ class PublicAccessSecurityGroupsPortRule(AwsBaseRule):
                         sg.get_friendly_name()),
                     eni.owner,
                     sg)
-                for eni in eni_to_sg_map for sg in eni_to_sg_map[eni]]
+                for eni, sg_set in eni_to_sg_map.items() for sg in sg_set]
 
         else:
             eni_to_sg_map: Dict[NetworkInterface, Set[SecurityGroup]] = self.find_sg_issues(eni_list)
@@ -74,7 +74,7 @@ class PublicAccessSecurityGroupsPortRule(AwsBaseRule):
                         sg.get_friendly_name()),
                     eni.owner,
                     sg)
-                for eni in eni_to_sg_map for sg in eni_to_sg_map[eni]]
+                for eni, sg_set in eni_to_sg_map.items() for sg in sg_set]
 
     @staticmethod
     def remove_from_eni_list(eni_list: AliasesDict[NetworkInterface], parameters: Dict[ParameterType, any]):
