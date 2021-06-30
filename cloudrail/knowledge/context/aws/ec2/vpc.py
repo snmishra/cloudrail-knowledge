@@ -137,3 +137,4 @@ class Vpc(AwsResource):
             return self.default_security_group.security_group_id
         if cfn_attribute_name == "Ipv6CidrBlocks":
             return None
+        return None
