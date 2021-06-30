@@ -1,10 +1,9 @@
 import os
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Optional, Set
+from typing import Optional, Set
 
 import yaml
-
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
 
 
@@ -67,7 +66,6 @@ class RuleMetadata:
     name: str
     description: str
     logic: str
-    categories: List[str]
     severity: RuleSeverity
     iac_remediation_steps: str
     console_remediation_steps: str
