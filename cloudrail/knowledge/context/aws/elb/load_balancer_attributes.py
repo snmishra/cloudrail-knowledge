@@ -30,11 +30,11 @@ class LoadBalancerAttributes(AwsResource):
                  account: str,
                  region: str,
                  load_balancer_arn: str,
-                 drop_invalid_header_fields: bool,
+                 drop_invalid_header_fields: Optional[bool],
                  access_logs: Optional[LoadBalancerAccessLogs]):
         super().__init__(account, region, AwsServiceName.AWS_LOAD_BALANCER)
         self.load_balancer_arn: str = load_balancer_arn
-        self.drop_invalid_header_fields: bool = drop_invalid_header_fields
+        self.drop_invalid_header_fields: Optional[bool] = drop_invalid_header_fields
         self.access_logs: Optional[LoadBalancerAccessLogs] = access_logs
 
     def get_keys(self) -> List[str]:

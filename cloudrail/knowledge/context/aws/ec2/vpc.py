@@ -55,6 +55,7 @@ class Vpc(AwsResource):
     def __init__(self,
                  vpc_id: str,
                  cidr_block: List[str],
+                 ipv6_cidr_block: Optional[List[str]],
                  name: str,
                  account: str,
                  region: str,
@@ -66,6 +67,7 @@ class Vpc(AwsResource):
         self.vpc_id: str = vpc_id
         self.aliases.add(vpc_id)
         self.cidr_block: List[str] = cidr_block
+        self.ipv6_cidr_block: Optional[List[str]] = ipv6_cidr_block
         self.name: str = name
         self.friendly_name: Optional[str] = friendly_name
         self.is_default: Optional[bool] = is_default

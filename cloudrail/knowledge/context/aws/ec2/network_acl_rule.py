@@ -44,7 +44,7 @@ class NetworkAclRule(AwsResource):
                  rule_action: RuleAction,
                  rule_number: int,
                  rule_type: RuleType,
-                 ip_protocol_type: str = "-1"
+                 ip_protocol_type: str = 'all'
                  ):
         super().__init__(account, region, AwsServiceName.AWS_NETWORK_ACL_RULE)
         self.network_acl_id = network_acl_id
@@ -82,4 +82,8 @@ class NetworkAclRule(AwsResource):
 
     @property
     def is_tagable(self) -> bool:
+        return False
+
+    @staticmethod
+    def is_standalone() -> bool:
         return False
