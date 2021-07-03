@@ -20,8 +20,8 @@ from cloudrail.knowledge.context.aws.autoscaling.launch_template import LaunchTe
 from cloudrail.knowledge.context.aws.aws_client import AwsClient
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.batch.batch_compute_environment import BatchComputeEnvironment
-from cloudrail.knowledge.context.aws.cfn.cfn_constants import CfnResourceType
-from cloudrail.knowledge.context.aws.cfn.cfn_resource_info import CfnResourceInfo
+from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
+from cloudrail.knowledge.context.aws.cloudformation.cloudformation_resource_info import CloudformationResourceInfo
 from cloudrail.knowledge.context.aws.cloudfront.cloud_front_distribution_list import CloudFrontDistribution
 from cloudrail.knowledge.context.aws.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
 from cloudrail.knowledge.context.aws.cloudfront.origin_access_identity import OriginAccessIdentity
@@ -334,7 +334,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  redshift_logs: List[RedshiftLogging] = None,
                  s3_bucket_logs: List[S3BucketLogging] = None,
                  athena_databases: List[AthenaDatabase] = None,
-                 cfn_resources_info: List[CfnResourceInfo] = None):
+                 cfn_resources_info: List[CloudformationResourceInfo] = None):
         BaseEnvironmentContext.__init__(self, invalidated_resources=invalidated_resources, unknown_blocks=unknown_blocks,
                                         managed_resources_summary=managed_resources_summary)
         self.athena_databases = athena_databases or []
@@ -500,7 +500,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.assume_role_policies = assume_role_policies or []
         self.dms_replication_instance_subnet_groups = dms_replication_instance_subnet_groups or []
         self.invalidated_resources = invalidated_resources or set()
-        self.cfn_resources_info: List[CfnResourceInfo] = cfn_resources_info or []
+        self.cfn_resources_info: List[CloudformationResourceInfo] = cfn_resources_info or []
 
     @functools.lru_cache(maxsize=None)
     def get_used_network_interfaces(self) -> AliasesDict[NetworkInterface]:
@@ -568,9 +568,9 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                     all_resources.append(resource)
         return all_resources
 
-    def create_cfn_resources_by_type_map(self) -> Dict[CfnResourceType, AliasesDict[Mergeable]]:
+    def create_cfn_resources_by_type_map(self) -> Dict[CloudformationResourceType, AliasesDict[Mergeable]]:
         return {
-            CfnResourceType.VPC: self.vpcs,
-            CfnResourceType.EC2_INSTANCE: AliasesDict(*self.ec2s),
-            CfnResourceType.SECURITY_GROUP: self.security_groups
+            CloudformationResourceType.VPC: self.vpcs,
+            CloudformationResourceType.EC2_INSTANCE: AliasesDict(*self.ec2s),
+            CloudformationResourceType.SECURITY_GROUP: self.security_groups
         }

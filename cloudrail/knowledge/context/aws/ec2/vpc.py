@@ -127,13 +127,13 @@ class Vpc(AwsResource):
         return True
 
     def get_attribute(self, cfn_attribute_name: str):
-        if cfn_attribute_name == "CidrBlock":
-            return self.cidr_block[0] if self.cidr_block else None
+        if cfn_attribute_name == "CidrBlock" and self.cidr_block:
+            return self.cidr_block[0]
         if cfn_attribute_name == 'CidrBlockAssociations':
             return None
-        if cfn_attribute_name == "DefaultNetworkAcl":
+        if cfn_attribute_name == "DefaultNetworkAcl" and self.default_nacl:
             return self.default_nacl.network_acl_id
-        if cfn_attribute_name == "DefaultSecurityGroup":
+        if cfn_attribute_name == "DefaultSecurityGroup" and self.default_security_group:
             return self.default_security_group.security_group_id
         if cfn_attribute_name == "Ipv6CidrBlocks":
             return None

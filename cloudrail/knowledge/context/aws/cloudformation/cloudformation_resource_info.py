@@ -1,7 +1,7 @@
-from cloudrail.knowledge.context.aws.cfn.cfn_resource_status import CfnResourceStatus
+from cloudrail.knowledge.context.aws.cloudformation.cloudformation_resource_status import CloudformationResourceStatus
 
 
-class CfnResourceInfo:
+class CloudformationResourceInfo:
 
     def __init__(self,
                  account: str,
@@ -11,7 +11,7 @@ class CfnResourceInfo:
                  logical_resource_id: str,
                  physical_resource_id: str,
                  resource_type: str,
-                 resource_status: CfnResourceStatus):
+                 resource_status: CloudformationResourceStatus):
         self.account: str = account
         self.region: str = region
         self.stack_name: str = stack_name
@@ -19,4 +19,4 @@ class CfnResourceInfo:
         self.logical_resource_id: str = logical_resource_id
         self.physical_resource_id: str = physical_resource_id
         self.resource_type: str = resource_type
-        self.resource_status: CfnResourceStatus = resource_status
+        self.resource_status: CloudformationResourceStatus = resource_status

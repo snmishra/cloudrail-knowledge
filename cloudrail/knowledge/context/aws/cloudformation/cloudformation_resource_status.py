@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class CfnResourceStatus(Enum):
+class CloudformationResourceStatus(Enum):
 
     CREATE_IN_PROGRESS = 'CREATE_IN_PROGRESS'
     CREATE_FAILED = 'CREATE_FAILED'
