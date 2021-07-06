@@ -17,8 +17,8 @@ class AbstractVpcEndpointInterfaceNotUsedRule(AbstractVpcEndpointRule):
     def execute(self, env_context: AwsEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         vpc_list, region_to_service_map, vpc_to_eni_map = self._init_maps(env_context)
         issues_list: List[Issue] = []
-
-        for region, services in region_to_service_map.items():
+        # pylint: disable=consider-using-dict-items
+        for region in region_to_service_map:
             violated_vpc = None
             for vpc in vpc_list:
                 if vpc.region != region:
@@ -33,7 +33,7 @@ class AbstractVpcEndpointInterfaceNotUsedRule(AbstractVpcEndpointRule):
                         violated_vpc = vpc
                         break
                 if violated_vpc:
-                    for service in services:
+                    for service in region_to_service_map[region]:
                         issues_list.append(Issue(f"The service {self.aws_service_type.name} is in use in region `{violated_vpc.region}`,"
                                                  f" but VPC `{violated_vpc.get_friendly_name()}`. is not configured to"
                                                  f" use a VPC Endpoint for {self.aws_service_type.name}",
