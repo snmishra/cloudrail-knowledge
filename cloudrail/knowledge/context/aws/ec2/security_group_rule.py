@@ -80,7 +80,7 @@ class SecurityGroupRule(AwsResource):
 
     def is_match(self, rule: SecurityGroupRule) -> bool:
         # todo - need to support pl id type and cross account peering instance
-        if self.ip_protocol == '-1' or rule.ip_protocol == '-1' or self.ip_protocol == rule.ip_protocol:
+        if self.ip_protocol == 'all' or rule.ip_protocol == 'all' or self.ip_protocol == rule.ip_protocol:
             is_ports_overlap: bool = get_range_numbers_overlap(self.get_ports_range(), rule.get_ports_range()) != EMPTY_RANGE
             if self.property_type == SecurityGroupRulePropertyType.SECURITY_GROUP_ID and self.property_value == rule.security_group_id:
                 return is_ports_overlap
