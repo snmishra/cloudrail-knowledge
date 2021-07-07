@@ -43,6 +43,7 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
         self.bucket_name = bucket_name
         self.arn = arn
         self.bucket_domain_name = bucket_name + ".s3.amazonaws.com"
+        self.bucket_regional_domain_name = '.'.join([bucket_name, 's3', region, 'amazonaws.com'])
         self.with_aliases(bucket_name, arn, self.bucket_domain_name)
         self.acls: List[S3ACL] = []
         self.public_access_block_settings: Optional[PublicAccessBlockSettings] = None
@@ -68,6 +69,9 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
     def get_name(self) -> str:
         return self.bucket_name
 
+    def get_id(self) -> str:
+        return self.get_name()
+
     def __str__(self) -> str:
         return self.bucket_name
 
@@ -82,3 +86,16 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
     @property
     def is_public(self):
         return len(self.publicly_allowing_resources) > 0
+
+    def get_attribute(self, cfn_attribute_name: str):
+        if cfn_attribute_name == 'Arn':
+            return self.arn
+        if cfn_attribute_name == 'DomainName':
+            return self.bucket_domain_name
+        if cfn_attribute_name == 'DualStackDomainName':
+            return None
+        if cfn_attribute_name == 'RegionalDomainName':
+            return self.bucket_regional_domain_name
+        if cfn_attribute_name == 'WebsiteURL':
+            return None
+        return None

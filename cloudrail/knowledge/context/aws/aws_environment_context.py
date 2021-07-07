@@ -572,5 +572,6 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         return {
             CloudformationResourceType.VPC: self.vpcs,
             CloudformationResourceType.EC2_INSTANCE: AliasesDict(*self.ec2s),
-            CloudformationResourceType.SECURITY_GROUP: self.security_groups
+            CloudformationResourceType.SECURITY_GROUP: self.security_groups,
+            CloudformationResourceType.S3_BUCKET: self.s3_buckets
         }
