@@ -14,3 +14,8 @@ class CloudProvider(str, Enum):
             return CloudProvider(string.lower())
         except Exception:
             return CloudProvider[string.upper()]
+
+    def to_shorthand_string(self):
+        if self == CloudProvider.AMAZON_WEB_SERVICES:
+            return 'aws'
+        return self.name.lower()
