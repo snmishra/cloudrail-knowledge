@@ -64,7 +64,7 @@ class SecurityGroupRule(AwsResource):
         return is_port_in_range((self.from_port, self.to_port), port)
 
     def get_keys(self) -> List[str]:
-        return [self.security_group_id, self.from_port, self.to_port,
+        return [self.security_group_id, self.from_port, self.to_port, self.ip_protocol,
                 self.property_type, self.property_value, self.connection_type.value]
 
     def get_friendly_name(self) -> str:
