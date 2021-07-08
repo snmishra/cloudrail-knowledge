@@ -416,7 +416,7 @@ def get_overlapping_ports(first_range: Tuple[int, int], second_range: Tuple[int,
         return max_start, min_end
 
 
-def convert_ip_protocol_to_protocol_name(ip_protocol_num: Union[str, int]) -> Optional[str]:
+def convert_ip_protocol_to_protocol_name(ip_protocol_num: Union[str, int]) -> str:
     if ip_protocol_num in ('-1', -1):
         return 'all'
     elif not ip_protocol_num.isdigit():
@@ -426,5 +426,5 @@ def convert_ip_protocol_to_protocol_name(ip_protocol_num: Union[str, int]) -> Op
         try:
             return ip_protocol_table[int(ip_protocol_num)].lower()
         except Exception as ex:
-            print(f'fail converting ip_protocol number for {ip_protocol_num} : {ex}')
-        return None
+            logging.exception(f'fail converting ip_protocol number for {ip_protocol_num} : {ex}')
+        return str(ip_protocol_num)
