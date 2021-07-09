@@ -145,7 +145,14 @@ over the assume role policy's statements. For each statement, it looks at the pr
 For each principal, it checks to see if its AWS account ID is in a predetermined list of accounts
 we're approving of.
 
-If it's not in the list, we create an Issue with the relevant information.
+If it's not in the list, we create an Issue with the relevant information. An Issue has three fields,
+all of which are MANDATORY:
+* The `evidence` is a string sharing the facts the rule used to get to its conclusion. (this field is required)
+* The `exposed` field represents the context object that is exposed by the issue. For example,
+a database may be exposed due to a misconfigured resource. (this field is required)
+* The `violating` field represents the context object which is violating the rule. In some cases,
+there may be more than one such object per violation. You should pick the one that the user is 
+most likely to want to fix. (this field is required)
 
 The list of approved third party accounts is defined like so (add the __init__ function at the top of the
 Python class):
