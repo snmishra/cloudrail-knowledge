@@ -10,4 +10,3 @@ class CloudformationResourceType(str, Enum):
     DAX_CLUSTER = 'AWS::DAX::Cluster'
     IAM_ROLE = 'AWS::IAM::Role'
     ATHENA_WORKGROUP = 'AWS::Athena::WorkGroup'
-
