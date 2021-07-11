@@ -1,6 +1,5 @@
 from abc import abstractmethod
 from typing import List, Optional
-
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName, AwsServiceAttributes
 from cloudrail.knowledge.context.mergeable import Mergeable
 from cloudrail.knowledge.utils.arn_utils import are_arns_intersected
@@ -39,9 +38,12 @@ class AwsResource(Mergeable):
         pass
 
     def get_friendly_name(self) -> str:
-        if self.terraform_state:
-            return self.terraform_state.address
+        if self.iac_state:
+            return self.iac_state.address
         return self.get_name() or self.get_id() or self.get_arn()
 
     def is_arn_match(self, arn: str):
         return are_arns_intersected(arn, self.get_arn())
+
+    def get_attribute(self, cfn_attribute_name: str):
+        pass  # todo - should be abstract

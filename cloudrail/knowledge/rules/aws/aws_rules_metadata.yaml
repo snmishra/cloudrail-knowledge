@@ -10,9 +10,9 @@ templates:
       For each resource the security group is used with, Cloudrail will determine the subnet it is located in.
       It will then review the routing table to verify that the subnet is accessible from the Internet, and that the NACL associated with the subnet has the aforementioned port open.
       This ensures the security group is only flagged if there's a real exposure.
-  - public_access_security_groups_port_rule_remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html#updating-security-group-rules>
+  - public_access_security_groups_port_rule_console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html#updating-security-group-rules>
       to update the security group inbound rule. Set the Source parameter to a value other than 0.0.0.0/0 or ::/0 for the {} port.
-  - public_access_security_groups_port_rule_remediation_steps_tf: For the resource aws_security_group, update in-line ingress rules or resource aws_security_group_rule to set cidr_blocks argument to a value other than 0.0.0.0/0 or ::/0
+  - public_access_security_groups_port_rule_iac_remediation_steps: For the resource aws_security_group, update in-line ingress rules or resource aws_security_group_rule to set cidr_blocks argument to a value other than 0.0.0.0/0 or ::/0
       for the {} port.
   - vpc_endpoint_gateway_is_not_used_rule_name_template: Ensure VPC Endpoint for {} is enabled in all VPCs
   - vpc_endpoint_gateway_is_not_used_rule_description_template: A best practice is to enforce the use of VPC Endpoints to avoid
@@ -23,8 +23,8 @@ templates:
       flag it as non-compliant, also if there were no VPC Endpoints in the region but there was
       a {2} it will flag all VPCs as non-compliant.
       It will check that there is at least one resource using an ENI to avoid alerting on unused VPCs.
-  - vpc_endpoint_gateway_is_not_used_rule_remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints-s3.html> to configure {} endpoint for the VPC.
-  - vpc_endpoint_gateway_is_not_used_rule_remediation_steps_tf: Create the aws_vpc_endpoint resource for the corresponding VPC to associate the {} endpoint. Create the aws_vpc_endpoint_route_table_association resource
+  - vpc_endpoint_gateway_is_not_used_rule_console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/vpc-endpoints-s3.html> to configure {} endpoint for the VPC.
+  - vpc_endpoint_gateway_is_not_used_rule_iac_remediation_steps: Create the aws_vpc_endpoint resource for the corresponding VPC to associate the {} endpoint. Create the aws_vpc_endpoint_route_table_association resource
       in order to populate the route table with routes to the {} service.
 
   - vpc_endpoint_route_table_exposure_rule_name_template: Ensure VPC Endpoint for {} is enabled in all route tables in use in a VPC
@@ -37,9 +37,9 @@ templates:
       if so it will check which route tables it's associated to, it will then check all route tables to identify which
       ones are not associated to a VPC Endpoint for {1} and will flag them as non-compliant.
       It will check the routing tables in each VPC to avoid alerting on subnets that don't have internet access.
-  - vpc_endpoint_route_table_exposure_rule_remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/vpce-gateway.html#vpc-endpoints-routing> to configure the route tables
+  - vpc_endpoint_route_table_exposure_rule_console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/vpce-gateway.html#vpc-endpoints-routing> to configure the route tables
       to route {} service traffic via the endpoint.
-  - vpc_endpoint_route_table_exposure_rule_remediation_steps_tf: For the aws_vpc_endpoint_route_table_association resource, set the route_table_id and vpc_endpoint_id arguments for the {} service.
+  - vpc_endpoint_route_table_exposure_rule_iac_remediation_steps: For the aws_vpc_endpoint_route_table_association resource, set the route_table_id and vpc_endpoint_id arguments for the {} service.
 
   - policy_wildcard_violation_rule_name_template: Ensure use of {} policy, and no action wildcards are being used
   - policy_wildcard_violation_rule_description_template: Using wildcard actions may inadvertently allow users to take actions you do not want to allow them to do.
@@ -47,8 +47,8 @@ templates:
       It is a best practice to use a resource policy and give specific permissions only.
   - policy_wildcard_violation_rule_human_readable_logic_template: Cloudrail will review the {} policies being created in your environment or currently in use.
       If a policy is using wildcard actions, or no resource policy configured, Cloudrail will highlight it as a violation.
-  - policy_wildcard_violation_rule_remediation_steps_console: Follow the guide at {} to modify {} policy in order to avoid using wildcard actions.
-  - policy_wildcard_violation_rule_remediation_steps_tf: For the {} resource, modify policy argument in order to avoid using wildcard actions.
+  - policy_wildcard_violation_rule_console_remediation_steps: Follow the guide at {} to modify {} policy in order to avoid using wildcard actions.
+  - policy_wildcard_violation_rule_iac_remediation_steps: For the {} resource, modify policy argument in order to avoid using wildcard actions.
 
   - iam_account_password_policy_rule_human_readable_logic_template: Cloudrail will review your AWS account password policy. {} This rule will only run if there is at least one user defined with direct console access (not via SSO).
 
@@ -65,10 +65,10 @@ templates:
       For each region, Cloudrail will verify if at least one {0} {1} exists,
       then will also verify that the service VPC Endpoint for {0} is available in the region,
       if so it will check that it's configured in all possible VPCs and will flag any non-compliant VPC.
-  - vpc_endpoint_exposure_remediation_steps_console_template:
+  - vpc_endpoint_exposure_console_remediation_steps_template:
       Create a VPC Endpoint for {}, follow the guide at
       <https://docs.aws.amazon.com/vpc/latest/userguide/vpce-interface.html#create-interface-endpoint>.
-  - vpc_endpoint_exposure_remediation_steps_tf_template:
+  - vpc_endpoint_exposure_iac_remediation_steps_template:
       Create a resource aws_vpc_endpoint for {} interface, and associate it to the VPC.
 
   - vpc_endpoint_subnet_exposure_name_template:
@@ -90,13 +90,13 @@ templates:
       in which availability zones. It will also check all subnets in use,
       and check all subnets that may have an endpoint configured.
       It will then check to see that at least two of the availability zones in use have an interface endpoint in them.
-  - vpc_endpoint_subnet_exposure_remediation_steps_console_template:
+  - vpc_endpoint_subnet_exposure_console_remediation_steps_template:
       For each VPC that is currently using VPC endpoints for {}, make sure it’s enabled in one subnet for each
       Availability Zone in use. Follow the guide at
       <https://docs.aws.amazon.com/vpc/latest/userguide/vpce-interface.html#create-interface-endpoint>.
       Interface endpoints do have their costs, so if that’s an issue, consider using at least two interface endpoints in
       different availability zones, and not just one.
-  - vpc_endpoint_subnet_exposure_remediation_steps_tf_template:
+  - vpc_endpoint_subnet_exposure_iac_remediation_steps_template:
       Locate resource aws_vpc_endpoint for {} interface, and make sure that argument subnet_ids contains at least one
       subnet in each Availability Zone in use. Interface endpoints do have their costs, so if that’s an issue,
       consider using at least two interface endpoints in different availability zones, and not just one.
@@ -125,10 +125,10 @@ rules_metadata:
     the Internet) and "private" (those that are not). If an IAM role is determined
     to be associated with at least one public instance and at least one private instance,
     it will be considered in violation.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create.html>
     to create an additional IAM role with an IAM role policy attached. Associate this
     role to the public EC2 instances.
-  remediation_steps_tf: Create an additional aws_iam_role resource with an aws_iam_role_policy
+  iac_remediation_steps: Create an additional aws_iam_role resource with an aws_iam_role_policy
     attached. Associate this role to the public EC2 instances using an aws_iam_instance_profile
     resource.
   rule_type: context_aware
@@ -146,10 +146,10 @@ rules_metadata:
     one, it will determine which VPCs are in use. It will iterate over all VPCs in
     pairs and compare their CIDR blocks. If there's an intersection in the CIDR blocks
     (one contains an IP that is contained in the other) a violation will be flagged.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/working-with-vpcs.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/working-with-vpcs.html>
     to specify a VPC CIDR block that is not overlapping with other VPC CIDRs using
     the Transit Gateway.
-  remediation_steps_tf: For the aws_vpc resource, set cidr_block argument to use a
+  iac_remediation_steps: For the aws_vpc resource, set cidr_block argument to use a
     CIDR block that is not overlapping with other VPC CIDRs using the Transit Gateway.
   rule_type: context_aware
   security_layer: networking
@@ -168,9 +168,9 @@ rules_metadata:
     default security groups that are used, Cloudrail will determine if they allow
     any ingress or egress traffic. By doing this context-based analysis, Cloudrail
     ensures that only default security groups who pose a true security risk are highlighted.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html#deleting-security-group-rule>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html#deleting-security-group-rule>
     to update the security group rules.
-  remediation_steps_tf: For the resource aws_default_security_group, update the inline
+  iac_remediation_steps: For the resource aws_default_security_group, update the inline
     ingress and egress rules.
   rule_type: context_aware
   security_layer: networking
@@ -194,12 +194,12 @@ rules_metadata:
     params:
     - 22
     - SSH
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - SSH
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - SSH
   rule_type: context_aware
@@ -224,12 +224,12 @@ rules_metadata:
     params:
     - 3389
     - RDP
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - RDP
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - RDP
   rule_type: context_aware
@@ -254,12 +254,12 @@ rules_metadata:
     params:
     - 1521
     - ORACLE DB DEFAULT
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - ORACLE DB DEFAULT
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - ORACLE DB DEFAULT
   rule_type: context_aware
@@ -284,12 +284,12 @@ rules_metadata:
     params:
     - 2483
     - ORACLE DB
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - ORACLE DB
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - ORACLE DB
   rule_type: context_aware
@@ -314,12 +314,12 @@ rules_metadata:
     params:
     - 2484
     - ORACLE DB SSL
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - ORACLE DB SSL
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - ORACLE DB SSL
   rule_type: context_aware
@@ -344,12 +344,12 @@ rules_metadata:
     params:
     - 3306
     - MYSQL
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - MYSQL
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - MYSQL
   rule_type: context_aware
@@ -374,12 +374,12 @@ rules_metadata:
     params:
     - 5432
     - POSTGRES
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - POSTGRES
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - POSTGRES
   rule_type: context_aware
@@ -404,12 +404,12 @@ rules_metadata:
     params:
     - 6379
     - REDIS
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - REDIS
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - REDIS
   rule_type: context_aware
@@ -434,12 +434,12 @@ rules_metadata:
     params:
     - 27017
     - MONGODB
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - MONGODB
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - MONGODB
   rule_type: context_aware
@@ -464,12 +464,12 @@ rules_metadata:
     params:
     - 27018
     - MONGODB SHARD CLUSTER
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - MONGODB SHARD CLUSTER
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - MONGODB SHARD CLUSTER
   rule_type: context_aware
@@ -494,12 +494,12 @@ rules_metadata:
     params:
     - 7199
     - CASSANDRA
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - CASSANDRA
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - CASSANDRA
   rule_type: context_aware
@@ -524,12 +524,12 @@ rules_metadata:
     params:
     - 9160
     - CASSANDRA THRIFT
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - CASSANDRA THRIFT
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - CASSANDRA THRIFT
   rule_type: context_aware
@@ -554,12 +554,12 @@ rules_metadata:
     params:
     - 8888
     - CASSANDRA MNG
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - CASSANDRA MNG
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - CASSANDRA MNG
   rule_type: context_aware
@@ -584,12 +584,12 @@ rules_metadata:
     params:
     - 11211
     - MEMCACHED
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - MEMCACHED
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - MEMCACHED
   rule_type: context_aware
@@ -614,12 +614,12 @@ rules_metadata:
     params:
     - 9300
     - ELASTICSEARCH NODES
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - ELASTICSEARCH NODES
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - ELASTICSEARCH NODES
   rule_type: context_aware
@@ -644,12 +644,12 @@ rules_metadata:
     params:
     - 9200
     - ELASTICSEARCH
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - ELASTICSEARCH
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - ELASTICSEARCH
   rule_type: context_aware
@@ -674,12 +674,12 @@ rules_metadata:
     params:
     - 5601
     - KIBANA
-  remediation_steps_console:
-    template: public_access_security_groups_port_rule_remediation_steps_console
+  console_remediation_steps:
+    template: public_access_security_groups_port_rule_console_remediation_steps
     params:
     - KIBANA
-  remediation_steps_tf:
-    template: public_access_security_groups_port_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: public_access_security_groups_port_rule_iac_remediation_steps
     params:
     - KIBANA
   rule_type: context_aware
@@ -701,11 +701,11 @@ rules_metadata:
     to verify that the subnet is accessible from the Internet, and that the NACL associated
     with the subnet has all ports opened. This ensures the security group is only
     flagged if there's a real exposure.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html#updating-security-group-rules>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/working-with-security-groups.html#updating-security-group-rules>
     to update security groups rules and restrict traffic to specific ports. Additionally,
     follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html#Rules>
     to update NACLs rules to restrict traffic to specific ports also.
-  remediation_steps_tf: For the aws_security_group resource, modify in-line rules
+  iac_remediation_steps: For the aws_security_group resource, modify in-line rules
     or the associated aws_security_group_rule resources to restrict traffic to specific
     ports. Additionally, for the aws_network_acl resource, modify in-line rules or
     the associated aws_network_acl_rule resources to restrict traffic to specific
@@ -725,9 +725,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will determine if a resource has been configured
     to use EC2 Classic mode by verifying that the account supports it and the resource
     does not have a specific VPC set.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/vpc-migrate.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/vpc-migrate.html>
     to migrate from EC2 Classic mode to VPC mode.
-  remediation_steps_tf: Modify those resources using specific arguments for EC2 Classic
+  iac_remediation_steps: Modify those resources using specific arguments for EC2 Classic
     only and use VPC mode arguments.
   rule_type: context_aware
   security_layer: networking
@@ -749,10 +749,10 @@ rules_metadata:
     the existence of a public IP address. By doing this context-based analysis, Cloudrail
     ensures that only databases which can truly be accessed from the Internet are
     highlighted.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/redshift/latest/mgmt/managing-clusters-console.html#modify-cluster>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/redshift/latest/mgmt/managing-clusters-console.html#modify-cluster>
     to change Publicly accesible to "No". Modify also the associated security groups
     and NACLs to block inbound traffic to the database instance.
-  remediation_steps_tf: For the aws_redshift_cluster resource, set publicly_accessible
+  iac_remediation_steps: For the aws_redshift_cluster resource, set publicly_accessible
     argument to false. Update the rules of security groups and NACLs to block inbound
     traffic from Internet to the database instance.
   rule_type: context_aware
@@ -778,10 +778,10 @@ rules_metadata:
     public IP address. By doing this context-based analysis, Cloudrail ensures that
     only databases which can truly be accessed by a publicly-accessible compute resource
     are highlighted.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/redshift/latest/mgmt/managing-security-groups-console.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/redshift/latest/mgmt/managing-security-groups-console.html>
     to modify Redshift Security Groups to block traffic from publicly-accessible AWS
     resources.
-  remediation_steps_tf: For the aws_redshift_cluster resource, set vpc_security_group_ids
+  iac_remediation_steps: For the aws_redshift_cluster resource, set vpc_security_group_ids
     or cluster_security_groups arguments to use a Security Group that blocks traffic
     from publicly-accessible AWS resources.
   rule_type: context_aware
@@ -804,9 +804,9 @@ rules_metadata:
     the existence of a public IP address. By doing this context-based analysis, Cloudrail
     ensures that only databases which can truly be accessed from the Internet are
     highlighted.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html#USER_VPC.Hiding>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html#USER_VPC.Hiding>
     to hide a DB instance in a VPC from the Internet.
-  remediation_steps_tf: For the aws_db_instance resource, set publicly_accesible argument
+  iac_remediation_steps: For the aws_db_instance resource, set publicly_accesible argument
     to false. Update the rules of security groups and NACLs to block inbound traffic
     from Internet to the database instance.
   rule_type: context_aware
@@ -824,11 +824,11 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all RDS instances, clusters and global
     clusters in the Terraform plan that are going to be created and are not configured
     to be encrypted at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.Encryption.html>
     to enable encryption for RDS instances. Follow the guide at <https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.CreateInstance.html>
     to enable encryption for RDS clusters. Follow the guide at <https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-global-database-getting-started.html>
     to enable encryption for RDS global clusters.
-  remediation_steps_tf: For the aws_db_instance, aws_rds_global_cluster, and aws_rds_cluster
+  iac_remediation_steps: For the aws_db_instance, aws_rds_global_cluster, and aws_rds_cluster
     resources, set the storage_encrypted argument to true.
   rule_type: non_context_aware
   security_layer: networking
@@ -846,9 +846,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will review all resources configured to determine
     if any of them is set to use the default VPC. This includes resources that may
     have no VPC ID set and would be assigned the default VPC upon creation.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html>
     to create specific Security Groups for those resources.
-  remediation_steps_tf: Create aws_security_group resources for those AWS resources
+  iac_remediation_steps: Create aws_security_group resources for those AWS resources
     using default VPC security group.
   rule_type: context_aware
   security_layer: networking
@@ -873,10 +873,10 @@ rules_metadata:
     public IP address. By doing this context-based analysis, Cloudrail ensures that
     only databases which can truly be accessed by a publicly-accessible compute resource
     are highlighted.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.RDSSecurityGroups.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.RDSSecurityGroups.html>
     to reference a Security Group that blocks access from publicly-accessible EC2
     instances.
-  remediation_steps_tf: For the aws_db_instance resource, set vpc_security_group_ids
+  iac_remediation_steps: For the aws_db_instance resource, set vpc_security_group_ids
     argument to reference a Security Group that blocks access from publicly-accessible
     EC2 instances.
   rule_type: context_aware
@@ -892,9 +892,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will review all of the Elasticsearch domains configured
     in your environment. For each domain it will review if it is set to be publicly
     accessible.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html>
     to configure VPC access instead of Public access in Network configuration section.
-  remediation_steps_tf: For the aws_elasticsearch_domain resource, in vpc_options
+  iac_remediation_steps: For the aws_elasticsearch_domain resource, in vpc_options
     block, set subnet_ids and security_group_ids arguments.
   rule_type: context_aware
   security_layer: networking
@@ -920,10 +920,10 @@ rules_metadata:
     public IP address. By doing this context-based analysis, Cloudrail ensures that
     only domains which can truly be accessed by a publicly-accessible compute resource
     are highlighted.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html>
     to configure the Security Groups to block access from compute resources in public
     subnets.
-  remediation_steps_tf: For the aws_elasticsearch_domain resource, in vpc_options
+  iac_remediation_steps: For the aws_elasticsearch_domain resource, in vpc_options
     block, set security_group_ids argument to reference a Security Group that blocks
     access from compute resources in public subnets.
   rule_type: context_aware
@@ -949,9 +949,9 @@ rules_metadata:
     \ to a VPC in a different account, Cloudrail will only be able to evaluate this\
     \ rule after the connection has been established. This is due to the lack of knowledge\
     \ of the peer VPC\u2019s CIDR block."
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/peering/peering-configurations-partial-access.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/peering/peering-configurations-partial-access.html>
     to configure specific routes for VPC peering.
-  remediation_steps_tf: For the aws_route resource, set destination_cidr_block argument
+  iac_remediation_steps: For the aws_route resource, set destination_cidr_block argument
     to use specific routes for VPC peering.
   rule_type: context_aware
   security_layer: networking
@@ -968,9 +968,9 @@ rules_metadata:
     in your environment. If a domain is not set to encrypt at rest, Cloudrail will
     highlight it as a violation. This rule will only flag a violation for resources
     that are not yet created.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/encryption-at-rest.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/encryption-at-rest.html>
     to enable encryption at rest for Elasticsearch domain.
-  remediation_steps_tf: For the resource aws_elasticsearch_domain resource, configure
+  iac_remediation_steps: For the resource aws_elasticsearch_domain resource, configure
     encrypt_at_rest block with argument enabled = true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -987,9 +987,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all Elasticsearch domains in the Terraform
     plan that are going to be created and are not configured to encrypt node-to-node
     communication.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/ntn.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/ntn.html>
     to enable node-to-node encryption for Elasticsearch domain.
-  remediation_steps_tf: For the resource aws_elasticsearch_domain resource, configure
+  iac_remediation_steps: For the resource aws_elasticsearch_domain resource, configure
     node_to_node_encryption block with argument enabled = true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1009,9 +1009,9 @@ rules_metadata:
     \ a public IP address. By doing this context-based analysis, Cloudrail ensures\
     \ that only EKS clusters whose API can truly be accessed from the Internet are\
     \ highlighted."
-  remediation_steps_console: Follow the guide at <https://aws.amazon.com/premiumsupport/knowledge-center/eks-public-private-access-api-server/>
+  console_remediation_steps: Follow the guide at <https://aws.amazon.com/premiumsupport/knowledge-center/eks-public-private-access-api-server/>
     to configure private access to the EKS API.
-  remediation_steps_tf: For the aws_eks_cluster resource, in vpc_config block, set
+  iac_remediation_steps: For the aws_eks_cluster resource, in vpc_config block, set
     endpoint_public_access argument to false.
   rule_type: context_aware
   security_layer: networking
@@ -1027,9 +1027,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will review the load balancers and target groups
     configured in your environment. If a target group is in use and is communicating
     with its targets in HTTP, Cloudrail will flag a violation.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-target-group.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-target-group.html>
     to configure HTTPS Protocol.
-  remediation_steps_tf: For the aws_lb_target_group resource, set the protocol argument
+  iac_remediation_steps: For the aws_lb_target_group resource, set the protocol argument
     to use HTTPS.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1048,10 +1048,10 @@ rules_metadata:
     provided), or it is allowing cross-account access through ACL, or is allowing
     either of the above through a bucket policy, Cloudrail will highlight it as a
     violation.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/user-guide/set-bucket-permissions.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/user-guide/set-bucket-permissions.html>
     to modify the S3 bucket ACL, and <https://docs.aws.amazon.com/AmazonS3/latest/user-guide/add-bucket-policy.html>
     to modify the S3 bucket policy.
-  remediation_steps_tf: For the aws_s3_bucket resource, set the acl or grant arguments
+  iac_remediation_steps: For the aws_s3_bucket resource, set the acl or grant arguments
     to restrict public access using an ACL, and set the policy argument to use a bucket
     policy that restricts public access. Additionally, if aws_s3_bucket_policy resource
     is being used, set policy argument to use a policy that restricts public access.
@@ -1069,9 +1069,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will review the CloudFront distributions in your
     environment. If a CloudFront distribution is using an insecure protocol version
     (pre TLSv1.2_2019), Cloudrail will highlight it as a violation.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-values-specify.html#DownloadDistValues-security-policy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-values-specify.html#DownloadDistValues-security-policy>
     to configure the Security Policy to use a secure protocol version.
-  remediation_steps_tf: For the aws_cloudfront_distribution resource, in viewer_certificate
+  iac_remediation_steps: For the aws_cloudfront_distribution resource, in viewer_certificate
     block, set minimum_protocol_version argument to use a secure protocol version.
   rule_type: non_context_aware
   security_layer: networking
@@ -1086,10 +1086,10 @@ rules_metadata:
   human_readable_logic: Cloudrail will review the IAM settings in your environment,
     and specifically the users being created. If a user is assigned a permission policy
     directly, Cloudrail will highlight it as a violation.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups_create.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups_create.html>
     to create an IAM group with the permission policy. Remove the permission policy
     from the user and follow the guide at to add the IAM user to an IAM group.
-  remediation_steps_tf: Remove the permission policy attached to the user. Create
+  iac_remediation_steps: Remove the permission policy attached to the user. Create
     a new aws_iam_group resource and attach the permission policy. Use the resource
     aws_iam_user_group_membership for adding the user to the group.
   rule_type: non_context_aware
@@ -1107,10 +1107,10 @@ rules_metadata:
   human_readable_logic: Cloudrail will review configurations of EC2 instances, launch
     configurations, and launch templates used in the environment. If they are set
     to allow IMDSv1, Cloudrail will highlight it as a violation.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html>
     to change the instance metadata for existing instances. Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/configuring-instance-metadata-service.html>
     to configure instance metadata for new instances.
-  remediation_steps_tf: For the aws_instance resource, in metadata_options block,
+  iac_remediation_steps: For the aws_instance resource, in metadata_options block,
     set http_tokens argument to required.
   rule_type: non_context_aware
   security_layer: iam
@@ -1126,9 +1126,9 @@ rules_metadata:
     \ block and ordered_cache_behavior block (can exist several ordered blocks) in\
     \ order to check the values of: viewer_protocol_policy to ensure it is set to\
     \ either \u201Chttps-only\u201D or \u201Credirect-to-https\u201D"
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-https-viewers-to-cloudfront.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-https-viewers-to-cloudfront.html>
     to enable HTTPS Protocol.
-  remediation_steps_tf: For the aws_cloudfront_distribution resource, in default_cache_behavior/ordered_cache_behavior
+  iac_remediation_steps: For the aws_cloudfront_distribution resource, in default_cache_behavior/ordered_cache_behavior
     blocks, set the viewer_protocol_policy argument to https-only or redirect-to-https.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1143,9 +1143,9 @@ rules_metadata:
   human_readable_logic: Cloudrail uses checkov to review the aws_eks_cluster resource's
     enabled_cluster_log_types field. This rule will only review Terraform content
     and not any resources in your cloud environment.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html>
     to enable EKS control plane logging.
-  remediation_steps_tf: For the aws_eks_cluster resource, set enabled_cluster_log_types
+  iac_remediation_steps: For the aws_eks_cluster resource, set enabled_cluster_log_types
     argument to the list of log types (api, audit, authenticator, controllerManager,
     scheduler).
   rule_type: non_context_aware
@@ -1163,9 +1163,9 @@ rules_metadata:
   human_readable_logic: Cloudrail uses checkov to review the IAM policy looking for
     statements with all actions included. This rule will only review Terraform content
     and not any resources in your cloud environment.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_understand-action-summary.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_understand-action-summary.html>
     in order to assign specific permissions instead of full "*" administrative privileges.
-  remediation_steps_tf: For the aws_iam_policy resource, update policy argument in
+  iac_remediation_steps: For the aws_iam_policy resource, update policy argument in
     order to assign specific permissions instead of full "*" administrative privileges.
   rule_type: non_context_aware
   security_layer: iam
@@ -1180,9 +1180,9 @@ rules_metadata:
   human_readable_logic: Cloudrail uses checkov to review the EBS volumes' encryption
     settings. This rule will only review Terraform content and not any resources in
     your cloud environment.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EBSEncryption.html>
     to enable EBS encryption at rest.
-  remediation_steps_tf: For the aws_ebs_volume resource, set encrypted argument to
+  iac_remediation_steps: For the aws_ebs_volume resource, set encrypted argument to
     true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1198,9 +1198,9 @@ rules_metadata:
   human_readable_logic: Cloudrail uses checkov to review the aws_kms_key's enable_key_rotation.
     This rule will only review Terraform content and not any resources in your cloud
     environment.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html>
     to enable key rotation.
-  remediation_steps_tf: For the aws_kms_key resource, set enable_key_rotation argument
+  iac_remediation_steps: For the aws_kms_key resource, set enable_key_rotation argument
     to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1215,9 +1215,9 @@ rules_metadata:
   human_readable_logic: Cloudrail uses checkov to review the aws_launch_configuration's
     and aws_instance's EBS encryption settings. This rule will only review Terraform
     content and not any resources in your cloud environment.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-launch-config.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-launch-config.html>
     to enable encryption at rest.
-  remediation_steps_tf: For the aws_launch_configuration resource, in ebs_block_device
+  iac_remediation_steps: For the aws_launch_configuration resource, in ebs_block_device
     configuration block, set encrypted argument to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1233,9 +1233,9 @@ rules_metadata:
     resource's settings. This rule will only review Terraform content and not any
     resources in your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to require a password expiration of 90 days or less.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     max_password_age argument to 90.
   rule_type: non_context_aware
   security_layer: iam
@@ -1251,9 +1251,9 @@ rules_metadata:
     resource's settings. This rule will only review Terraform content and not any
     resources in your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to require a Password minimum length of at least 14 characters.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     minimum_password_length argument to at least 14.
   rule_type: non_context_aware
   security_layer: iam
@@ -1269,9 +1269,9 @@ rules_metadata:
     resource's settings. This rule will only review Terraform content and not any
     resources in your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to require at least one lowercase letter.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     require_lowercase_characters argument to true.
   rule_type: non_context_aware
   security_layer: iam
@@ -1287,9 +1287,9 @@ rules_metadata:
     resource's settings. This rule will only review Terraform content and not any
     resources in your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to require at least one number.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     require_numbers argument to true.
   rule_type: non_context_aware
   security_layer: iam
@@ -1305,9 +1305,9 @@ rules_metadata:
     resource's settings. This rule will only review Terraform content and not any
     resources in your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to set Prevent password reuse to 24.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     password_reuse_prevention argument to 24.
   rule_type: non_context_aware
   security_layer: iam
@@ -1323,9 +1323,9 @@ rules_metadata:
     resource's settings. This rule will only review Terraform content and not any
     resources in your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to set a proper password policy.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     require_symbols argument to true.
   rule_type: non_context_aware
   security_layer: iam
@@ -1341,9 +1341,9 @@ rules_metadata:
     resource's settings. This rule will only review Terraform content and not any
     resources in your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to set a proper password policy.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     require_uppercase_characters argument to true.
   rule_type: non_context_aware
   security_layer: iam
@@ -1359,9 +1359,9 @@ rules_metadata:
     your cloud environment.
   severity: medium
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html>
     to enable S3 bucket encryption at rest.
-  remediation_steps_tf: For the aws_s3_bucket resource, in server_side_encryption_configuration,
+  iac_remediation_steps: For the aws_s3_bucket resource, in server_side_encryption_configuration,
     rule, apply_server_side_encryption_by_default block, set sse_algorithm argument.
   rule_type: non_context_aware
   security_layer: storage
@@ -1379,9 +1379,9 @@ rules_metadata:
     aws_redshift_security_group. This rule will only review Terraform content and
     not any resources in your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html>
     to set the Description field for a security group.
-  remediation_steps_tf: Set the description argument for the identified resources.
+  iac_remediation_steps: Set the description argument for the identified resources.
   rule_type: non_context_aware
   security_layer: networking
   resource_type:
@@ -1396,9 +1396,9 @@ rules_metadata:
     settings. This rule will only review Terraform content and not any resources in
     your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html>
     to enable encryption at rest for SNS topic.
-  remediation_steps_tf: For the resource aws_sns_topic, set kms_master_key_id argument
+  iac_remediation_steps: For the resource aws_sns_topic, set kms_master_key_id argument
     to specify a key ID.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1414,9 +1414,9 @@ rules_metadata:
     settings. This rule will only review Terraform content and not any resources in
     your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-sse-existing-queue.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-sse-existing-queue.html>
     to enable encryption at rest for SQS queue.
-  remediation_steps_tf: For the resource aws_sqs_queue, set kms_master_key_id argument
+  iac_remediation_steps: For the resource aws_sqs_queue, set kms_master_key_id argument
     to specify a key ID.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1430,9 +1430,9 @@ rules_metadata:
     is not set to encrypt at rest, Cloudrail will highlight it as a violation.
   human_readable_logic: Cloudrail will identify all SNS topics within your AWS account
     and Terraform plan that are not configured to encrypt data at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html>
     to enable encryption at rest for SNS topic.
-  remediation_steps_tf: For the resource aws_sns_topic, set kms_master_key_id argument
+  iac_remediation_steps: For the resource aws_sns_topic, set kms_master_key_id argument
     to specify a key ID.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1448,9 +1448,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will review the SNS topics in your environment.
     If a topic is not set to be encrypted at rest using a customer-managed CMK, Cloudrail
     will highlight it as a violation.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/sns/latest/dg/sns-create-topic.html>
     to enable SNS topic encryption at rest using a customer-managed CMK.
-  remediation_steps_tf: For the aws_sns_topic resource, set kms_master_key_id argument
+  iac_remediation_steps: For the aws_sns_topic resource, set kms_master_key_id argument
     to use a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1464,9 +1464,9 @@ rules_metadata:
     is not set to encrypt at rest, Cloudrail will highlight it as a violation.
   human_readable_logic: Cloudrail will identify all SQS queues within your AWS account
     and Terraform plan that are not configured to encrypt data at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-sse-existing-queue.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-sse-existing-queue.html>
     to enable encryption at rest for SQS queue.
-  remediation_steps_tf: For the resource aws_sqs_queue, set kms_master_key_id argument
+  iac_remediation_steps: For the resource aws_sqs_queue, set kms_master_key_id argument
     to specify a key ID.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1481,9 +1481,9 @@ rules_metadata:
   human_readable_logic: Cloudrail uses checkov to review the aws_dynamodb_table's
     point_in_time_recovery setting. This rule will only review Terraform content and
     not any resources in your cloud environment.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/PointInTimeRecovery.html>
     to enable point-in-time recovery.
-  remediation_steps_tf: For the aws_dynamodb_table resource, in point_in_time_recovery
+  iac_remediation_steps: For the aws_dynamodb_table resource, in point_in_time_recovery
     block, set enabled argument to true.
   rule_type: non_context_aware
   security_layer: disaster_recovery
@@ -1498,7 +1498,7 @@ rules_metadata:
     of the Terraform code.
   human_readable_logic: Cloudrail uses checkov to review the AWS provider configuration
     in your Terraform code.
-  remediation_steps_tf: Remove access_key and secret_key arguments from AWS provider
+  iac_remediation_steps: Remove access_key and secret_key arguments from AWS provider
     block. Follow <https://registry.terraform.io/providers/hashicorp/aws/latest/docs>
     to provide credentials using secure methods.
   rule_type: non_context_aware
@@ -1515,9 +1515,9 @@ rules_metadata:
     encryption_type setting. This rule will only review Terraform content and not
     any resources in your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/streams/latest/dev/getting-started-with-sse.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/streams/latest/dev/getting-started-with-sse.html>
     to enable encryption for Kinesis streams.
-  remediation_steps_tf: For the aws_kinesis_stream resource, set the encryption_type
+  iac_remediation_steps: For the aws_kinesis_stream resource, set the encryption_type
     argument to "KMS" and set kms_key_id argument.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1533,10 +1533,10 @@ rules_metadata:
   human_readable_logic: Cloudrail uses checkov to review the aws_lambda_function's
     environment and look for AWS keys. This rule will only review Terraform content
     and not any resources in your cloud environment.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html>
     to update environment variables and remove hardcoded secrets. AWS access keys
     and secret keys are obtained from the function's execution role.
-  remediation_steps_tf: For the aws_lambda_function resource, in environment block,
+  iac_remediation_steps: For the aws_lambda_function resource, in environment block,
     remove variables for AWS access keys and secret keys. Use the role argument to
     assign permissions to the Lambda function.
   rule_type: non_context_aware
@@ -1553,9 +1553,9 @@ rules_metadata:
   human_readable_logic: Cloudrail uses checkov to review the aws_instance's user_data
     and look for AWS keys. This rule will only review Terraform content and not any
     resources in your cloud environment.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html#user-data-view-change>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/user-data.html#user-data-view-change>
     to update EC2 user data and remove AWS access key and secret key.
-  remediation_steps_tf: For the aws_instance resource, modify user_data or user_data_base64
+  iac_remediation_steps: For the aws_instance resource, modify user_data or user_data_base64
     arguments in order to remove AWS access key and secret key.
   rule_type: non_context_aware
   security_layer: iam
@@ -1571,9 +1571,9 @@ rules_metadata:
   human_readable_logic: Cloudrail uses checkov to review the SQS policy looking for
     statements with all actions included. This rule will only review Terraform content
     and not any resources in your cloud environment.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-add-permissions.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-add-permissions.html>
     to modify the access policy and remove wildcard actions.
-  remediation_steps_tf: For the aws_sqs_queue_policy resource, modify policy argument
+  iac_remediation_steps: For the aws_sqs_queue_policy resource, modify policy argument
     in order to avoid using wildcard actions.
   rule_type: non_context_aware
   security_layer: iam
@@ -1591,9 +1591,9 @@ rules_metadata:
     \ AWS account and Terraform plan. If the workgroup does not enforce the use of\
     \ the workgroup config, a violation will be highlighted. If it does, and the config\
     \ doesn\u2019t have encryption enabled, a violation will be highlighted as well."
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/athena/latest/ug/encrypting-query-results-stored-in-s3.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/athena/latest/ug/encrypting-query-results-stored-in-s3.html>
     to encrypt query results.
-  remediation_steps_tf: For the aws_athena_workgroup resource, in configuration, result_configuration,
+  iac_remediation_steps: For the aws_athena_workgroup resource, in configuration, result_configuration,
     encryption_configuration block, set the encryption_option argument. Additionally,
     in configuration, set enforce_workgroup_configuration to true.
   rule_type: non_context_aware
@@ -1613,9 +1613,9 @@ rules_metadata:
     enforce_workgroup_configuration setting. This rule will only review Terraform
     content and not any resources in your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/athena/latest/ug/encrypting-query-results-stored-in-s3.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/athena/latest/ug/encrypting-query-results-stored-in-s3.html>
     to encrypt query results.
-  remediation_steps_tf: For the aws_athena_workgroup resource, in configuration, result_configuration,
+  iac_remediation_steps: For the aws_athena_workgroup resource, in configuration, result_configuration,
     encryption_configuration block, set the encryption_option argument. Additionally,
     in configuration, set enforce_workgroup_configuration to true.
   rule_type: non_context_aware
@@ -1632,9 +1632,9 @@ rules_metadata:
   human_readable_logic: Cloudrail uses checkov to review the aws_elasticsearch_domain's
     domain_endpoint_options setting. This rule will only review Terraform content
     and not any resources in your cloud environment.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/ntn.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/ntn.html>
     to enable node-to-node encryption for Elasticsearch domain.
-  remediation_steps_tf: For the resource aws_elasticsearch_domain resource, configure
+  iac_remediation_steps: For the resource aws_elasticsearch_domain resource, configure
     node_to_node_encryption block with argument enabled = true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1651,9 +1651,9 @@ rules_metadata:
     TLS setting. This rule will only review Terraform content and not any resources
     in your cloud environment.
   is_deleted: true
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/documentdb/latest/developerguide/security.encryption.ssl.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/documentdb/latest/developerguide/security.encryption.ssl.html>
     to enable encryption in transit.
-  remediation_steps_tf: For the aws_docdb_cluster_parameter_group resource, in parameter
+  iac_remediation_steps: For the aws_docdb_cluster_parameter_group resource, in parameter
     block, ensure parameter "name" is equal to "tls" and "value" is equal to "enabled",
     or just remove those two parameter to create the DocDB cluster with encryption
     in transit enabled by default.
@@ -1672,9 +1672,9 @@ rules_metadata:
   human_readable_logic: Cloudrail uses checkov to review the aws_glue_data_catalog_encryption_settings
     setting. This rule will only review Terraform content and not any resources in
     your cloud environment.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/glue/latest/dg/encrypt-glue-data-catalog.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/glue/latest/dg/encrypt-glue-data-catalog.html>
     to enable encryption at rest.
-  remediation_steps_tf: For the aws_glue_data_catalog_encryption_settings resource,
+  iac_remediation_steps: For the aws_glue_data_catalog_encryption_settings resource,
     in data_catalog_encryption_settings, encryption_at_rest block, set catalog_encryption_mode
     argument to "SSE-KMS".
   rule_type: non_context_aware
@@ -1690,9 +1690,9 @@ rules_metadata:
     environment. If a load balancer is using HTTP, instead of HTTPS, Cloudrail will
     highlight it as a violation.
   severity: medium
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-application-load-balancer.html#configure-security-settings>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-application-load-balancer.html#configure-security-settings>
     to create a listener that uses HTTPS Protocol.
-  remediation_steps_tf: For the aws_lb_listener resource, set protocol argument to
+  iac_remediation_steps: For the aws_lb_listener resource, set protocol argument to
     HTTPS. Also set ssl_policy and certificate_arn arguments.
   rule_type: context_aware
   security_layer: networking
@@ -1715,12 +1715,12 @@ rules_metadata:
     - buckets
     - S3
     - bucket
-  remediation_steps_console:
-    template: vpc_endpoint_gateway_is_not_used_rule_remediation_steps_console
+  console_remediation_steps:
+    template: vpc_endpoint_gateway_is_not_used_rule_console_remediation_steps
     params:
     - S3
-  remediation_steps_tf:
-    template: vpc_endpoint_gateway_is_not_used_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: vpc_endpoint_gateway_is_not_used_rule_iac_remediation_steps
     params:
     - S3
     - S3
@@ -1745,12 +1745,12 @@ rules_metadata:
     - tables
     - DynamoDB
     - table
-  remediation_steps_console:
-    template: vpc_endpoint_gateway_is_not_used_rule_remediation_steps_console
+  console_remediation_steps:
+    template: vpc_endpoint_gateway_is_not_used_rule_console_remediation_steps
     params:
     - DynamoDB
-  remediation_steps_tf:
-    template: vpc_endpoint_gateway_is_not_used_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: vpc_endpoint_gateway_is_not_used_rule_iac_remediation_steps
     params:
     - DynamoDB
     - DynamoDB
@@ -1768,9 +1768,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all API Gateways within your AWS account
     and Terraform plan that have caching enabled and are not configured to be encrypted
     at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-caching.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-caching.html>
     to encrypt cache data.
-  remediation_steps_tf: For the aws_api_gateway_method_settings resource with caching
+  iac_remediation_steps: For the aws_api_gateway_method_settings resource with caching
     enabled, in settings block, set cache_data_encrypted argument to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1785,9 +1785,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will look at all existing users, and those about
     to be created, and determine if they are set to be used by humans. This determination
     is done by looking to see if the user has console access.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_manage.html#id_users_deleting>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_manage.html#id_users_deleting>
     to remove identified IAM users.
-  remediation_steps_tf: Remove the aws_iam_user resource for those identified IAM
+  iac_remediation_steps: Remove the aws_iam_user resource for those identified IAM
     users.
   rule_type: non_context_aware
   security_layer: iam
@@ -1805,10 +1805,10 @@ rules_metadata:
     \ defined in the account or shared with it privately. If it\u2019s not on that\
     \ list, and it\u2019s not an AMI currently being created by the TF plan, the EC2\
     \ resource will be flagged."
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instances-and-amis.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-instances-and-amis.html>
     in order to terminate flagged EC2 instances and create new EC2 instance with an
     approved AMI.
-  remediation_steps_tf: For the aws_instance resource, update the ami argument to
+  iac_remediation_steps: For the aws_instance resource, update the ami argument to
     set an approved AMI. Terraform will destroy and create new resources.
   rule_type: non_context_aware
   security_layer: code
@@ -1823,9 +1823,9 @@ rules_metadata:
     This rule will only flag a violation for resources that are not yet created.
   human_readable_logic: Cloudrail will identify all Redshift clusters in the Terraform
     plan that are going to be created and are not configured to encrypt data at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/redshift/latest/mgmt/changing-cluster-encryption.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/redshift/latest/mgmt/changing-cluster-encryption.html>
     to enable encryption at rest.
-  remediation_steps_tf: For the aws_redshift_cluster resource, set encrypted argument
+  iac_remediation_steps: For the aws_redshift_cluster resource, set encrypted argument
     to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1840,9 +1840,9 @@ rules_metadata:
     This rule will only flag a violation for resources that are not yet created.
   human_readable_logic: Cloudrail will identify all DocumentDB clusters in the Terraform
     plan that are going to be created and are not configured to encrypt data at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/documentdb/latest/developerguide/encryption-at-rest.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/documentdb/latest/developerguide/encryption-at-rest.html>
     to enable encryption at rest.
-  remediation_steps_tf: For the aws_docdb_cluster resource, set storage_encrypted
+  iac_remediation_steps: For the aws_docdb_cluster resource, set storage_encrypted
     argument to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1864,12 +1864,12 @@ rules_metadata:
     params:
     - buckets
     - S3
-  remediation_steps_console:
-    template: vpc_endpoint_route_table_exposure_rule_remediation_steps_console
+  console_remediation_steps:
+    template: vpc_endpoint_route_table_exposure_rule_console_remediation_steps
     params:
     - S3
-  remediation_steps_tf:
-    template: vpc_endpoint_route_table_exposure_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: vpc_endpoint_route_table_exposure_rule_iac_remediation_steps
     params:
     - S3
   rule_type: context_aware
@@ -1892,12 +1892,12 @@ rules_metadata:
     params:
     - tables
     - DynamoDB
-  remediation_steps_console:
-    template: vpc_endpoint_route_table_exposure_rule_remediation_steps_console
+  console_remediation_steps:
+    template: vpc_endpoint_route_table_exposure_rule_console_remediation_steps
     params:
     - DynamoDB
-  remediation_steps_tf:
-    template: vpc_endpoint_route_table_exposure_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: vpc_endpoint_route_table_exposure_rule_iac_remediation_steps
     params:
     - DynamoDB
   rule_type: context_aware
@@ -1915,9 +1915,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all DynamoDB Accelerator (DAX) clusters
     in the Terraform plan that are going to be created and are not configured to encrypt
     data at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAXEncryptionAtRest.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/DAXEncryptionAtRest.html>
     to enable encryption at rest.
-  remediation_steps_tf: For the aws_dax_cluster resource, in server_side_encryption
+  iac_remediation_steps: For the aws_dax_cluster resource, in server_side_encryption
     block, set enabled argument to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1935,9 +1935,9 @@ rules_metadata:
     that at least one VPC Endpoint for S3 exists. Then, for each private bucket in
     the region get the policy and check if a condition which contains the string "aws:SourceVpce"
     which would indicate that the policy is limiting the source of the requests.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies-vpc-endpoint.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies-vpc-endpoint.html>
     to modify S3 bucket policy and restrict access to a specific VPC endpoint.
-  remediation_steps_tf: For the aws_s3_bucket_policy resource, modify policy argument
+  iac_remediation_steps: For the aws_s3_bucket_policy resource, modify policy argument
     to include a condition "aws:SourceVpce" in order to restrict access to a specific
     VPC endpoint.
   rule_type: context_aware
@@ -1957,9 +1957,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all Athena workgroups within your
     Terraform plan that are going to be created and are encrypting at rest the query
     results without using customer-managed CMKs.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/athena/latest/ug/encrypting-query-results-stored-in-s3.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/athena/latest/ug/encrypting-query-results-stored-in-s3.html>
     to encrypt query results using a customer-managed CMK.
-  remediation_steps_tf: For the aws_athena_workgroup resource, in configuration, result_configuration,
+  iac_remediation_steps: For the aws_athena_workgroup resource, in configuration, result_configuration,
     encryption_configuration block, set the encryption_option argument to "SSE_KMS"
     and set kms_key_arn argument to use a customer-managed CMK. Additionally, in configuration,
     set enforce_workgroup_configuration to true.
@@ -1977,9 +1977,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all S3 buckets within your AWS account
     and Terraform plan that are not configured to encrypt data at rest and are not
     public.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/userguide/serv-side-encryption.html>
     to enable S3 bucket encryption at rest.
-  remediation_steps_tf: For the aws_s3_bucket resource, in server_side_encryption_configuration,
+  iac_remediation_steps: For the aws_s3_bucket resource, in server_side_encryption_configuration,
     rule, apply_server_side_encryption_by_default block, set sse_algorithm argument.
   rule_type: non_context_aware
   security_layer: encryption
@@ -1994,9 +1994,9 @@ rules_metadata:
     This rule is not context aware
   human_readable_logic: Cloudrail will review all S3 buckets within your AWS account
     and Terraform plan. If versioning is not enabled, this rule will trigger.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/userguide/manage-versioning-examples.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/userguide/manage-versioning-examples.html>
     to enable S3 bucket versioning.
-  remediation_steps_tf: For the aws_s3_bucket resource, in versioning block, set enabled
+  iac_remediation_steps: For the aws_s3_bucket resource, in versioning block, set enabled
     argument to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2014,9 +2014,9 @@ rules_metadata:
     created in a non-public bucket. Cloudrail will NOT access the S3 objects you already
     have in your cloud environment. Cloudrail also will not access the contents of
     the objects in your Terraform plan.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/user-guide/add-object-encryption.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/user-guide/add-object-encryption.html>
     to enable S3 bucket object encryption at rest.
-  remediation_steps_tf: For the aws_s3_bucket_object resource, set server_side_encryption
+  iac_remediation_steps: For the aws_s3_bucket_object resource, set server_side_encryption
     argument to "AES256".
   rule_type: non_context_aware
   security_layer: encryption
@@ -2033,9 +2033,9 @@ rules_metadata:
     that are not yet created.
   human_readable_logic: Cloudrail will identify all Cloudwatch Log Groups in the Terraform
     plan that are going to be created and are not configured to encrypt data at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html>
     to set encryption at rest using a customer-managed CMK.
-  remediation_steps_tf: For the aws_cloudwatch_log_group resource, set kms_key_id
+  iac_remediation_steps: For the aws_cloudwatch_log_group resource, set kms_key_id
     argument to use a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2052,9 +2052,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify CodeBuild projects within your AWS
     account and Terraform plan that are not configured to encrypt at rest using a
     customer-managed CMK.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/codebuild/latest/userguide/security-encryption.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/codebuild/latest/userguide/security-encryption.html>
     to set encryption at rest using a customer-managed CMK.
-  remediation_steps_tf: For the aws_codebuild_project resource, set encryption_key
+  iac_remediation_steps: For the aws_codebuild_project resource, set encryption_key
     argument to use a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2070,9 +2070,9 @@ rules_metadata:
     not yet created.
   human_readable_logic: Cloudrail will identify CloudTrail trails within your AWS
     account and Terraform plan that are not configured to encrypt at rest using SSE-KMS.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/awscloudtrail/latest/userguide/encrypting-cloudtrail-log-files-with-aws-kms.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/awscloudtrail/latest/userguide/encrypting-cloudtrail-log-files-with-aws-kms.html>
     to set encryption at rest using a customer-managed CMK.
-  remediation_steps_tf: For the aws_cloudtrail resource, set kms_key_id argument to
+  iac_remediation_steps: For the aws_cloudtrail resource, set kms_key_id argument to
     use a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2090,9 +2090,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all Elasticache replication groups
     in the Terraform plan that are going to be created and are not configured to be
     encrypted at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/at-rest-encryption.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/at-rest-encryption.html>
     to enable encryption at rest.
-  remediation_steps_tf: For the aws_elasticache_replication_group resource, set at_rest_encryption_enabled
+  iac_remediation_steps: For the aws_elasticache_replication_group resource, set at_rest_encryption_enabled
     argument to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2111,13 +2111,13 @@ rules_metadata:
     template: policy_wildcard_violation_rule_human_readable_logic_template
     params:
     - SQS queue
-  remediation_steps_console:
-    template: policy_wildcard_violation_rule_remediation_steps_console
+  console_remediation_steps:
+    template: policy_wildcard_violation_rule_console_remediation_steps
     params:
     - <https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-overview-of-managing-access.html>
     - SQS queue
-  remediation_steps_tf:
-    template: policy_wildcard_violation_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: policy_wildcard_violation_rule_iac_remediation_steps
     params:
     - aws_sqs_queue_policy
   rule_type: non_context_aware
@@ -2136,9 +2136,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all Elasticache replication groups
     in the Terraform plan that are going to be created and are not configured to be
     encrypted in transit.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/in-transit-encryption.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/in-transit-encryption.html>
     to enable encryption in transit.
-  remediation_steps_tf: For the aws_elasticache_replication_group resource, set the
+  iac_remediation_steps: For the aws_elasticache_replication_group resource, set the
     transit_encryption_enabled argument to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2153,9 +2153,9 @@ rules_metadata:
     This rule will only flag a violation for resources that are not yet created.
   human_readable_logic: Cloudrail will identify all Neptune clusters in the Terraform
     plan that are going to be created and are not configured to be encrypted at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/neptune/latest/userguide/encrypt.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/neptune/latest/userguide/encrypt.html>
     to enable encryption at rest.
-  remediation_steps_tf: For the aws_neptune_cluster resource, set storage_encrypted
+  iac_remediation_steps: For the aws_neptune_cluster resource, set storage_encrypted
     argument to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2173,9 +2173,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all Neptune clusters in the Terraform
     plan that are going to be created and are not configured to encrypt data at rest
     using a customer-managed CMK.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/neptune/latest/userguide/encrypt.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/neptune/latest/userguide/encrypt.html>
     to enable encryption at rest.
-  remediation_steps_tf: For the aws_neptune_cluster resource, set storage_encrypted
+  iac_remediation_steps: For the aws_neptune_cluster resource, set storage_encrypted
     argument to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2194,13 +2194,13 @@ rules_metadata:
     template: policy_wildcard_violation_rule_human_readable_logic_template
     params:
     - ECR repository
-  remediation_steps_console:
-    template: policy_wildcard_violation_rule_remediation_steps_console
+  console_remediation_steps:
+    template: policy_wildcard_violation_rule_console_remediation_steps
     params:
     - <https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-policies.html>
     - ECR repository
-  remediation_steps_tf:
-    template: policy_wildcard_violation_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: policy_wildcard_violation_rule_iac_remediation_steps
     params:
     - aws_ecr_repository_policy
   rule_type: non_context_aware
@@ -2220,13 +2220,13 @@ rules_metadata:
     template: policy_wildcard_violation_rule_human_readable_logic_template
     params:
     - S3 bucket
-  remediation_steps_console:
-    template: policy_wildcard_violation_rule_remediation_steps_console
+  console_remediation_steps:
+    template: policy_wildcard_violation_rule_console_remediation_steps
     params:
     - <https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html>
     - S3 bucket
-  remediation_steps_tf:
-    template: policy_wildcard_violation_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: policy_wildcard_violation_rule_iac_remediation_steps
     params:
     - aws_s3_bucket_policy
   rule_type: non_context_aware
@@ -2246,13 +2246,13 @@ rules_metadata:
     template: policy_wildcard_violation_rule_human_readable_logic_template
     params:
     - KMS keys
-  remediation_steps_console:
-    template: policy_wildcard_violation_rule_remediation_steps_console
+  console_remediation_steps:
+    template: policy_wildcard_violation_rule_console_remediation_steps
     params:
     - <https://docs.aws.amazon.com/kms/latest/developerguide/key-policies.html>
     - key policy
-  remediation_steps_tf:
-    template: policy_wildcard_violation_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: policy_wildcard_violation_rule_iac_remediation_steps
     params:
     - aws_kms_key
   rule_type: non_context_aware
@@ -2272,13 +2272,13 @@ rules_metadata:
     template: policy_wildcard_violation_rule_human_readable_logic_template
     params:
     - API Gateway endpoint
-  remediation_steps_console:
-    template: policy_wildcard_violation_rule_remediation_steps_console
+  console_remediation_steps:
+    template: policy_wildcard_violation_rule_console_remediation_steps
     params:
     - <https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-resource-policies-examples.html>
     - API Gateway
-  remediation_steps_tf:
-    template: policy_wildcard_violation_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: policy_wildcard_violation_rule_iac_remediation_steps
     params:
     - aws_api_gateway_rest_api_policy
   rule_type: non_context_aware
@@ -2298,13 +2298,13 @@ rules_metadata:
     template: policy_wildcard_violation_rule_human_readable_logic_template
     params:
     - CloudWatch Logs destination
-  remediation_steps_console:
-    template: policy_wildcard_violation_rule_remediation_steps_console
+  console_remediation_steps:
+    template: policy_wildcard_violation_rule_console_remediation_steps
     params:
     - <https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/iam-access-control-overview-cwl.html#resource-based-policies-cwl>
     - CloudWatch Logs destination
-  remediation_steps_tf:
-    template: policy_wildcard_violation_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: policy_wildcard_violation_rule_iac_remediation_steps
     params:
     - aws_cloudwatch_log_destination_policy
   rule_type: non_context_aware
@@ -2324,13 +2324,13 @@ rules_metadata:
     template: policy_wildcard_violation_rule_human_readable_logic_template
     params:
     - Elasticsearch Service domain
-  remediation_steps_console:
-    template: policy_wildcard_violation_rule_remediation_steps_console
+  console_remediation_steps:
+    template: policy_wildcard_violation_rule_console_remediation_steps
     params:
     - <https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-ac.html#es-ac-types-resource>
     - Elasticsearch Service domain
-  remediation_steps_tf:
-    template: policy_wildcard_violation_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: policy_wildcard_violation_rule_iac_remediation_steps
     params:
     - aws_elasticsearch_domain_policy
   rule_type: non_context_aware
@@ -2350,13 +2350,13 @@ rules_metadata:
     template: policy_wildcard_violation_rule_human_readable_logic_template
     params:
     - EFS file system
-  remediation_steps_console:
-    template: policy_wildcard_violation_rule_remediation_steps_console
+  console_remediation_steps:
+    template: policy_wildcard_violation_rule_console_remediation_steps
     params:
     - <https://docs.aws.amazon.com/efs/latest/ug/access-control-overview.html#access-control-manage-access-intro-resource-policies>
     - EFS file system
-  remediation_steps_tf:
-    template: policy_wildcard_violation_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: policy_wildcard_violation_rule_iac_remediation_steps
     params:
     - aws_efs_file_system_policy
   rule_type: non_context_aware
@@ -2376,13 +2376,13 @@ rules_metadata:
     template: policy_wildcard_violation_rule_human_readable_logic_template
     params:
     - S3 Glacier vault
-  remediation_steps_console:
-    template: policy_wildcard_violation_rule_remediation_steps_console
+  console_remediation_steps:
+    template: policy_wildcard_violation_rule_console_remediation_steps
     params:
     - <https://docs.aws.amazon.com/amazonglacier/latest/dev/vault-access-policy.html>
     - S3 Glacier vault
-  remediation_steps_tf:
-    template: policy_wildcard_violation_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: policy_wildcard_violation_rule_iac_remediation_steps
     params:
     - aws_glacier_vault
   rule_type: non_context_aware
@@ -2402,13 +2402,13 @@ rules_metadata:
     template: policy_wildcard_violation_rule_human_readable_logic_template
     params:
     - Secrets Manager secret
-  remediation_steps_console:
-    template: policy_wildcard_violation_rule_remediation_steps_console
+  console_remediation_steps:
+    template: policy_wildcard_violation_rule_console_remediation_steps
     params:
     - <https://docs.aws.amazon.com/secretsmanager/latest/userguide/auth-and-access_policy-types.html>
     - Secrets Manager secret
-  remediation_steps_tf:
-    template: policy_wildcard_violation_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: policy_wildcard_violation_rule_iac_remediation_steps
     params:
     - aws_secretsmanager_secret_policy
   rule_type: non_context_aware
@@ -2427,9 +2427,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify Secrets Manager secrets within your
     AWS account and Terraform plan that are not configured to be encrypted at rest
     using a customer-managed CMK. Cloudrail does not access the secrets contents themselves.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/secretsmanager/latest/userguide/tutorials_basic.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/secretsmanager/latest/userguide/tutorials_basic.html>
     to set encryption at rest using a customer-managed CMK.
-  remediation_steps_tf: For the aws_secretsmanager_secret resource, set kms_key_id
+  iac_remediation_steps: For the aws_secretsmanager_secret resource, set kms_key_id
     argument to use a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2448,9 +2448,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will review the Glue data catalog policies being
     created in your environment or currently in use. If a policy is using wildcard
     actions, Cloudrail will highlight it as a violation.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/glue/latest/dg/glue-resource-policies.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/glue/latest/dg/glue-resource-policies.html>
     to modify the policy and ensure it is not using wildcard actions.
-  remediation_steps_tf: For the aws_glue_resource_policy resource, ensure the attached
+  iac_remediation_steps: For the aws_glue_resource_policy resource, ensure the attached
     policy does not contain wildcard actions.
   rule_type: non_context_aware
   security_layer: iam
@@ -2466,9 +2466,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all DocumentDB clusters within your
     AWS account and Terraform plan that are not configured to perform encryption in
     transit.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/documentdb/latest/developerguide/security.encryption.ssl.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/documentdb/latest/developerguide/security.encryption.ssl.html>
     to enable encryption in transit.
-  remediation_steps_tf: For the aws_docdb_cluster_parameter_group resource, in parameter
+  iac_remediation_steps: For the aws_docdb_cluster_parameter_group resource, in parameter
     block, ensure parameter "name" is equal to "tls" and "value" is equal to "enabled",
     or just remove those two parameter to create the DocDB cluster with encryption
     in transit enabled by default.
@@ -2486,9 +2486,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify SQS queues within your AWS account
     and Terraform plan that are not configured to be encrypted at rest using a customer-managed
     CMK.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-sse-existing-queue.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-configure-sse-existing-queue.html>
     to enable encryption at rest using a customer-managed CMK.
-  remediation_steps_tf: For the aws_sqs_queue resource, set the argument kms_master_key_id
+  iac_remediation_steps: For the aws_sqs_queue resource, set the argument kms_master_key_id
     to use a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2506,9 +2506,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all DocumentDB clusters in the Terraform
     plan that are going to be created and are not configured to encrypt data at rest
     using a customer-managed CMK.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/documentdb/latest/developerguide/encryption-at-rest.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/documentdb/latest/developerguide/encryption-at-rest.html>
     to enable encryption at rest using a customer-managed CMK.
-  remediation_steps_tf: For the aws_docdb_cluster resource, set the argument storage_encrypted
+  iac_remediation_steps: For the aws_docdb_cluster resource, set the argument storage_encrypted
     to true and set the argument kms_key_id to use a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2531,9 +2531,9 @@ rules_metadata:
     can be used to achieve privilege escalation, and Cloudrail will look for them.
     If any are found, a violation will be flagged with specific information about
     the problematic permissions.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_create-console.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_create-console.html>
     to update the IAM policy permissions.
-  remediation_steps_tf: For the aws_iam_policy resource, set policy argument to use
+  iac_remediation_steps: For the aws_iam_policy resource, set policy argument to use
     a policy with proper permissions.
   rule_type: context_aware
   security_layer: iam
@@ -2549,9 +2549,9 @@ rules_metadata:
     created.
   human_readable_logic: Cloudrail will identify all EFS filesystems in the Terraform
     plan that are going to be created and are not configured to be encrypted at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/efs/latest/ug/encryption-at-rest.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/efs/latest/ug/encryption-at-rest.html>
     to enable encryption at rest for EFS filesystems.
-  remediation_steps_tf: For the aws_efs_file_system resource, set encrypted argument
+  iac_remediation_steps: For the aws_efs_file_system resource, set encrypted argument
     to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2567,9 +2567,9 @@ rules_metadata:
     it as a violation.
   human_readable_logic: Cloudrail will identify all API Gateways within your AWS account
     and Terraform plan that have a domain configured and allowing TLS v1.0 or v1.1.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-custom-domain-tls-version.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-custom-domain-tls-version.html>
     to set a security policy that uses TLS v1.2.
-  remediation_steps_tf: For the aws_api_gateway_domain_name resource, set the argument
+  iac_remediation_steps: For the aws_api_gateway_domain_name resource, set the argument
     security_policy argument to "TLS_1_2".
   rule_type: non_context_aware
   security_layer: encryption
@@ -2587,9 +2587,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all CloudFront distributions in the
     Terraform plan with cache behavior blocks not configured to perform field-level
     encryption.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/field-level-encryption.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/field-level-encryption.html>
     to enable field-level encryption.
-  remediation_steps_tf: For the aws_cloudfront_distribution resource, in default_cache_behavior
+  iac_remediation_steps: For the aws_cloudfront_distribution resource, in default_cache_behavior
     (and/or ordered_cache_behavior) block, set the field_level_encryption_id argument
     to the Field Level encryption configuration ID.
   rule_type: non_context_aware
@@ -2604,9 +2604,9 @@ rules_metadata:
     stream is not set to encrypt at rest, Cloudrail will highlight it as a violation.
   human_readable_logic: Cloudrail will identify all Kinesis streams within your AWS
     account and Terraform plan that are not configured to be encrypted at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/streams/latest/dev/getting-started-with-sse.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/streams/latest/dev/getting-started-with-sse.html>
     to enable encryption for Kinesis streams.
-  remediation_steps_tf: For the aws_kinesis_stream resource, set the encryption_type
+  iac_remediation_steps: For the aws_kinesis_stream resource, set the encryption_type
     argument to "KMS" and set kms_key_id argument.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2623,9 +2623,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify X-Ray encryption config within your
     AWS account and Terraform plan that is not configured to encrypt at rest using
     a customer-managed CMK.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/xray/latest/devguide/xray-console-encryption.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/xray/latest/devguide/xray-console-encryption.html>
     to enable encryption using a customer-managed CMK.
-  remediation_steps_tf: For the aws_xray_encryption_config resource, set the argument
+  iac_remediation_steps: For the aws_xray_encryption_config resource, set the argument
     type to "KMS" and set key_id argument to a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2641,9 +2641,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all Kinesis Firehose delivery streams
     within your AWS account and Terraform plan that are not configured to be encrypted
     at rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/firehose/latest/dev/create-configure.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/firehose/latest/dev/create-configure.html>
     to enable encryption for Kinesis Data Firehose.
-  remediation_steps_tf: For the aws_kinesis_firehose_delivery_stream resource, in
+  iac_remediation_steps: For the aws_kinesis_firehose_delivery_stream resource, in
     server_side_encryption block, set the enable argument to true.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2661,9 +2661,9 @@ rules_metadata:
     params:
     - This rule checks to ensure your password policy has a maximum age set
     - then checks password maximum age is 90 days or less.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to require a password expiration of 90 days or less.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     max_password_age argument to 90.
   rule_type: non_context_aware
   security_layer: iam
@@ -2682,9 +2682,9 @@ rules_metadata:
     params:
     - This rule checks to ensure your password policy is at least 14 characters in
       length (longer preferred).
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to require a Password minimum length of at least 14 characters.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     minimum_password_length argument to at least 14.
   rule_type: non_context_aware
   security_layer: iam
@@ -2701,9 +2701,9 @@ rules_metadata:
     template: iam_account_password_policy_rule_human_readable_logic_template
     params:
     - If you do not require lowercase characters this rule will trigger.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to require at least one lowercase letter.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     require_lowercase_characters argument to true.
   rule_type: non_context_aware
   security_layer: iam
@@ -2720,9 +2720,9 @@ rules_metadata:
     params:
     - If you do not require numbers in this password policy
     - the rule will trigger.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to require at least one number.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     require_numbers argument to true.
   rule_type: non_context_aware
   security_layer: iam
@@ -2741,9 +2741,9 @@ rules_metadata:
     - AWS allows you to set a password reuse prevention between 1-24
     - this means users can not reuse the same password when the MaxPasswordAge expires.
       Setting this to 24 enforces users cannot re-use their passwords.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to set Prevent password reuse to 24.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     password_reuse_prevention argument to 24.
   rule_type: non_context_aware
   security_layer: iam
@@ -2759,9 +2759,9 @@ rules_metadata:
     template: iam_account_password_policy_rule_human_readable_logic_template
     params:
     - If the policy does not require the use of symbols this rule will trigger.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to set a proper password policy.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     require_symbols argument to true.
   rule_type: non_context_aware
   security_layer: iam
@@ -2779,9 +2779,9 @@ rules_metadata:
     params:
     - If the policy does not require the use of uppercase characters this rule will
       trigger.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_passwords_account-policy.html#IAMPasswordPolicy>
     to set a proper password policy.
-  remediation_steps_tf: For the aws_iam_account_password_policy resource, set the
+  iac_remediation_steps: For the aws_iam_account_password_policy resource, set the
     require_uppercase_characters argument to true.
   rule_type: non_context_aware
   security_layer: iam
@@ -2798,9 +2798,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all Workspaces in the Terraform plan
     that are going to be created and are not configured to encrypt root volume at
     rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/workspaces/latest/adminguide/encrypt-workspaces.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/workspaces/latest/adminguide/encrypt-workspaces.html>
     to encrypt root volumes of Workspaces.
-  remediation_steps_tf: For the aws_workspaces_workspace resource, set the root_volume_encryption_enabled
+  iac_remediation_steps: For the aws_workspaces_workspace resource, set the root_volume_encryption_enabled
     argument to true and set a KMS key in volume_encryption_key argument.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2818,9 +2818,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all Workspaces in the Terraform plan
     that are going to be created and are not configured to encrypt root volume at
     rest using a customer-managed CMK.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/workspaces/latest/adminguide/encrypt-workspaces.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/workspaces/latest/adminguide/encrypt-workspaces.html>
     to encrypt root volumes of Workspaces using a customer-managed CMK.
-  remediation_steps_tf: For the aws_workspaces_workspace resource, set the root_volume_encryption_enabled
+  iac_remediation_steps: For the aws_workspaces_workspace resource, set the root_volume_encryption_enabled
     argument to true and set the volume_encryption_key argument to use a customer-managed
     CMK ARN.
   rule_type: non_context_aware
@@ -2839,9 +2839,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all Workspaces in the Terraform plan
     that are going to be created and are not configured to encrypt user volume at
     rest using a customer-managed CMK.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/workspaces/latest/adminguide/encrypt-workspaces.html#encrypt_workspace>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/workspaces/latest/adminguide/encrypt-workspaces.html#encrypt_workspace>
     to enable user volume encryption at rest using a customer-managed CMK.
-  remediation_steps_tf: For the aws_workspaces_workspace resource, set volume_encryption_key
+  iac_remediation_steps: For the aws_workspaces_workspace resource, set volume_encryption_key
     argument to use a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2858,9 +2858,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify CodeBuild report groups within your
     AWS account and Terraform plan that are not configured to encrypt at rest using
     a customer-managed CMK.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/codebuild/latest/userguide/test-report-group-create-console.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/codebuild/latest/userguide/test-report-group-create-console.html>
     to enable report group encryption at rest using a customer-managed CMK.
-  remediation_steps_tf: For the aws_codebuild_report_group resource, in export_config,
+  iac_remediation_steps: For the aws_codebuild_report_group resource, in export_config,
     s3_destination block, set encryption_key argument to use a customer-managed CMK
     ARN.
   rule_type: non_context_aware
@@ -2878,9 +2878,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all Workspaces in the Terraform plan
     that are going to be created and are not configured to encrypt user volume at
     rest.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/workspaces/latest/adminguide/encrypt-workspaces.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/workspaces/latest/adminguide/encrypt-workspaces.html>
     to encrypt user volumes of Workspaces.
-  remediation_steps_tf: For the aws_workspaces_workspace resource, set the user_volume_encryption_enabled
+  iac_remediation_steps: For the aws_workspaces_workspace resource, set the user_volume_encryption_enabled
     argument to true and set a KMS key in volume_encryption_key argument.
   rule_type: non_context_aware
   security_layer: encryption
@@ -2896,9 +2896,9 @@ rules_metadata:
   human_readable_logic: "For each S3 bucket, Cloudrail will look at the policy. If\
     \ a policy is missing, or there is one but there\u2019s no denial of insecure\
     \ traffic (aws:SecureTransport == false), a violation will be highlighted."
-  remediation_steps_console: Follow the guide at <https://aws.amazon.com/premiumsupport/knowledge-center/s3-bucket-policy-for-config-rule/>
+  console_remediation_steps: Follow the guide at <https://aws.amazon.com/premiumsupport/knowledge-center/s3-bucket-policy-for-config-rule/>
     to create an S3 bucket policy that enforces the use of HTTPS.
-  remediation_steps_tf: For the aws_s3_bucket_policy resource, ensure the policy denies
+  iac_remediation_steps: For the aws_s3_bucket_policy resource, ensure the policy denies
     all actions on the bucket and objects when the request meets the condition (aws:SecureTransport
     == false).
   rule_type: non_context_aware
@@ -2915,9 +2915,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all cloudtrail trails within your
     AWS account. If we detect a trail, we will look to see if log validation is set
     on the trail, if there is no validation enabled, this rule will fire.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-enabling.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-log-file-validation-enabling.html>
     to enable log file integrity validation.
-  remediation_steps_tf: For the aws_cloudtrail resource, set the enable_log_file_validation
+  iac_remediation_steps: For the aws_cloudtrail resource, set the enable_log_file_validation
     argument to true.
   rule_type: non_context_aware
   security_layer: logging
@@ -2935,9 +2935,9 @@ rules_metadata:
     retentionInDays\u201D key exists in each of the responses. If this key does not\
     \ exist, that means there is no retention policy set. This would allow logs to\
     \ be delivered and stored in this log group forever."
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html>
     to set a log data retention policy.
-  remediation_steps_tf: For the aws_cloudwatch_log_group resource, set the retention_in_days
+  iac_remediation_steps: For the aws_cloudwatch_log_group resource, set the retention_in_days
     argument to the number of days you want to retain log events.
   rule_type: non_context_aware
   security_layer: logging
@@ -2959,9 +2959,9 @@ rules_metadata:
     \ If we find an outbound rule that does not have a target CIDR of \u20180.0.0.0/0\u2019\
     \ (default), we will check to see if there is no description set. If there is\
     \ no description, this rule will trigger."
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html>
     to update the security group or security group rules description field.
-  remediation_steps_tf: For the aws_security_group and aws_security_group_rule resources,
+  iac_remediation_steps: For the aws_security_group and aws_security_group_rule resources,
     set description argument with a proper value.
   rule_type: non_context_aware
   security_layer: networking
@@ -2980,13 +2980,13 @@ rules_metadata:
   human_readable_logic: Cloudrail will review the Lambda function policies being created
     in your environment or currently in use. If a policy is using wildcard actions,
     Cloudrail will highlight it as a violation.
-  remediation_steps_console:
-    template: policy_wildcard_violation_rule_remediation_steps_console
+  console_remediation_steps:
+    template: policy_wildcard_violation_rule_console_remediation_steps
     params:
     - <https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html>
     - Lambda function
-  remediation_steps_tf:
-    template: policy_wildcard_violation_rule_remediation_steps_tf
+  iac_remediation_steps:
+    template: policy_wildcard_violation_rule_iac_remediation_steps
     params:
     - aws_lambda_permission
   rule_type: non_context_aware
@@ -3007,10 +3007,10 @@ rules_metadata:
     login or access keys) or a role with a trust policy (meaning - someone can assume
     the role). This means you ignore users that no one can login as, or roles that
     are only internal to the account (can be used by EC2 for example).
-  remediation_steps_console: Find the specific user, group or role in the IAM tab
+  console_remediation_steps: Find the specific user, group or role in the IAM tab
     and change the policies assigned to it. Choose a more restrictive policy or create
     a custom one.
-  remediation_steps_tf: 'For role: review the aws_iam_role_policy_attachment and switch
+  iac_remediation_steps: 'For role: review the aws_iam_role_policy_attachment and switch
     to a policy that is more restrictive. For user: review aws_iam_user_policy_attachment,
     and for a group aws_iam_group_policy_attachment.'
   rule_type: non_context_aware
@@ -3054,9 +3054,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all ECS task definitions in the Terraform
     plan. It will check if the task definition is using an EFS volume, and if so,
     it will check if it is enabled to perform encryption in transit.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/efs-volumes.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonECS/latest/developerguide/efs-volumes.html>
     to enable encryption for Amazon EFS data in transit between ECS host and EFS server.
-  remediation_steps_tf: For the aws_ecs_task_definition resource, in volume, efs_volume_configuration
+  iac_remediation_steps: For the aws_ecs_task_definition resource, in volume, efs_volume_configuration
     block, set transit_encryption argument to ENABLED.
   rule_type: non_context_aware
   security_layer: encryption
@@ -3078,10 +3078,10 @@ rules_metadata:
     the existence of a public IP address. By doing this context-based analysis, Cloudrail
     ensures that only databases which can truly be accessed from the Internet are
     highlighted.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/neptune/latest/userguide/security-vpc-security-group.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/neptune/latest/userguide/security-vpc-security-group.html>
     to modify Neptune database Security Groups to block traffic from publicly-accessible
     AWS resources.
-  remediation_steps_tf: For the aws_neptune_cluster resource, set vpc_security_group_ids
+  iac_remediation_steps: For the aws_neptune_cluster resource, set vpc_security_group_ids
     or cluster_security_groups arguments to use a Security Group that blocks traffic
     from publicly-accessible AWS resources.
   rule_type: context_aware
@@ -3101,9 +3101,9 @@ rules_metadata:
     \ parameters secrets within your AWS account and Terraform plan that are not configured\
     \ to be encrypted at rest using a customer-managed CMK. Cloudrail DOES NOT access\
     \ the secret\u2019s contents themselves."
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-create-console.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/systems-manager/latest/userguide/parameter-create-console.html>
     to provide a customer-managed CMK ARN for the SecureString parameter.
-  remediation_steps_tf: For the aws_ssm_parameter resource, set key_id argument to
+  iac_remediation_steps: For the aws_ssm_parameter resource, set key_id argument to
     a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -3125,12 +3125,12 @@ rules_metadata:
     params:
     - SQS
     - queue
-  remediation_steps_console:
-    template: vpc_endpoint_exposure_remediation_steps_console_template
+  console_remediation_steps:
+    template: vpc_endpoint_exposure_console_remediation_steps_template
     params:
     - SQS
-  remediation_steps_tf:
-    template: vpc_endpoint_exposure_remediation_steps_tf_template
+  iac_remediation_steps:
+    template: vpc_endpoint_exposure_iac_remediation_steps_template
     params:
     - SQS
   rule_type: context_aware
@@ -3149,9 +3149,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will iterate over all resources in the cloud account
     and Terraform code, and for those that support tags, will check to see if they
     have any tags set other than the Name tag.
-  remediation_steps_console: Access the specific resource in the AWS console and add
+  console_remediation_steps: Access the specific resource in the AWS console and add
     tags.
-  remediation_steps_tf: Add a tags section to the resource with at least one tag beyond
+  iac_remediation_steps: Add a tags section to the resource with at least one tag beyond
     the Name tag.
   rule_type: non_context_aware
   security_layer: tagging
@@ -3168,9 +3168,9 @@ rules_metadata:
     \ AWS and Terraform. For each function, it will try to find a matching log group,\
     \ or will assume AWS will create one automatically if a specific one is not provided.\
     \ It will then review the matching log group\u2019s retention settings."
-  remediation_steps_console: Find the specific log group for the Lambda function,
+  console_remediation_steps: Find the specific log group for the Lambda function,
     and change its retention by following <https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/Working-with-log-groups-and-streams.html#SettingLogRetention>.
-  remediation_steps_tf: Update the retention_in_days field in the aws_cloudwatch_log_group
+  iac_remediation_steps: Update the retention_in_days field in the aws_cloudwatch_log_group
     resource. If you haven't specified one explicitly, create an aws_cloudwatch_log_group
     resource for the Lambda function as part of the Terraform code.
   rule_type: context_aware
@@ -3194,12 +3194,12 @@ rules_metadata:
     params:
     - SQS
     - queue
-  remediation_steps_console:
-    template: vpc_endpoint_subnet_exposure_remediation_steps_console_template
+  console_remediation_steps:
+    template: vpc_endpoint_subnet_exposure_console_remediation_steps_template
     params:
     - SQS
-  remediation_steps_tf:
-    template: vpc_endpoint_subnet_exposure_remediation_steps_tf_template
+  iac_remediation_steps:
+    template: vpc_endpoint_subnet_exposure_iac_remediation_steps_template
     params:
     - SQS
   rule_type: context_aware
@@ -3223,12 +3223,12 @@ rules_metadata:
     params:
     - EC2
     - instance
-  remediation_steps_console:
-    template: vpc_endpoint_exposure_remediation_steps_console_template
+  console_remediation_steps:
+    template: vpc_endpoint_exposure_console_remediation_steps_template
     params:
     - EC2
-  remediation_steps_tf:
-    template: vpc_endpoint_exposure_remediation_steps_tf_template
+  iac_remediation_steps:
+    template: vpc_endpoint_exposure_iac_remediation_steps_template
     params:
     - EC2
   rule_type: context_aware
@@ -3248,9 +3248,9 @@ rules_metadata:
   human_readable_logic: Cloudrail will identify all Sagemaker Endpoint Configurations
     in the Terraform plan that are going to be created and are not configured to encrypt
     data at rest.
-  remediation_steps_console: "In Amazon Sagemaker, Inference, Endpoint configurations,\
+  console_remediation_steps: "In Amazon Sagemaker, Inference, Endpoint configurations,\
     \ set \u201CEncryption key\u201D to use a Key ARN."
-  remediation_steps_tf: For the aws_sagemaker_endpoint_configuration resource, set
+  iac_remediation_steps: For the aws_sagemaker_endpoint_configuration resource, set
     kms_key_id argument to a Key ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -3265,8 +3265,8 @@ rules_metadata:
     If an instance is not set to encrypt artifacts at rest using customer-managed CMK, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will identify all Sagemaker Notebook instances in the Terraform plan that are going to be created and are not configured to encrypt artifacts at rest using a customer-managed CMK.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/sagemaker/latest/dg/howitworks-create-ws.html> to enable encryption at rest using a customer-managed CMK.
-  remediation_steps_tf: For the aws_sagemaker_notebook_instance resource, set kms_key_id argument to a customer-managed CMK ARN.
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/sagemaker/latest/dg/howitworks-create-ws.html> to enable encryption at rest using a customer-managed CMK.
+  iac_remediation_steps: For the aws_sagemaker_notebook_instance resource, set kms_key_id argument to a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
   resource_type:
@@ -3282,11 +3282,11 @@ rules_metadata:
     one, it will look at the assume role policy to determine if any of the principals
     are too wide. If a wide principal is found (like "*"), without any conditions,
     the role will be flagged.
-  remediation_steps_console: 'Follow AWS''s guidance on how to write secure IAM role
+  console_remediation_steps: 'Follow AWS''s guidance on how to write secure IAM role
     trust policies: <https://aws.amazon.com/blogs/security/how-to-use-trust-policies-with-iam-roles/>
-    remediation_steps_tf: For the aws_sagemaker_endpoint_configuration resource, set
+    iac_remediation_steps: For the aws_sagemaker_endpoint_configuration resource, set
     kms_key_id argument to a Key ARN.'
-  remediation_steps_tf: Edit the assume_role_policy under the aws_iam_role, and either
+  iac_remediation_steps: Edit the assume_role_policy under the aws_iam_role, and either
     make the Principal more specific or add the use of a condition in the policy.
   rule_type: non_context_aware
   security_layer: iam
@@ -3301,9 +3301,9 @@ rules_metadata:
     Cloudrail will highlight it as a violation.
   human_readable_logic: Cloudrail will identify all RDS cluster instances in the Terraform plan that are going
     to be created and are not configured to encrypt the performance insights using a customer-managed CMK.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_PerfInsights.Enabling.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/USER_PerfInsights.Enabling.html>
     to enable Performance Insights encryption using a customer-managed CMK.
-  remediation_steps_tf: For the aws_rds_cluster_instance resource, set performance_insights_kms_key_id argument to use a customer-managed CMK ARN.
+  iac_remediation_steps: For the aws_rds_cluster_instance resource, set performance_insights_kms_key_id argument to use a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
   resource_type:
@@ -3321,9 +3321,9 @@ rules_metadata:
     It will then attempt to determine if the instance can be accessed from the Internet.
     This determination will take into account the security groups, subnet information, routing and other information, instead of relying solely on the existence of a public IP address.
     By doing this context-based analysis, Cloudrail ensures that only instances which can truly be accessed from the Internet are highlighted.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Security.html>, under the section "Network security for AWS Database Migration Service" to modify DMS Replication instances Security Groups
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/dms/latest/userguide/CHAP_Security.html>, under the section "Network security for AWS Database Migration Service" to modify DMS Replication instances Security Groups
     to block traffic from publicly-accessible AWS resources.
-  remediation_steps_tf: For the dms_replication_instance resource, set vpc_security_group_ids arguments to use a Security Group that blocks traffic from publicly-accessible AWS resources.
+  iac_remediation_steps: For the dms_replication_instance resource, set vpc_security_group_ids arguments to use a Security Group that blocks traffic from publicly-accessible AWS resources.
   rule_type: context_aware
   security_layer: networking
   resource_type:
@@ -3341,10 +3341,10 @@ rules_metadata:
     API Gateways and if there is any it will check the execution role in the Lambda Function to verify if access to S3
     is not limited to certain buckets, Cloudrail will also consider the bucket policy to flag only those buckets that
     can be accessed by the Lambda Function.
-  remediation_steps_console:
+  console_remediation_steps:
     Limit the actions and resources in the execution role policy of Lambda Function to the minimum possible,
     avoiding the use of wildcards.
-  remediation_steps_tf: Locate the aws_iam_policy resource associated to execution role of the Lambda Function and
+  iac_remediation_steps: Locate the aws_iam_policy resource associated to execution role of the Lambda Function and
     set the actions and resources to the minimum possible, avoiding the use of wildcards.
   rule_type: context_aware
   security_layer: iam
@@ -3360,9 +3360,9 @@ rules_metadata:
     If an instance uses direct internet access, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will identify all Sagemaker Notebook instances which use direct internet access.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/sagemaker/latest/dg/appendix-notebook-and-internet-access.html> to
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/sagemaker/latest/dg/appendix-notebook-and-internet-access.html> to
     configure your instance with some VPC, and disable the "direct internet access" option while creating the Sagemaker Notebook instance.
-  remediation_steps_tf: For the aws_sagemaker_notebook_instance resource, set direct_internet_access argument to "Disabled", and add subnet_id and
+  iac_remediation_steps: For the aws_sagemaker_notebook_instance resource, set direct_internet_access argument to "Disabled", and add subnet_id and
     security_groups argument for the resource.
   rule_type: non_context_aware
   security_layer: networking
@@ -3387,9 +3387,9 @@ rules_metadata:
     params:
       - SECURITY
       - ERROR
-  remediation_steps_console:
+  console_remediation_steps:
     template: not_car_access_analyzer_validation_remediation_steps_template
-  remediation_steps_tf:
+  iac_remediation_steps:
     template: not_car_access_analyzer_validation_remediation_steps_template
   rule_type: non_context_aware
   security_layer: iam
@@ -3414,9 +3414,9 @@ rules_metadata:
     params:
       - WARNING
       - SUGGESTION
-  remediation_steps_console:
+  console_remediation_steps:
     template: not_car_access_analyzer_validation_remediation_steps_template
-  remediation_steps_tf:
+  iac_remediation_steps:
     template: not_car_access_analyzer_validation_remediation_steps_template
   rule_type: non_context_aware
   security_layer: iam
@@ -3435,8 +3435,8 @@ rules_metadata:
     Cloudrail will create a list of all used Security Groups, based on the Network interfaces in your environment, which are attached to AWS resources.
     It will then compare this list to the actual Security Groups in the account.
     For a Security Group which is present, but not used by any attached Network interface, Cloudrail will raise a violation.
-  remediation_steps_console: Delete the unusued Security Group from your AWS Console.
-  remediation_steps_tf: Remove the unused aws_security_group resource, from your TF template.
+  console_remediation_steps: Delete the unusued Security Group from your AWS Console.
+  iac_remediation_steps: Remove the unused aws_security_group resource, from your TF template.
   rule_type: context_aware
   security_layer: networking
   resource_type:
@@ -3453,8 +3453,8 @@ rules_metadata:
     Cloudrail will review all of the IAM Roles in your environment.
     It will utilize AWS's role usage tracking to determine when the role was used last. If it wasn't used in over 90 days,
     or was created over 90 days ago and never used, Cloudrail will highlight a violation.
-  remediation_steps_console: Delete the unusued IAM Roles from your AWS Console.
-  remediation_steps_tf: Remove the unused aws_iam_role resource, from your TF template.
+  console_remediation_steps: Delete the unusued IAM Roles from your AWS Console.
+  iac_remediation_steps: Remove the unused aws_iam_role resource, from your TF template.
   rule_type: non_context_aware
   security_layer: iam
   resource_type:
@@ -3469,10 +3469,10 @@ rules_metadata:
     If it is not enabled in all regions, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the CloudTrail configuration within your AWS account and Terraform plan to check if it is enabled in all regions.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-create-a-trail-using-the-console-first-time.html>
     to create a trail that logs events in all regions.
-  remediation_steps_tf: For the aws_cloudtrail resource, set the is_multi_region_trail parameter to true.
+  iac_remediation_steps: For the aws_cloudtrail resource, set the is_multi_region_trail parameter to true.
   rule_type: non_context_aware
   security_layer: logging
   resource_type:
@@ -3487,10 +3487,10 @@ rules_metadata:
     If a distribution is not using AWS WAF, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the CloudFront distributions within your AWS account and Terraform plan to check if they are configured to use WAF.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/distribution-web-awswaf.html>
     in order to assign an AWS WAF Web ACL to the CloudFront distribution.
-  remediation_steps_tf: For the aws_cloudfront_distribution resource, set the web_acl_id parameter to a WAF Web ACL ARN value.
+  iac_remediation_steps: For the aws_cloudfront_distribution resource, set the web_acl_id parameter to a WAF Web ACL ARN value.
   rule_type: non_context_aware
   security_layer: networking
   resource_type:
@@ -3505,10 +3505,10 @@ rules_metadata:
     If a Load Balancer is not set drop invalid HTTP headers, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the Load Balancers within your AWS account and Terraform plan to check if they are configured to drop invalid HTTP headers.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/elasticloadbalancing/latest/application/application-load-balancers.html>
     to enable the Drop invalid header fields parameter.
-  remediation_steps_tf: For the aws_lb resource, set the drop_invalid_header_fields parameter to true.
+  iac_remediation_steps: For the aws_lb resource, set the drop_invalid_header_fields parameter to true.
   rule_type: non_context_aware
   security_layer: networking
   resource_type:
@@ -3524,9 +3524,9 @@ rules_metadata:
   human_readable_logic:
     Cloudrail will identify DynamoDB tables within your AWS account and Terraform plan
     that are not configured to be encrypted at rest using a customer-managed CMK.
-  remediation_steps_console: Follow the guide at <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/encryption.tutorial.html>
+  console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/encryption.tutorial.html>
     to set DynamoDB table encryption using a customer-managed CMK.
-  remediation_steps_tf: For the aws_dynamodb_table resource, set kms_key_arn argument,
+  iac_remediation_steps: For the aws_dynamodb_table resource, set kms_key_arn argument,
     in server_side_encryption block, to use a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -3543,10 +3543,10 @@ rules_metadata:
   human_readable_logic:
     Cloudrail will identify all ECR repositories in the Terraform plan that are going to be created and
     are not configured to be encrypted at rest using a customer-managed CMK.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/AmazonECR/latest/userguide/encryption-at-rest.html> to create
     an ECR repository with encryption at rest using a customer-managed CMK.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_ecr_repository resource, set kms_key argument, in encryption_configuration block, to use a customer-managed CMK ARN.
   rule_type: non_context_aware
   security_layer: encryption
@@ -3562,10 +3562,10 @@ rules_metadata:
     If a repository is not configured with immutable tags, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the ECR repositories configuration within your AWS account and Terraform plan to check if image tags are set to immutable.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/AmazonECR/latest/userguide/repository-create.html>
     in order to configure Tag immutability for an ECR repository.
-  remediation_steps_tf: For the aws_ecr_repository resource, set the image_tag_mutability parameter to "IMMUTABLE".
+  iac_remediation_steps: For the aws_ecr_repository resource, set the image_tag_mutability parameter to "IMMUTABLE".
   rule_type: non_context_aware
   security_layer: storage
   resource_type:
@@ -3581,10 +3581,10 @@ rules_metadata:
   human_readable_logic:
     Cloudrail will review the ElastiCache Redis clusters within your AWS account and
     Terraform plan to check if if they have automatic backup turned on.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/AmazonElastiCache/latest/red-ug/backups-automatic.html>
     in order to enable automatic backups for a ElastiCache Redis cluster.
-  remediation_steps_tf: For the aws_elasticache_cluster resource, set the snapshot_retention_limit argument to a value higher than 0.
+  iac_remediation_steps: For the aws_elasticache_cluster resource, set the snapshot_retention_limit argument to a value higher than 0.
   rule_type: non_context_aware
   security_layer: disaster_recovery
   resource_type:
@@ -3599,10 +3599,10 @@ rules_metadata:
     If a repository is not configured to scan images on push, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the ECR repositories configuration within your AWS account and Terraform plan to check if image scanning on push is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-scanning.html>
     to configure image scanning on push for an ECR repository.
-  remediation_steps_tf: For the aws_ecr_repository resource, in the image_scanning_configuration block, set the scan_on_push parameter to true.
+  iac_remediation_steps: For the aws_ecr_repository resource, in the image_scanning_configuration block, set the scan_on_push parameter to true.
   rule_type: non_context_aware
   security_layer: storage
   resource_type:
@@ -3617,10 +3617,10 @@ rules_metadata:
     If a cluster is not configured to enable container insights, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the ECS clusters configuration within your AWS account and Terraform plan to check if container insights is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/deploy-container-insights-ECS-cluster.html>
     in order to enable container insights for an ECS cluster.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_ecs_cluster resource, in the setting block, set the name argument to containerInsights and the value argument to enabled.
   rule_type: non_context_aware
   security_layer: logging
@@ -3636,9 +3636,9 @@ rules_metadata:
     If it is not configured to be EBS-optimized, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the EC2 instances configuration within your AWS account and Terraform plan to check if it is configured to be EBS optimized.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-optimized.html> to enable EBS optimization for an EC2 instance.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_instance resource, set the ebs_optimized parameter to true.
   rule_type: non_context_aware
   security_layer: storage
@@ -3655,14 +3655,14 @@ rules_metadata:
   human_readable_logic:
     Cloudrail will review the RDS instances and clusters within your AWS account
     and Terraform plan to check if if they have a backup retention policy.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at
     <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_WorkingWithAutomatedBackups.html#USER_WorkingWithAutomatedBackups.BackupRetention>
     in order to set the backup retention period to a positive nonzero value for RDS instances.
     Follow the guide at
     <https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Aurora.Managing.Backups.html>
     in order to set the backup retention period to a positive nonzero value for RDS clusters.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_db_instance or aws_rds_cluster resource, set the backup_retention_period argument to a value higher than 0.
   rule_type: non_context_aware
   security_layer: disaster_recovery
@@ -3678,11 +3678,11 @@ rules_metadata:
     If a method is not configured to require authorization, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the API Gateway methods configuration within your AWS account and Terraform plan to check if authorization has been enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at
     <https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-method-settings-method-request.html#setup-method-request-authorization>
     in order to configure the authorization type on the REST API methods.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_api_gateway_method resource, set the authorization argument to a value other than “NONE”.
   rule_type: non_context_aware
   security_layer: iam
@@ -3699,10 +3699,10 @@ rules_metadata:
   human_readable_logic:
     Cloudrail will review the configuration of RDS instances and clusters within your AWS
     account and Terraform plan to check if IAM authentication is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/UsingWithRDS.IAMDBAuth.Enabling.html>
     in order to enable IAM database authentication for the RDS instance or cluster.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_db_instance or aws_rds_cluster resources, set the iam_database_authentication_enabled argument to true.
   rule_type: non_context_aware
   security_layer: iam
@@ -3719,10 +3719,10 @@ rules_metadata:
   human_readable_logic:
     Cloudrail will review the Config aggregator configuration within your AWS account and Terraform plan to
     check if it is enabled in all regions either at account level or at organization level.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/config/latest/developerguide/setup-aggregator-console.html>
     to enable Config aggregator in all regions.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_config_configuration_aggregator resource, in the account_aggregation_source or
     organization_aggregation_source blocks, set the all_regions parameter to true.
   rule_type: non_context_aware
@@ -3739,10 +3739,10 @@ rules_metadata:
     If a stage is not configured to have X-Ray tracing enabled, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the API Gateway stages configuration within your AWS account and Terraform plan to check X-Ray tracing is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-enabling-xray.html>
     in order to enable X-Ray tracing for the API Gateway.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_api_gateway_stage resource, set the xray_tracing_enabled argument to true.
   rule_type: non_context_aware
   security_layer: logging
@@ -3758,10 +3758,10 @@ rules_metadata:
     If a distribution has access logging disabled, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the CloudFront distributions configuration within your AWS account and Terraform plan to check if access logging is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/AccessLogs.html>
     in order to enabled access logs for the CloudFront distribution.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_cloudfront_distribution resource, configure the logging_config block with bucket
     argument set to the S3 bucket name for storing access logs.
   rule_type: non_context_aware
@@ -3778,10 +3778,10 @@ rules_metadata:
     If a cluster is not configured to export logs to CloudWatch, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the DocDB clusters configuration within your AWS account and Terraform plan to check if logging is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/documentdb/latest/developerguide/event-auditing.html>
     in order to enable audit and profiler logs export to CloudWatch.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_docdb_cluster resource, set the enabled_cloudwatch_logs_exports argument to a list containing the values “audit” and “profiler”.
   rule_type: non_context_aware
   security_layer: logging
@@ -3797,10 +3797,10 @@ rules_metadata:
     If an instance does not have detailed monitoring configured, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the EC2 instances configuration within your AWS account and Terraform plan to check if detailed monitoring is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-cloudwatch-new.html>
     in order to enable detailed monitoring for an EC2 instance.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_instance resource, set the monitoring argument to true.
   rule_type: non_context_aware
   security_layer: logging
@@ -3816,10 +3816,10 @@ rules_metadata:
     If a domain does not have logging enabled, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the Elasticsearch Domains configuration within your AWS account and Terraform plan to check if logging is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createdomain-configure-slow-logs.html>
     in order to configure log publishing for the Elasticsearch domain.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_elasticsearch_domain resource, set the log_publishing_options block with enabled argument set to true,
     log_type argument set to any of the valid values, and cloudwatch_log_group_arn argument set to the ARN of the CloudWatch Log Group.
   rule_type: non_context_aware
@@ -3836,11 +3836,11 @@ rules_metadata:
     If a load balancer does not have logging enabled, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the Elasticsearch Domains configuration within your AWS account and Terraform plan to check if logging is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/elasticloadbalancing/latest/application/load-balancer-access-logs.html> or
     <https://docs.aws.amazon.com/elasticloadbalancing/latest/network/load-balancer-access-logs.html>
     in order to enable access logs for the load balancer.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_lb resource, set the access_logs block with enabled argument set to true and the bucket argument set to the S3 bucket name.
   rule_type: non_context_aware
   security_layer: logging
@@ -3857,10 +3857,10 @@ rules_metadata:
   human_readable_logic:
     Cloudrail will review the configuration of Global Accelerator accelerators
     within your AWS account and Terraform plan to check if flow logs are enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/global-accelerator/latest/dg/monitoring-global-accelerator.flow-logs.html>
     in order to enable flow logs for an accelerator.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_globalaccelerator_accelerator resource, set the attributes block with flow_logs_enabled argument set to true,
     flow_logs_s3_bucket argument set to the S3 bucket name, and flow_logs_s3_prefix argument to the prefix used for flow logs.
   rule_type: non_context_aware
@@ -3877,10 +3877,10 @@ rules_metadata:
     If a function does not have tracing in Active mode, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the configuration of Lambda functions within your AWS account and Terraform plan to check if X-Ray tracing is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/xray/latest/devguide/xray-services-lambda.html>
     in order to enable X-Ray tracing for a Lambda function.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_lambda_function resource, set the tracing_config block with mode argument set to “Active”.
   rule_type: non_context_aware
   security_layer: logging
@@ -3897,10 +3897,10 @@ rules_metadata:
   human_readable_logic:
     Cloudrail will review the configuration of Neptune clusters within your
     AWS account and Terraform plan to check if Cloudwatch log export is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/neptune/latest/userguide/cloudwatch-logs.html>
     in order to enable log export to Cloudwatch for Neptune cluster.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_neptune_cluster resource, set enable_cloudwatch_logs_exports argument to a list containing the element “audit”.
   rule_type: non_context_aware
   security_layer: logging
@@ -3917,10 +3917,10 @@ rules_metadata:
   human_readable_logic:
     Cloudrail will review the configuration of RDS instances and clusters within your
     AWS account and Terraform plan to check if Cloudwatch log export is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/neptune/latest/userguide/cloudwatch-logs.html>
     in order to enable log export to Cloudwatch for Neptune cluster.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_neptune_cluster resource, set enable_cloudwatch_logs_exports argument to a list containing the element “audit”.
   rule_type: non_context_aware
   security_layer: logging
@@ -3936,9 +3936,9 @@ rules_metadata:
     If a cluster does not have logging enabled, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the configuration of Redshift clusters within your AWS account and Terraform plan to check if logging is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/redshift/latest/mgmt/db-auditing.html> in order to enable logging to an S3 bucket.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_redshift_cluster resource, set the logging block with enable argument set to true
     and bucket_name argument to the S3 bucket name to store the logs.
   rule_type: non_context_aware
@@ -3956,10 +3956,10 @@ rules_metadata:
   human_readable_logic:
     Cloudrail will review the configuration of REST API Gateways within your AWS account
     and Terraform plan to check if logging is enabled for all stages.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html>
     in order to enable logging for a REST API Gateway stage.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_api_gateway_stage resource, set the access_log_settings block with destination_arn argument set to the ARN
     of a CloudWatch Log Group and set the format argument to a valid log format.
   rule_type: non_context_aware
@@ -3976,10 +3976,10 @@ rules_metadata:
     If a bucket does not have access logging enabled, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the configuration of S3 buckets within your AWS account and Terraform plan to check if access logging is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/AmazonS3/latest/userguide/enable-server-access-logging.html>
     in order to enable server access logging for an S3 bucket.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_s3_bucket resource, set the logging block with target_bucket argument
     set to the name of an S3 bucket that will receive the log objects.
   rule_type: non_context_aware
@@ -3996,13 +3996,16 @@ rules_metadata:
     If a database is not configured to be encrypted at rest, Cloudrail will highlight it as a violation.
   human_readable_logic:
     Cloudrail will review the Athena databases configuration in your Terraform plan to check if encryption at rest is enabled.
-  remediation_steps_console:
+  console_remediation_steps:
     Follow the guide at <https://docs.aws.amazon.com/athena/latest/ug/creating-tables-based-on-encrypted-datasets-in-s3.html>
     in order to encrypt the Athena database.
-  remediation_steps_tf:
+  iac_remediation_steps:
     For the aws_athena_database resource, set the encryption_configuration block
     with the encryption_option argument set to either “SSE_S3”, “SSE_KMS”, or “CSE_KMS”.
   rule_type: non_context_aware
   security_layer: encryption
   resource_type:
   - database
+  compliance:
+    "PCI DSS 3.1.0": "1.2"
+    "CIS 1.3.0": "5.2"

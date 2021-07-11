@@ -26,7 +26,7 @@ class RestApiGw(ResourceBasedPolicy):
         is_public: An indication on if this resource is accessible from the internet.
         api_gateway_methods: All the ApiGatewayMethods associated with this gateway.
         api_gw_stages: The stages associated with this REST API Gateway.
-        lambda_allowed_methods: The ApiGatewayMethods associated with this gateway, and are allowed to access a lambda function.
+        agw_methods_with_valid_integrations_and_allowed_lambda_access: The ApiGatewayMethods associated with this gateway, with valid integrations, and are allowed to access a lambda function.
     """
     def __init__(self,
                  rest_api_gw_id: str,
@@ -43,7 +43,7 @@ class RestApiGw(ResourceBasedPolicy):
         self.api_gw_stages: List[ApiGatewayStage] = []
         self.is_public: bool = None
         self.api_gateway_methods: List[ApiGatewayMethod] = []
-        self.lambda_allowed_methods: List[ApiGatewayMethod] = []
+        self.agw_methods_with_valid_integrations_and_allowed_lambda_access: List[ApiGatewayMethod] = []
 
     def get_keys(self) -> List[str]:
         return [self.rest_api_gw_id]

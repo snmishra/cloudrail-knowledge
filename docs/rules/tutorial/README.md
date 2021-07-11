@@ -70,8 +70,8 @@ rules_metadata:
     description: We would like to control which third party accounts can assume roles in our environment.
       This role has an approved-list of accounts which will be expanded over time.
     human_readable_logic: Cloudrail will review all IAM roles' trust policy and look at the accounts allowed.
-    remediation_steps_console: Remove the role, or add its account to the approved list in this rule.
-    remediation_steps_tf: Remove the aws_iam_role, or add the account to the approved list in this rule.
+    console_remediation_steps: Remove the role, or add its account to the approved list in this rule.
+    iac_remediation_steps: Remove the aws_iam_role, or add the account to the approved list in this rule.
     rule_type: non_context_aware
     security_layer: iam
     resource_type:
@@ -145,7 +145,14 @@ over the assume role policy's statements. For each statement, it looks at the pr
 For each principal, it checks to see if its AWS account ID is in a predetermined list of accounts
 we're approving of.
 
-If it's not in the list, we create an Issue with the relevant information.
+If it's not in the list, we create an Issue with the relevant information. An Issue has three fields,
+all of which are MANDATORY:
+* The `evidence` is a string sharing the facts the rule used to get to its conclusion. (this field is required)
+* The `exposed` field represents the context object that is exposed by the issue. For example,
+a database may be exposed due to a misconfigured resource. (this field is required)
+* The `violating` field represents the context object which is violating the rule. In some cases,
+there may be more than one such object per violation. You should pick the one that the user is 
+most likely to want to fix. (this field is required)
 
 The list of approved third party accounts is defined like so (add the __init__ function at the top of the
 Python class):
@@ -342,7 +349,11 @@ EOF
 ```shell
 docker run --rm -it  -v $PWD:/data -v cloudrail:/indeni indeni/cloudrail-cli run -p plan.out --auto-approve -v --custom-rules src
 ```
-Note the `--custom-rules` at the end, with the directory where the rule is located.
+Note the `--custom-rules` at the end, with the directory where the rule is located. By default, any custom rule that triggers will be under the "advise" enforcement mode (which means it will be viewed as a warning and not cause a non-zero exit code). To change the enforcement mode of the custom rules, you can supply the enforcement mode together with the directory, for example:
+```shell
+docker run --rm -it  -v $PWD:/data -v cloudrail:/indeni indeni/cloudrail-cli run -p plan.out --auto-approve -v --custom-rules "advise:src"
+```
+(one of `advise`, `mandate`, `mandate_new_resources` can be used)
 
 Your results should look like this:
 

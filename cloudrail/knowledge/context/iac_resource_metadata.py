@@ -4,12 +4,12 @@ from typing import Optional
 
 
 @dataclass
-class TerraformResourceMetadata:
-    address: str
+class IacResourceMetadata:
+    iac_entity_id: str
     file_name: str
     start_line: int
     end_line: int
-    module_metadata: Optional['TerraformResourceMetadata'] = None
+    module_metadata: Optional['IacResourceMetadata'] = None
     id: Optional[str] = None
     resource_type: Optional[str] = None
     run_execution_id: str = None
