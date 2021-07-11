@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional, Set
+from typing import Optional, Set, Dict
 
 import yaml
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
@@ -74,6 +74,7 @@ class RuleMetadata:
     resource_types: Set[ResourceType]
     cloud_provider: CloudProvider = field(default=CloudProvider.AMAZON_WEB_SERVICES)
     is_deleted: bool = False
+    compliance: Dict[str, str] = field(default_factory=dict)
 
 
 def rule_matches_query(rule_id: str, rule_name: str, query: Optional[str]) -> bool:
@@ -83,7 +84,8 @@ def rule_matches_query(rule_id: str, rule_name: str, query: Optional[str]) -> bo
 
 
 def get_rule_metadata_content(provider: CloudProvider) -> dict:
-    provider_name = 'aws' if provider == CloudProvider.AMAZON_WEB_SERVICES else 'azure'
+    provider_name = provider.to_shorthand_string()
+
     current_path = os.path.dirname(os.path.abspath(__file__))
     rules_metadata_path = os.path.join(current_path, f'{provider_name}/{provider_name}_rules_metadata.yaml')
     with open(rules_metadata_path, 'r') as file:
