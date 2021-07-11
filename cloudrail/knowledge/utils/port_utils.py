@@ -1,8 +1,7 @@
 import functools
 import itertools
 import logging
-import socket
-from typing import Set, List, Optional, Tuple, Union
+from typing import Set, List, Optional, Tuple
 
 from netaddr import IPNetwork, IPSet
 
@@ -414,17 +413,3 @@ def get_overlapping_ports(first_range: Tuple[int, int], second_range: Tuple[int,
         return None
     else:
         return max_start, min_end
-
-
-def convert_ip_protocol_to_protocol_name(ip_protocol_num: Union[str, int]) -> str:
-    if ip_protocol_num in ('-1', -1):
-        return 'all'
-    elif not ip_protocol_num.isdigit():
-        return ip_protocol_num
-    else:
-        ip_protocol_table = {num: name.replace('IPPROTO_', '') for name, num in vars(socket).items() if name.startswith("IPPROTO")}
-        try:
-            return ip_protocol_table[int(ip_protocol_num)].lower()
-        except Exception as ex:
-            logging.exception(f'fail converting ip_protocol number for {ip_protocol_num} : {ex}')
-        return str(ip_protocol_num)

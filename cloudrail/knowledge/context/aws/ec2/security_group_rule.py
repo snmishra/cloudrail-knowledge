@@ -2,6 +2,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import List, Tuple
 
+from cloudrail.knowledge.context.ip_protocol import IpProtocol
 from cloudrail.knowledge.utils.range_util import get_range_numbers_overlap, EMPTY_RANGE
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
@@ -38,14 +39,14 @@ class SecurityGroupRule(AwsResource):
             security_group_id: The SG the rule belongs to.
     """
 
-    def __init__(self, from_port: int, to_port: int, ip_protocol: str, property_type: SecurityGroupRulePropertyType,
+    def __init__(self, from_port: int, to_port: int, ip_protocol: IpProtocol, property_type: SecurityGroupRulePropertyType,
                  property_value: str, has_description: bool, connection_type: ConnectionType,
                  security_group_id: str, region: str, account: str):
         super().__init__(account, region, AwsServiceName.AWS_SECURITY_GROUP_RULE)
         normalized_from_port, normalized_to_port = normalize_port_range(from_port, to_port)
         self.from_port: int = normalized_from_port
         self.to_port: int = normalized_to_port
-        self.ip_protocol: str = ip_protocol
+        self.ip_protocol: IpProtocol = ip_protocol
         self.property_type: SecurityGroupRulePropertyType = property_type
         self.property_value: str = property_value
         self.has_description: bool = has_description
@@ -80,7 +81,7 @@ class SecurityGroupRule(AwsResource):
 
     def is_match(self, rule: SecurityGroupRule) -> bool:
         # todo - need to support pl id type and cross account peering instance
-        if self.ip_protocol == 'all' or rule.ip_protocol == 'all' or self.ip_protocol == rule.ip_protocol:
+        if self.ip_protocol == IpProtocol.ALL or rule.ip_protocol == IpProtocol.ALL or self.ip_protocol == rule.ip_protocol:
             is_ports_overlap: bool = get_range_numbers_overlap(self.get_ports_range(), rule.get_ports_range()) != EMPTY_RANGE
             if self.property_type == SecurityGroupRulePropertyType.SECURITY_GROUP_ID and self.property_value == rule.security_group_id:
                 return is_ports_overlap
