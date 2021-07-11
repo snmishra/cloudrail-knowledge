@@ -7,3 +7,6 @@ class CloudformationResourceType(str, Enum):
     SUBNET = 'AWS::EC2::Subnet'
     SECURITY_GROUP = 'AWS::EC2::SecurityGroup'
     S3_BUCKET = 'AWS::S3::Bucket'
+    DAX_CLUSTER = 'AWS::DAX::Cluster'
+    IAM_ROLE = 'AWS::IAM::Role'
+    ATHENA_WORKGROUP = 'AWS::Athena::WorkGroup'
