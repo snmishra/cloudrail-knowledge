@@ -2962,7 +2962,8 @@ rules_metadata:
   console_remediation_steps: Follow the guide at <https://docs.aws.amazon.com/vpc/latest/userguide/VPC_SecurityGroups.html>
     to update the security group or security group rules description field.
   iac_remediation_steps: For the aws_security_group and aws_security_group_rule resources,
-    set description argument with a proper value.
+    set description argument with a proper value. Note, this will force the re-creation of the
+    security group and all resources that depend on it. This is an AWS limitation.
   rule_type: non_context_aware
   security_layer: networking
   resource_type:
