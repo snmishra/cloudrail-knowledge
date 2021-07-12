@@ -86,16 +86,3 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
     @property
     def is_public(self):
         return len(self.publicly_allowing_resources) > 0
-
-    def get_attribute(self, cfn_attribute_name: str):
-        if cfn_attribute_name == 'Arn':
-            return self.arn
-        if cfn_attribute_name == 'DomainName':
-            return self.bucket_domain_name
-        if cfn_attribute_name == 'DualStackDomainName':
-            return None
-        if cfn_attribute_name == 'RegionalDomainName':
-            return self.bucket_regional_domain_name
-        if cfn_attribute_name == 'WebsiteURL':
-            return None
-        return None

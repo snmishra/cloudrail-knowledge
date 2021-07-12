@@ -20,7 +20,6 @@ from cloudrail.knowledge.context.aws.autoscaling.launch_template import LaunchTe
 from cloudrail.knowledge.context.aws.aws_client import AwsClient
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.batch.batch_compute_environment import BatchComputeEnvironment
-from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_resource_info import CloudformationResourceInfo
 from cloudrail.knowledge.context.aws.cloudfront.cloud_front_distribution_list import CloudFrontDistribution
 from cloudrail.knowledge.context.aws.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
@@ -207,7 +206,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  codebuild_projects: List[CodeBuildProject] = None,
                  codebuild_report_groups: List[CodeBuildReportGroup] = None,
                  sqs_queues: List[SqsQueue] = None,
-                 accounts: List[Account] = None,
+                 accounts: AliasesDict[Account] = None,
                  elasti_cache_replication_groups: List[ElastiCacheReplicationGroup] = None,
                  neptune_clusters: List[NeptuneCluster] = None,
                  sns_topics: List[SnsTopic] = None,
@@ -404,7 +403,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.codebuild_projects = codebuild_projects or []
         self.codebuild_report_groups = codebuild_report_groups or []
         self.sqs_queues = sqs_queues or []
-        self.accounts = accounts or []
+        self.accounts = accounts or AliasesDict()
         self.elasti_cache_replication_groups = elasti_cache_replication_groups or []
         self.neptune_clusters = neptune_clusters or []
         self.sns_topics = sns_topics or []
@@ -567,17 +566,3 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                 if isinstance(resource, Mergeable) and condition(resource):
                     all_resources.append(resource)
         return all_resources
-
-    def create_cfn_resources_by_type_map(self) -> Dict[CloudformationResourceType, AliasesDict[Mergeable]]:
-        return {
-            CloudformationResourceType.VPC: self.vpcs,
-            CloudformationResourceType.EC2_INSTANCE: AliasesDict(*self.ec2s),
-            CloudformationResourceType.SECURITY_GROUP: self.security_groups,
-            CloudformationResourceType.S3_BUCKET: self.s3_buckets
-        }
-
-    def get_account_by_id(self, account_id: str) -> Optional[Account]:
-        for account in self.accounts:
-            if account.account == account_id:
-                return account
-        return None
