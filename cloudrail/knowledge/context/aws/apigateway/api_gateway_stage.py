@@ -1,6 +1,7 @@
 from typing import List, Optional
 from dataclasses import dataclass
 
+from cloudrail.knowledge.context.aws.apigateway.api_gateway_method_settings import ApiGatewayMethodSettings
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 
@@ -23,6 +24,7 @@ class ApiGatewayStage(AwsResource):
             stage_name: The name of the stage.
             xray_tracing_enabled: An indication if active tracing with X-ray is enabled.
             access_logs: Block information about the access logs settings of the REST API Gateway stage (if any configured).
+            method_settings: The method settings configured for this stage, if configured.
     """
     def __init__(self,
                  account: str,
@@ -36,9 +38,13 @@ class ApiGatewayStage(AwsResource):
         self.stage_name: str = stage_name
         self.xray_tracing_enabled: bool = xray_tracing_enabled
         self.access_logs: Optional[AccessLogsSettings] = access_logs
+        self.method_settings: Optional[ApiGatewayMethodSettings] = None
 
     def get_keys(self) -> List[str]:
-        return [self.api_gw_id]
+        if self.method_settings:
+            return [self.api_gw_id, 'with_method_settings']
+        else:
+            return [self.api_gw_id]
 
     def get_id(self) -> str:
         return self.api_gw_id
