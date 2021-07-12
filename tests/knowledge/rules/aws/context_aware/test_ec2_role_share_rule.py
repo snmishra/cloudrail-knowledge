@@ -22,14 +22,14 @@ class TestEc2RoleShareRule(unittest.TestCase):
         network_interface.inbound_connections.add(connection_detail)
 
         private_ec2: Ec2Instance = create_empty_entity(Ec2Instance)
-        private_ec2.iam_profile_id = 'iam_profile_id'
+        private_ec2.iam_profile_name = 'iam_profile_name'
 
         role: Role = create_empty_entity(Role)
         role.role_name = 'iam_role'
         private_ec2.iam_role = role
 
         public_ec2: Ec2Instance = create_empty_entity(Ec2Instance)
-        public_ec2.iam_profile_id = 'iam_profile_id'
+        public_ec2.iam_profile_name = 'iam_profile_name'
         public_ec2.network_resource.network_interfaces.append(network_interface)
 
         context = AwsEnvironmentContext(ec2s=[private_ec2, public_ec2])
@@ -49,14 +49,14 @@ class TestEc2RoleShareRule(unittest.TestCase):
         network_interface.inbound_connections.add(connection_detail)
 
         private_ec2: Ec2Instance = create_empty_entity(Ec2Instance)
-        private_ec2.iam_profile_id = 'iam_profile_id1'
+        private_ec2.iam_profile_name = 'iam_profile_name1'
 
         role: Role = create_empty_entity(Role)
         role.role_name = 'iam_role'
         private_ec2.iam_role = role
 
         public_ec2: Ec2Instance = create_empty_entity(Ec2Instance)
-        public_ec2.iam_profile_id = 'iam_profile_id2'
+        public_ec2.iam_profile_name = 'iam_profile_name2'
         public_ec2.network_resource.network_interfaces.append(network_interface)
 
         context = AwsEnvironmentContext(ec2s=[private_ec2, public_ec2])

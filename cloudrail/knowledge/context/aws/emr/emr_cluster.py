@@ -13,6 +13,8 @@ class EmrCluster(NetworkEntity):
         arn: The ARN of the EMR cluster resource.
         cluster_id: The ID of the EMR cluster resource.
         vpc_config: Networking information used by the resource.
+        master_sg_id: The ID of the master security group used for the EMR cluster.
+        slave_sg_id: The ID of the slave security group used for the EMR cluster.
     """
 
     def __init__(self,
@@ -21,11 +23,15 @@ class EmrCluster(NetworkEntity):
                  cluster_name: str,
                  cluster_id: str,
                  arn: str,
-                 vpc_config: NetworkConfiguration):
+                 vpc_config: NetworkConfiguration,
+                 master_sg_id: str,
+                 slave_sg_id: str):
         super().__init__(cluster_name, account, region, AwsServiceName.AWS_EMR_CLUSTER)
         self.cluster_name: str = cluster_name
         self.cluster_id: str = cluster_id
         self.arn: str = arn
+        self.master_sg_id: str = master_sg_id
+        self.slave_sg_id: str = slave_sg_id
         self.vpc_config: Optional[NetworkConfiguration] = vpc_config
 
     def get_keys(self) -> List[str]:

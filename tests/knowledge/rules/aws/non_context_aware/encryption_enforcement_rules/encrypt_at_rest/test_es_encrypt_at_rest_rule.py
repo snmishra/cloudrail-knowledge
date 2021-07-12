@@ -3,7 +3,7 @@ import unittest
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 from cloudrail.knowledge.context.aws.es.elastic_search_domain import ElasticSearchDomain
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
-from cloudrail.knowledge.context.terraform_state import TerraformState
+from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.rules.aws.non_context_aware.encryption_enforcement_rules.encrypt_at_rest.es_encrypt_at_rest_rule import EsEncryptAtRestRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 
@@ -15,9 +15,9 @@ class TestEsEncryptAtRestRule(unittest.TestCase):
     def test_non_car_es_domain_encrypt_at_rest_creating_fail(self):
         # Arrange
         es_domain: ElasticSearchDomain = create_empty_entity(ElasticSearchDomain)
-        terraform_state = create_empty_entity(TerraformState)
-        es_domain.terraform_state = terraform_state
-        es_domain.terraform_state.is_new = True
+        terraform_state = create_empty_entity(IacState)
+        es_domain.iac_state = terraform_state
+        es_domain.iac_state.is_new = True
         es_domain.encrypt_at_rest_state = False
         context = AwsEnvironmentContext(elastic_search_domains=[es_domain])
         # Act
@@ -29,9 +29,9 @@ class TestEsEncryptAtRestRule(unittest.TestCase):
     def test_non_car_es_domain_encrypt_at_rest_creating_pass(self):
         # Arrange
         es_domain: ElasticSearchDomain = create_empty_entity(ElasticSearchDomain)
-        terraform_state = create_empty_entity(TerraformState)
-        es_domain.terraform_state = terraform_state
-        es_domain.terraform_state.is_new = True
+        terraform_state = create_empty_entity(IacState)
+        es_domain.iac_state = terraform_state
+        es_domain.iac_state.is_new = True
         es_domain.encrypt_at_rest_state = True
         context = AwsEnvironmentContext(elastic_search_domains=[es_domain])
         # Act
@@ -43,9 +43,9 @@ class TestEsEncryptAtRestRule(unittest.TestCase):
     def test_non_car_es_domain_encrypt_at_rest_creating__not_new__pass(self):
         # Arrange
         es_domain: ElasticSearchDomain = create_empty_entity(ElasticSearchDomain)
-        terraform_state = create_empty_entity(TerraformState)
-        es_domain.terraform_state = terraform_state
-        es_domain.terraform_state.is_new = False
+        terraform_state = create_empty_entity(IacState)
+        es_domain.iac_state = terraform_state
+        es_domain.iac_state.is_new = False
         es_domain.encrypt_at_rest_state = False
         context = AwsEnvironmentContext(elastic_search_domains=[es_domain])
         # Act

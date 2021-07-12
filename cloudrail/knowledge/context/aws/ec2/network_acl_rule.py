@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import List
 
+from cloudrail.knowledge.context.ip_protocol import IpProtocol
 from cloudrail.knowledge.utils.utils import normalize_port_range
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
@@ -44,7 +45,7 @@ class NetworkAclRule(AwsResource):
                  rule_action: RuleAction,
                  rule_number: int,
                  rule_type: RuleType,
-                 ip_protocol_type: str = "-1"
+                 ip_protocol_type: IpProtocol = IpProtocol('ALL')
                  ):
         super().__init__(account, region, AwsServiceName.AWS_NETWORK_ACL_RULE)
         self.network_acl_id = network_acl_id
@@ -55,7 +56,7 @@ class NetworkAclRule(AwsResource):
         self.rule_action = rule_action
         self.rule_number = rule_number
         self.rule_type = rule_type
-        self.ip_protocol_type: str = ip_protocol_type
+        self.ip_protocol_type: IpProtocol = ip_protocol_type
 
     def __str__(self) -> str:
         return "NACL rule: cidr_block={}, from_port={}, to_port={}, rule_action={}, rule_number={}, rule_type={}" \
@@ -82,4 +83,8 @@ class NetworkAclRule(AwsResource):
 
     @property
     def is_tagable(self) -> bool:
+        return False
+
+    @staticmethod
+    def is_standalone() -> bool:
         return False

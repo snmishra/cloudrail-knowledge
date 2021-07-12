@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import List, Optional, Dict
-
 from cloudrail.knowledge.context.aws.ec2.internet_gateway import InternetGateway
 from cloudrail.knowledge.context.aws.ec2.subnet import Subnet
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
@@ -55,18 +54,19 @@ class Vpc(AwsResource):
     def __init__(self,
                  vpc_id: str,
                  cidr_block: List[str],
+                 ipv6_cidr_block: Optional[List[str]],
                  name: str,
                  account: str,
                  region: str,
                  friendly_name: str = None,
                  is_default: bool = False,
-                 tf_resource_type: AwsServiceName = AwsServiceName.AWS_VPC,
                  enable_dns_support: bool = None,
                  enable_dns_hostnames: bool = None):
-        super().__init__(account, region, tf_resource_type)
+        super().__init__(account, region, AwsServiceName.AWS_VPC)
         self.vpc_id: str = vpc_id
         self.aliases.add(vpc_id)
         self.cidr_block: List[str] = cidr_block
+        self.ipv6_cidr_block: Optional[List[str]] = ipv6_cidr_block
         self.name: str = name
         self.friendly_name: Optional[str] = friendly_name
         self.is_default: Optional[bool] = is_default
@@ -126,3 +126,16 @@ class Vpc(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def get_attribute(self, cfn_attribute_name: str):
+        if cfn_attribute_name == "CidrBlock" and self.cidr_block:
+            return self.cidr_block[0]
+        if cfn_attribute_name == 'CidrBlockAssociations':
+            return None
+        if cfn_attribute_name == "DefaultNetworkAcl" and self.default_nacl:
+            return self.default_nacl.network_acl_id
+        if cfn_attribute_name == "DefaultSecurityGroup" and self.default_security_group:
+            return self.default_security_group.security_group_id
+        if cfn_attribute_name == "Ipv6CidrBlocks":
+            return None
+        return None

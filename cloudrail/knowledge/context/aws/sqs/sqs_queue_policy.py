@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from cloudrail.knowledge.context.aws.iam.policy import Policy
 from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
@@ -13,7 +13,7 @@ class SqsQueuePolicy(Policy):
     """
     def __init__(self,
                  queue_name: str,
-                 policy_statements: List[PolicyStatement],
+                 policy_statements: Optional[List[PolicyStatement]],
                  raw_document: str,
                  account: str):
         super().__init__(account, policy_statements, raw_document, AwsServiceName.AWS_SQS_QUEUE_POLICY)

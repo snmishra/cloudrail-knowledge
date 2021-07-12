@@ -4,6 +4,7 @@ from typing import List, Tuple, Set
 
 from dataclasses_json import DataClassJsonMixin
 
+from cloudrail.knowledge.context.ip_protocol import IpProtocol
 from cloudrail.knowledge.utils.utils import hash_list
 
 
@@ -40,10 +41,10 @@ class PolicyConnectionProperty(ConnectionProperty):
 
 
 class PortConnectionProperty(ConnectionProperty):
-    def __init__(self, ports: List[Tuple[int, int]], cidr_block: str, ip_protocol_type: str):
+    def __init__(self, ports: List[Tuple[int, int]], cidr_block: str, ip_protocol_type: IpProtocol):
         self.ports: List[Tuple[int, int]] = ports  # todo - should be only tuple
         self.cidr_block: str = cidr_block
-        self.ip_protocol_type: str = ip_protocol_type
+        self.ip_protocol_type: IpProtocol = ip_protocol_type
 
     def __eq__(self, o: object) -> bool:
         if isinstance(o, PortConnectionProperty):

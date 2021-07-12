@@ -12,8 +12,8 @@ class ElastiCacheReplicationGroup(NetworkEntity):
             encrypted_at_rest: True if the group is configured to encrypt at rest.
             encrypted_in_transit: True if this group is configured to encrypt in transit.
             subnet_group_name: The name of the subnet group associated with this replication group.
-            subnet_ids: The IDs of the subnet from the subnet group.
-            security_group_ids: The security group IDs used by the cluster.
+            elasticache_subnet_ids: The IDs of the subnet from the subnet group.
+            elasticache_security_group_ids: The security group IDs used by the cluster.
             is_in_default_vpc: True if this group is in the default VPC.
     """
     def __init__(self,
@@ -27,9 +27,9 @@ class ElastiCacheReplicationGroup(NetworkEntity):
         self.encrypted_at_rest: bool = encrypted_at_rest
         self.encrypted_in_transit: bool = encrypted_in_transit
         self.subnet_group_name: Optional[str] = None
-        self.security_group_ids: Optional[list] = None
+        self.elasticache_security_group_ids: Optional[list] = None
         self.is_in_default_vpc: bool = True
-        self.subnet_ids: Optional[List[str]] = None
+        self.elasticache_subnet_ids: Optional[List[str]] = None
 
     def get_keys(self) -> List[str]:
         return [self.account, self.region, self.replication_group_id]
@@ -41,7 +41,7 @@ class ElastiCacheReplicationGroup(NetworkEntity):
         return self.replication_group_id
 
     def get_all_network_configurations(self) -> List[NetworkConfiguration]:
-        return [NetworkConfiguration(False, self.security_group_ids, self.subnet_ids)]
+        return [NetworkConfiguration(False, self.elasticache_security_group_ids, self.elasticache_subnet_ids)]
 
     def get_type(self, is_plural: bool = False) -> str:
         if not is_plural:
