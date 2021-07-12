@@ -64,9 +64,8 @@ class Ec2Instance(NetworkEntity, AwsClient):
                  network_interfaces_ids: List[str],
                  state: str,
                  image_id: str,
-                 iam_profile_arn: Optional[str],
+                 iam_profile_name: Optional[str],
                  http_tokens: str,
-                 iam_profile_id: Optional[str],
                  availability_zone: Optional[str],
                  tags: dict,
                  instance_type: str,
@@ -80,9 +79,8 @@ class Ec2Instance(NetworkEntity, AwsClient):
         self.network_interfaces_ids: List[str] = network_interfaces_ids
         self.state: str = state
         self.image_id: str = image_id
-        self.iam_profile_arn: Optional[str] = iam_profile_arn
+        self.iam_profile_name: Optional[str] = iam_profile_name
         self.http_tokens: str = http_tokens
-        self.iam_profile_id: Optional[str] = iam_profile_id
         self.availability_zone: Optional[str] = availability_zone
         self.image_data: Optional[Ec2Image] = None
         self.raw_data: Ec2RawData = Ec2RawData()

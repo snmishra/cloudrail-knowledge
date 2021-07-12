@@ -30,9 +30,8 @@ class Subnet(AwsResource):
                  map_public_ip_on_launch: bool,
                  region: str,
                  account: str,
-                 is_default: bool = False,
-                 tf_resource_type: AwsServiceName = AwsServiceName.AWS_SUBNET):
-        super().__init__(account, region, tf_resource_type)
+                 is_default: bool = False):
+        super().__init__(account, region, AwsServiceName.AWS_SUBNET)
         self.subnet_id: str = subnet_id
         self.map_public_ip_on_launch = map_public_ip_on_launch
         self.vpc_id: str = vpc_id

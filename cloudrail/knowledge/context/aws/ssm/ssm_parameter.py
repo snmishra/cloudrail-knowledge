@@ -29,7 +29,7 @@ class SsmParameter(AwsResource):
             self.arn = None
 
     def get_keys(self) -> List[str]:
-        return [self.account + self.region + self.name]
+        return [self.account, self.region,  self.name]
 
     def get_name(self) -> str:
         return self.name

@@ -6,7 +6,7 @@ from typing import List, Set, Dict, Optional
 from cloudrail.knowledge.context.iac_state import IacState
 
 
-class EntityOrigin(Enum):
+class EntityOrigin(str, Enum):
     LIVE_ENV = 'live_environment'
     TERRAFORM = 'terraform'
     PSEUDO = 'pseudo'
