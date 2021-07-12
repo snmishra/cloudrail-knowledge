@@ -575,3 +575,9 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
             CloudformationResourceType.SECURITY_GROUP: self.security_groups,
             CloudformationResourceType.S3_BUCKET: self.s3_buckets
         }
+
+    def get_account_by_id(self, account_id: str) -> Optional[Account]:
+        for account in self.accounts:
+            if account.account == account_id:
+                return account
+        return None
