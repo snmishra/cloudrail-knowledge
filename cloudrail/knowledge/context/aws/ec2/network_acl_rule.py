@@ -45,7 +45,7 @@ class NetworkAclRule(AwsResource):
                  rule_action: RuleAction,
                  rule_number: int,
                  rule_type: RuleType,
-                 ip_protocol_type: IpProtocol = IpProtocol.ALL
+                 ip_protocol_type: IpProtocol = IpProtocol('ALL')
                  ):
         super().__init__(account, region, AwsServiceName.AWS_NETWORK_ACL_RULE)
         self.network_acl_id = network_acl_id

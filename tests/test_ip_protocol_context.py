@@ -84,7 +84,7 @@ class TestIpProtocol(unittest.TestCase):
         # Act
         result = self.function(ip_proto)
         # Assert
-        self.assertEqual(result.__repr__(), IpProtocol.ALL)
+        self.assertEqual(result.__repr__(), IpProtocol('ALL'))
 
     def test_special_ip_proto_pass(self):
         # Arrange
