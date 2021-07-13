@@ -4,6 +4,7 @@ from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironme
 from cloudrail.knowledge.rules.aws.aws_base_rule import AwsBaseRule
 from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
+from cloudrail.knowledge.context.aws.es.elastic_search_domain import ElasticSearchDomain
 
 
 class EsEncryptAtRestRule(AwsBaseRule):
@@ -16,7 +17,7 @@ class EsEncryptAtRestRule(AwsBaseRule):
 
         for es_domain in env_context.elastic_search_domains:
             if es_domain.is_new_resource():
-                if not es_domain.encrypt_at_rest_state:
+                if self._supported_es_domain_for_encryption(es_domain) and not es_domain.encrypt_at_rest_state:
                     issues.append(
                         Issue(
                             f"~{es_domain.get_type()}~. {es_domain.get_type()} `{es_domain.get_friendly_name()}`. "
@@ -25,3 +26,8 @@ class EsEncryptAtRestRule(AwsBaseRule):
 
     def should_run_rule(self, environment_context: AwsEnvironmentContext) -> bool:
         return bool(environment_context.elastic_search_domains)
+
+    @staticmethod
+    def _supported_es_domain_for_encryption(es_domain: ElasticSearchDomain) -> bool:
+        return (es_domain.es_domain_cluster_instance_type.split('.')[0] not in ('m3', 'r3', 't2')
+                and float(es_domain.es_domain_version) >= 5.1)

@@ -42,6 +42,8 @@ class ElasticSearchDomain(NetworkEntity, INetworkConfiguration):
             policy: The resource policy used with the domain.
             indirect_public_connection_data: The data that describes that a publicly-accessible resource can access this resource by a security group of this resource.
             log_publishing_options: Set of data about the publishing logs to CloudWatch, if enabled.
+            es_domain_version: The ElasticSearch Domain version.
+            es_domain_cluster_instance_type: The ElasticSearch Domain cluster instance type.
     """
     def __init__(self,
                  domain_id: str,
@@ -54,7 +56,9 @@ class ElasticSearchDomain(NetworkEntity, INetworkConfiguration):
                  encrypt_node_to_node_state: bool,
                  account: str,
                  region: str,
-                 log_publishing_options: Optional[List[LogPublishingOptions]]):
+                 log_publishing_options: Optional[List[LogPublishingOptions]],
+                 es_domain_version: str,
+                 es_domain_cluster_instance_type: str):
         """
         `ElasticSearch Domain` can either be `Publicly Accessible` and not in any VPC, or it can be `Publicly In-Accessible` if its in a VPC.
         Subsequently, if an `ElasticSearch Domain` does not belong to a subnet then it means it is can only be accessed from within the VPC.
@@ -75,6 +79,8 @@ class ElasticSearchDomain(NetworkEntity, INetworkConfiguration):
         self.policy: ElasticSearchDomainPolicy = None
         self.log_publishing_options: Optional[List[LogPublishingOptions]] = log_publishing_options
         self.indirect_public_connection_data: Optional[IndirectPublicConnectionData] = None
+        self.es_domain_version: str = es_domain_version
+        self.es_domain_cluster_instance_type: str = es_domain_cluster_instance_type
 
     def get_keys(self) -> List[str]:
         return [self.arn]
