@@ -20,6 +20,7 @@ class Account(AwsResource):
         self.account: str = account
         self.account_name: str = account_name
         self.supports_ec2_classic_mode: bool = supports_ec2_classic_mode
+        self.with_aliases(account)
 
     def get_keys(self) -> List[str]:
         return [self.account]

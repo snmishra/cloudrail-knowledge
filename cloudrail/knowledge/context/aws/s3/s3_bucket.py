@@ -43,6 +43,7 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
         self.bucket_name = bucket_name
         self.arn = arn
         self.bucket_domain_name = bucket_name + ".s3.amazonaws.com"
+        self.bucket_regional_domain_name = '.'.join([bucket_name, 's3', region or '', 'amazonaws.com'])
         self.with_aliases(bucket_name, arn, self.bucket_domain_name)
         self.acls: List[S3ACL] = []
         self.public_access_block_settings: Optional[PublicAccessBlockSettings] = None
@@ -67,6 +68,9 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
 
     def get_name(self) -> str:
         return self.bucket_name
+
+    def get_id(self) -> str:
+        return self.get_name()
 
     def __str__(self) -> str:
         return self.bucket_name

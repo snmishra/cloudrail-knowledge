@@ -11,10 +11,10 @@ class ElastiCacheCluster(NetworkEntity):
             cluster_name: The name of the cluster.
             arn: The ARN of the cluster.
             replication_group_id: The ID of the replication group.
-            security_group_ids: The IDs of the security groups used by this
+            elasticache_security_group_ids: The IDs of the security groups used by this
                 cluster.
             subnet_group_name: The name of the subnet group used by the cluster.
-            subnet_ids: The IDs of the subnet in the subnet group.
+            elasticache_subnet_ids: The IDs of the subnet in the subnet group.
             is_in_default_vpc: True if the ElasticCache cluster is in the
                 default VPC.
             snapshot_retention_limit: Number of days for which ElastiCache will retain automatic cache cluster snapshots before deleting them.
@@ -26,7 +26,7 @@ class ElastiCacheCluster(NetworkEntity):
                  cluster_name: str,
                  arn: str,
                  replication_group_id: Optional[str],
-                 security_group_ids: Optional[list],
+                 elasticache_security_group_ids: Optional[list],
                  snapshot_retention_limit: Optional[int],
                  engine: str,
                  subnet_group_name: Optional[str] = 'default'):
@@ -34,9 +34,9 @@ class ElastiCacheCluster(NetworkEntity):
         self.replication_group_id: str = replication_group_id
         self.cluster_name: str = cluster_name
         self.arn: str = arn
-        self.security_group_ids: Optional[list] = security_group_ids
+        self.elasticache_security_group_ids: Optional[list] = elasticache_security_group_ids
         self.subnet_group_name: Optional[str] = subnet_group_name
-        self.subnet_ids: Optional[List[str]] = None
+        self.elasticache_subnet_ids: Optional[List[str]] = None
         self.is_in_default_vpc: bool = self.subnet_group_name == 'default'
         self.snapshot_retention_limit: Optional[int] = snapshot_retention_limit
         self.engine: str = engine
@@ -54,7 +54,7 @@ class ElastiCacheCluster(NetworkEntity):
         return self.replication_group_id
 
     def get_all_network_configurations(self) -> List[NetworkConfiguration]:
-        return [NetworkConfiguration(False, self.security_group_ids, self.subnet_ids)]
+        return [NetworkConfiguration(False, self.elasticache_security_group_ids, self.elasticache_subnet_ids)]
 
     def get_type(self, is_plural: bool = False) -> str:
         if not is_plural:

@@ -7,13 +7,14 @@ from cloudrail.knowledge.context.aws.ecs.ecs_constants import NetworkMode
 from cloudrail.knowledge.context.aws.iam.role import Role
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
+from cloudrail.knowledge.context.ip_protocol import IpProtocol
 
 
 @dataclass
 class PortMappings:
     container_port: int
     host_port: int
-    protocol: str
+    protocol: IpProtocol
 
 
 @dataclass

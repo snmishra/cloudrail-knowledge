@@ -9,18 +9,18 @@ class IamInstanceProfile(AwsResource):
     """
         Attributes:
             role_name: The name of the role.
-            iam_instance_profile_id: The ID of the instance profile.
+            iam_instance_profile_name: The name of the instance profile.
             ec2_instance_data: The Ec2Instance using this profile.
     """
-    def __init__(self, account: str, region: str, role_name: str, iam_instance_profile_id: str):
+    def __init__(self, account: str, region: str, role_name: str, iam_instance_profile_name: str):
         super().__init__(account, region, AwsServiceName.AWS_IAM_INSTANCE_PROFILE)
         self.role_name: str = role_name
         self.region: str = region
-        self.iam_instance_profile_id: str = iam_instance_profile_id
+        self.iam_instance_profile_name: str = iam_instance_profile_name
         self.ec2_instance_data: Ec2Instance = None
 
     def get_keys(self) -> List[str]:
-        return [self.iam_instance_profile_id]
+        return [self.iam_instance_profile_name]
 
     def get_extra_data(self) -> str:
         role_name = 'role_name: {}'.format(self.role_name) if self.role_name else ''
