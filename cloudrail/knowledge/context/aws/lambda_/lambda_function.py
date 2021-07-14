@@ -60,9 +60,6 @@ class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
         return self.arn
 
     def is_arn_match(self, arn: str):
-        return any(arn == a or are_arns_intersected(arn, a) for a in self.lambda_func_arn_set)
-
-    def is_arn_match_tf_policy(self, arn: str):
         if self.is_managed_by_iac:
             return any(arn == a or are_arns_intersected_for_tf(arn, a) for a in self.lambda_func_arn_set)
         else:
