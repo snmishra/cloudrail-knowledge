@@ -30,4 +30,4 @@ class EsEncryptAtRestRule(AwsBaseRule):
     @staticmethod
     def _supported_es_domain_for_encryption(es_domain: ElasticSearchDomain) -> bool:
         return (es_domain.es_domain_cluster_instance_type.split('.')[0] not in ('m3', 'r3', 't2')
-                and float(es_domain.es_domain_version) >= 5.1)
+                and es_domain.es_domain_version not in ('1.5', '2.3'))
