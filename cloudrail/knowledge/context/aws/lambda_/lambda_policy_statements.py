@@ -30,7 +30,7 @@ class LambdaPolicyStatements(Policy):
         return [self.get_id()]
 
     def get_id(self) -> str:
-        return str(hash_list([stat.statement_id for stat in self.statements]))
+        return str(hash_list(self.statements))
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return '{0}lambda/home?{1}#/functions/{2}?tab=permissions'\
