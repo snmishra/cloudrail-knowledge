@@ -1,7 +1,7 @@
 import functools
 import logging
 import re
-from typing import Optional
+from typing import Optional, Tuple
 from arnparse import arnparse
 from botocore.utils import InvalidArnException, ArnParser
 
@@ -17,8 +17,12 @@ def are_arns_intersected(resource_arn: str, target_arn: str):
         resource_arn_parsed = arnparse(resource_arn) if is_valid_arn(resource_arn) else DummyArnObject(resource_arn)
         target_arn_parsed = arnparse(target_arn) if is_valid_arn(resource_arn) else DummyArnObject(resource_arn)
 
-        for attribute, value in vars(resource_arn_parsed).items():
-            if not hasattr(target_arn_parsed, attribute):
+        arn_length = _get_arn_by_length(resource_arn_parsed, target_arn_parsed)
+        long_arn = arn_length[0]
+        short_arn = arn_length[1]
+
+        for attribute, value in vars(long_arn).items():
+            if not hasattr(short_arn, attribute):
                 return False
 
             target_attribute = target_arn_parsed.__getattribute__(attribute)
@@ -33,6 +37,12 @@ def are_arns_intersected(resource_arn: str, target_arn: str):
 
     return True
 
+
+def _get_arn_by_length(first_arn: object, second_arn: object) -> Tuple:
+    if len(first_arn.__dict__.values()) >= len(second_arn.__dict__.values()):
+        return (first_arn, second_arn)
+    else:
+        return (second_arn, first_arn)
 
 @functools.lru_cache(maxsize=None)
 def is_arn_contained_in_arn(contained: str, container: str):

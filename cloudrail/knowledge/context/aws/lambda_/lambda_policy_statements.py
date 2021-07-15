@@ -42,10 +42,10 @@ class LambdaPolicyStatements(Policy):
 
     @property
     def lambda_func_arn(self) -> str:
-        if self.qualifier and ':' in self.function_name:
-            if self.qualifier in self.function_name:
-                return self.function_name
+        if ':' in self.function_name:
+            if self.qualifier and self.qualifier in self.function_name:
+                return create_lambda_function_arn(self.account, self.region, self.function_name.split(':')[-2], self.qualifier)
             else:
-                return self.function_name + ':' + self.qualifier
+                return create_lambda_function_arn(self.account, self.region, self.function_name.split(':')[-1], self.qualifier)
         else:
             return create_lambda_function_arn(self.account, self.region, self.function_name, self.qualifier)
