@@ -26,7 +26,7 @@ def are_arns_intersected(resource_arn: str, target_arn: str):
                 return False
 
             target_attribute = long_arn.__getattribute__(attribute)
-            if value == '*' or not value or target_attribute == '*' or not target_attribute:  # wildcards
+            if not value or '*' in value or not target_attribute or '*' in target_attribute:  # wildcards
                 continue
 
             pattern = re.compile(value.replace('*', '.*', -1))
