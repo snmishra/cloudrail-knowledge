@@ -14,12 +14,13 @@ class AzureFunctionApp(AzureResource):
             auth_settings: Function app authentication settings.
             site_config: Function app site settings.
     """
-    def __init__(self, name: str, auth_settings: AuthSettings, site_config: SiteConfig, client_cert_mode: FieldMode = None) -> None:
+    def __init__(self, name: str, auth_settings: AuthSettings, site_config: SiteConfig, os_type: str, client_cert_mode: FieldMode = None) -> None:
         super().__init__(AzureResourceType.AZURERM_FUNCTION_APP)
         self.name = name
         self.auth_settings: AuthSettings = auth_settings
         self.site_config: SiteConfig = site_config
         self.client_cert_mode: FieldMode = client_cert_mode
+        self.os_type: str = os_type
         self.with_aliases(name)
 
     def get_keys(self) -> List[str]:
