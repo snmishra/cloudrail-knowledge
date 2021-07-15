@@ -15,17 +15,17 @@ def are_arns_intersected(resource_arn: str, target_arn: str):
             return False
 
         resource_arn_parsed = arnparse(resource_arn) if is_valid_arn(resource_arn) else DummyArnObject(resource_arn)
-        target_arn_parsed = arnparse(target_arn) if is_valid_arn(resource_arn) else DummyArnObject(resource_arn)
+        target_arn_parsed = arnparse(target_arn) if is_valid_arn(resource_arn) else DummyArnObject(target_arn)
 
         arn_length = _get_arn_by_length(resource_arn_parsed, target_arn_parsed)
         long_arn = arn_length[0]
         short_arn = arn_length[1]
 
-        for attribute, value in vars(long_arn).items():
-            if not hasattr(short_arn, attribute):
+        for attribute, value in vars(short_arn).items():
+            if not hasattr(long_arn, attribute):
                 return False
 
-            target_attribute = target_arn_parsed.__getattribute__(attribute)
+            target_attribute = long_arn.__getattribute__(attribute)
             if value == '*' or not value or target_attribute == '*' or not target_attribute:  # wildcards
                 continue
 
