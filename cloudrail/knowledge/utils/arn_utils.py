@@ -11,11 +11,11 @@ def are_arns_intersected(resource_arn: str, target_arn: str):
     try:
         if resource_arn == '*' or target_arn == '*':
             return True
-        elif not (is_valid_arn(resource_arn) and is_valid_arn(target_arn)):
+        elif (not is_valid_arn(resource_arn) and is_valid_arn(target_arn)) or (is_valid_arn(resource_arn) and not is_valid_arn(target_arn)):
             return False
 
-        resource_arn_parsed = arnparse(resource_arn)
-        target_arn_parsed = arnparse(target_arn)
+        resource_arn_parsed = arnparse(resource_arn) if is_valid_arn(resource_arn) else DummyArnObject(resource_arn)
+        target_arn_parsed = arnparse(target_arn) if is_valid_arn(resource_arn) else DummyArnObject(resource_arn)
 
         for attribute, value in vars(resource_arn_parsed).items():
             if not hasattr(target_arn_parsed, attribute):
@@ -105,33 +105,6 @@ def is_valid_arn(arn: str) -> bool:
     except Exception:
         logging.warning(f'failed parse arn {arn}')
         return False
-
-
-@functools.lru_cache(maxsize=None)
-def are_arns_intersected_for_tf(resource_arn: str, target_arn: str):
-    try:
-        if resource_arn == '*' or target_arn == '*':
-            return True
-
-        resource_arn_parsed = DummyArnObject(resource_arn)
-        target_arn_parsed = DummyArnObject(target_arn)
-
-        for attribute, value in vars(resource_arn_parsed).items():
-            if not hasattr(target_arn_parsed, attribute):
-                return False
-
-            target_attribute = target_arn_parsed.__getattribute__(attribute)
-            if value == '*' or not value or target_attribute == '*' or not target_attribute:  # wildcards
-                continue
-
-            pattern = re.compile(value.replace('*', '.*', -1))
-            if not pattern.fullmatch(target_attribute):
-                return False
-    except IndexError:  # This happens when the user put an illegal ARN in a policy principal/resource (for example, arn:aws:sqs:*)
-        return False
-
-    return True
-
 
 class DummyArnObject:
     def __init__(self, arn_str: str):
