@@ -37,7 +37,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  security_center_contacts: AliasesDict[AzureSecurityCenterContact] = None,
                  security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
                  my_sql_servers: AliasesDict[AzureMySqlServer] = None,
-                 sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = None):
+                 sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = None),
+                 role_definitions: List[AzureRoleDefinition] = None):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
         self.resource_groups: AliasesDict[AzureResourceGroup] = resource_groups or AliasesDict()
@@ -55,3 +56,4 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.vnet_gateways: AliasesDict[AzureVirtualNetworkGateway] = vnet_gateways or AliasesDict()
         self.my_sql_servers: AliasesDict[AzureMySqlServer] = my_sql_servers or AliasesDict()
         self.sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = sql_server_extended_audit_policies or AliasesDict()
+        self.role_definitions = role_definitions or []

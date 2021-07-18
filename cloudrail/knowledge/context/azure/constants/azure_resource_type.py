@@ -19,3 +19,4 @@ class AzureResourceType(Enum):
     AZURERM_SECURITY_CENTER_CONTACT = 'azurerm_security_center_contact'
     AZURERM_VIRTUAL_NETWORK_GATEWAY = 'azurerm_virtual_network_gateway'
     AZURERM_MSSQL_SERVER_EXTENDED_AUDITING_POLICY = 'azurerm_mssql_server_extended_auditing_policy'
+    AZURERM_ROLE_DEFINITION = 'azurerm_role_definition'
