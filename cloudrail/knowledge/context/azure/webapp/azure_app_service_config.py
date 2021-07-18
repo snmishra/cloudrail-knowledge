@@ -14,7 +14,7 @@ class AzureAppServiceConfig(AzureResource):
             auth_settings: Function app authentication settings.
     """
 
-    def __init__(self, name: str, ftps_state: FtpsState = FtpsState.ALL_ALLOWED, auth_settings: AuthSettings = AuthSettings()) -> None:
+    def __init__(self, name: str = '', ftps_state: FtpsState = FtpsState.ALL_ALLOWED, auth_settings: AuthSettings = AuthSettings()) -> None:
         super().__init__(AzureResourceType.NONE)
         self.name: str = name
         self.ftps_state: FtpsState = ftps_state
@@ -32,4 +32,8 @@ class AzureAppServiceConfig(AzureResource):
 
     @property
     def is_tagable(self) -> bool:
+        return False
+
+    @staticmethod
+    def is_standalone() -> bool:
         return False
