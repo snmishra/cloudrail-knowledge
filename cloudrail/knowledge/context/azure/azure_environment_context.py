@@ -42,7 +42,6 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.sql_servers: AliasesDict[AzureSqlServer] = sql_servers or AliasesDict()
         self.net_security_groups: AliasesDict[AzureNetworkSecurityGroup] = net_security_groups or AliasesDict()
         self.app_services: AliasesDict[AzureAppService] = app_services or AliasesDict()
-        self.app_services_config: AliasesDict[AzureAppServiceConfig] = app_services or AliasesDict()
         self.subnet_network_security_group_association: List[AzureSecurityGroupToSubnetAssociation] = subnet_network_security_group_association or []
         self.subnets: AliasesDict[AzureSubnet] = subnets or AliasesDict()
         self.nic_network_security_group_association: List[AzureNetworkSecurityGroupToNicAssociation] = nic_network_security_group_association or []

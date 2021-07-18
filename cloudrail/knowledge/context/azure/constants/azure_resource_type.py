@@ -8,7 +8,6 @@ class AzureResourceType(Enum):
     AZURERM_MSSQL_SERVER = 'azurerm_mssql_server'
     AZURERM_SQL_FIREWALL_RULE = 'azurerm_sql_firewall_rule'
     AZURERM_APP_SERVICE = 'azurerm_app_service'
-    AZURERM_APP_SERVICE_CONFIG = 'azurerm_app_service' ## since terraform don't have service config entity, we are taking the needed prop from the app service
     AZURERM_NETWORK_SECURITY_GROUP = 'azurerm_network_security_group'
     AZURERM_SUBNET_NETWORK_SECURITY_GROUP_ASSOCIATION = 'azurerm_subnet_network_security_group_association'
     AZURERM_NETWORK_INTERFACE_SECURITY_GROUP_ASSOCIATION = 'azurerm_network_interface_security_group_association'
