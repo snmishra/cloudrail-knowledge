@@ -17,3 +17,5 @@ class AzureResourceType(Enum):
     AZURERM_SECURITY_CENTER_AUTO_PROVISIONING = 'azurerm_security_center_auto_provisioning'
     AZURERM_SECURITY_CENTER_CONTACT = 'azurerm_security_center_contact'
     AZURERM_VIRTUAL_NETWORK_GATEWAY = 'azurerm_virtual_network_gateway'
+    AZURERM_KEY_VAULT = 'azurerm_key_vault'
+    AZURERM_MONITOR_DIAGNOSTIC_SETTING = 'azurerm_monitor_diagnostic_setting'

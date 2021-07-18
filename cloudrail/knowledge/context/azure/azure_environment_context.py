@@ -1,6 +1,8 @@
 from typing import List, Dict
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
+from cloudrail.knowledge.context.azure.keyvault.azure_key_vault import AzureKeyVault
+from cloudrail.knowledge.context.azure.keyvault.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
 from cloudrail.knowledge.context.azure.security.azure_security_center_auto_provisioning import AzureSecurityCenterAutoProvisioning
 from cloudrail.knowledge.context.azure.security.azure_security_center_contact import AzureSecurityCenterContact
 from cloudrail.knowledge.context.azure.network.azure_vnet_gateway import AzureVirtualNetworkGateway
@@ -35,7 +37,9 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  function_apps: AliasesDict[AzureFunctionApp] = None,
                  vnet_gateways: AliasesDict[AzureVirtualNetworkGateway] = None,
                  security_center_contacts: AliasesDict[AzureSecurityCenterContact] = None,
-                 security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None):
+                 security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
+                 key_vaults: AliasesDict[AzureKeyVault] = None,
+                 monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = None):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
         self.resource_groups: AliasesDict[AzureResourceGroup] = resource_groups or AliasesDict()
@@ -51,3 +55,5 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = security_center_auto_provisioning or AliasesDict()
         self.security_center_contacts: AliasesDict[AzureSecurityCenterContact] = security_center_contacts or AliasesDict()
         self.vnet_gateways: AliasesDict[AzureVirtualNetworkGateway] = vnet_gateways or AliasesDict()
+        self.key_vaults: AliasesDict[AzureKeyVault] = key_vaults or AliasesDict()
+        self.monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = monitor_diagnostic_settings or AliasesDict()

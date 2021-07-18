@@ -1017,3 +1017,16 @@ rules_metadata:
     security_layer: logging
     resource_type:
       - security_services
+
+  - rule_id: car_key_vault_diagnostic_logs_enabled
+    cloud_provider: azure
+    name: Ensure Key Vault has diagnostic logs enabled
+    severity: medium
+    description: Cloudrail will review the Key Vault configuration in your environment. If a vault does not have diagnostic logs enabled, Cloudrail will highlight it as a violation.
+    human_readable_logic: Cloudrail will review the Security Center Contact configuration within your Azure subscription and Terraform plan to ensure email notifications of security alerts is enabled.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/alert in order to enable diagnostic logs for Key Vault.
+    remediation_steps_tf: Create an azurerm_monitor_diagnostic_setting resource and set the target_resource_id to the Key Vault ID. In the log block, set the enabled argument to true. In the log, retention_policy block, set enabled argument to true.
+    rule_type: context_aware
+    security_layer: logging
+    resource_type:
+      - security_services
