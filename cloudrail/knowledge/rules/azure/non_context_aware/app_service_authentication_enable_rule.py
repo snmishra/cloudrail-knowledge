@@ -14,9 +14,7 @@ class AppServiceAuthenticationEnableRule(AzureBaseRule):
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for app_service in env_context.app_services:
-            if app_service.app_service_config is None or \
-                    app_service.app_service_config.auth_settings is None or \
-                    not app_service.app_service_config.auth_settings.enabled:
+            if not app_service.app_service_config.auth_settings.enabled:
                 issues.append(
                     Issue(
                         f'The web app `{app_service.get_friendly_name()}` does not have authentication enabled.',

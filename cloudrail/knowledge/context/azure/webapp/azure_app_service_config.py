@@ -13,7 +13,8 @@ class AzureAppServiceConfig(AzureResource):
             ftps_state: The FTPS state defined in this config. Either AllAllowed, FTPSOnly or Disabled
             auth_settings: Function app authentication settings.
     """
-    def __init__(self, name: str, ftps_state: FtpsState, auth_settings: AuthSettings) -> None:
+
+    def __init__(self, name: str, ftps_state: FtpsState = FtpsState.ALL_ALLOWED, auth_settings: AuthSettings = AuthSettings()) -> None:
         super().__init__(AzureResourceType.NONE)
         self.name: str = name
         self.ftps_state: FtpsState = ftps_state
