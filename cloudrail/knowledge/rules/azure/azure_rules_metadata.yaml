@@ -1017,3 +1017,16 @@ rules_metadata:
     security_layer: logging
     resource_type:
       - security_services
+
+  - rule_id: non_car_no_custom_subscription_owner_roles_exist
+    cloud_provider: azure
+    name: Ensure no custom subscription owner roles exist
+    severity: high
+    description: Custom subscription owner roles has full administrative access and can perform any action in the subscription. As part of the least privilege principle, Cloudrail will review the roles configuration in the subscription and, if there is any custom subscription owner role, Cloudrail will highlight it as a violation.
+    human_readable_logic: Cloudrail will review the custom roles configuration within your Azure subscription and Terraform plan to ensure that no custom subscription owner roles exist by checking the role scope (subscription) and the permissions actions (“*”).
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/role-based-access-control/custom-roles-portal#delete-a-custom-role in order to delete a custom owner role.
+    remediation_steps_tf: Delete the azurerm_role_definition resource.
+    rule_type: non_context_aware
+    security_layer: iam
+    resource_type:
+      - resource_iam
