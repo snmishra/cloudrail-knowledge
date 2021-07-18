@@ -4,6 +4,7 @@ from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.security.azure_security_center_auto_provisioning import AzureSecurityCenterAutoProvisioning
 from cloudrail.knowledge.context.azure.security.azure_security_center_contact import AzureSecurityCenterContact
 from cloudrail.knowledge.context.azure.network.azure_vnet_gateway import AzureVirtualNetworkGateway
+from cloudrail.knowledge.context.azure.security.azure_security_center_subscription_pricing import AzureSecurityCenterSubscriptionPricing
 from cloudrail.knowledge.context.azure.webapp.azure_function_app import AzureFunctionApp
 from cloudrail.knowledge.context.azure.azure_resource_group import AzureResourceGroup
 from cloudrail.knowledge.context.azure.webapp.azure_app_service import AzureAppService
@@ -35,7 +36,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  function_apps: AliasesDict[AzureFunctionApp] = None,
                  vnet_gateways: AliasesDict[AzureVirtualNetworkGateway] = None,
                  security_center_contacts: AliasesDict[AzureSecurityCenterContact] = None,
-                 security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None):
+                 security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
+                 security_center_subscription_pricings: List[AzureSecurityCenterSubscriptionPricing] = None):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
         self.resource_groups: AliasesDict[AzureResourceGroup] = resource_groups or AliasesDict()
@@ -51,3 +53,4 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = security_center_auto_provisioning or AliasesDict()
         self.security_center_contacts: AliasesDict[AzureSecurityCenterContact] = security_center_contacts or AliasesDict()
         self.vnet_gateways: AliasesDict[AzureVirtualNetworkGateway] = vnet_gateways or AliasesDict()
+        self.security_center_subscription_pricings: List[AzureSecurityCenterSubscriptionPricing] = security_center_subscription_pricings or []

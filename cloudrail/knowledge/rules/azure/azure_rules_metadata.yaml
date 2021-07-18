@@ -1017,3 +1017,16 @@ rules_metadata:
     security_layer: logging
     resource_type:
       - security_services
+
+  - rule_id: non_car_azure_defender_for_container_registries_enabled
+    cloud_provider: azure
+    name: Ensure Azure Defender for container registries is enabled
+    severity: major
+    description: Cloudrail will review the Security Center subscription pricing configuration in your environment. If the tier is not set to “Standard” for container registries resources, Cloudrail will highlight it as a violation.
+    human_readable_logic: Cloudrail will review the Security Center Subscription Pricing configuration within your Azure subscription and Terraform plan to ensure Azure Defender is enabled (“Standard” tier pricing) for container registries.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/security-center/enable-azure-defender in order to enable Azure Defender for container registries.
+    remediation_steps_tf: For the azurerm_security_center_subscription_pricing resource, set the tier argument to “Standard” and ensure the resource_type argument contains the value “ContainerRegistry”.
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - security_services
