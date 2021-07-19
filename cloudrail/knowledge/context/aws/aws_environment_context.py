@@ -1,5 +1,6 @@
 import functools
 from typing import List, Dict, Optional, Union, TypeVar, Callable, Set
+from cloudrail.knowledge.context.aws.ec2.availability_zone import AvailabilityZone
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.aws.account.account import Account
 from cloudrail.knowledge.context.aws.apigateway.api_gateway_integration import ApiGatewayIntegration
@@ -333,7 +334,8 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  redshift_logs: List[RedshiftLogging] = None,
                  s3_bucket_logs: List[S3BucketLogging] = None,
                  athena_databases: List[AthenaDatabase] = None,
-                 cfn_resources_info: List[CloudformationResourceInfo] = None):
+                 cfn_resources_info: List[CloudformationResourceInfo] = None,
+                 availability_zones: AliasesDict[AvailabilityZone] = None):
         BaseEnvironmentContext.__init__(self, invalidated_resources=invalidated_resources, unknown_blocks=unknown_blocks,
                                         managed_resources_summary=managed_resources_summary)
         self.athena_databases = athena_databases or []
@@ -500,6 +502,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.dms_replication_instance_subnet_groups = dms_replication_instance_subnet_groups or []
         self.invalidated_resources = invalidated_resources or set()
         self.cfn_resources_info: List[CloudformationResourceInfo] = cfn_resources_info or []
+        self.availability_zones: AliasesDict[AvailabilityZone] = availability_zones or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
     def get_used_network_interfaces(self) -> AliasesDict[NetworkInterface]:
