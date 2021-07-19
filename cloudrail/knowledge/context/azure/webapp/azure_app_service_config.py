@@ -14,7 +14,7 @@ class AzureAppServiceConfig(AzureResource):
             auth_settings: Function app authentication settings.
     """
 
-    def __init__(self, name: str = '', ftps_state: FtpsState = FtpsState.ALL_ALLOWED, auth_settings: AuthSettings = AuthSettings()) -> None:
+    def __init__(self, name, ftps_state: FtpsState, auth_settings: AuthSettings) -> None:
         super().__init__(AzureResourceType.NONE)
         self.name: str = name
         self.ftps_state: FtpsState = ftps_state

@@ -10,10 +10,10 @@ class AzureAppService(AzureResource):
             name: The name of this AppService
             app_service_config: App service configuration.
     """
-    def __init__(self, name: str, app_service_config: AzureAppServiceConfig = AzureAppServiceConfig()) -> None:
+    def __init__(self, name: str) -> None:
         super().__init__(AzureResourceType.AZURERM_APP_SERVICE)
         self.name: str = name
-        self.app_service_config: AzureAppServiceConfig = app_service_config
+        self.app_service_config: AzureAppServiceConfig = None
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]
