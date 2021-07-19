@@ -1017,3 +1017,19 @@ rules_metadata:
     security_layer: logging
     resource_type:
       - security_services
+
+  - rule_id: non_car_mysql_server_enforcing_ssl
+    cloud_provider: azure
+    name: Ensure MySQL Servers are enforcing SSL
+    severity: major
+    description: 
+      Cloudrail will review the MySQL servers configuration in your environment.
+      If a server is not enforcing SSL connections, Cloudrail will highlight it as a violation.
+    human_readable_logic: 
+      Cloudrail will review the MySQL Servers configuration within your Azure subscription and Terraform plan to ensure that SSL enforcement is enabled.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl#step-3--enforcing-ssl-connections-in-azure> in order to enable “Enforce SSL connection” for the MySQL server.
+    iac_remediation_steps: For the azurerm_mysql_server resource, set the ssl_enforcement_enabled argument to true.
+    rule_type: non_context_aware
+    security_layer: encryption
+    resource_type:
+      - database

@@ -29,6 +29,12 @@ class AzureMySqlServer(AzureResource):
     def get_friendly_name(self) -> str:
         return self.get_name()
 
+    def get_type(self, is_plural: bool = False) -> str:
+        if not is_plural:
+            return 'MySQL Server'
+        else:
+            return 'MySQL Servers'
+
     @property
     def is_tagable(self) -> bool:
         return True
