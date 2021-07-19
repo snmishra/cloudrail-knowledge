@@ -6,6 +6,11 @@ from cloudrail.knowledge.context.aws.service_name import AwsServiceName
 
 class AvailabilityZone(AwsResource):
 
+    """
+        Attributes:
+            zone_id: The unique ID of the Availability Zone.
+            zone_name: Availability Zone name.
+    """
     def __init__(self, account: str, region: str, zone_id: str, zone_name: str) -> None:
         super().__init__(account=account, region=region, tf_resource_type=AwsServiceName.NONE)
         self.zone_id: str = zone_id
