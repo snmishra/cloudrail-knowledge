@@ -1,6 +1,19 @@
 from typing import Optional, List
+from dataclasses import dataclass
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
+
+@dataclass
+class ExtendedAuditPolicy:
+    """
+        Attributes:
+            retention_in_days: The number of days to retain logs for in the storage account.
+            log_monitoring_enabled: An indication if audit events to Azure server monitor is enabled.
+            server_id: The ID of the SQL server in which to associate the audit policy.
+    """
+    server_id: str
+    retention_in_days: int
+    log_monitoring_enabled: bool
 
 
 class AzureSqlServer(AzureResource):
@@ -15,6 +28,7 @@ class AzureSqlServer(AzureResource):
         self.server_name: str = server_name
         self.with_aliases(server_name)
         self.public_network_access_enable: bool = public_network_access_enable
+        self.extended_auditing_policy: ExtendedAuditPolicy = None
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]
