@@ -13,15 +13,21 @@ class EnsureSqlServerAuditEnabledRule(AzureBaseRule):
 
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
-        for sql_server in env_context.sql_servers.values():
-            if not sql_server.extended_auditing_policy \
-                or not sql_server.extended_auditing_policy.log_monitoring_enabled \
-                    or (0 < sql_server.extended_auditing_policy.retention_in_days <= 90):
+        for sql_server in env_context.sql_servers:
+            if not sql_server.extended_auditing_policy.log_monitoring_enabled \
+                or not sql_server.extended_auditing_policy:
                 issues.append(
                     Issue(
                         f'The {sql_server.get_type()} `{sql_server.get_friendly_name()}` does not have auditing enabled',
                         sql_server,
                         sql_server))
+            elif sql_server.extended_auditing_policy and sql_server.extended_auditing_policy.log_monitoring_enabled \
+                and 0 < sql_server.extended_auditing_policy.retention_in_days <= 90:
+                issues.append(
+                Issue(
+                    f'The {sql_server.get_type()} `{sql_server.get_friendly_name()}` has auditing enabled, but for less than 90 days of retention',
+                    sql_server,
+                    sql_server))
         return issues
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
