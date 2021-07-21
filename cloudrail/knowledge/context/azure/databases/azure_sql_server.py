@@ -28,7 +28,7 @@ class AzureSqlServer(AzureResource):
         return self.server_name
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        pass
+        return f'https://portal.azure.com/#@{self.tenant_id}/resource{self._id}/overview'
 
     def get_friendly_name(self) -> str:
         return self.get_name()

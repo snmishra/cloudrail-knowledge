@@ -27,7 +27,7 @@ class AzureSqlServerExtendedAuditingPolicy(AzureResource):
         pass
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        pass
+        return f'https://portal.azure.com/#@{self.tenant_id}/resource{self.server_id}/serverAuditing'
 
     def get_friendly_name(self) -> str:
         return f'Extended Audit policy for {self.server_id}'
