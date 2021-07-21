@@ -14,8 +14,8 @@ class AppServiceAuthenticationEnableRule(AzureBaseRule):
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for app_service in env_context.app_services:
-            if app_service.app_service_config is None or \
-                    app_service.app_service_config.auth_settings is None or \
+            if app_service.app_service_config is not None and \
+                    app_service.app_service_config.auth_settings is not None and \
                     not app_service.app_service_config.auth_settings.enabled:
                 issues.append(
                     Issue(

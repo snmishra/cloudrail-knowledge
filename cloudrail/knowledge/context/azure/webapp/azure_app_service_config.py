@@ -18,9 +18,9 @@ class AzureAppServiceConfig(AzureResource):
     def __init__(self, name, ftps_state: FtpsState, auth_settings: AuthSettings, minimum_tls_version: str) -> None:
         super().__init__(AzureResourceType.NONE)
         self.name: str = name
-        self.ftps_state: FtpsState = ftps_state
-        self.auth_settings: AuthSettings = auth_settings
-        self.minimum_tls_version: str = minimum_tls_version
+        self.ftps_state: FtpsState = ftps_state or FtpsState.ALL_ALLOWED
+        self.auth_settings: AuthSettings = auth_settings or AuthSettings()
+        self.minimum_tls_version: str = minimum_tls_version or '1.2'
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]

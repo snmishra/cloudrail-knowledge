@@ -18,12 +18,12 @@ class TestAppServiceFtpsRequired(unittest.TestCase):
 
     @parameterized.expand(
         [
-            [FtpsState.ALL_ALLOWED, True],
-            [FtpsState.DISABLED, False],
-            [FtpsState.FTPS_ONLY, False]
+            ["FTPS status all allow should alert", FtpsState.ALL_ALLOWED, True],
+            ["FTPS status disable should not alert", FtpsState.DISABLED, False],
+            ["FTPS status is secured should not alert", FtpsState.FTPS_ONLY, False]
         ]
     )
-    def test_states(self, ftps_state: FtpsState, should_alert: bool):
+    def test_states(self, unused_name: str, ftps_state: FtpsState, should_alert: bool):
         # Arrange
         app_service: AzureAppService = create_empty_entity(AzureAppService)
         app_service.name = 'tmp-name'
@@ -47,5 +47,5 @@ class TestAppServiceFtpsRequired(unittest.TestCase):
         # Act
         result = self.rule.run(context, {})
         # Assert
-        self.assertEqual(RuleResultType.FAILED, result.status)
-        self.assertEqual(1, len(result.issues))
+        self.assertEqual(RuleResultType.SUCCESS, result.status)
+        self.assertEqual(0, len(result.issues))
