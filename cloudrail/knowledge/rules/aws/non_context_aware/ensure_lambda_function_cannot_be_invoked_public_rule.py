@@ -22,7 +22,7 @@ class EnsureLambdaFunctionCannotBeInvokedPublicRule(AwsBaseRule):
                     Issue(
                         f'The {lambda_func.get_type()} `{lambda_func.get_friendly_name()}` is exposed because its resource policy is too permissive.',
                         lambda_func, lambda_func))
-            return issues
+        return issues
 
     def should_run_rule(self, environment_context: AwsEnvironmentContext) -> bool:
         return bool(environment_context.lambda_function_list)

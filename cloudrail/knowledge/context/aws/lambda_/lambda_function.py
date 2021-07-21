@@ -59,7 +59,7 @@ class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
     def get_arn(self) -> str:
         return self.arn
 
-    def is_arn_match_for_lambda(self, arn: str):
+    def is_arn_match(self, arn: str):
         return any(arn == a or are_arns_intersected(arn, a) for a in self.lambda_func_arn_set)
 
     def get_qualifier(self) -> str:
