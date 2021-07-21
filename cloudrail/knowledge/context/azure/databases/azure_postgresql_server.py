@@ -31,9 +31,9 @@ class AzurePostgreSqlServer(AzureResource):
 
     def get_type(self, is_plural: bool = False) -> str:
         if not is_plural:
-            return 'PostgreSql Server'
+            return 'PostgreSQL Server'
         else:
-            return 'PostgreSql Servers'
+            return 'PostgreSQL Servers'
 
     @property
     def is_tagable(self) -> bool:
