@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import List, Optional, Dict
+
 from cloudrail.knowledge.context.aws.ec2.internet_gateway import InternetGateway
 from cloudrail.knowledge.context.aws.ec2.subnet import Subnet
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
@@ -73,7 +74,7 @@ class Vpc(AwsResource):
         self.enable_dns_support: Optional[bool] = enable_dns_support
         self.enable_dns_hostnames: Optional[bool] = enable_dns_hostnames
 
-        self.default_route_table: Optional[RouteTable] = None
+        self.main_route_table: Optional[RouteTable] = None
         self.endpoints: List[VpcEndpoint] = []
         self.default_security_group: Optional[SecurityGroup] = None
         self.default_nacl: Optional[NetworkAcl] = None
