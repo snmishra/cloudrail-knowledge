@@ -1030,3 +1030,21 @@ rules_metadata:
     security_layer: iam
     resource_type:
       - compute
+
+  - rule_id: non_car_storage_account_default_network_access_denied
+    cloud_provider: azure
+    name: Ensure Storage Account has default network access denied
+    severity: medium
+    description: 
+      Cloudrail will review the Storage Accounts configuration in your environment. If the account network rules are not denying default network access, Cloudrail will highlight it as a violation.
+    human_readable_logic: 
+      Cloudrail will review the Storage Account configuration within your Azure subscription and Terraform plan to ensure that its network rules (either defined in-line or using azurerm_storage_account_network_rules resource) are denying default network access.
+    console_remediation_steps: 
+      Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#change-the-default-network-access-rule> in order to deny access by default.
+    iac_remediation_steps: 
+      For the azurerm_storage_account resource, in the network_rules block, set the default_action argument to “Deny”. 
+      If azurerm_storage_account_network_rules resource is being used, set the default_action argument to “Deny”.
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - storage
