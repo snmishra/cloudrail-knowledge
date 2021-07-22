@@ -52,3 +52,6 @@ class KmsKey(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def get_id(self) -> str:
+        return self.key_id
