@@ -1,3 +1,4 @@
+import urllib
 from typing import List, Optional
 
 from cloudrail.knowledge.context.aws.kms.kms_key import KmsKey
@@ -50,7 +51,7 @@ class SqsQueue(AwsResource):
 
     def get_cloud_resource_url(self) -> str:
         return '{0}sqs/v2/home?region={1}#/queues/{2}'\
-            .format(self.AWS_CONSOLE_URL, self.region, self.queue_url)
+            .format(self.AWS_CONSOLE_URL, self.region, urllib.parse.quote_plus(self.queue_url))
 
     @property
     def is_tagable(self) -> bool:
