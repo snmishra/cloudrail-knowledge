@@ -15,6 +15,7 @@ class AthenaWorkgroup(AwsResource):
             enforce_workgroup_config: True to enforce Workgroup encryption configuration on clients.
             encryption_option: Set if encryption is configured, one of SSE_S3, SSE_KMS, CSE_KMS.
             kms_key_arn: Set if KMS is used for encryption, this is the ARN of the key.
+            kms_key_id: KMS key unique id.
     """
     def __init__(self,
                  name: str,
