@@ -33,11 +33,12 @@ class AzureSqlServerExtendedAuditingPolicy(AzureResource):
         return f'Extended Audit policy for {self.server_id}'
 
     def get_type(self, is_plural: bool = False) -> str:
-        if not is_plural:
-            return 'SQL Server Extended Auditing Policy'
-        else:
-            return 'SQL Server Extended Auditing Policies'
+        return 'SQL Server Extended Auditing' + ' Policy' if not is_plural else ' Policies'
 
     @property
     def is_tagable(self) -> bool:
+        return False
+
+    @staticmethod
+    def is_standalone() -> bool:
         return False
