@@ -14,6 +14,7 @@ class LambdaPolicyStatements(Policy):
             statements: The statements themselves.
             qualifier: A Lambda Function may have a qualified set, this will be it
                 (or None).
+            lambda_func_arn: The ARN of the Lambda Function these policy statements are for.
     """
     def __init__(self, account: str, region: str, function_name: str,
                  statements: List[PolicyStatement], qualifier: str = None):

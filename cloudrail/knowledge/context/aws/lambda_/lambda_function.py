@@ -77,7 +77,7 @@ class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
             resource_parts: List[str] = arn_sections_dict['resource'].split(':')
             if len(resource_parts) == 3:
                 return resource_parts[-1]
-        return None
+        return ''
 
     def get_id(self) -> str:
         return self.get_arn()
