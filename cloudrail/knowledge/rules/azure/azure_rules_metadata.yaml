@@ -988,7 +988,7 @@ rules_metadata:
   - rule_id: non_car_function_app_using_latest_tls_version
     cloud_provider: azure
     name: Ensure Function App is using the latest Azure supported TLS version (1.2)
-    severity: high
+    severity: major
     description:
       Cloudrail will review the Function Apps configuration in your environment.
       If a function does not use the latest Azure supported TLS version (1.2), Cloudrail will highlight it as a violation.
@@ -1034,7 +1034,7 @@ rules_metadata:
   - rule_id: non_car_web_app_using_latest_tls_version
     cloud_provider: azure
     name: Ensure Web App is using the latest Azure supported TLS version (1.2)
-    severity: high
+    severity: major
     description: Cloudrail will review the Web Apps configuration in your environment. If an app does not use the latest Azure supported TLS version (1.2), Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Web Apps configuration within your Azure subscription and Terraform plan to ensure they are using the latest Azure supported TLS version (1.2).
     console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-tls-versions in order to set the Minimum TLS Version to 1.2 for the Web App.
