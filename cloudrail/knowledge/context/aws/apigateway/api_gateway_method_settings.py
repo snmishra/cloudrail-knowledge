@@ -44,7 +44,7 @@ class ApiGatewayMethodSettings(AwsResource):
         self.caching_encrypted: bool = caching_encrypted
 
     def get_keys(self) -> List[str]:
-        return [self.api_gw_id]
+        return [self.api_gw_id, self.method_path]
 
     def get_id(self) -> str:
         return self.api_gw_id
