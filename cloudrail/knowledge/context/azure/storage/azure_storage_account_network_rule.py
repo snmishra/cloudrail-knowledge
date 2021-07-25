@@ -8,8 +8,6 @@ class AzureStorageAccountNetworkRule(AzureResource):
         Attributes:
             storage_name: The name of the storage account.
             default_action: The default action when no other rules match.
-            account_replication_type: The replication type of the storage account
-            network_rules: The networking rules to allow or deny access from.
     """
 
     def __init__(self, storage_name: str, default_action: str) -> None:
