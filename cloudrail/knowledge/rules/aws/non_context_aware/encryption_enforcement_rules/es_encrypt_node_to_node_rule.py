@@ -16,7 +16,7 @@ class EsEncryptNodeToNodeRule(AwsBaseRule):
 
         for es_domain in env_context.elastic_search_domains:
             if es_domain.is_new_resource():
-                if not es_domain.encrypt_node_to_node_state:
+                if es_domain.es_domain_version not in ('5.6', '5.5', '5.3', '5.1', '2.3', '1.5') and not es_domain.encrypt_node_to_node_state:
                     issues.append(
                         Issue(
                             f"~{es_domain.get_type()}~. {es_domain.get_type()} `{es_domain.get_friendly_name()}`. "
