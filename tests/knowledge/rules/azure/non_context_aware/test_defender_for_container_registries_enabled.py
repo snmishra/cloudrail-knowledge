@@ -16,13 +16,13 @@ class TestDefenderForContainerRegistriesEnabled(unittest.TestCase):
 
     @parameterized.expand(
         [
-            [SubscriptionPricingResourceType.CONTAINER_REGISTRY, SubscriptionPricingTier.FREE, True],
-            [SubscriptionPricingResourceType.CONTAINER_REGISTRY, SubscriptionPricingTier.STANDARD, False],
-            [SubscriptionPricingResourceType.DNS, SubscriptionPricingTier.STANDARD, False],
-            [SubscriptionPricingResourceType.DNS, SubscriptionPricingTier.FREE, False],
+            ['ContainerRegistry-FreeTier-ShouldAlert', SubscriptionPricingResourceType.CONTAINER_REGISTRY, SubscriptionPricingTier.FREE, True],
+            ['ContainerRegistry-Standard-Ok', SubscriptionPricingResourceType.CONTAINER_REGISTRY, SubscriptionPricingTier.STANDARD, False],
+            ['OtherResourceType-Standard-Ok', SubscriptionPricingResourceType.DNS, SubscriptionPricingTier.STANDARD, False],
+            ['OtherResourceType-Free-Ok', SubscriptionPricingResourceType.DNS, SubscriptionPricingTier.FREE, False],
         ]
     )
-    def test_alert_notifications(self, resource_type: SubscriptionPricingResourceType, tier: SubscriptionPricingTier, should_alert: bool):
+    def test_alert_notifications(self, unused_name: str, resource_type: SubscriptionPricingResourceType, tier: SubscriptionPricingTier, should_alert: bool):
         # Arrange
         subscription_pricing = create_empty_entity(AzureSecurityCenterSubscriptionPricing)
         subscription_pricing.resource_type = resource_type

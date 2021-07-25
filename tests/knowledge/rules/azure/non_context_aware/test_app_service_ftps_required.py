@@ -17,12 +17,12 @@ class TestAppServiceFtpsRequired(unittest.TestCase):
 
     @parameterized.expand(
         [
-            [FtpsState.ALL_ALLOWED, True],
-            [FtpsState.DISABLED, False],
-            [FtpsState.FTPS_ONLY, False]
+            ['Ftps: All Allowed - Should Alert', FtpsState.ALL_ALLOWED, True],
+            ['Ftps: Disabled - Ok', FtpsState.DISABLED, False],
+            ['Ftps: FtpsOnly - Ok', FtpsState.FTPS_ONLY, False]
         ]
     )
-    def test_states(self, ftps_state: FtpsState, should_alert: bool):
+    def test_states(self, unused_name: str, ftps_state: FtpsState, should_alert: bool):
         # Arrange
         app_service: AzureAppService = create_empty_entity(AzureAppService)
         app_service.name = 'tmp-name'
