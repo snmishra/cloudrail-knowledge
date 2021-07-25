@@ -34,7 +34,7 @@ class AzureStorageAccount(AzureResource):
         return self.get_name()
 
     def get_type(self, is_plural: bool = False) -> str:
-        return 'Storage ' + 'account' if not is_plural else 'accounts'
+        return 'Storage ' + 'Account' if not is_plural else 'Accounts'
 
     @property
     def is_tagable(self) -> bool:
