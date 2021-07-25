@@ -19,6 +19,7 @@ class TestEsEncryptNodeToNodeRule(unittest.TestCase):
         es_domain.iac_state = terraform_state
         es_domain.iac_state.is_new = True
         es_domain.encrypt_node_to_node_state = False
+        es_domain.es_domain_version = '6.0'
         context = AwsEnvironmentContext(elastic_search_domains=[es_domain])
         # Act
         result = self.rule.run(context, {})
@@ -33,6 +34,7 @@ class TestEsEncryptNodeToNodeRule(unittest.TestCase):
         es_domain.iac_state = terraform_state
         es_domain.iac_state.is_new = False
         es_domain.encrypt_node_to_node_state = False
+        es_domain.es_domain_version = '6.0'
         context = AwsEnvironmentContext(elastic_search_domains=[es_domain])
         # Act
         result = self.rule.run(context, {})
@@ -47,6 +49,21 @@ class TestEsEncryptNodeToNodeRule(unittest.TestCase):
         es_domain.iac_state = terraform_state
         es_domain.iac_state.is_new = True
         es_domain.encrypt_node_to_node_state = True
+        es_domain.es_domain_version = '6.0'
+        context = AwsEnvironmentContext(elastic_search_domains=[es_domain])
+        # Act
+        result = self.rule.run(context, {})
+        # Assert
+        self.assertEqual(RuleResultType.SUCCESS, result.status)
+        self.assertEqual(0, len(result.issues))
+
+    def test_not_car_elasticsearch_domains_encrypted_note_to_node__unsupported_ver__pass(self):
+        # Arrange
+        es_domain: ElasticSearchDomain = create_empty_entity(ElasticSearchDomain)
+        terraform_state = create_empty_entity(IacState)
+        es_domain.iac_state = terraform_state
+        es_domain.iac_state.is_new = True
+        es_domain.es_domain_version = '2.3'
         context = AwsEnvironmentContext(elastic_search_domains=[es_domain])
         # Act
         result = self.rule.run(context, {})

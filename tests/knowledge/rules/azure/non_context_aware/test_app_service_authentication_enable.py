@@ -49,8 +49,8 @@ class TestAppServiceAuthenticationEnable(TestCase):
         # Act
         result = self.rule.run(context, {})
         # Assert
-        self.assertEqual(RuleResultType.FAILED, result.status)
-        self.assertEqual(1, len(result.issues))
+        self.assertEqual(RuleResultType.SUCCESS, result.status)
+        self.assertEqual(0, len(result.issues))
 
     def test_auth_settings_not_exist(self):
         # Arrange
@@ -62,5 +62,5 @@ class TestAppServiceAuthenticationEnable(TestCase):
         # Act
         result = self.rule.run(context, {})
         # Assert
-        self.assertEqual(RuleResultType.FAILED, result.status)
-        self.assertEqual(1, len(result.issues))
+        self.assertEqual(RuleResultType.SUCCESS, result.status)
+        self.assertEqual(0, len(result.issues))
