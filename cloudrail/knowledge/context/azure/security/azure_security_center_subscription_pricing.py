@@ -9,6 +9,7 @@ class SubscriptionPricingTier(str, Enum):
     FREE = 'Free'
     STANDARD = 'Standard'
 
+
 class SubscriptionPricingResourceType(str, Enum):
     APP_SERVICES = 'AppServices'
     CONTAINER_REGISTRY = 'ContainerRegistry'
@@ -16,7 +17,7 @@ class SubscriptionPricingResourceType(str, Enum):
     KUBERNETES_SERVICE = 'KubernetesService'
     SQL_SERVERS = 'SqlServers'
     SQL_SERVER_VIRTUAL_MACHINES = 'SqlServerVirtualMachines'
-    STORAGEE_ACCOUNTS = 'StorageAccounts'
+    STORAGE_ACCOUNTS = 'StorageAccounts'
     VIRTUAL_MACHINES = 'VirtualMachines'
     ARM = 'Arm'
     DNS = 'Dns'
