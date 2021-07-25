@@ -48,5 +48,5 @@ class LambdaAlias(AwsResource):
 
 
 def create_lambda_function_arn(account_id: str, region: str, lambda_func_name: str, qualifier: str = ''):
-    qualifier = ':' + qualifier if qualifier else ''
+    qualifier = ':' + qualifier if qualifier and qualifier != '$LATEST' else ''
     return f"arn:aws:lambda:{region}:{account_id}:function:{lambda_func_name}{qualifier}"
