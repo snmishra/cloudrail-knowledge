@@ -54,6 +54,7 @@ class SecurityGroupRule(AwsResource):
         self.security_group_id: str = security_group_id
 
     def __str__(self) -> str:
+        # todo - should return rule name in get id function
         return "SG permission: from_port={}, to_port={}, ip_protocol={}, property_type={}, property_value={}".format(
             self.from_port,
             self.to_port,

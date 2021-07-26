@@ -15,7 +15,7 @@ class IntegrationType(Enum):
     AWS = 'AWS'
     AWS_PROXY = 'AWS_PROXY'
     HTTP_PROXY = 'HTTP_PROXY'
-    NONE = 'NONE'
+    NONE = None
 
 
 class ApiGatewayIntegration(AwsResource):
