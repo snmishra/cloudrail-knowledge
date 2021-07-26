@@ -1,6 +1,10 @@
-from typing import Optional, List
+from typing import List, Optional
+
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
-from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
+from cloudrail.knowledge.context.azure.constants.azure_resource_type import \
+    AzureResourceType
+from cloudrail.knowledge.context.azure.databases.azure_mssql_server_extended_auditing_policy import \
+    AzureSqlServerExtendedAuditingPolicy
 
 
 class AzureSqlServer(AzureResource):
@@ -15,6 +19,7 @@ class AzureSqlServer(AzureResource):
         self.server_name: str = server_name
         self.with_aliases(server_name)
         self.public_network_access_enable: bool = public_network_access_enable
+        self.extended_auditing_policy: AzureSqlServerExtendedAuditingPolicy = None
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]
@@ -23,7 +28,7 @@ class AzureSqlServer(AzureResource):
         return self.server_name
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        pass
+        return f'https://portal.azure.com/#@{self.tenant_id}/resource{self._id}/overview'
 
     def get_friendly_name(self) -> str:
         return self.get_name()
