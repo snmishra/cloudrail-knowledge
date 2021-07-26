@@ -10,6 +10,8 @@ class AzureFunctionApp(AzureResource):
     """
         Attributes:
             name: Function app resource name.
+            app_service_config: App service configuration.
+            client_cert_mode: The mode of the Function App's client certificates requirement for incoming requests.
             https_only: Indicates if the Function App only be accessed via HTTPS
     """
     def __init__(self, name: str,

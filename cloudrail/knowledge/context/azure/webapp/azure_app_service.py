@@ -8,7 +8,8 @@ class AzureAppService(AzureResource):
     """
         Attributes:
             name: The name of this AppService.
-            https_only: Indicates if the App Service only be accessed via HTTPS
+            app_service_config: App service configuration.
+            https_only: Indicates if the App Service only be accessed via HTTPS.
     """
     def __init__(self, name: str, https_only: bool) -> None:
         super().__init__(AzureResourceType.AZURERM_APP_SERVICE)
