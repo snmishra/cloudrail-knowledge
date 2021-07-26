@@ -1047,6 +1047,25 @@ rules_metadata:
     resource_type:
       - compute
 
+  - rule_id: non_car_sql_servers_auditing_enabled
+    cloud_provider: azure
+    name: Ensure SQL servers have auditing enabled
+    severity: medium
+    description: 
+      Having ‘auditing’ enabled on SQL servers would help to track database activities. 
+      Cloudrail will review the MS SQL servers configuration in your environment and if a server does not have an auditing policy configured, 
+      Cloudrail will highlight it as a violation.
+    human_readable_logic: 
+      Cloudrail will review the SQL servers configuration within your Azure subscription and Terraform plan to ensure that auditing is enabled.
+    console_remediation_steps: 
+      Follow the guide at <https://docs.microsoft.com/en-us/azure/azure-sql/database/auditing-overview> in order to configure auditing for SQL servers.
+    iac_remediation_steps: 
+      For the azurerm_mssql_server resource, add the extended_auditing_policy block and set the retention_in_days argument to 0 (unlimited) or a value greater than 90 and set the log_monitoring_enabled argument to true if you wish to send audit logs to Azure Monitor. If using the azurerm_mssql_server_extended_auditing_policy resource, create it with the same previous arguments.
+    rule_type: non_context_aware
+    security_layer: logging
+    resource_type:
+      - database
+
   - rule_id: non_car_web_app_using_latest_tls_version
     cloud_provider: azure
     name: Ensure Web App is using the latest Azure supported TLS version (1.2)
