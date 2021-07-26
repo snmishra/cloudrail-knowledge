@@ -20,9 +20,7 @@ class AppServiceUseLatestTlsVersionRule(AzureBaseRule):
                     issues.append(
                         Issue(
                             f'The Web App `{app_service.get_friendly_name()}` uses `{tls_version}` for '
-                            f'the minimum TLS version, instead of latest Azure supported TLS version (1.2).',
-                            app_service,
-                            app_service))
+                            f'the minimum TLS version, instead of 1.2.', app_service, app_service))
             return issues
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:

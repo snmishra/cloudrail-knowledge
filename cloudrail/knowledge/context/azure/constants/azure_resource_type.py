@@ -5,6 +5,7 @@ class AzureResourceType(Enum):
     NONE = 'none'
     AZURERM_RESOURCE_GROUP = 'azurerm_resource_group'
     AZURERM_SQL_SERVER = 'azurerm_sql_server'
+    AZURERM_MYSQL_SERVER = 'azurerm_mysql_server'
     AZURERM_MSSQL_SERVER = 'azurerm_mssql_server'
     AZURERM_SQL_FIREWALL_RULE = 'azurerm_sql_firewall_rule'
     AZURERM_APP_SERVICE = 'azurerm_app_service'
@@ -17,3 +18,4 @@ class AzureResourceType(Enum):
     AZURERM_SECURITY_CENTER_AUTO_PROVISIONING = 'azurerm_security_center_auto_provisioning'
     AZURERM_SECURITY_CENTER_CONTACT = 'azurerm_security_center_contact'
     AZURERM_VIRTUAL_NETWORK_GATEWAY = 'azurerm_virtual_network_gateway'
+    AZURERM_MSSQL_SERVER_EXTENDED_AUDITING_POLICY = 'azurerm_mssql_server_extended_auditing_policy'
