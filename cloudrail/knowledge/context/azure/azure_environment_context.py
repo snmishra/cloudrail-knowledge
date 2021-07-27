@@ -3,14 +3,9 @@ from typing import Dict, List
 from cloudrail.knowledge.context.azure.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
 from cloudrail.knowledge.context.azure.databases.azure_mysql_server import AzureMySqlServer
 from cloudrail.knowledge.context.azure.databases.azure_postgresql_server import AzurePostgreSqlServer
-
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.keyvault.azure_key_vault import AzureKeyVault
 from cloudrail.knowledge.context.azure.keyvault.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
-from cloudrail.knowledge.context.azure.security.azure_security_center_auto_provisioning import AzureSecurityCenterAutoProvisioning
-from cloudrail.knowledge.context.azure.security.azure_security_center_contact import AzureSecurityCenterContact
-from cloudrail.knowledge.context.azure.network.azure_vnet_gateway import AzureVirtualNetworkGateway
-from cloudrail.knowledge.context.azure.webapp.azure_function_app import AzureFunctionApp
 from cloudrail.knowledge.context.azure.security.azure_security_center_subscription_pricing import AzureSecurityCenterSubscriptionPricing
 from cloudrail.knowledge.context.azure.azure_resource_group import AzureResourceGroup
 from cloudrail.knowledge.context.azure.databases.azure_sql_server import AzureSqlServer
