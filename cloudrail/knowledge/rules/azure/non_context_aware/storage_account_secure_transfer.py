@@ -17,7 +17,7 @@ class StorageAccountSecureTransfer(AzureBaseRule):
             if not storage_account.enable_https_traffic_only:
                 issues.append(
                     Issue(
-                        f'The Storage Account `{storage_account.name}` is not requiring secure transfer',
+                        f'The {storage_account.get_type()} `{storage_account.get_friendly_name()}` is not requiring secure transfer',
                         storage_account,
                         storage_account))
         return issues

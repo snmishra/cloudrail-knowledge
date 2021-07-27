@@ -15,6 +15,7 @@ class TestStorageAccountSecureTransfer(unittest.TestCase):
         # Arrange
         storage_account: AzureStorageAccount = create_empty_entity(AzureStorageAccount)
         storage_account.enable_https_traffic_only = True
+        storage_account.storage_name = 'storage_account'
         context = AzureEnvironmentContext(storage_accounts=[storage_account])
         # Act
         result = self.rule.run(context, {})
@@ -25,6 +26,7 @@ class TestStorageAccountSecureTransfer(unittest.TestCase):
         # Arrange
         storage_account: AzureStorageAccount = create_empty_entity(AzureStorageAccount)
         storage_account.enable_https_traffic_only = False
+        storage_account.storage_name = 'storage_account'
         context = AzureEnvironmentContext(storage_accounts=[storage_account])
         # Act
         result = self.rule.run(context, {})
