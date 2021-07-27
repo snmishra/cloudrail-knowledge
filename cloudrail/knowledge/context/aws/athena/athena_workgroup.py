@@ -34,8 +34,8 @@ class AthenaWorkgroup(AwsResource):
         self.enforce_workgroup_config: bool = enforce_workgroup_config
         self.encryption_option: str = encryption_option
         self.kms_key_arn: str = kms_key_arn
-        self.kms_key_id: str = kms_key_id or ArnParser().parse_arn(kms_key_arn)['resource'].replace('key/', '') if \
-            kms_key_arn and is_valid_arn(kms_key_arn) else None
+        self.kms_key_id: str = kms_key_id or (ArnParser().parse_arn(kms_key_arn)['resource'].replace('key/', '') if
+                                              kms_key_arn and is_valid_arn(kms_key_arn) else None)
 
         self.kms_data: Optional[KmsKey] = None
         if self.account:
