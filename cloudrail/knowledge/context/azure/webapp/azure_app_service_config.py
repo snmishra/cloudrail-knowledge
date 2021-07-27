@@ -13,14 +13,18 @@ class AzureAppServiceConfig(AzureResource):
             ftps_state: The FTPS state defined in this config. Either AllAllowed, FTPSOnly or Disabled.
             auth_settings: App service authentication settings.
             minimum_tls_version: The minimum supported TLS version for the function app.
+            http2_enabled: Indication if http2 protocol should be enabled or not.
+
     """
 
-    def __init__(self, name, ftps_state: FtpsState, auth_settings: AuthSettings, minimum_tls_version: str) -> None:
+    def __init__(self, name, ftps_state: FtpsState, auth_settings: AuthSettings, minimum_tls_version: str, http2_enabled: bool) -> None:
         super().__init__(AzureResourceType.NONE)
         self.name: str = name
         self.ftps_state: FtpsState = ftps_state
         self.auth_settings: AuthSettings = auth_settings
         self.minimum_tls_version: str = minimum_tls_version
+        self.http2_enabled: bool = http2_enabled
+
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]
