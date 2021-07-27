@@ -65,5 +65,5 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.postgresql_servers: AliasesDict[AzurePostgreSqlServer] = postgresql_servers or AliasesDict()
         self.my_sql_servers: AliasesDict[AzureMySqlServer] = my_sql_servers or AliasesDict()
         self.sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = sql_server_extended_audit_policies or AliasesDict()
-        self.storage_accounts: List[AzureStorageAccount] = storage_accounts or AliasesDict()
+        self.storage_accounts: AliasesDict[AzureStorageAccount] = storage_accounts or AliasesDict()
         self.storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = storage_account_network_rules or AliasesDict()
