@@ -8,7 +8,7 @@ class AzureStorageAccountNetworkRules(AzureResource):
         Attributes:
             storage_name: The name of the storage account.
             default_action: The default action when no other rules match.
-            ip_rules: 
+            ip_rules: List of IP addresses to allow access from the internet to the storage account.
     """
 
     def __init__(self, storage_name: str, default_action: str, ip_rules: Optional[list]) -> None:
