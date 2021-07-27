@@ -21,3 +21,4 @@ class AzureResourceType(Enum):
     AZURERM_VIRTUAL_NETWORK_GATEWAY = 'azurerm_virtual_network_gateway'
     AZURERM_SECURITY_CENTER_SUBSCRIPTION_PRICING = 'azurerm_security_center_subscription_pricing'
     AZURERM_MSSQL_SERVER_EXTENDED_AUDITING_POLICY = 'azurerm_mssql_server_extended_auditing_policy'
+    AZURERM_STORAGE_ACCOUNT = 'azurerm_storage_account'
