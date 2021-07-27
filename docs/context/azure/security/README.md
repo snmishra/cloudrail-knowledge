@@ -24,9 +24,3 @@ cloudrail/knowledge/rules/azure/non_context_aware/email_notification_high_severi
       show_root_toc_entry: false
     selection:
       inherited_members: true
-
-## ::: cloudrail.knowledge.context.azure.security.azure_security_center_subscription_pricing
-    rendering:
-      show_root_toc_entry: false
-    selection:
-      inherited_members: true
