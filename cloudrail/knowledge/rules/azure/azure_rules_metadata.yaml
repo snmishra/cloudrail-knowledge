@@ -1096,6 +1096,19 @@ rules_metadata:
     resource_type:
       - compute
 
+  - rule_id: non_car_storage_account_secure_transfer
+      cloud_provider: azure
+      name: Ensure Storage Account requires secure transfer
+      severity: medium
+      description: Cloudrail will review the Storage Accounts configuration in your environment. If an account is not requiring secure transfer (HTTPS), Cloudrail will highlight it as a violation.
+      human_readable_logic: Cloudrail will review the Storage Account configuration within your Azure subscription and Terraform plan to ensure that secure transfer is enabled.
+      console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/common/storage-require-secure-transfer in order to enable secure transfer.
+      iac_remediation_steps:  For the azurerm_storage_account resource, set the enable_https_traffic_only argument to true.
+      rule_type: non_context_aware
+      security_layer: encryption
+      resource_type:
+        - storage
+
   - rule_id: non_car_azure_defender_for_container_registries_enabled
     cloud_provider: azure
     name: Ensure Azure Defender for container registries is enabled
