@@ -1,3 +1,4 @@
+
 rules_metadata:
   - rule_id: non_car_azure_database_public_access
     cloud_provider: azure
@@ -1109,15 +1110,132 @@ rules_metadata:
       resource_type:
         - storage
 
-  - rule_id: non_car_azure_defender_for_container_registries_enabled
+  - rule_id: non_car_azure_defender_for_container_registries_enabled ContainerRegistry
     cloud_provider: azure
     name: Ensure Azure Defender for container registries is enabled
     severity: major
-    description: Cloudrail will review the Security Center subscription pricing configuration in your environment. If the tier is not set to “Standard” for container registries resources, Cloudrail will highlight it as a violation.
-    human_readable_logic: Cloudrail will review the Security Center Subscription Pricing configuration within your Azure subscription and Terraform plan to ensure Azure Defender is enabled (“Standard” tier pricing) for container registries.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/security-center/enable-azure-defender in order to enable Azure Defender for container registries.
-    remediation_steps_tf: For the azurerm_security_center_subscription_pricing resource, set the tier argument to “Standard” and ensure the resource_type argument contains the value “ContainerRegistry”.
+    description:
+      template: public_access_security_groups_port_rule_name_template
+        params:
+          - Container Registries
+    human_readable_logic:
+      template: azure_defender_enabled_human_readable_logic
+        params:
+          - Container Registries
+    console_remediation_steps:
+      template: azure_defender_enabled_console_remediation_steps
+        params:
+          - Container Registries
+    remediation_steps_tf:
+      template: azure_defender_enabled_console_remediation_steps_tf
+        params:
+          - ContainerRegistry
     rule_type: non_context_aware
     security_layer: networking
     resource_type:
       - security_services
+
+  - rule_id: non_car_azure_defender_for_azure_sql_servers_enabled
+    cloud_provider: azure
+    name: Ensure Azure Defender for Azure SQL Database servers is enabled
+    severity: major
+    description:
+      template: public_access_security_groups_port_rule_name_template
+        params:
+          - Sql Servers
+    human_readable_logic:
+      template: azure_defender_enabled_human_readable_logic
+        params:
+          - Sql Servers
+    console_remediation_steps:
+      template: azure_defender_enabled_console_remediation_steps
+        params:
+          - Sql Servers
+    remediation_steps_tf:
+      template: azure_defender_enabled_console_remediation_steps_tf
+        params:
+          - SqlServers
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - security_services
+
+  - rule_id: non_car_azure_defender_for_kubernetes_enabled
+    cloud_provider: azure
+    name: Ensure Azure Defender for Kubernetes is enabled
+    severity: major
+    description:
+      template: public_access_security_groups_port_rule_name_template
+        params:
+          - Kubernetes
+    human_readable_logic:
+      template: azure_defender_enabled_human_readable_logic
+        params:
+          - Kubernetes
+    console_remediation_steps:
+      template: azure_defender_enabled_console_remediation_steps
+        params:
+          - Kubernetes
+    remediation_steps_tf:
+      template: azure_defender_enabled_console_remediation_steps_tf
+        params:
+            - KubernetesService
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - security_services
+
+  - rule_id: non_car_azure_defender_for_storage_enabled
+    cloud_provider: azure
+    name: Ensure Azure Defender for Storage is enabled
+    severity: major
+    description:
+      template: public_access_security_groups_port_rule_name_template
+        params:
+          - Storage
+    human_readable_logic:
+      template: azure_defender_enabled_human_readable_logic
+        params:
+          - Storage
+    console_remediation_steps:
+      template: azure_defender_enabled_console_remediation_steps
+        params:
+          - Storage
+    remediation_steps_tf:
+      template: azure_defender_enabled_console_remediation_steps_tf
+        params:
+            - StorageAccounts
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - security_services
+
+  - rule_id: non_car_azure_defender_for_servers_enabled
+    cloud_provider: azure
+    name: Ensure Azure Defender for Servers is enabled
+    severity: major
+    description:
+      template: public_access_security_groups_port_rule_name_template
+        params:
+          - Servers
+    human_readable_logic:
+      template: azure_defender_enabled_human_readable_logic
+        params:
+          - Servers
+    console_remediation_steps:
+      template: azure_defender_enabled_console_remediation_steps
+        params:
+          - Servers
+    remediation_steps_tf:
+      template: azure_defender_enabled_console_remediation_steps_tf
+        params:
+          - VirtualMachines
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - security_services
+templates:
+  - azure_defender_enabled_description: Cloudrail will review the Security Center subscription pricing configuration in your environment. If the tier is not set to “Standard” for {0} resources, Cloudrail will highlight it as a violation.
+  - azure_defender_enabled_human_readable_logic: Cloudrail will review the Security Center Subscription Pricing configuration within your Azure subscription and Terraform plan to ensure Azure Defender is enabled (“Standard” tier pricing) for {0}.
+  - azure_defender_enabled_console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/security-center/enable-azure-defender in order to enable Azure Defender for {0}.
+  - azure_defender_enabled_console_remediation_steps_tf: For the azurerm_security_center_subscription_pricing resource, set the tier argument to “Standard” and ensure the resource_type argument contains the value “{0}”.

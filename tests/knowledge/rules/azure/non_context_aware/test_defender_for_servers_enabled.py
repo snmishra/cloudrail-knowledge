@@ -7,17 +7,17 @@ from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnv
 from cloudrail.knowledge.context.azure.security.azure_security_center_subscription_pricing import AzureSecurityCenterSubscriptionPricing, \
     SubscriptionPricingResourceType, SubscriptionPricingTier
 from cloudrail.knowledge.rules.base_rule import RuleResultType
-from cloudrail.knowledge.rules.azure.non_context_aware.azure_defender_enabled_rules import NonCarAzureContainerRegistriesDefenderEnabled
+from cloudrail.knowledge.rules.azure.non_context_aware.azure_defender_enabled_rules import NonCarAzureServersDefenderEnabled
 
 
-class TestDefenderForContainerRegistriesEnabled(unittest.TestCase):
+class TestNonCarAzureServersEnabled(unittest.TestCase):
     def setUp(self):
-        self.rule = NonCarAzureContainerRegistriesDefenderEnabled()
+        self.rule = NonCarAzureServersDefenderEnabled()
 
     @parameterized.expand(
         [
-            ['ContainerRegistry-FreeTier-ShouldAlert', SubscriptionPricingResourceType.CONTAINER_REGISTRY, SubscriptionPricingTier.FREE, True],
-            ['ContainerRegistry-Standard-Ok', SubscriptionPricingResourceType.CONTAINER_REGISTRY, SubscriptionPricingTier.STANDARD, False],
+            ['Servers-FreeTier-ShouldAlert', SubscriptionPricingResourceType.VIRTUAL_MACHINES, SubscriptionPricingTier.FREE, True],
+            ['Servers-Standard-Ok', SubscriptionPricingResourceType.VIRTUAL_MACHINES, SubscriptionPricingTier.STANDARD, False],
             ['OtherResourceType-Standard-Ok', SubscriptionPricingResourceType.DNS, SubscriptionPricingTier.STANDARD, False],
             ['OtherResourceType-Free-Ok', SubscriptionPricingResourceType.DNS, SubscriptionPricingTier.FREE, False],
         ]
