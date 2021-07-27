@@ -2,10 +2,10 @@ from typing import List, Union, Optional
 
 from cloudrail.knowledge.context.aws.cloudwatch.cloud_watch_event_target import CloudWatchEventTarget
 from cloudrail.knowledge.context.aws.ecs.ecs_service import EcsService
+from cloudrail.knowledge.context.aws.ecs.ecs_target import EcsTarget
 from cloudrail.knowledge.context.aws.ecs.ecs_task_definition import IEcsInstance
 from cloudrail.knowledge.context.aws.networking_config.inetwork_configuration import INetworkConfiguration
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
-
 from cloudrail.knowledge.context.aws.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.ec2.network_interface import NetworkInterface
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
@@ -75,7 +75,7 @@ class EcsCluster(AwsResource):
 
         return ', '.join([cluster_name, service_list])
 
-    def get_all_ecs_instances(self) -> List[Union[NetworkEntity, INetworkConfiguration, IEcsInstance]]:
+    def get_all_ecs_instances(self) -> List[Union[NetworkEntity, INetworkConfiguration, IEcsInstance, EcsTarget]]:
         return self.service_list + [target for event_target in self.event_target_list for target in event_target.ecs_target_list]
 
     def get_type(self, is_plural: bool = False) -> str:

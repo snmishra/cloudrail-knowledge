@@ -30,7 +30,11 @@ class CloudWatchEventTarget(AwsResource):
         self.target_id: str = target_id
         self.role_arn: str = role_arn
         self.cluster_arn: str = cluster_arn
-        self.ecs_target_list: List[EcsTarget] = ecs_target_list
+        self._ecs_target_list: List[EcsTarget] = ecs_target_list
+
+    @property
+    def ecs_target_list(self):
+        return [target for target in self._ecs_target_list if not target.is_invalidated]
 
     def get_keys(self) -> List[str]:
         return [self.rule_name, self.cluster_arn]
@@ -51,3 +55,8 @@ class CloudWatchEventTarget(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def exclude_from_invalidation(self):
+        # EcsTarget can be configurerd to use entities that no longer exist, which will make them invalid, but we dont want to
+        # invalidate the cluster because of it
+        return [self._ecs_target_list]

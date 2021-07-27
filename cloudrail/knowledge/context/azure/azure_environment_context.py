@@ -1,4 +1,8 @@
-from typing import List, Dict
+from typing import Dict, List
+
+from cloudrail.knowledge.context.azure.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
+from cloudrail.knowledge.context.azure.databases.azure_mysql_server import AzureMySqlServer
+from cloudrail.knowledge.context.azure.databases.azure_postgresql_server import AzurePostgreSqlServer
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.keyvault.azure_key_vault import AzureKeyVault
@@ -7,18 +11,22 @@ from cloudrail.knowledge.context.azure.security.azure_security_center_auto_provi
 from cloudrail.knowledge.context.azure.security.azure_security_center_contact import AzureSecurityCenterContact
 from cloudrail.knowledge.context.azure.network.azure_vnet_gateway import AzureVirtualNetworkGateway
 from cloudrail.knowledge.context.azure.webapp.azure_function_app import AzureFunctionApp
+from cloudrail.knowledge.context.azure.security.azure_security_center_subscription_pricing import AzureSecurityCenterSubscriptionPricing
 from cloudrail.knowledge.context.azure.azure_resource_group import AzureResourceGroup
-from cloudrail.knowledge.context.azure.webapp.azure_app_service import AzureAppService
 from cloudrail.knowledge.context.azure.databases.azure_sql_server import AzureSqlServer
-from cloudrail.knowledge.context.azure.webapp.azure_app_service_config import AzureAppServiceConfig
-from cloudrail.knowledge.context.azure.network.azure_nsg import AzureNetworkSecurityGroup
-from cloudrail.knowledge.context.azure.network.azure_security_group_to_subnet_association import \
-    AzureSecurityGroupToSubnetAssociation
-from cloudrail.knowledge.context.azure.network.azure_subnet import AzureSubnet
-from cloudrail.knowledge.context.azure.network.azure_nsg_to_nic_association import \
-    AzureNetworkSecurityGroupToNicAssociation
 from cloudrail.knowledge.context.azure.network.azure_nic import AzureNic
-from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult
+from cloudrail.knowledge.context.azure.network.azure_nsg import AzureNetworkSecurityGroup
+from cloudrail.knowledge.context.azure.network.azure_nsg_to_nic_association import AzureNetworkSecurityGroupToNicAssociation
+from cloudrail.knowledge.context.azure.network.azure_security_group_to_subnet_association import AzureSecurityGroupToSubnetAssociation
+from cloudrail.knowledge.context.azure.network.azure_subnet import AzureSubnet
+from cloudrail.knowledge.context.azure.network.azure_vnet_gateway import AzureVirtualNetworkGateway
+from cloudrail.knowledge.context.azure.security.azure_security_center_auto_provisioning import AzureSecurityCenterAutoProvisioning
+from cloudrail.knowledge.context.azure.security.azure_security_center_contact import AzureSecurityCenterContact
+from cloudrail.knowledge.context.azure.storage.azure_storage_account import AzureStorageAccount
+from cloudrail.knowledge.context.azure.webapp.azure_app_service import AzureAppService
+from cloudrail.knowledge.context.azure.webapp.azure_app_service_config import AzureAppServiceConfig
+from cloudrail.knowledge.context.azure.webapp.azure_function_app import AzureFunctionApp
+from cloudrail.knowledge.context.base_environment_context import (BaseEnvironmentContext, CheckovResult)
 
 
 class AzureEnvironmentContext(BaseEnvironmentContext):
@@ -37,6 +45,11 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  function_apps: AliasesDict[AzureFunctionApp] = None,
                  vnet_gateways: AliasesDict[AzureVirtualNetworkGateway] = None,
                  security_center_contacts: AliasesDict[AzureSecurityCenterContact] = None,
+                 security_center_subscription_pricings: List[AzureSecurityCenterSubscriptionPricing] = None,
+                 my_sql_servers: AliasesDict[AzureMySqlServer] = None,
+                 sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = None,
+                 postgresql_servers: AliasesDict[AzurePostgreSqlServer] = None,
+                 storage_accounts: List[AzureStorageAccount] = None,
                  security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
                  key_vaults: AliasesDict[AzureKeyVault] = None,
                  monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = None):
@@ -55,5 +68,10 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = security_center_auto_provisioning or AliasesDict()
         self.security_center_contacts: AliasesDict[AzureSecurityCenterContact] = security_center_contacts or AliasesDict()
         self.vnet_gateways: AliasesDict[AzureVirtualNetworkGateway] = vnet_gateways or AliasesDict()
+        self.security_center_subscription_pricings: List[AzureSecurityCenterSubscriptionPricing] = security_center_subscription_pricings or []
+        self.postgresql_servers: AliasesDict[AzurePostgreSqlServer] = postgresql_servers or AliasesDict()
+        self.my_sql_servers: AliasesDict[AzureMySqlServer] = my_sql_servers or AliasesDict()
+        self.sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = sql_server_extended_audit_policies or AliasesDict()
+        self.storage_accounts: List[AzureStorageAccount] = storage_accounts or []
         self.key_vaults: AliasesDict[AzureKeyVault] = key_vaults or AliasesDict()
         self.monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = monitor_diagnostic_settings or AliasesDict()

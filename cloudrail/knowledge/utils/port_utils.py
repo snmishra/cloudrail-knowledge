@@ -166,6 +166,7 @@ def _reduce_allowed_ports_for_ip_address_by_acls(rules: List[NetworkAclRule], ip
 
 def _reduce_ports_by_network_acl_rules(entries: List[NetworkAclRule], allowed_ports: List[Tuple[int, int]]) -> List[Tuple[int, int]]:
     nacl_allowed_ports = []
+    entries.sort(key=lambda x: x.rule_number)
     for entry in entries:
         port_range = [(entry.from_port, entry.to_port)]
         if nacl_allowed_ports and port_range:
