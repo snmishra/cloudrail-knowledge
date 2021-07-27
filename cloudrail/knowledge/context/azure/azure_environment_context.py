@@ -2,6 +2,7 @@ from typing import Dict, List
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_resource_group import AzureResourceGroup
+from cloudrail.knowledge.context.azure.azure_role_definition import AzureRoleDefinition
 from cloudrail.knowledge.context.azure.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
 from cloudrail.knowledge.context.azure.databases.azure_mysql_server import AzureMySqlServer
 from cloudrail.knowledge.context.azure.databases.azure_sql_server import AzureSqlServer
@@ -37,7 +38,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  security_center_contacts: AliasesDict[AzureSecurityCenterContact] = None,
                  security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
                  my_sql_servers: AliasesDict[AzureMySqlServer] = None,
-                 sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = None),
+                 sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = None,
                  role_definitions: List[AzureRoleDefinition] = None):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
