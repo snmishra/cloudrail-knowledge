@@ -4,7 +4,7 @@ from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.context.azure.storage.azure_storage_account import AzureStorageAccount
-from cloudrail.knowledge.context.azure.storage.azure_storage_account_network_rule import AzureStorageAccountNetworkRule
+from cloudrail.knowledge.context.azure.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules
 from cloudrail.knowledge.rules.azure.non_context_aware.ensure_storage_account_default_network_deny_rule import EnsureStorageAccountDefaultNetworkDenyRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 
@@ -17,7 +17,7 @@ class TestEnsureStorageAccountDefaultNetworkDenyRule(TestCase):
     def test_storage_account_deny_default_network(self):
         # Arrange
         storage_account: AzureStorageAccount = create_empty_entity(AzureStorageAccount)
-        network_rule: AzureStorageAccountNetworkRule = create_empty_entity(AzureStorageAccountNetworkRule)
+        network_rule: AzureStorageAccountNetworkRules = create_empty_entity(AzureStorageAccountNetworkRules)
         network_rule.default_action = 'Deny'
         storage_account.network_rules = network_rule
         context = AzureEnvironmentContext(storage_accounts=AliasesDict(storage_account))
@@ -30,7 +30,7 @@ class TestEnsureStorageAccountDefaultNetworkDenyRule(TestCase):
     def test_storage_account_allow_default_network(self):
         # Arrange
         storage_account: AzureStorageAccount = create_empty_entity(AzureStorageAccount)
-        network_rule: AzureStorageAccountNetworkRule = create_empty_entity(AzureStorageAccountNetworkRule)
+        network_rule: AzureStorageAccountNetworkRules = create_empty_entity(AzureStorageAccountNetworkRules)
         network_rule.default_action = 'Allow'
         storage_account.network_rules = network_rule
         context = AzureEnvironmentContext(storage_accounts=AliasesDict(storage_account))

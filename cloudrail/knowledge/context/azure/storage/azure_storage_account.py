@@ -1,7 +1,7 @@
 from typing import List, Optional
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
-from cloudrail.knowledge.context.azure.storage.azure_storage_account_network_rule import AzureStorageAccountNetworkRules
+from cloudrail.knowledge.context.azure.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules
 
 
 class AzureStorageAccount(AzureResource):

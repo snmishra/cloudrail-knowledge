@@ -16,7 +16,7 @@ from cloudrail.knowledge.context.azure.security.azure_security_center_auto_provi
 from cloudrail.knowledge.context.azure.security.azure_security_center_contact import AzureSecurityCenterContact
 from cloudrail.knowledge.context.azure.security.azure_security_center_subscription_pricing import AzureSecurityCenterSubscriptionPricing
 from cloudrail.knowledge.context.azure.storage.azure_storage_account import AzureStorageAccount
-from cloudrail.knowledge.context.azure.storage.azure_storage_account_network_rule import AzureStorageAccountNetworkRules
+from cloudrail.knowledge.context.azure.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules
 from cloudrail.knowledge.context.azure.webapp.azure_app_service import AzureAppService
 from cloudrail.knowledge.context.azure.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.webapp.azure_function_app import AzureFunctionApp
