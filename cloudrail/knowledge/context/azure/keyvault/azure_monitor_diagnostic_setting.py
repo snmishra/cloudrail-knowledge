@@ -20,19 +20,19 @@ class AzureMonitorDiagnosticSetting(AzureResource):
     """
         Attributes:
             name: The monitor diagnostic setting's name
-            monitoring: The ID of the resource that is monitored
+            target_resource_id: The ID of the resource that is monitored
             logs_settings: The logs settings
     """
 
-    def __init__(self, name: str, monitoring: str, logs_settings: Optional[AzureMonitorDiagnosticLogsSettings]):
+    def __init__(self, name: str, target_resource_id: str, logs_settings: Optional[AzureMonitorDiagnosticLogsSettings]):
         super().__init__(AzureResourceType.AZURERM_MONITOR_DIAGNOSTIC_SETTING)
         self.name: str = name
-        self.monitoring: str = monitoring
+        self.target_resource_id: str = target_resource_id
         self.logs_settings: Optional[AzureMonitorDiagnosticLogsSettings] = logs_settings
-        self.with_aliases(monitoring)
+        self.with_aliases(target_resource_id)
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        return f'https://portal.azure.com/#@{self.tenant_id}/resource/{self.monitoring}/diagnostics'
+        return f'https://portal.azure.com/#@{self.tenant_id}/resource/{self.target_resource_id}/diagnostics'
 
     @property
     def is_tagable(self) -> bool:
@@ -40,3 +40,7 @@ class AzureMonitorDiagnosticSetting(AzureResource):
 
     def get_keys(self) -> List[str]:
         return [self._id]
+
+    @staticmethod
+    def is_standalone() -> bool:
+        return False

@@ -19,13 +19,20 @@ class TestKeyVaultDiagnosticLogsEnabled(unittest.TestCase):
     @parameterized.expand(
         [
             [None, True],
-            [AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', None), True],
-            [AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', AzureMonitorDiagnosticLogsSettings(True, None)), True],
-            [AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', AzureMonitorDiagnosticLogsSettings(False, None)), True],
-            [AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', AzureMonitorDiagnosticLogsSettings(False, AzureMonitorDiagnosticLogsRetentionPolicySettings(False))), True],
-            [AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', AzureMonitorDiagnosticLogsSettings(False, AzureMonitorDiagnosticLogsRetentionPolicySettings(True))), True],
-            [AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', AzureMonitorDiagnosticLogsSettings(True, AzureMonitorDiagnosticLogsRetentionPolicySettings(False))), True],
-            [AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', AzureMonitorDiagnosticLogsSettings(True, AzureMonitorDiagnosticLogsRetentionPolicySettings(True))), False],
+            ['No logs',
+             AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', None), True],
+            ['Logs enabled, but no retention policy',
+             AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', AzureMonitorDiagnosticLogsSettings(True, None)), True],
+            ['Logs disabled, no retention policy',
+             AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', AzureMonitorDiagnosticLogsSettings(False, None)), True],
+            ['Logs disabled, retention policy disabled',
+             AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', AzureMonitorDiagnosticLogsSettings(False, AzureMonitorDiagnosticLogsRetentionPolicySettings(False))), True],
+            ['Logs disabled, retention policy enabled',
+             AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', AzureMonitorDiagnosticLogsSettings(False, AzureMonitorDiagnosticLogsRetentionPolicySettings(True))), True],
+            ['Logs enabled, retention policy disabled',
+             AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', AzureMonitorDiagnosticLogsSettings(True, AzureMonitorDiagnosticLogsRetentionPolicySettings(False))), True],
+            ['Logs and retention policy enabled',
+             AzureMonitorDiagnosticSetting('settings_name', 'keyvault_id', AzureMonitorDiagnosticLogsSettings(True, AzureMonitorDiagnosticLogsRetentionPolicySettings(True))), False],
         ]
     )
     def test_states(self, monitor_diagnostic_settings: AzureMonitorDiagnosticSetting, should_alert: bool):
