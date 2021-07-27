@@ -124,7 +124,7 @@ class InlinePolicy(Policy):
         super().__init__(account, statements, raw_document, policy_type=PolicyType.IDENTITY_POLICY)
 
     def get_keys(self) -> List[str]:
-        return [self.account, self.policy_name]
+        return [self.account, self.policy_name, self.owner_name]
 
     def get_name(self) -> str:
         return self.policy_name

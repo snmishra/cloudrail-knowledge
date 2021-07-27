@@ -1,7 +1,7 @@
 from typing import List, Optional
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
-from cloudrail.knowledge.context.azure.storage.azure_storage_account_network_rule import AzureStorageAccountNetworkRule
+from cloudrail.knowledge.context.azure.storage.azure_storage_account_network_rule import AzureStorageAccountNetworkRules
 
 
 class AzureStorageAccount(AzureResource):
@@ -11,18 +11,20 @@ class AzureStorageAccount(AzureResource):
             account_tier: The Tier of the storage account.
             account_replication_type: The replication type of the storage account
             network_rules: The networking rules to allow or deny access from.
+            enable_https_traffic_only: A flag indicating if only https traffic is allowed
     """
 
-    def __init__(self, storage_name: str, account_tier: str, account_replication_type: str) -> None:
+    def __init__(self, storage_name: str, account_tier: str, account_replication_type: str, enable_https_traffic_only: bool) -> None:
         super().__init__(AzureResourceType.AZURERM_STORAGE_ACCOUNT)
         self.storage_name: str = storage_name
         self.with_aliases(storage_name)
         self.account_tier: str = account_tier
         self.account_replication_type: str = account_replication_type
-        self.network_rules: AzureStorageAccountNetworkRule = None
+        self.enable_https_traffic_only: bool = enable_https_traffic_only
+        self.network_rules: AzureStorageAccountNetworkRules = None
 
     def get_keys(self) -> List[str]:
-        return [self.get_name()]
+        return [self.get_id()]
 
     def get_name(self) -> str:
         return self.storage_name

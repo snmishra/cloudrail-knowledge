@@ -3,18 +3,20 @@ from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
 
 
-class AzureStorageAccountNetworkRule(AzureResource):
+class AzureStorageAccountNetworkRules(AzureResource):
     """
         Attributes:
             storage_name: The name of the storage account.
             default_action: The default action when no other rules match.
+            ip_rules: 
     """
 
-    def __init__(self, storage_name: str, default_action: str) -> None:
+    def __init__(self, storage_name: str, default_action: str, ip_rules: Optional[list]) -> None:
         super().__init__(AzureResourceType.AZURERM_STORAGE_ACCOUNT_NETWORK_RULES)
         self.storage_name: str = storage_name
         self.with_aliases(storage_name)
         self.default_action: str = default_action
+        self.ip_rules: Optional[list] = ip_rules
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]
