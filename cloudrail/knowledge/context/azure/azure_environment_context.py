@@ -33,6 +33,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  app_services: AliasesDict[AzureAppService] = None,
                  app_service_configs: AliasesDict[AzureAppServiceConfig] = None,
                  function_apps: AliasesDict[AzureFunctionApp] = None,
+                 function_app_configs: AliasesDict[AzureAppServiceConfig] = None,
                  vnet_gateways: AliasesDict[AzureVirtualNetworkGateway] = None,
                  security_center_contacts: AliasesDict[AzureSecurityCenterContact] = None,
                  security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
@@ -50,6 +51,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.network_interfaces: AliasesDict[AzureNic] = network_interfaces or AliasesDict()
         self.app_service_configs: AliasesDict[AzureAppServiceConfig] = app_service_configs or AliasesDict()
         self.function_apps: AliasesDict[AzureFunctionApp] = function_apps or AliasesDict()
+        self.function_app_configs: AliasesDict[AzureAppServiceConfig] = function_app_configs or AliasesDict()
         self.security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = security_center_auto_provisioning or AliasesDict()
         self.security_center_contacts: AliasesDict[AzureSecurityCenterContact] = security_center_contacts or AliasesDict()
         self.vnet_gateways: AliasesDict[AzureVirtualNetworkGateway] = vnet_gateways or AliasesDict()
