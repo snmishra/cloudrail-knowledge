@@ -13,13 +13,14 @@ class FunctionAppEnforcesFtpsOnlyRule(AzureBaseRule):
 
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
-        for app in env_context.function_apps:
-            if app.site_config is None or app.site_config.ftps_state == FtpsState.ALL_ALLOWED:
+        for func_app in env_context.function_apps:
+            if func_app.app_service_config is not None and \
+                    func_app.app_service_config.ftps_state == FtpsState.ALL_ALLOWED:
                 issues.append(
                     Issue(
-                        f'The Function App `{app.get_friendly_name()}` is not enforcing FTPS only or does not have FTP disabled.',
-                        app,
-                        app))
+                        f'The Function App `{func_app.get_friendly_name()}` is not enforcing FTPS only or does not have FTP disabled.',
+                        func_app,
+                        func_app))
         return issues
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
