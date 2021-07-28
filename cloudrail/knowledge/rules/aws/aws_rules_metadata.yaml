@@ -4038,8 +4038,8 @@ rules_metadata:
   severity: major
   description: It is critical to enable Cloudtrail and store it in a bucket for logging and incident response.
   human_readable_logic: Cloudrail will ensure that there is at least one trail enabled in the account.
-  remediation_steps_console: Go to Cloudtrail and in the Dashboard click on Create trail, make sure multi-region is enabled.
-  remediation_steps_tf: Create terraform resource aws_cloudtrail and send logs to an S3 bucket
+  console_remediation_steps: Go to Cloudtrail and in the Dashboard click on Create trail, make sure multi-region is enabled.
+  iac_remediation_steps: Create terraform resource aws_cloudtrail and send logs to an S3 bucket
   rule_type: non_context_aware
   security_layer: logging
   resource_type:
