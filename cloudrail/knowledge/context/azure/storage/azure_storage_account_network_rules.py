@@ -1,7 +1,17 @@
+from enum import Enum
 from typing import Optional, List
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
 
+class NetworkRuleDefaultAction(Enum):
+    """
+        Enum
+
+        ALLOW - Default Action is set to Allow connections
+        DENY - Default Action is set to Deny connections
+    """
+    ALLOW = 'allow'
+    DENY = 'deny'
 
 class AzureStorageAccountNetworkRules(AzureResource):
     """
@@ -11,12 +21,12 @@ class AzureStorageAccountNetworkRules(AzureResource):
             ip_rules: List of IP addresses to allow access from the internet to the storage account.
     """
 
-    def __init__(self, storage_name: str, default_action: str, ip_rules: Optional[list]) -> None:
+    def __init__(self, storage_name: str, default_action: str, ip_rules: list) -> None:
         super().__init__(AzureResourceType.AZURERM_STORAGE_ACCOUNT_NETWORK_RULES)
         self.storage_name: str = storage_name
         self.with_aliases(storage_name)
-        self.default_action: str = default_action
-        self.ip_rules: Optional[list] = ip_rules
+        self.default_action: NetworkRuleDefaultAction = default_action
+        self.ip_rules: list = ip_rules
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]
