@@ -24,6 +24,5 @@ class EnsureCloudtrailTrailExists(AwsBaseRule):
                         f'Cloudtrail does not have at least one trail enabled', account, account ))
         return issues 
 
-    def should_run_rule(self, environment_context: AwsEnvironmentContext) -> bool:
-    
+    def should_run_rule(self, environment_context: AwsEnvironmentContext) -> bool:  
             return True      

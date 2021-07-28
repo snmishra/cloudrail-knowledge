@@ -30,7 +30,6 @@ class TestEnsureCloudtrailTrailExists(unittest.TestCase):
         cloudtrail_trail = CloudTrail("trail",False,"any",False,"region","account",True)
         context.cloudtrail.append(cloudtrail_trail)
 
-
         # Act
         result = self.rule.run(context, {})
 
