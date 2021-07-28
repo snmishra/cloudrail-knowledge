@@ -19,14 +19,16 @@ class AzureStorageAccountNetworkRules(AzureResource):
             storage_name: The name of the storage account.
             default_action: The default action when no other rules match.
             ip_rules: List of IP addresses to allow access from the internet to the storage account.
+            bypass_traffic: List of traffic services which will bypass the network rules, and will have access to the storage account.
     """
 
-    def __init__(self, storage_name: str, default_action: str, ip_rules: list) -> None:
+    def __init__(self, storage_name: str, default_action: str, ip_rules: list, bypass_traffic: list) -> None:
         super().__init__(AzureResourceType.AZURERM_STORAGE_ACCOUNT_NETWORK_RULES)
         self.storage_name: str = storage_name
         self.with_aliases(storage_name)
         self.default_action: NetworkRuleDefaultAction = default_action
         self.ip_rules: list = ip_rules
+        self.bypass_traffic: list = bypass_traffic
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]
