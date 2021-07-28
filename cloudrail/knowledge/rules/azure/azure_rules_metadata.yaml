@@ -1082,6 +1082,32 @@ rules_metadata:
     resource_type:
       - storage
 
+  - rule_id: non_car_function_app_accessible_only_via_https
+    cloud_provider: azure
+    name: Ensure Function App is only accessible via HTTPS
+    severity: medium
+    description: Cloudrail will review the Function Apps configuration in your environment. If a function does not have HTTPS only enabled, Cloudrail will highlight it as a violation.
+    human_readable_logic: Cloudrail will review the Function Apps configuration within your Azure subscription and Terraform plan to check if HTTPS only is enabled.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https in order to configured HTTPS Only for the Function App.
+    iac_remediation_steps: For the azurerm_function_app resource, set the https_only argument to true.
+    rule_type: non_context_aware
+    security_layer: encryption
+    resource_type:
+      - compute
+
+  - rule_id: non_car_web_app_accessible_only_via_https
+    cloud_provider: azure
+    name: Ensure Web App is only accessible via HTTPS
+    severity: medium
+    description: Cloudrail will review the Web Apps configuration in your environment. If a function does not have HTTPS only enabled, Cloudrail will highlight it as a violation.
+    human_readable_logic: Cloudrail will review the Web Apps configuration within your Azure subscription and Terraform plan to check if HTTPS only is enabled.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https in order to configured HTTPS Only for the Web App.
+    iac_remediation_steps: For the azurerm_app_service resource, set the https_only argument to true.
+    rule_type: non_context_aware
+    security_layer: encryption
+    resource_type:
+      - compute
+
   - rule_id: non_car_sql_servers_auditing_enabled
     cloud_provider: azure
     name: Ensure SQL servers have auditing enabled
