@@ -1296,3 +1296,16 @@ templates:
     security_layer: logging
     resource_type:
       - security_services
+
+  - rule_id: non_car_key_vault_purge_protection_enabled
+    cloud_provider: azure
+    name: Ensure Key Vaults have purge protection enabled
+    severity: medium
+    description: Cloudrail will review the Key Vaults configuration in your environment. If a vault does not have purge protection enabled, Cloudrail will highlight it as a violation. Cloudrail does not access the contents of the vaults themselves.
+    human_readable_logic: Cloudrail will review the Key Vault configuration within your Azure subscription and Terraform plan to ensure purge protection is enabled.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/key-vault/general/soft-delete-overview> in order to enable purge protection for a vault.
+    remediation_steps_tf: For the azurerm_key_vault resource, set the purge_protection_enabled argument to true.
+    rule_type: non_context_aware
+    security_layer: disaster_recovery
+    resource_type:
+      - security_services
