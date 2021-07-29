@@ -16,7 +16,7 @@ class KeyVaultDiagnosticLogsEnabledRule(AzureBaseRule):
         for key_vault in env_context.key_vaults:
             key_vault_msg = f'Key Vault `{key_vault.name}`'
             if not key_vault.monitor_diagnostic_settings:
-                issues.append(Issue(f'The {key_vault} does not have diagnostic settings', key_vault, key_vault))
+                issues.append(Issue(f'The {key_vault_msg} does not have diagnostic settings', key_vault, key_vault))
             else:
                 monitor_msg = f'The Monitor Diagnostic Setting {key_vault.monitor_diagnostic_settings.name}, associated to {key_vault_msg},'
                 if not key_vault.monitor_diagnostic_settings.logs_settings:
@@ -28,7 +28,7 @@ class KeyVaultDiagnosticLogsEnabledRule(AzureBaseRule):
                 elif not key_vault.monitor_diagnostic_settings.logs_settings.retention_policy.enabled:
                     issues.append(Issue(f'{monitor_msg} does not have retention policy enabled', key_vault, key_vault))
                 elif 0 < key_vault.monitor_diagnostic_settings.logs_settings.retention_policy.days < 365:
-                    issues.append(Issue(f'{monitor_msg} does not have retention policy days equal to 0 or greater than or equal to 365 ',
+                    issues.append(Issue(f'{monitor_msg} does not have retention policy days equal to 0 or greater than or equal to 365',
                                         key_vault, key_vault))
 
         return issues
