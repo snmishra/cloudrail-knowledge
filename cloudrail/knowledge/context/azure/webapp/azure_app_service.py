@@ -7,13 +7,16 @@ from cloudrail.knowledge.context.azure.webapp.azure_app_service_config import Az
 class AzureAppService(AzureResource):
     """
         Attributes:
-            name: The name of this AppService
+            name: The name of this AppService.
             app_service_config: App service configuration.
+            https_only: Indicates if the App Service only be accessed via HTTPS.
     """
-    def __init__(self, name: str) -> None:
+
+    def __init__(self, name: str, https_only: bool) -> None:
         super().__init__(AzureResourceType.AZURERM_APP_SERVICE)
         self.name: str = name
         self.app_service_config: AzureAppServiceConfig = None
+        self.https_only: bool = https_only
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]
