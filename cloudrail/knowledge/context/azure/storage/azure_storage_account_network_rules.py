@@ -13,6 +13,13 @@ class NetworkRuleDefaultAction(Enum):
     ALLOW = 'allow'
     DENY = 'deny'
 
+
+class BypassTrafficType(Enum):
+    NONE = 'none'
+    LOGGING = 'Logging'
+    METRICS = 'Metrics'
+    AZURESERVICES = 'AzureServices'
+
 class AzureStorageAccountNetworkRules(AzureResource):
     """
         Attributes:
@@ -28,7 +35,7 @@ class AzureStorageAccountNetworkRules(AzureResource):
         self.with_aliases(storage_name)
         self.default_action: NetworkRuleDefaultAction = default_action
         self.ip_rules: list = ip_rules
-        self.bypass_traffic: list = bypass_traffic
+        self.bypass_traffic: List[BypassTrafficType] = bypass_traffic
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]
