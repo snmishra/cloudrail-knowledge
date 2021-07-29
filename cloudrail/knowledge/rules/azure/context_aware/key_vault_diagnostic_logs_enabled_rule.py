@@ -20,15 +20,15 @@ class KeyVaultDiagnosticLogsEnabledRule(AzureBaseRule):
             else:
                 monitor_msg = f'The Monitor Diagnostic Setting {key_vault.monitor_diagnostic_settings.name}, associated to {key_vault_msg},'
                 if not key_vault.monitor_diagnostic_settings.logs_settings:
-                    issues.append(Issue(f'{monitor_msg} does not have log block configured', key_vault, key_vault))
+                    issues.append(Issue(f'{monitor_msg} does not have log block configuration', key_vault, key_vault))
                 elif not key_vault.monitor_diagnostic_settings.logs_settings.enabled:
                     issues.append(Issue(f'{monitor_msg} does not have log enabled', key_vault, key_vault))
                 elif not key_vault.monitor_diagnostic_settings.logs_settings.retention_policy:
-                    issues.append(Issue(f'{monitor_msg} does not have retention policy', key_vault, key_vault))
+                    issues.append(Issue(f'{monitor_msg} does not have a log retention policy', key_vault, key_vault))
                 elif not key_vault.monitor_diagnostic_settings.logs_settings.retention_policy.enabled:
-                    issues.append(Issue(f'{monitor_msg} does not have retention policy enabled', key_vault, key_vault))
+                    issues.append(Issue(f'{monitor_msg} have a disabled log retention policy', key_vault, key_vault))
                 elif 0 < key_vault.monitor_diagnostic_settings.logs_settings.retention_policy.days < 365:
-                    issues.append(Issue(f'{monitor_msg} does not have retention policy days equal to 0 or greater than or equal to 365',
+                    issues.append(Issue(f'{monitor_msg} does not have a log retention policy days equal to 0 or greater than or equal to 365',
                                         key_vault, key_vault))
 
         return issues
