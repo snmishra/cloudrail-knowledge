@@ -23,3 +23,5 @@ class AzureResourceType(Enum):
     AZURERM_MSSQL_SERVER_EXTENDED_AUDITING_POLICY = 'azurerm_mssql_server_extended_auditing_policy'
     AZURERM_STORAGE_ACCOUNT = 'azurerm_storage_account'
     AZURERM_STORAGE_ACCOUNT_NETWORK_RULES = 'azurerm_storage_account_network_rules'
+    AZURERM_PUBLIC_IP = 'azurerm_public_ip'
+    AZURERM_VIRTUAL_MACHINE = 'azurerm_virtual_machine'

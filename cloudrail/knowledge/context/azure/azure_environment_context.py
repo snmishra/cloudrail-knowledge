@@ -6,9 +6,10 @@ from cloudrail.knowledge.context.azure.databases.azure_mssql_server_extended_aud
 from cloudrail.knowledge.context.azure.databases.azure_mysql_server import AzureMySqlServer
 from cloudrail.knowledge.context.azure.databases.azure_postgresql_server import AzurePostgreSqlServer
 from cloudrail.knowledge.context.azure.databases.azure_sql_server import AzureSqlServer
-from cloudrail.knowledge.context.azure.network.azure_nic import AzureNic
+from cloudrail.knowledge.context.azure.network.azure_nic import AzureNetworkInterfaceController
 from cloudrail.knowledge.context.azure.network.azure_nsg import AzureNetworkSecurityGroup
 from cloudrail.knowledge.context.azure.network.azure_nsg_to_nic_association import AzureNetworkSecurityGroupToNicAssociation
+from cloudrail.knowledge.context.azure.network.azure_public_ip import AzurePublicIp
 from cloudrail.knowledge.context.azure.network.azure_security_group_to_subnet_association import AzureSecurityGroupToSubnetAssociation
 from cloudrail.knowledge.context.azure.network.azure_subnet import AzureSubnet
 from cloudrail.knowledge.context.azure.network.azure_vnet_gateway import AzureVirtualNetworkGateway
@@ -17,6 +18,7 @@ from cloudrail.knowledge.context.azure.security.azure_security_center_contact im
 from cloudrail.knowledge.context.azure.security.azure_security_center_subscription_pricing import AzureSecurityCenterSubscriptionPricing
 from cloudrail.knowledge.context.azure.storage.azure_storage_account import AzureStorageAccount
 from cloudrail.knowledge.context.azure.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules
+from cloudrail.knowledge.context.azure.vm.azure_virtual_machine import AzureVirtualMachine
 from cloudrail.knowledge.context.azure.webapp.azure_app_service import AzureAppService
 from cloudrail.knowledge.context.azure.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.webapp.azure_function_app import AzureFunctionApp
@@ -33,7 +35,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  subnet_network_security_group_association: List[AzureSecurityGroupToSubnetAssociation] = None,
                  subnets: AliasesDict[AzureSubnet] = None,
                  nic_network_security_group_association: List[AzureNetworkSecurityGroupToNicAssociation] = None,
-                 network_interfaces: AliasesDict[AzureNic] = None,
+                 network_interfaces: AliasesDict[AzureNetworkInterfaceController] = None,
                  app_services: AliasesDict[AzureAppService] = None,
                  app_service_configs: AliasesDict[AzureAppServiceConfig] = None,
                  function_apps: AliasesDict[AzureFunctionApp] = None,
@@ -46,7 +48,10 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = None,
                  postgresql_servers: AliasesDict[AzurePostgreSqlServer] = None,
                  storage_accounts: AliasesDict[AzureStorageAccount] = None,
-                 storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = None):
+                 storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = None,
+                 virtual_machines: AliasesDict[AzureVirtualMachine] = None,
+                 public_ips: AliasesDict[AzurePublicIp] = None
+                 ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
         self.resource_groups: AliasesDict[AzureResourceGroup] = resource_groups or AliasesDict()
@@ -56,7 +61,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.subnet_network_security_group_association: List[AzureSecurityGroupToSubnetAssociation] = subnet_network_security_group_association or []
         self.subnets: AliasesDict[AzureSubnet] = subnets or AliasesDict()
         self.nic_network_security_group_association: List[AzureNetworkSecurityGroupToNicAssociation] = nic_network_security_group_association or []
-        self.network_interfaces: AliasesDict[AzureNic] = network_interfaces or AliasesDict()
+        self.network_interfaces: AliasesDict[AzureNetworkInterfaceController] = network_interfaces or AliasesDict()
         self.app_service_configs: AliasesDict[AzureAppServiceConfig] = app_service_configs or AliasesDict()
         self.function_apps: AliasesDict[AzureFunctionApp] = function_apps or AliasesDict()
         self.function_app_configs: AliasesDict[AzureAppServiceConfig] = function_app_configs or AliasesDict()
@@ -69,3 +74,5 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = sql_server_extended_audit_policies or AliasesDict()
         self.storage_accounts: AliasesDict[AzureStorageAccount] = storage_accounts or AliasesDict()
         self.storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = storage_account_network_rules or AliasesDict()
+        self.virtual_machines: AliasesDict[AzureVirtualMachine] = virtual_machines or AliasesDict()
+        self.public_ips: AliasesDict[AzurePublicIp] = public_ips or AliasesDict()
