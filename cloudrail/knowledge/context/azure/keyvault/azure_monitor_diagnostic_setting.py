@@ -8,7 +8,7 @@ from cloudrail.knowledge.context.azure.constants.azure_resource_type import Azur
 @dataclass
 class AzureMonitorDiagnosticLogsRetentionPolicySettings:
     enabled: bool
-    days: Optional[int]
+    days: int
 
 
 @dataclass
