@@ -3,7 +3,6 @@ from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironme
 from cloudrail.knowledge.rules.aws.aws_base_rule import AwsBaseRule
 from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
-from cloudrail.knowledge.context.aws.account.account import Account
 
 class EnsureCloudtrailTrailExists(AwsBaseRule):
 
@@ -16,13 +15,14 @@ class EnsureCloudtrailTrailExists(AwsBaseRule):
 
     def execute(self, env_context: AwsEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
-         
         for account in env_context.accounts:
             if not env_context.cloudtrail:
                 issues.append(
                     Issue(
-                        f'Cloudtrail does not have at least one trail enabled', account, account ))
-        return issues 
+                        f'The account `{account.get_friendly_name()}` does not have at least one Cloudtrail trail enabled',
+                        account, account ))
+        return issues
 
-    def should_run_rule(self, environment_context: AwsEnvironmentContext) -> bool:  
-            return True      
+    def should_run_rule(self, environment_context: AwsEnvironmentContext) -> bool:
+        if environment_context.accounts:
+            return True
