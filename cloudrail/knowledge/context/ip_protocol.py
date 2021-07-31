@@ -35,6 +35,15 @@ class IpProtocol:
     def __contains__(self, item):
         return self._protocol == self.ALL or self == item
 
+    def intersection(self, item):
+        if self._protocol == self.ALL:
+            return item
+        if item == self.ALL:
+            return self
+        if item == self:
+            return item
+        return None
+
 
 
 ip_protocol_table = {

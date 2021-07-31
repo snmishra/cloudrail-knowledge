@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Tuple, List
+from typing import Tuple, List, Optional
 
 from cloudrail.knowledge.context.aws.aws_connection import ConnectionDirectionType
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
@@ -12,8 +12,103 @@ class NetworkSecurityRuleActionType(str, Enum):
     DENY = 'Deny'
 
 
-class PortRange(tuple[int, int]):
-    pass
+class PortSet:
+    def __init__(self, port_ranges: List[Tuple[int, int]]):
+        self.port_ranges: List[Tuple[int, int]] = port_ranges
+
+    def __add__(self, other):
+        """
+        other: Union[PortSet, Tuple[int, int], int, List[Tuple[int, int]]]
+        """
+        return PortSet(self.port_ranges + self._to_port_set(other).port_ranges)
+
+    def __sub__(self, other):
+        """
+        other: Union[PortSet, Tuple[int, int], int, List[Tuple[int, int]]]
+        """
+        port_ranges = []
+        for self_port_range in self.port_ranges:
+            for other_port_range in other.port_ranges:
+                low1, high1 = self_port_range
+                low2, high2 = other_port_range
+
+                if low2 < low1:
+                    low2 = low1
+
+                if low1 == low2:
+                    if high1 <= high2:
+                        continue
+                    port_ranges.append((high2 + 1, high1))
+                elif low1 < low2:
+                    port_ranges.append((low1, low2 - 1))
+                    if high2 < high1:
+                        port_ranges.append((high2 + 1, high1))
+
+        return PortSet(port_ranges)
+
+    @staticmethod
+    def _to_port_set(other):
+        # other: List[Tuple[int, int]]
+        if isinstance(other, list):
+            return PortSet(other)
+
+        # other: PortSet
+        if isinstance(other, PortSet):
+            return other
+
+        # other: int
+        if isinstance(other, int):
+            return PortSet([(other, other)])
+
+        # other: Tuple[int, init]
+        return PortSet([other])
+
+    @staticmethod
+    def create_all_ports_set():
+        return PortSet([(0, 65535)])
+
+    # get_range_numbers_overlap
+    def intersection(self, other):
+        other_port_set = self._to_port_set(other)
+        port_ranges = []
+        for self_port_range in self.port_ranges:
+            for other_port_range in other_port_set.port_ranges:
+                low1, high1 = self_port_range
+                low2, high2 = other_port_range
+                if low2 <= low1 <= high2 or low1 <= low2 <= high1:
+                    low: int = low1 if low1 > low2 else low2
+                    high: int = high2 if high1 > high2 else high1
+                    port_ranges.append((low, high))
+
+        return PortSet(port_ranges)
+
+    def __bool__(self):
+        return bool(self.port_ranges)
+
+    def __repr__(self):
+        return ', '.join([f'{low}-{high}' for low, high in self.port_ranges])
+
+    # def get_range_numbers_dis_overlap(range1: Tuple[int, int], range2: Tuple[int, int]) -> List[Tuple[int, int]]:
+    #     low1, high1 = range1
+    #     low2, high2 = range2
+    #     overlap_range = get_range_numbers_overlap(range1, range2)
+    #
+    #     if overlap_range != EMPTY_RANGE:
+    #         overlap_low, overlap_high = overlap_range
+    #         dis_overlap_list: List[Tuple[int, int]] = []
+    #         if overlap_low > low1:
+    #             dis_overlap_list.append((low1, overlap_low - 1))
+    #         elif overlap_low > low2:
+    #             dis_overlap_list.append((low2, overlap_low - 1))
+    #
+    #         if overlap_high < high1:
+    #             dis_overlap_list.append((overlap_high + 1, high1))
+    #         elif overlap_high < high2:
+    #             dis_overlap_list.append((overlap_high + 1, high2))
+    #
+    #         return dis_overlap_list
+    #     else:
+    #         return [range1, range2]
 
 
 class AzureNetworkSecurityRule(AzureResource):
@@ -26,10 +121,20 @@ class AzureNetworkSecurityRule(AzureResource):
             protocol
             source_port_ranges
             destination_port_ranges
-            source_address_prefix
-            destination_address_prefix
+            source_address_prefixes
+            destination_address_prefixes
             network_security_group_name
     """
+
+    def get_keys(self) -> List[str]:
+        return [self.network_security_group_name, self.priority]
+
+    def get_cloud_resource_url(self) -> Optional[str]:
+        pass  # TOOD
+
+    @property
+    def is_tagable(self) -> bool:
+        return False
 
     def __init__(self,
                  name: str,
@@ -37,10 +142,10 @@ class AzureNetworkSecurityRule(AzureResource):
                  direction: ConnectionDirectionType,
                  access: NetworkSecurityRuleActionType,
                  protocol: IpProtocol,
-                 source_port_ranges: List[PortRange],
-                 destination_port_ranges: List[PortRange],
-                 source_address_prefix: str,
-                 destination_address_prefix: str,
+                 source_port_ranges: List[PortSet],
+                 destination_port_ranges: List[PortSet],
+                 source_address_prefixes: List[str],
+                 destination_address_prefixes: List[str],
                  network_security_group_name: str
                  ):
         super().__init__(AzureResourceType.AZURERM_NETWORK_SECURITY_GROUP)
@@ -49,10 +154,10 @@ class AzureNetworkSecurityRule(AzureResource):
         self.direction: ConnectionDirectionType = direction
         self.access: NetworkSecurityRuleActionType = access
         self.protocol: IpProtocol = protocol
-        self.source_port_ranges: List[PortRange] = source_port_ranges
-        self.destination_port_ranges: List[PortRange] = destination_port_ranges
+        self.source_port_ranges: List[PortSet] = source_port_ranges
+        self.destination_port_ranges: List[PortSet] = destination_port_ranges
         # read the docs as this can contain an enum as well, (Optional) CIDR or source IP range or * to match any IP. Tags such as ‘VirtualNetwork’, ‘AzureLoadBalancer’ and ‘Internet’ can also be used
-        self.source_address_prefix: str  = source_address_prefix
+        self.source_address_prefix: List[str] = source_address_prefixes
         # same shit as source
-        self.destination_address_prefix: str   = destination_address_prefix
+        self.destination_address_prefix: List[str] = destination_address_prefixes
         self.network_security_group_name: str = network_security_group_name

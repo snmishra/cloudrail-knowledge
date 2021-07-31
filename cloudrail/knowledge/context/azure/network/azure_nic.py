@@ -1,10 +1,12 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
+from cloudrail.knowledge.context.aws.aws_connection import ConnectionInstance
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.network.azure_nsg import AzureNetworkSecurityGroup
 from cloudrail.knowledge.context.azure.network.azure_public_ip import AzurePublicIp
+from cloudrail.knowledge.context.azure.network.azure_subnet import AzureSubnet
 
 
 @dataclass
@@ -17,8 +19,11 @@ class IpConfiguration:
     """
     publicIpId: str
     publicIp: AzurePublicIp
+    subnet_id: str
+    subnet: AzureSubnet
 
-class AzureNetworkInterfaceController(AzureResource):
+
+class AzureNetworkInterfaceController(AzureResource, ConnectionInstance):
     """
         Attributes:
             name: The name of this NIC

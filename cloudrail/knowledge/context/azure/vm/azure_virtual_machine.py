@@ -1,13 +1,11 @@
 from typing import List, Optional
 
-# TODO: move ConnectionInstance to common folder
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionInstance
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
-from cloudrail.knowledge.context.azure.network.azure_nic import AzureNetworkInterfaceController
+from cloudrail.knowledge.context.azure.network_resource import NetworkResource
 
 
-class AzureVirtualMachine(AzureResource, ConnectionInstance):
+class AzureVirtualMachine(AzureResource):
     """
         Attributes:
             name: The name of this Public IP.
@@ -18,7 +16,7 @@ class AzureVirtualMachine(AzureResource, ConnectionInstance):
         super().__init__(AzureResourceType.AZURERM_VIRTUAL_MACHINE)
         self.name: str = name
         self.network_interface_ids: List[str] = network_interface_ids
-        self.network_interfaces: List[AzureNetworkInterfaceController] = []
+        self.network_resource: NetworkResource = NetworkResource()
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]
