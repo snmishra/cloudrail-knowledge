@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import Optional, List
-from cloudrail.knowledge.context.mergeable import Mergeable
 
+from cloudrail.knowledge.context.mergeable import Mergeable
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
 
 
@@ -38,4 +38,6 @@ class AzureResource(Mergeable):
         return self._id
 
     def set_id(self, _id: str):
-        self._id = _id
+        if _id:
+            self._id = _id
+            self.with_aliases(_id)
