@@ -9,9 +9,10 @@ class AzurePublicIp(AzureResource):
         Attributes:
             name: The name of this Public IP
     """
-    def __init__(self, name: str):
+    def __init__(self, name: str, public_ip_address: Optional[str]):
         super().__init__(AzureResourceType.AZURERM_PUBLIC_IP)
         self.name = name
+        self.public_ip_address = public_ip_address
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]

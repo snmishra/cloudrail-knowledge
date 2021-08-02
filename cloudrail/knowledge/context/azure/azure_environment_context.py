@@ -8,6 +8,7 @@ from cloudrail.knowledge.context.azure.databases.azure_postgresql_server import 
 from cloudrail.knowledge.context.azure.databases.azure_sql_server import AzureSqlServer
 from cloudrail.knowledge.context.azure.network.azure_nic import AzureNetworkInterfaceController
 from cloudrail.knowledge.context.azure.network.azure_nsg import AzureNetworkSecurityGroup
+from cloudrail.knowledge.context.azure.network.azure_nsg_rule import AzureNetworkSecurityRule
 from cloudrail.knowledge.context.azure.network.azure_nsg_to_nic_association import AzureNetworkSecurityGroupToNicAssociation
 from cloudrail.knowledge.context.azure.network.azure_public_ip import AzurePublicIp
 from cloudrail.knowledge.context.azure.network.azure_security_group_to_subnet_association import AzureSecurityGroupToSubnetAssociation
@@ -50,7 +51,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  storage_accounts: AliasesDict[AzureStorageAccount] = None,
                  storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = None,
                  virtual_machines: AliasesDict[AzureVirtualMachine] = None,
-                 public_ips: AliasesDict[AzurePublicIp] = None
+                 public_ips: AliasesDict[AzurePublicIp] = None,
+                 nsg_rules: List[AzureNetworkSecurityRule] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -76,3 +78,4 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = storage_account_network_rules or AliasesDict()
         self.virtual_machines: AliasesDict[AzureVirtualMachine] = virtual_machines or AliasesDict()
         self.public_ips: AliasesDict[AzurePublicIp] = public_ips or AliasesDict()
+        self.nsg_rules: List[AzureNetworkSecurityRule] = nsg_rules or []

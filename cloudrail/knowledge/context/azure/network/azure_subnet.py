@@ -18,7 +18,7 @@ class AzureSubnet(AzureResource):
         self.security_group_id: str = security_group_id
         self.name: str = name
 
-        self.security_group: AzureNetworkSecurityGroup = None
+        self.security_group: Optional[AzureNetworkSecurityGroup] = None
 
     def get_cloud_resource_url(self) -> Optional[str]:
         pass  # Requires VNET
@@ -29,3 +29,11 @@ class AzureSubnet(AzureResource):
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]
+
+    def exclude_from_invalidation(self):
+        return [self.security_group]
+
+    def custom_invalidation(self) -> List[str]:
+        if self.security_group and self.security_group.is_invalidated:
+            return ['An invalid Network Security Group associated']
+        return []

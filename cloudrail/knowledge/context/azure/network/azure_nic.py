@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import List, Optional
 
 from cloudrail.knowledge.context.aws.aws_connection import ConnectionInstance
@@ -9,21 +8,24 @@ from cloudrail.knowledge.context.azure.network.azure_public_ip import AzurePubli
 from cloudrail.knowledge.context.azure.network.azure_subnet import AzureSubnet
 
 
-@dataclass
-class IpConfiguration:
+class IpConfiguration(ConnectionInstance):
     """
         Attributes:
             publicIpId:  TODO by Yoni
             publicIp:TODO by Yoni
 
     """
-    publicIpId: str
-    publicIp: AzurePublicIp
-    subnet_id: str
-    subnet: AzureSubnet
+    def __init__(self, public_ip_id: str, subnet_id: str, private_ip: str):
+        ConnectionInstance.__init__(self)
+        self.public_ip_id: str = public_ip_id
+        self.subnet_id: str = subnet_id
+        self.private_ip: str = private_ip
+
+        self.public_ip: AzurePublicIp = None
+        self.subnet: AzureSubnet = None
 
 
-class AzureNetworkInterfaceController(AzureResource, ConnectionInstance):
+class AzureNetworkInterfaceController(AzureResource):
     """
         Attributes:
             name: The name of this NIC
@@ -32,12 +34,13 @@ class AzureNetworkInterfaceController(AzureResource, ConnectionInstance):
             ip_configurations: IP configurations of a network interface.
     """
 
-    def __init__(self, name: str, security_group_id: Optional[str]):
-        super().__init__(AzureResourceType.AZURERM_NETWORK_INTERFACE)
+    def __init__(self, name: str, security_group_id: Optional[str], ip_configurations: List[IpConfiguration]):
+        AzureResource.__init__(self, AzureResourceType.AZURERM_NETWORK_INTERFACE)
         self.security_group_id: str = security_group_id
         self.name: str = name
-        self.security_group: AzureNetworkSecurityGroup = None
-        self.ip_configurations: List[IpConfiguration] = []
+        self.ip_configurations: List[IpConfiguration] = ip_configurations
+
+        self.security_group: Optional[AzureNetworkSecurityGroup] = None
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/' \
@@ -49,3 +52,19 @@ class AzureNetworkInterfaceController(AzureResource, ConnectionInstance):
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]
+
+    def exclude_from_invalidation(self):
+        return [self.security_group]
+
+    def custom_invalidation(self) -> List[str]:
+        if self.security_group and self.security_group.is_invalidated:
+            return [f'An invalid Network Security Group associated: {self.security_group.get_friendly_name()}']
+        return []
+
+    @property
+    def inbound_connections(self):
+        return {inbound_connection for ip_config in self.ip_configurations for inbound_connection in ip_config.inbound_connections}
+
+    @property
+    def outbound_connections(self):
+        return {outbound_connection for ip_config in self.ip_configurations for outbound_connection in ip_config.outbound_connections}

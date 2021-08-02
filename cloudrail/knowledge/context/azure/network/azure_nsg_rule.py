@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Tuple, List, Optional
+from typing import Tuple, List, Optional, Union
 
 from cloudrail.knowledge.context.aws.aws_connection import ConnectionDirectionType
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
@@ -13,8 +13,31 @@ class NetworkSecurityRuleActionType(str, Enum):
 
 
 class PortSet:
+
     def __init__(self, port_ranges: List[Tuple[int, int]]):
         self.port_ranges: List[Tuple[int, int]] = port_ranges
+
+    def extend(self, port_ranges: List[Union[int, str, Tuple[int, int]]]):
+        self.port_ranges.extend(port_ranges)
+
+    def add(self, port_range: Union[int, str, Tuple[int, int]]):
+        type_exception = TypeError('port_range argument must be either an Integer, a (int, int) tuple, or a string representing a number, '
+                                   'or a string representing a range of numbers (like 1-10)')
+        if isinstance(port_range, int):
+            self.port_ranges.append((port_range, port_range))
+        elif isinstance(port_range, str):
+            ports = port_range.replace(' ', '').split('-')
+            if len(ports) == 1:
+                port = int(ports[0])
+                self.port_ranges.append((port, port))
+            elif len(ports) == 2:
+                self.port_ranges.append((int(ports[0]), int(ports[1])))
+            else:
+                raise type_exception
+        elif isinstance(port_range, tuple) and len(port_range) == 2:
+            self.port_ranges.append(port_range)
+        else:
+            raise type_exception
 
     def __add__(self, other):
         """
@@ -88,6 +111,14 @@ class PortSet:
     def __repr__(self):
         return ', '.join([f'{low}-{high}' for low, high in self.port_ranges])
 
+    def __contains__(self, item: int):
+        """
+        Magic method that checks if a specific port is contained in this PortSet
+        Currently only supporting integers
+        """
+        if isinstance(item, int):
+            return any(low <= item <= high for low, high in self.port_ranges)
+
     # def get_range_numbers_dis_overlap(range1: Tuple[int, int], range2: Tuple[int, int]) -> List[Tuple[int, int]]:
     #     low1, high1 = range1
     #     low2, high2 = range2
@@ -142,8 +173,7 @@ class AzureNetworkSecurityRule(AzureResource):
                  direction: ConnectionDirectionType,
                  access: NetworkSecurityRuleActionType,
                  protocol: IpProtocol,
-                 source_port_ranges: List[PortSet],
-                 destination_port_ranges: List[PortSet],
+                 destination_port_ranges: PortSet,
                  source_address_prefixes: List[str],
                  destination_address_prefixes: List[str],
                  network_security_group_name: str
@@ -154,10 +184,9 @@ class AzureNetworkSecurityRule(AzureResource):
         self.direction: ConnectionDirectionType = direction
         self.access: NetworkSecurityRuleActionType = access
         self.protocol: IpProtocol = protocol
-        self.source_port_ranges: List[PortSet] = source_port_ranges
-        self.destination_port_ranges: List[PortSet] = destination_port_ranges
+        self.destination_port_ranges: PortSet = destination_port_ranges
         # read the docs as this can contain an enum as well, (Optional) CIDR or source IP range or * to match any IP. Tags such as ‘VirtualNetwork’, ‘AzureLoadBalancer’ and ‘Internet’ can also be used
-        self.source_address_prefix: List[str] = source_address_prefixes
+        self.source_address_prefixes: List[str] = source_address_prefixes
         # same shit as source
-        self.destination_address_prefix: List[str] = destination_address_prefixes
+        self.destination_address_prefixes: List[str] = destination_address_prefixes
         self.network_security_group_name: str = network_security_group_name

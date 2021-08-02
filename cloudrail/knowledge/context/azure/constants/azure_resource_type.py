@@ -25,3 +25,6 @@ class AzureResourceType(Enum):
     AZURERM_STORAGE_ACCOUNT_NETWORK_RULES = 'azurerm_storage_account_network_rules'
     AZURERM_PUBLIC_IP = 'azurerm_public_ip'
     AZURERM_VIRTUAL_MACHINE = 'azurerm_virtual_machine'
+    AZURERM_LINUX_VIRTUAL_MACHINE = 'azurerm_linux_virtual_machine'
+    AZURERM_WINDOWS_VIRTUAL_MACHINE = 'azurerm_windows_virtual_machine'
+    AZURERM_NETWORK_SECURITY_RULE = 'azurerm_network_security_rule'
