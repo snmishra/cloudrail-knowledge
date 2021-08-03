@@ -11,9 +11,11 @@ from cloudrail.knowledge.context.azure.network.azure_subnet import AzureSubnet
 class IpConfiguration(ConnectionInstance):
     """
         Attributes:
-            publicIpId:  TODO by Yoni
-            publicIp:TODO by Yoni
-
+            public_ip_id: The ID of the PublicIp resource that's attached to this IP Configuration resource.
+            public_ip: The actual PublicIp resource that's attached to this IP Configuration resource.
+            subnet_id: The ID of the Subnet that this IP Configuration resource is attached to.
+            subnet: The actual Subnet that this IP Configuration resource is attached to.
+            private_ip: The private ip address of this IP Configuration.
     """
     def __init__(self, public_ip_id: str, subnet_id: str, private_ip: str):
         ConnectionInstance.__init__(self)

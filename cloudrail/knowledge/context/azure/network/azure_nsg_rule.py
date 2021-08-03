@@ -16,16 +16,15 @@ class NetworkSecurityRuleActionType(str, Enum):
 class AzureNetworkSecurityRule(AzureResource):
     """
         Attributes:
-            name: The NSG name
-            priority
-            direction
-            access
-            protocol
-            source_port_ranges
-            destination_port_ranges
-            source_address_prefixes
-            destination_address_prefixes
-            network_security_group_name
+            name: The NSG name.
+            priority: The rule's priority. The lower the number, the higher priority.
+            direction: The rule direction. Either inbound or outbound.
+            access: The rule's access type. Either Allow or Deny.
+            protocol: The IpProtocol this rule affects. For example, TCP, UDP, etc.
+            destination_port_ranges: The set of ports this rule addresses.
+            source_address_prefixes: The addresses of the source. These can be CIDR blocks, VirtualNetwork/AzureLoadBalancer/Internet/* or a service tags.
+            destination_address_prefixes: The addresses of the destination. These can be CIDR blocks, VirtualNetwork/AzureLoadBalancer/Internet/* or a service tags.
+            network_security_group_name: The NSG name this rule is assigned to.
     """
 
     def get_keys(self) -> List[str]:
@@ -61,3 +60,7 @@ class AzureNetworkSecurityRule(AzureResource):
         # same shit as source
         self.destination_address_prefixes: List[str] = destination_address_prefixes
         self.network_security_group_name: str = network_security_group_name
+
+    @staticmethod
+    def is_standalone() -> bool:
+        return False

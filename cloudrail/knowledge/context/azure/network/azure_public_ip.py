@@ -8,6 +8,7 @@ class AzurePublicIp(AzureResource):
     """
         Attributes:
             name: The name of this Public IP
+            public_ip_address: The actual public ip address.
     """
     def __init__(self, name: str, public_ip_address: Optional[str]):
         super().__init__(AzureResourceType.AZURERM_PUBLIC_IP)

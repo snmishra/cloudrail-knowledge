@@ -1,4 +1,5 @@
 from typing import Optional, List
+
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.network.azure_nsg_rule import AzureNetworkSecurityRule
@@ -8,11 +9,11 @@ class AzureNetworkSecurityGroup(AzureResource):
     """
         Attributes:
             name: The NSG name
-            network_interface_ids: List of network interface ids which the NSG connected to (if any)
-            subnet_ids: List of subnet ids which the NSG is connected to (if any)
+            network_interface_ids: List of network interface ids which the NSG connected to (if any).
+            subnet_ids: List of subnet ids which the NSG is connected to (if any).
             subnets: List of actual subnets which the NSG is connected to.
             network_interfaces: List of actual network interfaces which the NSG is connected to.
-            network_security_rules: TODO
+            network_security_rules: The rules that are assigned to this NSG.
     """
 
     def __init__(self,
