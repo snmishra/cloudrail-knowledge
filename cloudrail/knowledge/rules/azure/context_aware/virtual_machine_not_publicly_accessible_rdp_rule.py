@@ -16,7 +16,7 @@ from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterT
 @dataclass
 class ViolationData:
     violating_resource: Optional[Union[AzureNetworkSecurityGroup, AzureNetworkSecurityRule, AzurePublicIp]]
-    public_ip: str
+    public_ip: Optional[str]
 
 
 class VirtualMachineNotPubliclyAccessibleBaseRule(AzureBaseRule):
@@ -32,8 +32,12 @@ class VirtualMachineNotPubliclyAccessibleBaseRule(AzureBaseRule):
 
             if violating:
                 if isinstance(violating.violating_resource, (AzureNetworkSecurityGroup, AzurePublicIp)):
-                    issues.append(Issue(f'The Virtual Machine `{vm.get_friendly_name()}` with public IP address '
-                                        f'`{violating.public_ip}` is reachable from the internet via {self.port_protocol} port', vm, violating.violating_resource))
+                    if violating.public_ip:
+                        public_ip_msg = f'with public IP address `{violating.public_ip}`'
+                    else:
+                        public_ip_msg = 'with unknown public IP address'
+                    issues.append(Issue(f'The Virtual Machine `{vm.get_friendly_name()}` '
+                                        f'{public_ip_msg} is reachable from the internet via {self.port_protocol} port', vm, violating.violating_resource))
                 else:
                     issues.append(Issue(
                         f'The Virtual Machine `{vm.get_friendly_name()}` with NAT rule '
