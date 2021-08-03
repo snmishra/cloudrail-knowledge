@@ -43,7 +43,19 @@ cloudrail/knowledge/rules/azure/non_context_aware/vpn_gateway_disallow_basic_sku
     selection:
       inherited_members: true
 
+## ::: cloudrail.knowledge.context.azure.network.azure_nsg_rule
+    rendering:
+      show_root_toc_entry: false
+    selection:
+      inherited_members: true
+
 ## ::: cloudrail.knowledge.context.azure.network.azure_vnet_gateway
+    rendering:
+      show_root_toc_entry: false
+    selection:
+      inherited_members: true
+
+## ::: cloudrail.knowledge.context.azure.network.azure_public_ip
     rendering:
       show_root_toc_entry: false
     selection:
