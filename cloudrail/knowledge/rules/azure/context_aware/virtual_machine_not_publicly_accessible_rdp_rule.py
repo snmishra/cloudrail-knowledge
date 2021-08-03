@@ -5,12 +5,13 @@ from typing import List, Dict, Optional, Union
 from cloudrail.knowledge.context.aws.aws_connection import ConnectionType, PortConnectionProperty, ConnectionDirectionType
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.context.azure.network.azure_nsg import AzureNetworkSecurityGroup
-from cloudrail.knowledge.context.azure.network.azure_nsg_rule import AzureNetworkSecurityRule, PortSet, NetworkSecurityRuleActionType
+from cloudrail.knowledge.context.azure.network.azure_nsg_rule import AzureNetworkSecurityRule, NetworkSecurityRuleActionType
 from cloudrail.knowledge.context.azure.network.azure_public_ip import AzurePublicIp
 from cloudrail.knowledge.context.azure.vm.azure_virtual_machine import AzureVirtualMachine
 from cloudrail.knowledge.rules.azure.azure_base_rule import AzureBaseRule
 from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
+from cloudrail.knowledge.utils.port_set import PortSet
 
 
 @dataclass
