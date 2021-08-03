@@ -4,11 +4,13 @@ A few rules that use objects from this package:
 <details>
 <summary>non_car_unused_network_security_group</summary>
 <summary>non_car_vpn_gateway_disallow_basic_sku</summary>
+<summary>car_vm_not_publicly_accessible_rdp</summary>
 
 ```python
 --8<--
 cloudrail/knowledge/rules/azure/non_context_aware/unused_network_security_group_rule.py
 cloudrail/knowledge/rules/azure/non_context_aware/vpn_gateway_disallow_basic_sku_rule.py
+cloudrail/knowledge/rules/azure/context_aware/virtual_machine_not_publicly_accessible_rule.py
 --8<--
 ```
 </details>
@@ -56,6 +58,18 @@ cloudrail/knowledge/rules/azure/non_context_aware/vpn_gateway_disallow_basic_sku
       inherited_members: true
 
 ## ::: cloudrail.knowledge.context.azure.network.azure_public_ip
+    rendering:
+      show_root_toc_entry: false
+    selection:
+      inherited_members: true
+
+## ::: cloudrail.knowledge.context.azure.network.azure_asg
+    rendering:
+      show_root_toc_entry: false
+    selection:
+      inherited_members: true
+
+## ::: cloudrail.knowledge.context.azure.network.azure_asg_to_nic_association.py
     rendering:
       show_root_toc_entry: false
     selection:

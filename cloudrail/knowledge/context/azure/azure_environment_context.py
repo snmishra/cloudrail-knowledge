@@ -6,6 +6,8 @@ from cloudrail.knowledge.context.azure.databases.azure_mssql_server_extended_aud
 from cloudrail.knowledge.context.azure.databases.azure_mysql_server import AzureMySqlServer
 from cloudrail.knowledge.context.azure.databases.azure_postgresql_server import AzurePostgreSqlServer
 from cloudrail.knowledge.context.azure.databases.azure_sql_server import AzureSqlServer
+from cloudrail.knowledge.context.azure.network.azure_asg import AzureApplicationSecurityGroup
+from cloudrail.knowledge.context.azure.network.azure_asg_to_nic_association import AzureApplicationSecurityGroupToNicAssociation
 from cloudrail.knowledge.context.azure.network.azure_nic import AzureNetworkInterfaceController
 from cloudrail.knowledge.context.azure.network.azure_nsg import AzureNetworkSecurityGroup
 from cloudrail.knowledge.context.azure.network.azure_nsg_rule import AzureNetworkSecurityRule
@@ -53,6 +55,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  virtual_machines: AliasesDict[AzureVirtualMachine] = None,
                  public_ips: AliasesDict[AzurePublicIp] = None,
                  nsg_rules: List[AzureNetworkSecurityRule] = None,
+                 app_security_groups: AliasesDict[AzureApplicationSecurityGroup] = None,
+                 nic_application_security_group_association: AliasesDict[AzureApplicationSecurityGroupToNicAssociation] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -79,3 +83,5 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.virtual_machines: AliasesDict[AzureVirtualMachine] = virtual_machines or AliasesDict()
         self.public_ips: AliasesDict[AzurePublicIp] = public_ips or AliasesDict()
         self.nsg_rules: List[AzureNetworkSecurityRule] = nsg_rules or []
+        self.app_security_groups: AliasesDict[AzureApplicationSecurityGroup] = app_security_groups or AliasesDict()
+        self.nic_application_security_group_association: AliasesDict[AzureApplicationSecurityGroupToNicAssociation] = nic_application_security_group_association or AliasesDict()

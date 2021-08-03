@@ -28,3 +28,5 @@ class AzureResourceType(Enum):
     AZURERM_LINUX_VIRTUAL_MACHINE = 'azurerm_linux_virtual_machine'
     AZURERM_WINDOWS_VIRTUAL_MACHINE = 'azurerm_windows_virtual_machine'
     AZURERM_NETWORK_SECURITY_RULE = 'azurerm_network_security_rule'
+    AZURERM_APPLICATION_SECURITY_GROUP = 'azurerm_application_security_group'
+    AZURERM_NETWORK_INTERFACE_APPLICATION_SECURITY_GROUP_ASSOCIATION = 'azurerm_network_interface_application_security_group_association'

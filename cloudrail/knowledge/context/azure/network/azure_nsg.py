@@ -31,7 +31,6 @@ class AzureNetworkSecurityGroup(AzureResource):
         self.subnets: List['AzureSubnet'] = []
         self.network_interfaces: List['AzureNic'] = []
 
-
     def get_keys(self) -> List[str]:
         return [self.get_id()]
 

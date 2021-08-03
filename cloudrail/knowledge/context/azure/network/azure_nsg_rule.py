@@ -25,6 +25,8 @@ class AzureNetworkSecurityRule(AzureResource):
             source_address_prefixes: The addresses of the source. These can be CIDR blocks, VirtualNetwork/AzureLoadBalancer/Internet/* or a service tags.
             destination_address_prefixes: The addresses of the destination. These can be CIDR blocks, VirtualNetwork/AzureLoadBalancer/Internet/* or a service tags.
             network_security_group_name: The NSG name this rule is assigned to.
+            source_application_security_group_ids: The application security group id of the source that this rule addresses.
+            destination_application_security_group_ids: The application security group id of the destination that this rule addresses.
     """
 
     def get_keys(self) -> List[str]:
@@ -46,7 +48,9 @@ class AzureNetworkSecurityRule(AzureResource):
                  destination_port_ranges: PortSet,
                  source_address_prefixes: List[str],
                  destination_address_prefixes: List[str],
-                 network_security_group_name: str
+                 network_security_group_name: str,
+                 source_application_security_group_ids: List[str],
+                 destination_application_security_group_ids: List[str]
                  ):
         super().__init__(AzureResourceType.AZURERM_NETWORK_SECURITY_GROUP)
         self.name: str = name
@@ -60,6 +64,8 @@ class AzureNetworkSecurityRule(AzureResource):
         # same shit as source
         self.destination_address_prefixes: List[str] = destination_address_prefixes
         self.network_security_group_name: str = network_security_group_name
+        self.source_application_security_group_ids: List[str] = source_application_security_group_ids
+        self.destination_application_security_group_ids: List[str] = destination_application_security_group_ids
 
     @staticmethod
     def is_standalone() -> bool:

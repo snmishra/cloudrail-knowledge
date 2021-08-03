@@ -16,7 +16,8 @@ class AzureVirtualMachine(AzureResource):
         Attributes:
             name: The name of this Public IP.
             network_interface_ids: A list of Network Interface ID's which are associated with the Virtual Machine.
-            network_interfaces: A list of Network Interface which are associated with the Virtual Machine.
+            network_resource: Networking information of the entity.
+            os_type: The VM's operating system. Either Windows or Linux.
     """
     def __init__(self, name: str, network_interface_ids: List[str], os_type: OperatingSystemType):
         super().__init__(AzureResourceType.AZURERM_VIRTUAL_MACHINE)
