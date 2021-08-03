@@ -15,7 +15,7 @@ class AzureSubnet(AzureResource):
 
     def __init__(self, security_group_id: Optional[str], name: str):
         super().__init__(AzureResourceType.AZURERM_NETWORK_SECURITY_GROUP)
-        self.security_group_id: str = security_group_id
+        self.security_group_id: Optional[str] = security_group_id
         self.name: str = name
 
         self.security_group: Optional[AzureNetworkSecurityGroup] = None
