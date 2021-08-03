@@ -20,11 +20,11 @@ class IpConfiguration(ConnectionInstance):
             application_security_groups_ids: List of ASG's id's that's attached to this IP Configuration resource.
             application_security_groups_ids: List of actual ASG's that's attached to this IP Configuration resource.
     """
-    def __init__(self, public_ip_id: str, subnet_id: str, private_ip: str, application_security_groups_ids: List[str]):
+    def __init__(self, public_ip_id: str, subnet_id: str, private_ip: Optional[str], application_security_groups_ids: List[str]):
         ConnectionInstance.__init__(self)
         self.public_ip_id: str = public_ip_id
         self.subnet_id: str = subnet_id
-        self.private_ip: str = private_ip
+        self.private_ip: Optional[str] = private_ip
         self.application_security_groups_ids: List[str] = application_security_groups_ids
 
         self.application_security_groups: List[AzureApplicationSecurityGroup] = []
