@@ -92,4 +92,5 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.public_ips: AliasesDict[AzurePublicIp] = public_ips or AliasesDict()
         self.network_security_group_rules: List[AzureNetworkSecurityRule] = network_security_group_rules or []
         self.app_security_groups: AliasesDict[AzureApplicationSecurityGroup] = app_security_groups or AliasesDict()
-        self.network_interface_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = nic_application_security_group_association or AliasesDict()
+        self.network_interface_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = \
+            nic_application_security_group_association or AliasesDict()
