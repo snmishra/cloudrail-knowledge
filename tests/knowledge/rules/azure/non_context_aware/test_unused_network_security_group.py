@@ -5,8 +5,8 @@ from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnv
 from cloudrail.knowledge.rules.azure.non_context_aware.unused_network_security_group_rule import UnusedNetworkSecurityGroupRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
-from cloudrail.knowledge.context.azure.network.azure_nsg import AzureNetworkSecurityGroup
-from cloudrail.knowledge.context.azure.network.azure_nic import AzureNetworkInterfaceController
+from cloudrail.knowledge.context.azure.network.azure_network_security_group import AzureNetworkSecurityGroup
+from cloudrail.knowledge.context.azure.network.azure_network_interface import AzureNetworkInterface
 from cloudrail.knowledge.context.azure.network.azure_subnet import AzureSubnet
 
 
@@ -27,7 +27,7 @@ class TestUnusedNetworkSecurityGroupRule(unittest.TestCase):
     def test_non_car_unused_network_security_group_pass_with_nic(self):
         # Arrange
         nsg = create_empty_entity(AzureNetworkSecurityGroup)
-        nsg.network_interfaces = create_empty_entity(AzureNetworkInterfaceController)
+        nsg.network_interfaces = create_empty_entity(AzureNetworkInterface)
         context = AzureEnvironmentContext(net_security_groups=AliasesDict(nsg))
         # Act
         result = self.rule.run(context, {})
@@ -49,7 +49,7 @@ class TestUnusedNetworkSecurityGroupRule(unittest.TestCase):
     def test_non_car_unused_network_security_group_pass_with_nic_subnet(self):
         # Arrange
         nsg = create_empty_entity(AzureNetworkSecurityGroup)
-        nsg.network_interfaces = create_empty_entity(AzureNetworkInterfaceController)
+        nsg.network_interfaces = create_empty_entity(AzureNetworkInterface)
         nsg.subnets = create_empty_entity(AzureSubnet)
         context = AzureEnvironmentContext(net_security_groups=AliasesDict(nsg))
         # Act

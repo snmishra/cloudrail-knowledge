@@ -1,10 +1,10 @@
 from typing import List, Optional
 
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionInstance
+from cloudrail.knowledge.context.connection import ConnectionInstance
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
-from cloudrail.knowledge.context.azure.network.azure_asg import AzureApplicationSecurityGroup
-from cloudrail.knowledge.context.azure.network.azure_nsg import AzureNetworkSecurityGroup
+from cloudrail.knowledge.context.azure.network.azure_application_security_group import AzureApplicationSecurityGroup
+from cloudrail.knowledge.context.azure.network.azure_network_security_group import AzureNetworkSecurityGroup
 from cloudrail.knowledge.context.azure.network.azure_public_ip import AzurePublicIp
 from cloudrail.knowledge.context.azure.network.azure_subnet import AzureSubnet
 
@@ -32,7 +32,7 @@ class IpConfiguration(ConnectionInstance):
         self.subnet: AzureSubnet = None
 
 
-class AzureNetworkInterfaceController(AzureResource):
+class AzureNetworkInterface(AzureResource):
     """
         Attributes:
             name: The name of this NIC
@@ -41,9 +41,9 @@ class AzureNetworkInterfaceController(AzureResource):
             ip_configurations: IP configurations of a network interface.
     """
 
-    def __init__(self, name: str, security_group_id: Optional[str], ip_configurations: List[IpConfiguration]):
+    def __init__(self, name: str, network_security_group_id: Optional[str], ip_configurations: List[IpConfiguration]):
         AzureResource.__init__(self, AzureResourceType.AZURERM_NETWORK_INTERFACE)
-        self.security_group_id: str = security_group_id
+        self.network_security_group_id: str = network_security_group_id
         self.name: str = name
         self.ip_configurations: List[IpConfiguration] = ip_configurations
 
@@ -59,14 +59,6 @@ class AzureNetworkInterfaceController(AzureResource):
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]
-
-    def exclude_from_invalidation(self):
-        return [self.security_group]
-
-    def custom_invalidation(self) -> List[str]:
-        if self.security_group and self.security_group.is_invalidated:
-            return [f'An invalid Network Security Group associated: {self.security_group.get_friendly_name()}']
-        return []
 
     @property
     def inbound_connections(self):

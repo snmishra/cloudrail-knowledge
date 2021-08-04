@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import List, Optional
 
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionDirectionType
+from cloudrail.knowledge.context.connection import ConnectionDirectionType
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
@@ -29,16 +29,6 @@ class AzureNetworkSecurityRule(AzureResource):
             destination_application_security_group_ids: The application security group id of the destination that this rule addresses.
     """
 
-    def get_keys(self) -> List[str]:
-        return [self.network_security_group_name, self.priority]
-
-    def get_cloud_resource_url(self) -> Optional[str]:
-        pass  # TOOD
-
-    @property
-    def is_tagable(self) -> bool:
-        return False
-
     def __init__(self,
                  name: str,
                  priority: int,
@@ -59,13 +49,21 @@ class AzureNetworkSecurityRule(AzureResource):
         self.access: NetworkSecurityRuleActionType = access
         self.protocol: IpProtocol = protocol
         self.destination_port_ranges: PortSet = destination_port_ranges
-        # read the docs as this can contain an enum as well, (Optional) CIDR or source IP range or * to match any IP. Tags such as ‘VirtualNetwork’, ‘AzureLoadBalancer’ and ‘Internet’ can also be used
         self.source_address_prefixes: List[str] = source_address_prefixes
-        # same shit as source
         self.destination_address_prefixes: List[str] = destination_address_prefixes
         self.network_security_group_name: str = network_security_group_name
         self.source_application_security_group_ids: List[str] = source_application_security_group_ids
         self.destination_application_security_group_ids: List[str] = destination_application_security_group_ids
+
+    def get_keys(self) -> List[str]:
+        return [self._id]
+
+    def get_cloud_resource_url(self) -> Optional[str]:
+        pass  # TOOD -> show security group??
+
+    @property
+    def is_tagable(self) -> bool:
+        return False
 
     @staticmethod
     def is_standalone() -> bool:

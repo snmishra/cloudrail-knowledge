@@ -2,7 +2,7 @@ from typing import Optional, List
 
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
-from cloudrail.knowledge.context.azure.network.azure_nsg_rule import AzureNetworkSecurityRule
+from cloudrail.knowledge.context.azure.network.azure_network_security_group_rule import AzureNetworkSecurityRule
 
 
 class AzureNetworkSecurityGroup(AzureResource):
@@ -29,7 +29,7 @@ class AzureNetworkSecurityGroup(AzureResource):
         self.network_security_rules: List[AzureNetworkSecurityRule] = network_security_rules
 
         self.subnets: List['AzureSubnet'] = []
-        self.network_interfaces: List['AzureNic'] = []
+        self.network_interfaces: List['AzureNetworkInterface'] = []
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]

@@ -6,14 +6,15 @@ from cloudrail.knowledge.context.azure.databases.azure_mssql_server_extended_aud
 from cloudrail.knowledge.context.azure.databases.azure_mysql_server import AzureMySqlServer
 from cloudrail.knowledge.context.azure.databases.azure_postgresql_server import AzurePostgreSqlServer
 from cloudrail.knowledge.context.azure.databases.azure_sql_server import AzureSqlServer
-from cloudrail.knowledge.context.azure.network.azure_asg import AzureApplicationSecurityGroup
-from cloudrail.knowledge.context.azure.network.azure_asg_to_nic_association import AzureApplicationSecurityGroupToNicAssociation
-from cloudrail.knowledge.context.azure.network.azure_nic import AzureNetworkInterfaceController
+from cloudrail.knowledge.context.azure.network.azure_application_security_group import AzureApplicationSecurityGroup
+from cloudrail.knowledge.context.azure.network.azure_network_interface_application_security_group_association import \
+    AzureNetworkInterfaceApplicationSecurityGroupAssociation
+from cloudrail.knowledge.context.azure.network.azure_network_interface import AzureNetworkInterface
 from cloudrail.knowledge.context.azure.keyvault.azure_key_vault import AzureKeyVault
 from cloudrail.knowledge.context.azure.keyvault.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
-from cloudrail.knowledge.context.azure.network.azure_nsg import AzureNetworkSecurityGroup
-from cloudrail.knowledge.context.azure.network.azure_nsg_rule import AzureNetworkSecurityRule
-from cloudrail.knowledge.context.azure.network.azure_nsg_to_nic_association import AzureNetworkSecurityGroupToNicAssociation
+from cloudrail.knowledge.context.azure.network.azure_network_security_group import AzureNetworkSecurityGroup
+from cloudrail.knowledge.context.azure.network.azure_network_security_group_rule import AzureNetworkSecurityRule
+from cloudrail.knowledge.context.azure.network.azure_network_interface_security_group_association import AzureNetworkInterfaceSecurityGroupAssociation
 from cloudrail.knowledge.context.azure.network.azure_public_ip import AzurePublicIp
 from cloudrail.knowledge.context.azure.network.azure_security_group_to_subnet_association import AzureSecurityGroupToSubnetAssociation
 from cloudrail.knowledge.context.azure.network.azure_subnet import AzureSubnet
@@ -39,8 +40,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  net_security_groups: AliasesDict[AzureNetworkSecurityGroup] = None,
                  subnet_network_security_group_association: List[AzureSecurityGroupToSubnetAssociation] = None,
                  subnets: AliasesDict[AzureSubnet] = None,
-                 nic_network_security_group_association: List[AzureNetworkSecurityGroupToNicAssociation] = None,
-                 network_interfaces: AliasesDict[AzureNetworkInterfaceController] = None,
+                 network_interface_network_security_group_association: List[AzureNetworkInterfaceSecurityGroupAssociation] = None,
+                 network_interfaces: AliasesDict[AzureNetworkInterface] = None,
                  app_services: AliasesDict[AzureAppService] = None,
                  app_service_configs: AliasesDict[AzureAppServiceConfig] = None,
                  function_apps: AliasesDict[AzureFunctionApp] = None,
@@ -58,9 +59,9 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = None,
                  virtual_machines: AliasesDict[AzureVirtualMachine] = None,
                  public_ips: AliasesDict[AzurePublicIp] = None,
-                 nsg_rules: List[AzureNetworkSecurityRule] = None,
+                 network_security_group_rules: List[AzureNetworkSecurityRule] = None,
                  app_security_groups: AliasesDict[AzureApplicationSecurityGroup] = None,
-                 nic_application_security_group_association: AliasesDict[AzureApplicationSecurityGroupToNicAssociation] = None,
+                 nic_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -70,8 +71,9 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.app_services: AliasesDict[AzureAppService] = app_services or AliasesDict()
         self.subnet_network_security_group_association: List[AzureSecurityGroupToSubnetAssociation] = subnet_network_security_group_association or []
         self.subnets: AliasesDict[AzureSubnet] = subnets or AliasesDict()
-        self.nic_network_security_group_association: List[AzureNetworkSecurityGroupToNicAssociation] = nic_network_security_group_association or []
-        self.network_interfaces: AliasesDict[AzureNetworkInterfaceController] = network_interfaces or AliasesDict()
+        self.network_interface_network_security_group_association: List[AzureNetworkInterfaceSecurityGroupAssociation] = \
+            network_interface_network_security_group_association or []
+        self.network_interfaces: AliasesDict[AzureNetworkInterface] = network_interfaces or AliasesDict()
         self.app_service_configs: AliasesDict[AzureAppServiceConfig] = app_service_configs or AliasesDict()
         self.function_apps: AliasesDict[AzureFunctionApp] = function_apps or AliasesDict()
         self.function_app_configs: AliasesDict[AzureAppServiceConfig] = function_app_configs or AliasesDict()
@@ -88,6 +90,6 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = monitor_diagnostic_settings or AliasesDict()
         self.virtual_machines: AliasesDict[AzureVirtualMachine] = virtual_machines or AliasesDict()
         self.public_ips: AliasesDict[AzurePublicIp] = public_ips or AliasesDict()
-        self.nsg_rules: List[AzureNetworkSecurityRule] = nsg_rules or []
+        self.network_security_group_rules: List[AzureNetworkSecurityRule] = network_security_group_rules or []
         self.app_security_groups: AliasesDict[AzureApplicationSecurityGroup] = app_security_groups or AliasesDict()
-        self.nic_application_security_group_association: AliasesDict[AzureApplicationSecurityGroupToNicAssociation] = nic_application_security_group_association or AliasesDict()
+        self.network_interface_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = nic_application_security_group_association or AliasesDict()

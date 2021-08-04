@@ -11,10 +11,10 @@ class AzureSecurityGroupToSubnetAssociation(AzureResource):
             network_security_group_id: The network security group id which needs to be connected to the subnet.
     """
 
-    def __init__(self, subnet_id: str, security_group_id: str):
+    def __init__(self, subnet_id: str, network_security_group_id: str):
         super().__init__(AzureResourceType.AZURERM_SUBNET_NETWORK_SECURITY_GROUP_ASSOCIATION)
         self.subnet_id: str = subnet_id
-        self.security_group_id = security_group_id
+        self.network_security_group_id = network_security_group_id
 
     def get_cloud_resource_url(self) -> Optional[str]:
         pass
@@ -27,4 +27,8 @@ class AzureSecurityGroupToSubnetAssociation(AzureResource):
         return False
 
     def get_keys(self) -> List[str]:
-        return [self.subscription_id, self.subnet_id, self.security_group_id]
+        return [self.subscription_id, self.subnet_id, self.network_security_group_id]
+
+    @staticmethod
+    def is_standalone() -> bool:
+        return False
