@@ -59,9 +59,9 @@ class NotPubliclyAccessibleBaseRule(AzureBaseRule):
                     if inbound_connection.connection_type == ConnectionType.PUBLIC \
                             and isinstance(inbound_connection.connection_property, PortConnectionProperty) \
                             and self.port in PortSet(inbound_connection.connection_property.ports):
-                        if nic.security_group is None and ip_config.subnet.security_group is None:
+                        if nic.network_security_group is None and ip_config.subnet.network_security_group is None:
                             return ViolationData(ip_config.public_ip, ip_config.public_ip.public_ip_address)
-                        return ViolationData(self._get_violating_nsg_or_rule(nic.security_group, ip_config.subnet.security_group),
+                        return ViolationData(self._get_violating_nsg_or_rule(nic.network_security_group, ip_config.subnet.network_security_group),
                                              ip_config.public_ip.public_ip_address)
         return None
 
