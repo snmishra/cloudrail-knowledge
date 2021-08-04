@@ -27,7 +27,7 @@ cloudrail/knowledge/rules/azure/context_aware/not_publicly_accessible_rule.py
     selection:
       inherited_members: true
 
-## ::: cloudrail.knowledge.context.azure.network.azure_network_interface_network_security_group_association
+## ::: cloudrail.knowledge.context.azure.network.azure_network_interface_security_group_association
     rendering:
       show_root_toc_entry: false
     selection:
