@@ -8,12 +8,12 @@ from cloudrail.knowledge.context.azure.network.azure_network_security_group_rule
 class AzureNetworkSecurityGroup(AzureResource):
     """
         Attributes:
-            name: The NSG name
-            network_interface_ids: List of network interface ids which the NSG connected to (if any).
-            subnet_ids: List of subnet ids which the NSG is connected to (if any).
-            subnets: List of actual subnets which the NSG is connected to.
-            network_interfaces: List of actual network interfaces which the NSG is connected to.
-            network_security_rules: The rules that are assigned to this NSG.
+            name: The network security group name.
+            network_interface_ids: List of network interface ids which the network security group connected to (if any).
+            subnet_ids: List of subnet ids which the network security group is connected to (if any).
+            subnets: List of actual subnets which the network security group is connected to.
+            network_interfaces: List of actual network interfaces which the network security group is connected to.
+            network_security_rules: The rules that are assigned to this network security group.
     """
 
     def __init__(self,

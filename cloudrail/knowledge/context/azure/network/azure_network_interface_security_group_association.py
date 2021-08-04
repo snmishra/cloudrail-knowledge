@@ -4,13 +4,11 @@ from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
 
 
-# AzureNetworkSecurityGroupToNicAssociation
-# azure_nsg_to_nic_association
 class AzureNetworkInterfaceSecurityGroupAssociation(AzureResource):
     """
         Attributes:
-            network_interface_id: The network interface id which needs to be connected to the NSG.
-            network_security_group_id: The network security group id which needs to be connected to the NIC.
+            network_interface_id: The network interface id which needs to be connected to the network security group.
+            network_security_group_id: The network security group id which needs to be connected to the network interface.
     """
 
     def __init__(self, network_interface_id: str, network_security_group_id: str):

@@ -9,8 +9,8 @@ class AzureSubnet(AzureResource):
     """
         Attributes:
             name: The name of this subnet
-            network_security_group_id: The id of the network security group thats attached to this subnet
-            security_group: The actual security group thats attached to this subnet
+            network_security_group_id: The id of the network security group that's attached to this subnet.
+            network_security_group: The actual security group that's attached to this subnet.
     """
 
     def __init__(self, network_security_group_id: Optional[str], name: str):
@@ -18,7 +18,7 @@ class AzureSubnet(AzureResource):
         self.network_security_group_id: Optional[str] = network_security_group_id
         self.name: str = name
 
-        self.security_group: Optional[AzureNetworkSecurityGroup] = None
+        self.network_security_group: Optional[AzureNetworkSecurityGroup] = None
 
     def get_cloud_resource_url(self) -> Optional[str]:
         pass  # Requires VNET

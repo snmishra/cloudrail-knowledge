@@ -7,7 +7,7 @@ from cloudrail.knowledge.context.azure.constants.azure_resource_type import Azur
 class AzureApplicationSecurityGroup(AzureResource):
     """
         Attributes:
-            name: The ASG name
+            name: The application security group name.
     """
 
     def __init__(self,

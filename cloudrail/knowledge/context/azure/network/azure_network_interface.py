@@ -35,9 +35,9 @@ class IpConfiguration(ConnectionInstance):
 class AzureNetworkInterface(AzureResource):
     """
         Attributes:
-            name: The name of this NIC
-            security_group_id: The id of the security group thats attached to this NIC
-            security_group: The actual security group thats attached to this NIC
+            name: The name of this network interface.
+            network_security_group_id: The id of the security group that's attached to this network interface.
+            network_security_group: The actual security group that's attached to this network interface.
             ip_configurations: IP configurations of a network interface.
     """
 
@@ -47,7 +47,7 @@ class AzureNetworkInterface(AzureResource):
         self.name: str = name
         self.ip_configurations: List[IpConfiguration] = ip_configurations
 
-        self.security_group: Optional[AzureNetworkSecurityGroup] = None
+        self.network_security_group: Optional[AzureNetworkSecurityGroup] = None
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/' \
