@@ -1,3 +1,9 @@
+templates:
+  - azure_defender_enabled_description: Cloudrail will review the Security Center subscription pricing configuration in your environment. If the tier is not set to “Standard” for {0} resources, Cloudrail will highlight it as a violation.
+  - azure_defender_enabled_human_readable_logic: Cloudrail will review the Security Center Subscription Pricing configuration within your Azure subscription and Terraform plan to ensure Azure Defender is enabled (“Standard” tier pricing) for {0}.
+  - azure_defender_enabled_console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/security-center/enable-azure-defender in order to enable Azure Defender for {0}.
+  - azure_defender_enabled_console_remediation_steps_tf: For the azurerm_security_center_subscription_pricing resource, set the tier argument to “Standard” and ensure the resource_type argument contains the value “{0}”.
+
 rules_metadata:
   - rule_id: non_car_azure_database_public_access
     cloud_provider: azure
@@ -1178,6 +1184,19 @@ rules_metadata:
     resource_type:
       - security_services
 
+  - rule_id: non_car_key_vault_purge_protection_enabled
+    cloud_provider: azure
+    name: Ensure Key Vaults have purge protection enabled
+    severity: medium
+    description: Cloudrail will review the Key Vaults configuration in your environment. If a vault does not have purge protection enabled, Cloudrail will highlight it as a violation. Cloudrail does not access the contents of the vaults themselves.
+    human_readable_logic: Cloudrail will review the Key Vault configuration within your Azure subscription and Terraform plan to ensure purge protection is enabled.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/key-vault/general/soft-delete-overview> in order to enable purge protection for a vault.
+    remediation_steps_tf: For the azurerm_key_vault resource, set the purge_protection_enabled argument to true.
+    rule_type: non_context_aware
+    security_layer: disaster_recovery
+    resource_type:
+      - security_services
+
   - rule_id: non_car_azure_defender_for_azure_sql_servers_enabled
     cloud_provider: azure
     name: Ensure Azure Defender for Azure SQL Database servers is enabled
@@ -1277,6 +1296,36 @@ rules_metadata:
     security_layer: networking
     resource_type:
       - security_services
+      
+  - rule_id: car_key_vault_diagnostic_logs_enabled
+    cloud_provider: azure
+    name: Ensure Key Vault has diagnostic logs enabled
+    severity: medium
+    description: Cloudrail will review the Key Vault configuration in your environment. If a vault does not have diagnostic logs enabled, Cloudrail will highlight it as a violation.
+    human_readable_logic: Cloudrail will review the Security Center Contact configuration within your Azure subscription and Terraform plan to ensure email notifications of security alerts is enabled.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/alert in order to enable diagnostic logs for Key Vault.
+    remediation_steps_tf: Create an azurerm_monitor_diagnostic_setting resource and set the target_resource_id to the Key Vault ID. In the log block, set the enabled argument to true. In log block, retention_policy block, set enabled argument to true and days argument to 0 (indefinitely) or a value greater than or equal to 365.
+    rule_type: context_aware
+    security_layer: logging
+    resource_type:
+      - security_services
+
+  - rule_id: non_car_storage_account_network_access_trusted_azure_services
+    cloud_provider: azure
+    name: Ensure Storage Account is allowing network access to trusted Azure services
+    severity: medium
+    description: 
+      Cloudrail will review the Storage Accounts configuration in your environment. If the account network rules are not allowing access to trusted Azure services, Cloudrail will highlight it as a violation.
+    human_readable_logic: 
+      Cloudrail will review the Storage Account configuration within your Azure subscription and Terraform plan to ensure that trusted Azure services have network access to the account.
+    console_remediation_steps: 
+      Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#grant-access-to-trusted-azure-services> in order to grant access to trusted Azure services.
+    iac_remediation_steps: 
+      For the azurerm_storage_account resource, in the network_rules block, set the bypass argument to “AzureServices”. If azurerm_storage_account_network_rules resource is being used, set the bypass argument to “AzureServices”.
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - storage
 
   - rule_id: car_vm_not_publicly_accessible_rdp
     cloud_provider: azure
