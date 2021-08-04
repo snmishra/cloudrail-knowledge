@@ -22,7 +22,8 @@ class AzureApplicationSecurityGroup(AzureResource):
         return self.name
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        pass
+        return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/{self.resource_group_name}' \
+               f'/providers/Microsoft.Network/applicationSecurityGroups/{self.name}/overview'
 
     def get_friendly_name(self) -> str:
         return self.get_name()

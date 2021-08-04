@@ -19,7 +19,8 @@ class AzurePublicIp(AzureResource):
         return [self.get_id()]
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        pass
+        return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/{self.resource_group_name}' \
+               f'/providers/Microsoft.Network/publicIPAddresses/{self.name}/overview'
 
     @property
     def is_tagable(self) -> bool:
