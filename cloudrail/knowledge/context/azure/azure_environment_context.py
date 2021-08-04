@@ -56,7 +56,6 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
                  key_vaults: AliasesDict[AzureKeyVault] = None,
                  monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = None,
-                 storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = None,
                  virtual_machines: AliasesDict[AzureVirtualMachine] = None,
                  public_ips: AliasesDict[AzurePublicIp] = None,
                  nsg_rules: List[AzureNetworkSecurityRule] = None,
