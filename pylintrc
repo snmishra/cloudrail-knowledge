@@ -482,7 +482,8 @@ good-names=i,
            ip,
            ok,
            id,
-           lb
+           lb,
+           vm
 
 # Good variable names regexes, separated by a comma. If names match any regex,
 # they will always be accepted

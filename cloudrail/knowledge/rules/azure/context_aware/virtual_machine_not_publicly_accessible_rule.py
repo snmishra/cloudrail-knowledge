@@ -57,6 +57,7 @@ class VirtualMachineNotPubliclyAccessibleBaseRule(AzureBaseRule):
                             return ViolationData(ip_config.public_ip, ip_config.public_ip.public_ip_address)
                         return ViolationData(self._get_violating_nsg_or_rule(nic.security_group, ip_config.subnet.security_group),
                                              ip_config.public_ip.public_ip_address)
+        return None
 
     def _get_violating_nsg_or_rule(self, nic_nsg: Optional[AzureNetworkSecurityGroup], subnet_nsg: Optional[AzureNetworkSecurityGroup]):
         for nsg in list(filter(None, [nic_nsg, subnet_nsg])):
@@ -78,7 +79,7 @@ class VirtualMachineNotPubliclyAccessibleBaseRule(AzureBaseRule):
 class VirtualMachineNotPubliclyAccessibleRdpRule(VirtualMachineNotPubliclyAccessibleBaseRule):
 
     def __init__(self):
-        super(VirtualMachineNotPubliclyAccessibleRdpRule, self).__init__(3389, 'RDP')
+        super().__init__(3389, 'RDP')
 
     def get_id(self) -> str:
         return 'car_vm_not_publicly_accessible_rdp'

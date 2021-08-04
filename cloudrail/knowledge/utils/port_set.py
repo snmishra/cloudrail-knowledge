@@ -52,8 +52,7 @@ class PortSet:
                 low1, high1 = self_port_range
                 low2, high2 = other_port_range
 
-                if low2 < low1:
-                    low2 = low1
+                low2 = max(low1, low2)
 
                 if low1 == low2:
                     if high1 <= high2:
@@ -115,3 +114,4 @@ class PortSet:
         """
         if isinstance(item, int):
             return any(low <= item <= high for low, high in self.port_ranges)
+        return False
