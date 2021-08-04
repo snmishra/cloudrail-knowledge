@@ -5,52 +5,40 @@ class PortSet:
 
     _MIN_PORT = 0
     _MAX_PORT = 65535
+    _TYPE_EXCEPTION = TypeError(f'Argument must be either an Integer, a (int, int) tuple, or a string representing a number, '
+                                f'or a string representing a range of numbers between {_MIN_PORT} and {_MAX_PORT} (like 1-10)')
 
-    def __init__(self, port_ranges: List[Tuple[int, int]]):
-        self.port_ranges: List[Tuple[int, int]] = port_ranges
+    def __init__(self, port_ranges: List[Union[int, str, Tuple[int, int]]]):
+        self.port_ranges: List[Tuple[int, int]] = []
+        for port_range in port_ranges:
+            self.port_ranges.append(self._convert_to_tuple(port_range))
 
     def extend(self, port_ranges: List[Union[int, str, Tuple[int, int]]]):
-        self.port_ranges.extend(port_ranges)
+        for port_range in port_ranges:
+            self.add(port_range)
 
-    def add(self, port_range: Union[int, str, Tuple[int, int]]):
-        type_exception = TypeError(f'port_range argument must be either an Integer, a (int, int) tuple, or a string representing a number, '
-                                   f'or a string representing a range of numbers between {self._MIN_PORT} and {self._MAX_PORT} (like 1-10)')
-        if isinstance(port_range, int):
-            port_tuple = (port_range, port_range)
-        elif isinstance(port_range, str):
-            ports = port_range.replace(' ', '').split('-')
-            if len(ports) == 1:
-                port = int(ports[0])
-                port_tuple = (port, port)
-            elif len(ports) == 2:
-                port_tuple = (int(ports[0]), int(ports[1]))
-            else:
-                raise type_exception
-        elif isinstance(port_range, tuple) and len(port_range) == 2:
-            port_tuple = port_range
-        else:
-            raise type_exception
+    def add(self, port_range: Union['PortSet', Tuple[int, int], int, str, List[Tuple[int, int]]]):
+        if isinstance(port_range, PortSet):
+            self.port_ranges.extend(port_range.port_ranges)
+            return
 
-        if port_tuple[0] < self._MIN_PORT or port_tuple[1] > self._MAX_PORT:
-            raise type_exception
-
+        port_tuple = self._convert_to_tuple(port_range)
         self.port_ranges.append(port_tuple)
 
-    def __add__(self, other):
-        """
-        other: Union[PortSet, Tuple[int, int], int, List[Tuple[int, int]]]
-        """
+    def __add__(self, other: Union['PortSet', Tuple[int, int], int, str, List[Tuple[int, int]]]):
         return PortSet(self.port_ranges + self._to_port_set(other).port_ranges)
 
-    def __sub__(self, other):
-        """
-        other: Union[PortSet, Tuple[int, int], int, List[Tuple[int, int]]]
-        """
+    def __sub__(self, other: Union['PortSet', Tuple[int, int], int, str, List[Tuple[int, int]]]):
+        other = self._to_port_set(other)
         port_ranges = []
         for self_port_range in self.port_ranges:
             for other_port_range in other.port_ranges:
                 low1, high1 = self_port_range
                 low2, high2 = other_port_range
+
+                if high1 < low2 or low1 > high2:
+                    port_ranges.append((low1, high1))
+                    continue
 
                 low2 = max(low1, low2)
 
@@ -65,29 +53,31 @@ class PortSet:
 
         return PortSet(port_ranges)
 
-    @staticmethod
-    def _to_port_set(other):
-        # other: List[Tuple[int, int]]
+    @classmethod
+    def _to_port_set(cls, other: Union['PortSet', Tuple[int, int], int, str, List[Tuple[int, int]]]):
         if isinstance(other, list):
             return PortSet(other)
 
-        # other: PortSet
         if isinstance(other, PortSet):
             return other
 
-        # other: int
         if isinstance(other, int):
             return PortSet([(other, other)])
 
-        # other: Tuple[int, init]
-        return PortSet([other])
+        if isinstance(other, str):
+            return PortSet([cls._convert_from_str(other)])
+
+        if isinstance(other, tuple):
+            return PortSet([other])
+
+        raise cls._TYPE_EXCEPTION
 
     @staticmethod
     def create_all_ports_set():
         return PortSet([(PortSet._MIN_PORT, PortSet._MAX_PORT)])
 
     # get_range_numbers_overlap
-    def intersection(self, other):
+    def intersection(self, other: Union['PortSet', Tuple[int, int], int, str, List[Tuple[int, int]]]):
         other_port_set = self._to_port_set(other)
         port_ranges = []
         for self_port_range in self.port_ranges:
@@ -115,3 +105,32 @@ class PortSet:
         if isinstance(item, int):
             return any(low <= item <= high for low, high in self.port_ranges)
         return False
+
+    @classmethod
+    def _convert_from_str(cls, port_range: str) -> Tuple[int, int]:
+        ports = port_range.replace(' ', '').split('-')
+        if len(ports) == 1:
+            port = int(ports[0])
+            port_tuple = (port, port)
+        elif len(ports) == 2:
+            port_tuple = (int(ports[0]), int(ports[1]))
+        else:
+            raise cls._TYPE_EXCEPTION
+
+        return port_tuple
+
+    @classmethod
+    def _convert_to_tuple(cls, port_range: Union[Tuple[int, int], int, str]) -> Tuple[int, int]:
+        if isinstance(port_range, int):
+            port_tuple = (port_range, port_range)
+        elif isinstance(port_range, str):
+            port_tuple = cls._convert_from_str(port_range)
+        elif isinstance(port_range, tuple) and len(port_range) == 2:
+            port_tuple = port_range
+        else:
+            raise cls._TYPE_EXCEPTION
+
+        if port_tuple[0] < cls._MIN_PORT or port_tuple[1] > cls._MAX_PORT:
+            raise cls._TYPE_EXCEPTION
+
+        return port_tuple

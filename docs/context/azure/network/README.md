@@ -69,7 +69,7 @@ cloudrail/knowledge/rules/azure/context_aware/virtual_machine_not_publicly_acces
     selection:
       inherited_members: true
 
-## ::: cloudrail.knowledge.context.azure.network.azure_asg_to_nic_association.py
+## ::: cloudrail.knowledge.context.azure.network.azure_asg_to_nic_association
     rendering:
       show_root_toc_entry: false
     selection:
