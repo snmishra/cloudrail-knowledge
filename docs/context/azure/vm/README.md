@@ -6,7 +6,7 @@ A few rules that use objects from this package:
 
 ```python
 --8<--
-cloudrail/knowledge/rules/azure/context_aware/virtual_machine_not_publicly_accessible_rule.py
+cloudrail/knowledge/rules/azure/context_aware/not_publicly_accessible_rule.py
 --8<--
 ```
 </details>
