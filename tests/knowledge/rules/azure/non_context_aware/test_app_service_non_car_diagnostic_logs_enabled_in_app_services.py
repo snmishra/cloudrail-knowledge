@@ -26,7 +26,7 @@ class TestAppServiceDiagnosticLogsRule(unittest.TestCase):
             ['Only detailed error logging enabled ', DiagnosticLogs(True, False, False), True],
             ['Only http logging enabled',  DiagnosticLogs(False, True, False), True],
             ['Only request tracing enabled', DiagnosticLogs(False, False, True), True],
-            ['All enabled', DiagnosticLogs(True, True, True), False],
+            ['All enabled', DiagnosticLogs(True, True, True), False]
         ]
     )
     def test_alert_notifications(self, unused_name: str, logs: DiagnosticLogs, should_alert: bool):
