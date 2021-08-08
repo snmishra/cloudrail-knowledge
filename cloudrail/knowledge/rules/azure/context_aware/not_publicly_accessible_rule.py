@@ -98,3 +98,16 @@ class VirtualMachineNotPubliclyAccessibleRdpRule(NotPubliclyAccessibleBaseRule):
     @staticmethod
     def get_resources(env_context: AzureEnvironmentContext):
         return env_context.virtual_machines
+
+
+class VirtualMachineNotPubliclyAccessibleSshRule(NotPubliclyAccessibleBaseRule):
+
+    def __init__(self):
+        super().__init__(22, 'SSH')
+
+    def get_id(self) -> str:
+        return 'car_vm_not_publicly_accessible_ssh'
+
+    @staticmethod
+    def get_resources(env_context: AzureEnvironmentContext):
+        return env_context.virtual_machines
