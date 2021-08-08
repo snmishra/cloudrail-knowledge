@@ -6,8 +6,9 @@ rules_metadata:
     severity: major
     description: Ensure SQL database requires SSL
     human_readable_logic: Ensure SQL database requires SSL
-    console_remediation_steps: Ensure SQL database requires SSL
-    iac_remediation_steps: Ensure SQL database requires SSL
+    remediation_steps:
+      terraform: Ensure SQL database requires SSL
+      console: Ensure SQL database requires SSL
     rule_type: non_context_aware
     security_layer: networking
     resource_type:
@@ -20,8 +21,9 @@ rules_metadata:
     severity: medium
     description: Ensure all Cloud SQL database instance requires all incoming connections to use SSL
     human_readable_logic: Ensure all Cloud SQL database instance requires all incoming connections to use SSL
-    console_remediation_steps: Ensure all Cloud SQL database instance requires all incoming connections to use SSL
-    iac_remediation_steps: Ensure all Cloud SQL database instance requires all incoming connections to use SSL
+    remediation_steps:
+      terraform: Ensure all Cloud SQL database instance requires all incoming connections to use SSL
+      console: Ensure all Cloud SQL database instance requires all incoming connections to use SSL
     rule_type: non_context_aware
     security_layer: storage
     resource_type:
@@ -34,8 +36,9 @@ rules_metadata:
     severity: medium
     description: Ensure no HTTPS or SSL proxy load balancers permit SSL policies with weak cipher suites
     human_readable_logic: Ensure no HTTPS or SSL proxy load balancers permit SSL policies with weak cipher suites
-    console_remediation_steps: Ensure no HTTPS or SSL proxy load balancers permit SSL policies with weak cipher suites
-    iac_remediation_steps: Ensure no HTTPS or SSL proxy load balancers permit SSL policies with weak cipher suites
+    remediation_steps:
+      terraform: Ensure no HTTPS or SSL proxy load balancers permit SSL policies with weak cipher suites
+      console: Ensure no HTTPS or SSL proxy load balancers permit SSL policies with weak cipher suites
     rule_type: non_context_aware
     security_layer: storage
     resource_type:
