@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
+from cloudrail.knowledge.context.azure.aks.azure_kubernetes_cluster import AzureKubernetesCluster
 from cloudrail.knowledge.context.azure.azure_resource_group import AzureResourceGroup
 from cloudrail.knowledge.context.azure.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
 from cloudrail.knowledge.context.azure.databases.azure_mysql_server import AzureMySqlServer
@@ -50,7 +51,9 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = None,
                  security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
                  key_vaults: AliasesDict[AzureKeyVault] = None,
-                 monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = None):
+                 monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = None,
+                 kubernetes_cluster: AliasesDict[AzureKubernetesCluster] = None,
+                 ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
         self.resource_groups: AliasesDict[AzureResourceGroup] = resource_groups or AliasesDict()
@@ -75,3 +78,4 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = storage_account_network_rules or AliasesDict()
         self.key_vaults: AliasesDict[AzureKeyVault] = key_vaults or AliasesDict()
         self.monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = monitor_diagnostic_settings or AliasesDict()
+        self.kubernetes_cluster: AliasesDict[AzureKubernetesCluster] = kubernetes_cluster or AliasesDict()

@@ -25,3 +25,4 @@ class AzureResourceType(Enum):
     AZURERM_MSSQL_SERVER_EXTENDED_AUDITING_POLICY = 'azurerm_mssql_server_extended_auditing_policy'
     AZURERM_STORAGE_ACCOUNT = 'azurerm_storage_account'
     AZURERM_STORAGE_ACCOUNT_NETWORK_RULES = 'azurerm_storage_account_network_rules'
+    AZURERM_KUBERNETES_CLUSTER = 'azurerm_kubernetes_cluster'
