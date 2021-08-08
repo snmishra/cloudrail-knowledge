@@ -1,5 +1,6 @@
 import functools
 from typing import List, Dict, Optional, Union, TypeVar, Callable, Set
+
 from cloudrail.knowledge.context.aws.ec2.availability_zone import AvailabilityZone
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.aws.account.account import Account
@@ -192,7 +193,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  eks_clusters: List[EksCluster] = None,
                  cloudfront_distribution_list: List[CloudFrontDistribution] = None,
                  elastic_ips: List[ElasticIp] = None,
-                 launch_configurations: List[LaunchConfiguration] = None,
+                 launch_configurations: AliasesDict[LaunchConfiguration] = None,
                  launch_templates: List[LaunchTemplate] = None,
                  prefix_lists: List[PrefixLists] = None,
                  rest_api_gw: List[RestApiGw] = None,
@@ -390,7 +391,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.eks_clusters = eks_clusters or []
         self.cloudfront_distribution_list = cloudfront_distribution_list or []
         self.elastic_ips = elastic_ips or []
-        self.launch_configurations = launch_configurations or []
+        self.launch_configurations = launch_configurations or AliasesDict()
         self.launch_templates = launch_templates or []
         self.prefix_lists = prefix_lists or []
         self.rest_api_gw = rest_api_gw or []
