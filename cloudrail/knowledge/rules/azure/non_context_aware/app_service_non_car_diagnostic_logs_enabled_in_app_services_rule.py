@@ -15,19 +15,20 @@ class AppServiceDiagnosticLogsRule(AzureBaseRule):
         issues: List[Issue] = []
 
         for app_service in env_context.app_services:
-            logs: List[str] = []
+            evidence: List[str] = []
             if app_service.app_service_config is not None and app_service.app_service_config.logs is not None:
                 if not app_service.app_service_config.logs.http_logging_enabled:
-                        logs.append(
+                    evidence.append(
                         f'The web app `{app_service.get_friendly_name()}` does not have HTTP logging enabled')
                 if not app_service.app_service_config.logs.request_tracing_enabled:
-                        logs.append(
+                    evidence.append(
                         f'The web app `{app_service.get_friendly_name()}` does not have request tracing enabled')
                 if not app_service.app_service_config.logs.detailed_error_logging_enabled:
-                        logs.append(f'The web app `{app_service.get_friendly_name()}` does not have detailed error logging enabled')
-            if logs:
+                    evidence.append(
+                        f'The web app `{app_service.get_friendly_name()}` does not have detailed error logging enabled')
+            if evidence:
                 issues.append(
-                    Issue('\n'.join(logs), app_service, app_service))
+                    Issue('\n'.join(evidence), app_service, app_service))
         return issues
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
