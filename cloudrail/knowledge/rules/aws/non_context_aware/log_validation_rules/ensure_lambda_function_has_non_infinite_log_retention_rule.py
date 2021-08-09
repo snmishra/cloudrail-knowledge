@@ -15,7 +15,7 @@ class EnsureLambdaFunctionHasNonInfiniteLogRetentionRule(AwsBaseRule):
         issues: List[Issue] = []
 
         for lambda_func in env_context.lambda_function_list:
-            if lambda_func.log_group.retention_in_days == 0 or not lambda_func.log_group.retention_in_days:
+            if lambda_func.log_group and (lambda_func.log_group.retention_in_days == 0 or not lambda_func.log_group.retention_in_days):
                 if lambda_func.log_group.is_pseudo:
                     issues.append(
                         Issue(

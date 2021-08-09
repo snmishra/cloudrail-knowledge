@@ -67,3 +67,13 @@ class TestEnsureLambdaFunctionHasNonInfiniteLogRetentionRule(unittest.TestCase):
         # Assert
         self.assertEqual(RuleResultType.SUCCESS, result.status)
         self.assertEqual(0, len(result.issues))
+
+    def test_non_car_lambda_logging_not_infnite__no_log_group(self):
+        # Arrange
+        lambda_func: LambdaFunction = create_empty_entity(LambdaFunction)
+        context = AwsEnvironmentContext(lambda_function_list=[lambda_func])
+        # Act
+        result = self.rule.run(context, {})
+        # Assert
+        self.assertEqual(RuleResultType.SUCCESS, result.status)
+        self.assertEqual(0, len(result.issues))
