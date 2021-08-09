@@ -13,7 +13,7 @@ class TestEnsureLambdaFunctionHasNonInfiniteLogRetentionRule(unittest.TestCase):
     def setUp(self):
         self.rule = EnsureLambdaFunctionHasNonInfiniteLogRetentionRule()
 
-    def test_non_car_lambda_logging_not_infnite_fail(self):
+    def test_non_car_lambda_logging_not_infinite_fail(self):
         # Arrange
         lambda_func: LambdaFunction = create_empty_entity(LambdaFunction)
         log_group: CloudWatchLogGroup = create_empty_entity(CloudWatchLogGroup)
@@ -26,7 +26,7 @@ class TestEnsureLambdaFunctionHasNonInfiniteLogRetentionRule(unittest.TestCase):
         self.assertEqual(RuleResultType.FAILED, result.status)
         self.assertEqual(1, len(result.issues))
 
-    def test_non_car_lambda_logging_not_infnite__no_retention__fail(self):
+    def test_non_car_lambda_logging_not_infinite__no_retention__fail(self):
         # Arrange
         lambda_func: LambdaFunction = create_empty_entity(LambdaFunction)
         log_group: CloudWatchLogGroup = create_empty_entity(CloudWatchLogGroup)
@@ -40,7 +40,7 @@ class TestEnsureLambdaFunctionHasNonInfiniteLogRetentionRule(unittest.TestCase):
         self.assertEqual(1, len(result.issues))
         self.assertTrue('Upon creation' not in result.issues[0].evidence)
 
-    def test_non_car_lambda_logging_not_infnite__no_retention_and_pseudo___fail(self):
+    def test_non_car_lambda_logging_not_infinite__no_retention_and_pseudo___fail(self):
         # Arrange
         lambda_func: LambdaFunction = create_empty_entity(LambdaFunction)
         log_group: CloudWatchLogGroup = create_empty_entity(CloudWatchLogGroup)
@@ -55,7 +55,7 @@ class TestEnsureLambdaFunctionHasNonInfiniteLogRetentionRule(unittest.TestCase):
         self.assertEqual(1, len(result.issues))
         self.assertTrue('Upon creation' in result.issues[0].evidence)
 
-    def test_non_car_lambda_logging_not_infnite_pass(self):
+    def test_non_car_lambda_logging_not_infinite_pass(self):
         # Arrange
         lambda_func: LambdaFunction = create_empty_entity(LambdaFunction)
         log_group: CloudWatchLogGroup = create_empty_entity(CloudWatchLogGroup)
@@ -68,7 +68,7 @@ class TestEnsureLambdaFunctionHasNonInfiniteLogRetentionRule(unittest.TestCase):
         self.assertEqual(RuleResultType.SUCCESS, result.status)
         self.assertEqual(0, len(result.issues))
 
-    def test_non_car_lambda_logging_not_infnite__no_log_group(self):
+    def test_non_car_lambda_logging_not_infinite__no_log_group(self):
         # Arrange
         lambda_func: LambdaFunction = create_empty_entity(LambdaFunction)
         context = AwsEnvironmentContext(lambda_function_list=[lambda_func])

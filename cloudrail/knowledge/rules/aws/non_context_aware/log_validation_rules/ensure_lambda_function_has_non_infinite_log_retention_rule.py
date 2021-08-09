@@ -9,7 +9,7 @@ from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterT
 class EnsureLambdaFunctionHasNonInfiniteLogRetentionRule(AwsBaseRule):
 
     def get_id(self) -> str:
-        return 'non_car_lambda_logging_not_infnite'
+        return 'non_car_lambda_logging_not_infinite'
 
     def execute(self, env_context: AwsEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
