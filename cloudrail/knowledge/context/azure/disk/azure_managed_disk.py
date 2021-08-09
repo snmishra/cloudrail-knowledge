@@ -33,7 +33,6 @@ class AzureManagedDisk(AzureResource):
                  create_option: ManagedDiskCreateOption, disk_encryption_set_id: Optional[str], disk_encryption_enabled: bool):
         super().__init__(AzureResourceType.AZURERM_MANAGED_DISK)
         self.name: str = name
-        self.with_aliases(name)
         self.storage_account_type: StorageAccountType = storage_account_type
         self.create_option: ManagedDiskCreateOption = create_option
         self.disk_encryption_set_id: Optional[str] = disk_encryption_set_id
