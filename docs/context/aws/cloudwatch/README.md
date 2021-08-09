@@ -2,7 +2,7 @@
 A few rules that use objects from this package:
 
 <details>
-<summary>non_car_lambda_logging_not_infnite</summary>
+<summary>non_car_lambda_logging_not_infinite</summary>
 
 ```python
 --8<--
