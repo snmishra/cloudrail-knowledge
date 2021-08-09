@@ -1,3 +1,4 @@
+from cloudrail.knowledge.context.azure.disk.azure_managed_disk import AzureManagedDisk
 from typing import Dict, List
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
@@ -50,7 +51,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = None,
                  security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
                  key_vaults: AliasesDict[AzureKeyVault] = None,
-                 monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = None):
+                 monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = None,
+                 managed_disks: AliasesDict[AzureManagedDisk] = None):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
         self.resource_groups: AliasesDict[AzureResourceGroup] = resource_groups or AliasesDict()
@@ -75,3 +77,4 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = storage_account_network_rules or AliasesDict()
         self.key_vaults: AliasesDict[AzureKeyVault] = key_vaults or AliasesDict()
         self.monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = monitor_diagnostic_settings or AliasesDict()
+        self.managed_disks: AliasesDict[AzureManagedDisk] = managed_disks or AliasesDict()
