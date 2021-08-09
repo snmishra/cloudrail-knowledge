@@ -1336,7 +1336,7 @@ rules_metadata:
     human_readable_logic:
       Cloudrail will review the Kubernetes clusters configuration within your Azure subscription and Terraform plan to ensure role-based access control is enabled.
     console_remediation_steps:
-      Follow the guide at https://docs.microsoft.com/en-us/azure/aks/manage-azure-rbac in order to enable RBAC for a Kubernetes cluster.
+      Follow the guide at <https://docs.microsoft.com/en-us/azure/aks/manage-azure-rbac> in order to enable RBAC for a Kubernetes cluster.
     iac_remediation_steps:
       For the azurerm_kubernetes_cluster resource, in the role_based_access_control block set the enabled argument to true.
     rule_type: non_context_aware
