@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
+from cloudrail.knowledge.context.azure.disk.azure_managed_disk import AzureManagedDisk
 from cloudrail.knowledge.context.azure.azure_resource_group import AzureResourceGroup
 from cloudrail.knowledge.context.azure.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
 from cloudrail.knowledge.context.azure.databases.azure_mysql_server import AzureMySqlServer
@@ -62,6 +63,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  network_security_group_rules: List[AzureNetworkSecurityRule] = None,
                  app_security_groups: AliasesDict[AzureApplicationSecurityGroup] = None,
                  nic_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = None,
+                 managed_disks: AliasesDict[AzureManagedDisk] = None
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -88,6 +90,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = storage_account_network_rules or AliasesDict()
         self.key_vaults: AliasesDict[AzureKeyVault] = key_vaults or AliasesDict()
         self.monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = monitor_diagnostic_settings or AliasesDict()
+        self.managed_disks: AliasesDict[AzureManagedDisk] = managed_disks or AliasesDict()
         self.virtual_machines: AliasesDict[AzureVirtualMachine] = virtual_machines or AliasesDict()
         self.public_ips: AliasesDict[AzurePublicIp] = public_ips or AliasesDict()
         self.network_security_group_rules: List[AzureNetworkSecurityRule] = network_security_group_rules or []

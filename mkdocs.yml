@@ -59,12 +59,13 @@ nav:
       - 'xray': 'context/aws/xray/README.md'
     - 'Azure Context':
       - 'databases': 'context/azure/databases/README.md'
-      - 'network': 'context/azure/network/README.md'
-      - 'webapp': 'context/azure/webapp/README.md'
-      - 'security': 'context/azure/security/README.md'
+      - 'disk': 'context/azure/disk/README.md'
       - 'keyvault': 'context/azure/keyvault/README.md'
+      - 'network': 'context/azure/network/README.md'
+      - 'security': 'context/azure/security/README.md'
       - 'storage': 'context/azure/storage/README.md'
       - 'vm': 'context/azure/vm/README.md'
+      - 'webapp': 'context/azure/webapp/README.md'
     - 'GCP Context':
       - 'sql': 'context/gcp/sql/README.md'
   - 'Contributing Rules':

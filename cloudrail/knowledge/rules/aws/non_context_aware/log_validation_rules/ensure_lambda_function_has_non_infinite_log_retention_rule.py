@@ -9,13 +9,13 @@ from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterT
 class EnsureLambdaFunctionHasNonInfiniteLogRetentionRule(AwsBaseRule):
 
     def get_id(self) -> str:
-        return 'non_car_lambda_logging_not_infnite'
+        return 'non_car_lambda_logging_not_infinite'
 
     def execute(self, env_context: AwsEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
 
         for lambda_func in env_context.lambda_function_list:
-            if lambda_func.log_group.retention_in_days == 0 or not lambda_func.log_group.retention_in_days:
+            if lambda_func.log_group and (lambda_func.log_group.retention_in_days == 0 or not lambda_func.log_group.retention_in_days):
                 if lambda_func.log_group.is_pseudo:
                     issues.append(
                         Issue(

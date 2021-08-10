@@ -3159,7 +3159,7 @@ rules_metadata:
   resource_type:
   - all
 - cloud_provider: amazon_web_services
-  rule_id: non_car_lambda_logging_not_infnite
+  rule_id: non_car_lambda_logging_not_infinite
   name: Ensure each Lambda function has a non-infinite log retention
   severity: low
   description: "By default, Lambda functions have log groups created for them (either\
