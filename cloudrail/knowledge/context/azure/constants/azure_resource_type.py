@@ -26,3 +26,4 @@ class AzureResourceType(Enum):
     AZURERM_STORAGE_ACCOUNT = 'azurerm_storage_account'
     AZURERM_STORAGE_ACCOUNT_NETWORK_RULES = 'azurerm_storage_account_network_rules'
     AZURERM_KUBERNETES_CLUSTER = 'azurerm_kubernetes_cluster'
+    AZURERM_MANAGED_DISK = 'azurerm_managed_disk'
