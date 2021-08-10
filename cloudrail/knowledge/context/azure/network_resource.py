@@ -27,6 +27,7 @@ class NetworkResource(AzureResource):
     def get_cloud_resource_url(self) -> Optional[str]:
         pass
 
+    @property
     @abstractmethod
     def is_tagable(self) -> bool:
         pass
