@@ -1,3 +1,4 @@
+from cloudrail.knowledge.context.azure.disk.azure_managed_disk import AzureManagedDisk
 from typing import Dict, List
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
@@ -6,6 +7,8 @@ from cloudrail.knowledge.context.azure.databases.azure_mssql_server_extended_aud
 from cloudrail.knowledge.context.azure.databases.azure_mysql_server import AzureMySqlServer
 from cloudrail.knowledge.context.azure.databases.azure_postgresql_server import AzurePostgreSqlServer
 from cloudrail.knowledge.context.azure.databases.azure_sql_server import AzureSqlServer
+from cloudrail.knowledge.context.azure.keyvault.azure_key_vault import AzureKeyVault
+from cloudrail.knowledge.context.azure.keyvault.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
 from cloudrail.knowledge.context.azure.network.azure_nic import AzureNic
 from cloudrail.knowledge.context.azure.network.azure_nsg import AzureNetworkSecurityGroup
 from cloudrail.knowledge.context.azure.network.azure_nsg_to_nic_association import AzureNetworkSecurityGroupToNicAssociation
@@ -40,13 +43,16 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  function_app_configs: AliasesDict[AzureAppServiceConfig] = None,
                  vnet_gateways: AliasesDict[AzureVirtualNetworkGateway] = None,
                  security_center_contacts: AliasesDict[AzureSecurityCenterContact] = None,
-                 security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
                  security_center_subscription_pricings: List[AzureSecurityCenterSubscriptionPricing] = None,
                  my_sql_servers: AliasesDict[AzureMySqlServer] = None,
                  sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = None,
                  postgresql_servers: AliasesDict[AzurePostgreSqlServer] = None,
                  storage_accounts: AliasesDict[AzureStorageAccount] = None,
-                 storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = None):
+                 storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = None,
+                 security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
+                 key_vaults: AliasesDict[AzureKeyVault] = None,
+                 monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = None,
+                 managed_disks: AliasesDict[AzureManagedDisk] = None):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
         self.resource_groups: AliasesDict[AzureResourceGroup] = resource_groups or AliasesDict()
@@ -69,3 +75,6 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = sql_server_extended_audit_policies or AliasesDict()
         self.storage_accounts: AliasesDict[AzureStorageAccount] = storage_accounts or AliasesDict()
         self.storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = storage_account_network_rules or AliasesDict()
+        self.key_vaults: AliasesDict[AzureKeyVault] = key_vaults or AliasesDict()
+        self.monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = monitor_diagnostic_settings or AliasesDict()
+        self.managed_disks: AliasesDict[AzureManagedDisk] = managed_disks or AliasesDict()
