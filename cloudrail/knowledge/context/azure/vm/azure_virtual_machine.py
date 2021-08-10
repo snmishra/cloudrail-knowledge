@@ -1,7 +1,6 @@
 from enum import Enum
 from typing import List, Optional
 
-from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.network_resource import NetworkResource
 
@@ -11,12 +10,11 @@ class OperatingSystemType(Enum):
     LINUX = 'Linux'
 
 
-class AzureVirtualMachine(AzureResource):
+class AzureVirtualMachine(NetworkResource):
     """
         Attributes:
             name: The name of this Public IP.
             network_interface_ids: A list of Network Interface ID's which are associated with the Virtual Machine.
-            network_resource: Networking information of the entity.
             os_type: The VM's operating system. Either Windows or Linux.
     """
     def __init__(self, name: str, network_interface_ids: List[str], os_type: OperatingSystemType):
@@ -24,7 +22,6 @@ class AzureVirtualMachine(AzureResource):
         self.name: str = name
         self.network_interface_ids: List[str] = network_interface_ids
         self.os_type: OperatingSystemType = os_type
-        self.network_resource: NetworkResource = NetworkResource()
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]
@@ -36,3 +33,6 @@ class AzureVirtualMachine(AzureResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def get_type(self, is_plural: bool = False) -> str:
+        return 'Virtual Machine' + ('s' if is_plural else '')

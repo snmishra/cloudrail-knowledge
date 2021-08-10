@@ -59,7 +59,8 @@ class AzureNetworkSecurityRule(AzureResource):
         return [self._id]
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        pass  # TOOD -> show security group??
+        return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/{self.resource_group_name}' \
+               f'/providers/Microsoft.Network/networkSecurityGroups/{self.name}/overview'
 
     @property
     def is_tagable(self) -> bool:

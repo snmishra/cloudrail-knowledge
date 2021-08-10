@@ -2,8 +2,8 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from typing import List, Dict, Optional, Union, Iterable
 
-from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.network.azure_network_interface import AzureNetworkInterface
+from cloudrail.knowledge.context.azure.network_resource import NetworkResource
 from cloudrail.knowledge.context.connection import ConnectionType, PortConnectionProperty, ConnectionDirectionType
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.context.azure.network.azure_network_security_group import AzureNetworkSecurityGroup
@@ -30,11 +30,7 @@ class NotPubliclyAccessibleBaseRule(AzureBaseRule):
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for resource in self.get_resources(env_context):
-            if not hasattr(resource, 'network_resource'):
-                # This check should be removed when we will have some sort of encapsulation of resources with network interfaces, similar to NetworkEntity class in AWS
-                raise Exception(f'The resource of type {resource.get_type()} does not have the required `network_resource` attribute')
-
-            violating = self._get_violating(resource.network_resource.network_interfaces)
+            violating = self._get_violating(resource.network_interfaces)
 
             if violating:
                 resource_msg = f'The {resource.get_type()} `{resource.get_friendly_name()}`'
@@ -80,7 +76,7 @@ class NotPubliclyAccessibleBaseRule(AzureBaseRule):
 
     @staticmethod
     @abstractmethod
-    def get_resources(env_context: AzureEnvironmentContext) -> Union[Iterable[AzureResource]]:
+    def get_resources(env_context: AzureEnvironmentContext) -> Iterable[NetworkResource]:
         pass
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
