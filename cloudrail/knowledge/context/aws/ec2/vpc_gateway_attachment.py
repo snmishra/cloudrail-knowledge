@@ -4,12 +4,12 @@ from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 
 class VpcGatewayAttachment(AwsResource):
 
-    def __init__(self, attachment_id: str, region: str, account: str, gateway_id: str, vpc_id: str):
+    def __init__(self, region: str, account: str, gateway_id: str, vpc_id: str):
         AwsResource.__init__(self, account, region)
-        self.attachment_id: str = attachment_id
+        self.attachment_id: str = f"{vpc_id}-{gateway_id}"
         self.gateway_id: str = gateway_id
         self.vpc_id: str = vpc_id
-        self.with_aliases(attachment_id)
+        self.with_aliases(self.attachment_id)
 
     def get_keys(self) -> List[str]:
         return [self.vpc_id, self.gateway_id]
