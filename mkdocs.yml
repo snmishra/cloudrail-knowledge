@@ -64,6 +64,7 @@ nav:
       - 'security': 'context/azure/security/README.md'
       - 'keyvault': 'context/azure/keyvault/README.md'
       - 'storage': 'context/azure/storage/README.md'
+      - 'disk': 'context/azure/disk/README.md'
     - 'GCP Context':
       - 'sql': 'context/gcp/sql/README.md'
   - 'Contributing Rules':
