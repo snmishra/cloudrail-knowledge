@@ -65,6 +65,7 @@ nav:
       - 'network': 'context/azure/network/README.md'
       - 'security': 'context/azure/security/README.md'
       - 'storage': 'context/azure/storage/README.md'
+      - 'vm': 'context/azure/vm/README.md'
       - 'webapp': 'context/azure/webapp/README.md'
     - 'GCP Context':
       - 'sql': 'context/gcp/sql/README.md'

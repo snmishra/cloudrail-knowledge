@@ -30,13 +30,5 @@ class AzureKeyVault(AzureResource):
     def get_keys(self) -> List[str]:
         return [self._id]
 
-    def exclude_from_invalidation(self):
-        return [self.monitor_diagnostic_settings]
-
-    def custom_invalidation(self) -> List[str]:
-        if self.monitor_diagnostic_settings and self.monitor_diagnostic_settings.is_invalidated:
-            return ["The KeyVault's monitor diagnostic setting is invalid"]
-        return []
-
     def get_type(self, is_plural: bool = False) -> str:
         return 'Key ' + 'Vault' if not is_plural else 'Vaults'

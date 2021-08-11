@@ -1,8 +1,7 @@
 from typing import List, Optional
 
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionInstance
-
+from cloudrail.knowledge.context.connection import ConnectionInstance
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.rds.rds_instance import RdsInstance
 
