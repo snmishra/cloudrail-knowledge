@@ -30,6 +30,7 @@ class ApiGatewayVpcLink(AwsResource):
         self.security_group_ids: list = security_group_ids
         self.subnet_ids: list = subnet_ids
         self.arn: Optional[str] = arn if arn else self._create_arn()
+        self.with_aliases(vpc_link_id)
 
     def get_keys(self) -> List[str]:
         return [self.account, self.region, self.vpc_link_id]

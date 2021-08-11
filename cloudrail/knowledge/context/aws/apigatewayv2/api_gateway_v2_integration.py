@@ -28,6 +28,7 @@ class ApiGatewayV2Integration(AwsResource):
         self.integration_type: IntegrationType = integration_type
         self.uri: str = uri
         self.integration_id: str = integration_id
+        self.with_aliases(integration_id)
 
     def get_keys(self) -> List[str]:
         return [self.account, self.region, self.integration_id]
@@ -48,3 +49,6 @@ class ApiGatewayV2Integration(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def get_id(self) -> str:
+        return self.integration_id

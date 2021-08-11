@@ -1,5 +1,6 @@
 import functools
 from typing import List, Dict, Optional, Union, TypeVar, Callable, Set
+from cloudrail.knowledge.context.aws.ec2.vpc_gateway_attachment import VpcGatewayAttachment
 from cloudrail.knowledge.context.aws.ec2.availability_zone import AvailabilityZone
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.aws.account.account import Account
@@ -239,6 +240,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  dms_replication_instances: List[DmsReplicationInstance] = None,
                  vpcs_attributes: List[VpcAttribute] = None,
                  internet_gateways: List[InternetGateway] = None,
+                 vpc_gateway_attachment: AliasesDict[VpcGatewayAttachment] = None,
                  ecs_service_list: List[EcsService] = None,
                  cloud_watch_event_target_list: List[CloudWatchEventTarget] = None,
                  ecs_targets_list: List[EcsTarget] = None,
@@ -437,6 +439,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.dms_replication_instances = dms_replication_instances or []
         self.vpcs_attributes = vpcs_attributes or []
         self.internet_gateways = internet_gateways or []
+        self.vpc_gateway_attachment: AliasesDict[VpcGatewayAttachment] = vpc_gateway_attachment or AliasesDict()
         self.ecs_service_list = ecs_service_list or []
         self.cloud_watch_event_target_list = cloud_watch_event_target_list or []
         self.ecs_targets_list = ecs_targets_list or []
