@@ -5,7 +5,7 @@ from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironme
 from cloudrail.knowledge.rules.aws.context_aware.vpc_endpoints.abstract_vpc_endpoint_interface_not_used_rule import Ec2VpcEndpointExposureRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionDirectionType, PolicyConnectionProperty, PublicConnectionDetail
+from cloudrail.knowledge.context.connection import ConnectionDirectionType, PolicyConnectionProperty, PublicConnectionDetail
 from cloudrail.knowledge.context.aws.ec2.ec2_instance import Ec2Instance
 from cloudrail.knowledge.context.aws.ec2.network_interface import NetworkInterface
 from cloudrail.knowledge.context.aws.ec2.subnet import Subnet
