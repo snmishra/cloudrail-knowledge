@@ -32,4 +32,5 @@ class AzureResourceType(Enum):
     AZURERM_NETWORK_SECURITY_RULE = 'azurerm_network_security_rule'
     AZURERM_APPLICATION_SECURITY_GROUP = 'azurerm_application_security_group'
     AZURERM_NETWORK_INTERFACE_APPLICATION_SECURITY_GROUP_ASSOCIATION = 'azurerm_network_interface_application_security_group_association'
+    AZURERM_KUBERNETES_CLUSTER = 'azurerm_kubernetes_cluster'
     AZURERM_MANAGED_DISK = 'azurerm_managed_disk'

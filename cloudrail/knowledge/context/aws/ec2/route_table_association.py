@@ -11,13 +11,16 @@ class RouteTableAssociation(AwsResource):
             route_table_id: The route table to associate to the subnet.
     """
     def __init__(self,
+                 association_id: str,
                  subnet_id: str,
                  route_table_id: str,
                  region: str,
                  account: str):
         super().__init__(account, region, AwsServiceName.AWS_ROUTE_TABLE_ASSOCIATION)
+        self.association_id = association_id
         self.route_table_id: str = route_table_id
         self.subnet_id: str = subnet_id
+        self.with_aliases(association_id)
 
     def get_keys(self) -> List[str]:
         return [self.route_table_id, self.subnet_id]
@@ -44,3 +47,6 @@ class RouteTableAssociation(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def get_id(self) -> str:
+        return self.association_id

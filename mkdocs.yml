@@ -58,6 +58,7 @@ nav:
       - 'workspaces': 'context/aws/workspaces/README.md'
       - 'xray': 'context/aws/xray/README.md'
     - 'Azure Context':
+      - 'aks': 'context/azure/aks/README.md'
       - 'databases': 'context/azure/databases/README.md'
       - 'disk': 'context/azure/disk/README.md'
       - 'keyvault': 'context/azure/keyvault/README.md'
