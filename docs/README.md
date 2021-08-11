@@ -79,7 +79,7 @@ representing the input in a graph model. Cloudrail now uses various algorithms t
 context model and make it accessible to the rule writer.
 
 For example, want to know if a resource is publicly accessible, and how? Look at the attribute exposed by
-those classes that inherit from .
+those classes that inherit from [ConnectionInstance](https://github.com/indeni/cloudrail-knowledge/tree/main/cloudrail/knowledge/context/connection.py).
 
 Want to know if a policy violates AWS's best practices? Look at
 [Policy](https://github.com/indeni/cloudrail-knowledge/tree/main/cloudrail/knowledge/context/aws/iam/policy.py)'s `access_analyzer_findings` attribute.
