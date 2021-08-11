@@ -1,6 +1,6 @@
 from typing import List, Set, Optional
 
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionDetail
+from cloudrail.knowledge.context.connection import ConnectionDetail
 from cloudrail.knowledge.context.aws.ec2.network_interface import NetworkInterface
 from cloudrail.knowledge.context.aws.ec2.route import Route
 from cloudrail.knowledge.context.aws.ec2.route_table import RouteTable

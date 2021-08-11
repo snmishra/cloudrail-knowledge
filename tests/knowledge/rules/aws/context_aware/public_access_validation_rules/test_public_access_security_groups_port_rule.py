@@ -3,7 +3,7 @@ import unittest
 
 from cloudrail.dev_tools.aws_rule_test_utils import create_empty_network_entity
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
-from cloudrail.knowledge.context.aws.aws_connection import PortConnectionProperty
+from cloudrail.knowledge.context.connection import PortConnectionProperty
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.aws.ec2.ec2_instance import Ec2Instance
 from cloudrail.knowledge.context.aws.ec2.security_group import SecurityGroup
