@@ -18,6 +18,7 @@ class InternetGateway(AwsResource):
         self.vpc_id: str = vpc_id
         self.igw_id: str = igw_id
         self.igw_type: IgwType = igw_type
+        self.with_aliases(igw_id)
 
     def get_keys(self) -> List[str]:
         return [self.igw_id]
