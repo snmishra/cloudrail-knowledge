@@ -23,13 +23,14 @@ class TestAppServiceDiagnosticLogsRule(unittest.TestCase):
 
     @parameterized.expand(
         [
-            ['Only detailed error logging enabled ', DiagnosticLogs(True, False, False), True],
-            ['Only http logging enabled',  DiagnosticLogs(False, True, False), True],
-            ['Only request tracing enabled', DiagnosticLogs(False, False, True), True],
-            ['All enabled', DiagnosticLogs(True, True, True), False]
+            ['Only detailed error logging disabled ', DiagnosticLogs(False, True, True), True, "The web app `None` does not have detailed error logging enabled"],
+            ['Only http logging disabled',  DiagnosticLogs(True, False, True), True, "The web app `None` does not have HTTP logging enabled"],
+            ['Only request tracing disabled', DiagnosticLogs(True, True, False), True, "The web app `None` does not have request tracing enabled"],
+            ['All disabled', DiagnosticLogs(False, False, False), True, "The web app `None` does not have HTTP logging enabled\nThe web app `None` does not have request tracing enabled\nThe web app `None` does not have detailed error logging enabled"],
+            ['All enabled', DiagnosticLogs(True, True, True), False, '']
         ]
     )
-    def test_alert_notifications(self, unused_name: str, logs: DiagnosticLogs, should_alert: bool):
+    def test_alert_notifications(self, unused_name: str, logs: DiagnosticLogs, should_alert: bool, evidence_string: str):
         # Arrange
         app_service: AzureAppService = create_empty_entity(AzureAppService)
         app_service_config: AzureAppServiceConfig = create_empty_entity(AzureAppServiceConfig)
@@ -39,9 +40,11 @@ class TestAppServiceDiagnosticLogsRule(unittest.TestCase):
 
         # Act
         result = self.rule.run(context, {})
+
         # Assert
         if should_alert:
             self.assertEqual(RuleResultType.FAILED, result.status)
             self.assertEqual(1, len(result.issues))
+            self.assertEqual(evidence_string, result.issues[0].evidence)
         else:
             self.assertEqual(RuleResultType.SUCCESS, result.status)
