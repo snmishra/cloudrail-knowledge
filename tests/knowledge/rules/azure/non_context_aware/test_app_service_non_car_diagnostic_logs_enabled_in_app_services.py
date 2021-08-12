@@ -23,16 +23,17 @@ class TestAppServiceDiagnosticLogsRule(unittest.TestCase):
 
     @parameterized.expand(
         [
-            ['Only detailed error logging disabled ', DiagnosticLogs(False, True, True), True, "The web app `None` does not have detailed error logging enabled"],
-            ['Only http logging disabled',  DiagnosticLogs(True, False, True), True, "The web app `None` does not have HTTP logging enabled"],
-            ['Only request tracing disabled', DiagnosticLogs(True, True, False), True, "The web app `None` does not have request tracing enabled"],
-            ['All disabled', DiagnosticLogs(False, False, False), True, "The web app `None` does not have HTTP logging enabled\nThe web app `None` does not have request tracing enabled\nThe web app `None` does not have detailed error logging enabled"],
-            ['All enabled', DiagnosticLogs(True, True, True), False, '']
+            ['Only detailed error logging disabled ', DiagnosticLogs(False, True, True), True, "The web app `test_alert_notifications` does not have detailed error logging enabled"],
+            ['Only http logging disabled',  DiagnosticLogs(True, False, True), True, "The web app `test_alert_notifications` does not have HTTP logging enabled"],
+            ['Only request tracing disabled', DiagnosticLogs(True, True, False), True, "The web app `test_alert_notifications` does not have request tracing enabled"],
+            ['All disabled', DiagnosticLogs(False, False, False), True, "The web app `test_alert_notifications` does not have HTTP logging enabled\nThe web app `test_alert_notifications` does not have request tracing enabled\nThe web app `test_alert_notifications` does not have detailed error logging enabled"],
+            ['All enabled', DiagnosticLogs(True, True, True), False, None]
         ]
     )
     def test_alert_notifications(self, unused_name: str, logs: DiagnosticLogs, should_alert: bool, evidence_string: str):
         # Arrange
         app_service: AzureAppService = create_empty_entity(AzureAppService)
+        app_service.name = 'test_alert_notifications'
         app_service_config: AzureAppServiceConfig = create_empty_entity(AzureAppServiceConfig)
         app_service_config.logs = logs
         app_service.app_service_config = app_service_config
