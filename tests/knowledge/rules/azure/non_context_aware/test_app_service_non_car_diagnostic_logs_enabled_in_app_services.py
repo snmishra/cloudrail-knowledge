@@ -1,4 +1,5 @@
 import unittest
+from typing import Optional
 
 from parameterized import parameterized
 
@@ -30,7 +31,7 @@ class TestAppServiceDiagnosticLogsRule(unittest.TestCase):
             ['All enabled', DiagnosticLogs(True, True, True), False, None]
         ]
     )
-    def test_alert_notifications(self, unused_name: str, logs: DiagnosticLogs, should_alert: bool, evidence_string: str):
+    def test_alert_notifications(self, unused_name: str, logs: DiagnosticLogs, should_alert: bool, evidence_string: Optional[str]):
         # Arrange
         app_service: AzureAppService = create_empty_entity(AzureAppService)
         app_service.name = 'test_alert_notifications'
