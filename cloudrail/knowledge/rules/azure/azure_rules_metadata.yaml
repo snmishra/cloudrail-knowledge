@@ -1,7 +1,7 @@
 templates:
   - azure_defender_enabled_description: Cloudrail will review the Security Center subscription pricing configuration in your environment. If the tier is not set to “Standard” for {0} resources, Cloudrail will highlight it as a violation.
   - azure_defender_enabled_human_readable_logic: Cloudrail will review the Security Center Subscription Pricing configuration within your Azure subscription and Terraform plan to ensure Azure Defender is enabled (“Standard” tier pricing) for {0}.
-  - azure_defender_enabled_console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/security-center/enable-azure-defender> in order to enable Azure Defender for {0}.
+  - azure_defender_enabled_console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/security-center/enable-azure-defender in order to enable Azure Defender for {0}.
   - azure_defender_enabled_console_remediation_steps_tf: For the azurerm_security_center_subscription_pricing resource, set the tier argument to “Standard” and ensure the resource_type argument contains the value “{0}”.
 
 rules_metadata:
@@ -878,7 +878,7 @@ rules_metadata:
     human_readable_logic: Cloudrail will review the Function Apps configuration within your Azure subscription and
       Terraform plan to check if they are enforcing FTPS only or if they have FTP disabled.
     console_remediation_steps: Follow the guide at
-      <https://docs.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#enforce-ftps> in order to select
+      https://docs.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#enforce-ftps in order to select
       FTPS Only in FTP state.
     iac_remediation_steps: For the azurerm_function_app resource, set the site_config block with
       ftps_state argument set to "FtpsOnly".
@@ -893,7 +893,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the App service configuration in your environment. If an app has FTP enabled and is not enforcing FTPS only, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the App services configuration within your Azure subscription and Terraform plan to check if they are enforcing FTPS only or if they have FTP disabled.
-    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#enforce-ftps> in order to disable FTP or select FTPS Only in FTP state.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#enforce-ftps in order to disable FTP or select FTPS Only in FTP state.
     iac_remediation_steps: For the azurerm_app_service resource, set the site_config block with ftps_state argument set to “FtpsOnly” to enforce FTPS or to “Disabled” if you want to disable FTP.
     rule_type: non_context_aware
     security_layer: networking
@@ -909,7 +909,7 @@ rules_metadata:
     human_readable_logic: Cloudrail will review the Function Apps configuration within your Azure subscription and
       Terraform plan to check if authentication is enabled.
     console_remediation_steps: Follow the guide at
-      <https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-use-azure-function-app-settings?tabs=portal#auth>
+      https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-use-azure-function-app-settings?tabs=portal#auth
       in order to enable authentication for the Function App.
     iac_remediation_steps: For the azurerm_function_app resource,
       set the auth_settings block with enabled argument set to true.
@@ -945,7 +945,7 @@ rules_metadata:
     human_readable_logic: Cloudrail will review the Function Apps configuration within your Azure subscription and
       Terraform plan to check if authentication is enabled.
     console_remediation_steps: Follow the guide at
-      <https://docs.microsoft.com/en-us/azure/security-center/security-center-enable-data-collection#enable-auto-provisioning-of-the-log-analytics-agent-and-extensions->
+      https://docs.microsoft.com/en-us/azure/security-center/security-center-enable-data-collection#enable-auto-provisioning-of-the-log-analytics-agent-and-extensions-
       in order to enable the automatic provision of the Log Analytics agent.
     remediation_steps_tf: For the azurerm_security_center_auto_provisioning resource, set the auto_provision argument to “On”.
     rule_type: non_context_aware
@@ -1017,7 +1017,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the Security Center configuration in your environment. If email notification of high severity alerts is not enabled, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Security Center Contact configuration within your Azure subscription and Terraform plan to ensure email notifications of security alerts is enabled.
-    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/security-center/security-center-provide-security-contact-details> in order to enable email notifications for security alerts.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/security-center/security-center-provide-security-contact-details in order to enable email notifications for security alerts.
     remediation_steps_tf: For the azurerm_security_center_contact resource, set the alert_notifications argument to true.
     rule_type: non_context_aware
     security_layer: logging
@@ -1063,7 +1063,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the App Service (Web Apps) configuration in your environment. If an app does not have authentication enabled, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the App Service configuration within your Azure subscription and Terraform plan to check if authentication is enabled for web apps.
-    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/overview-authentication-authorization> in order to enable authentication for the web app.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/overview-authentication-authorization in order to enable authentication for the web app.
     iac_remediation_steps: For the azurerm_app_service resource, set the auth_settings block with enabled argument set to true.
     rule_type: non_context_aware
     security_layer: iam
@@ -1094,7 +1094,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the Function Apps configuration in your environment. If a function does not have HTTPS only enabled, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Function Apps configuration within your Azure subscription and Terraform plan to check if HTTPS only is enabled.
-    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https> in order to configured HTTPS Only for the Function App.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https in order to configured HTTPS Only for the Function App.
     iac_remediation_steps: For the azurerm_function_app resource, set the https_only argument to true.
     rule_type: non_context_aware
     security_layer: encryption
@@ -1107,7 +1107,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the Web Apps configuration in your environment. If a function does not have HTTPS only enabled, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Web Apps configuration within your Azure subscription and Terraform plan to check if HTTPS only is enabled.
-    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https> in order to configured HTTPS Only for the Web App.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https in order to configured HTTPS Only for the Web App.
     iac_remediation_steps: For the azurerm_app_service resource, set the https_only argument to true.
     rule_type: non_context_aware
     security_layer: encryption
@@ -1139,7 +1139,7 @@ rules_metadata:
     severity: major
     description: Cloudrail will review the Web Apps configuration in your environment. If an app does not use the latest Azure supported TLS version (1.2), Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Web Apps configuration within your Azure subscription and Terraform plan to ensure they are using the latest Azure supported TLS version (1.2).
-    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-tls-versions> in order to set the Minimum TLS Version to 1.2 for the Web App.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-tls-versions in order to set the Minimum TLS Version to 1.2 for the Web App.
     iac_remediation_steps: For the azurerm_app_service resource, in site_config block, set the min_tls_version argument to 1.2.
     rule_type: non_context_aware
     security_layer: encryption
@@ -1152,7 +1152,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the Storage Accounts configuration in your environment. If an account is not requiring secure transfer (HTTPS), Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Storage Account configuration within your Azure subscription and Terraform plan to ensure that secure transfer is enabled.
-    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/common/storage-require-secure-transfer> in order to enable secure transfer.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/common/storage-require-secure-transfer in order to enable secure transfer.
     iac_remediation_steps: For the azurerm_storage_account resource, set the enable_https_traffic_only argument to true.
     rule_type: non_context_aware
     security_layer: encryption
@@ -1303,7 +1303,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the Key Vault configuration in your environment. If a vault does not have diagnostic logs enabled, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Security Center Contact configuration within your Azure subscription and Terraform plan to ensure email notifications of security alerts is enabled.
-    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/key-vault/general/alert> in order to enable diagnostic logs for Key Vault.
+    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/alert in order to enable diagnostic logs for Key Vault.
     remediation_steps_tf: Create an azurerm_monitor_diagnostic_setting resource and set the target_resource_id to the Key Vault ID. In the log block, set the enabled argument to true. In log block, retention_policy block, set enabled argument to true and days argument to 0 (indefinitely) or a value greater than or equal to 365.
     rule_type: context_aware
     security_layer: logging
