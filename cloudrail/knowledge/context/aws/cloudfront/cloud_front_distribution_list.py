@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionInstance
+
+from cloudrail.knowledge.context.connection import ConnectionInstance
 from cloudrail.knowledge.context.aws.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
 from cloudrail.knowledge.context.aws.cloudfront.origin_access_identity import OriginAccessIdentity
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName, AwsServiceType, AwsServiceAttributes

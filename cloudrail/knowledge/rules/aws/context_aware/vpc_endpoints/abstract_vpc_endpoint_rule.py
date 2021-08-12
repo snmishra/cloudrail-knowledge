@@ -4,7 +4,7 @@ from typing import List, Dict, Tuple, Optional
 from cloudrail.knowledge.rules.aws.aws_base_rule import AwsBaseRule
 from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionType, PortConnectionProperty, ConnectionDetail, \
+from cloudrail.knowledge.context.connection import ConnectionType, PortConnectionProperty, ConnectionDetail, \
     PrivateConnectionDetail
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.ec2.network_interface import NetworkInterface

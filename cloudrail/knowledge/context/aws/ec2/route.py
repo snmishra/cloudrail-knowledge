@@ -35,6 +35,8 @@ class Route(AwsResource):
         self.target = target
         self.target_type = target_type
         self.destination = destination
+        self.route_id: str = f'{route_table_id}_{destination}'  # todo - match with cfn stack creation
+        self.with_aliases(self.route_id)
         self.peering_connection: Optional[PeeringConnection] = None
 
     def get_keys(self) -> List[str]:
@@ -84,3 +86,6 @@ class Route(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def get_id(self) -> str:
+        return self.route_id
