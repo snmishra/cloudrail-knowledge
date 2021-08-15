@@ -1,5 +1,4 @@
 from typing import List, Dict
-from packaging import version
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.rules.azure.azure_base_rule import AzureBaseRule
 from cloudrail.knowledge.rules.base_rule import Issue
