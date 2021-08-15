@@ -4,6 +4,12 @@ templates:
   - azure_defender_enabled_console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/security-center/enable-azure-defender in order to enable Azure Defender for {0}.
   - azure_defender_enabled_console_remediation_steps_tf: For the azurerm_security_center_subscription_pricing resource, set the tier argument to “Standard” and ensure the resource_type argument contains the value “{0}”.
 
+  - vm_not_publicly_accessible_name: Ensure VM is not publicly accessible via {0}
+  - vm_not_publicly_accessible_description: Having Virtual Machines accessible publicly from the Internet on known administrative or management ports can be problematic. Cloudraill will attempt to determine if any of the virtual machines are accessible directly at their public IP address, or indirectly via NAT, at {0}’s port. If they are, a violation will be raised.
+  - vm_not_publicly_accessible_human_readable_name: Cloudrail will review the Virtual Machines configuration within your Azure subscription and Terraform plan. For each virtual machine, it will check the attached network interfaces that are reachable from the Internet, either using a public IP or an inbound NAT rule. It will ensure that the Network Security Groups of the NIC and the subnet are not allowing inbound TCP access to destination port {0}z ({1}, “*”, or a port range containing {1}) for any source IP address prefix (“*”, “Internet”).
+  - vm_not_publicly_accessible_console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/virtual-network/manage-network-security-group> in order to modify the Network Security Group rule to restrict {0} access from the Internet by setting a specific source IP address.
+  - vm_not_publicly_accessible_iac_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/virtual-network/manage-network-security-group> in order to modify the Network Security Group rule to restrict {0} access from the Internet by setting a specific source IP address.
+
 rules_metadata:
   - rule_id: non_car_azure_database_public_access
     cloud_provider: azure
@@ -14,10 +20,10 @@ rules_metadata:
       If a database server is set to be public, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review all of the Azure database servers declared in Terraform, and those already
       existing in the Azure environment, to determine if any of them is set to have public access enabled.
-    console_remediation_steps: Follow the guides at https://docs.microsoft.com/en-us/azure/azure-sql/database/connectivity-settings,
-      https://docs.microsoft.com/en-us/azure/postgresql/howto-deny-public-network-access,
-      https://docs.microsoft.com/en-us/azure/mysql/howto-deny-public-network-access,
-      https://docs.microsoft.com/en-us/azure/mariadb/howto-deny-public-network-access,
+    console_remediation_steps: Follow the guides at <https://docs.microsoft.com/en-us/azure/azure-sql/database/connectivity-settings>,
+      <https://docs.microsoft.com/en-us/azure/postgresql/howto-deny-public-network-access>,
+      <https://docs.microsoft.com/en-us/azure/mysql/howto-deny-public-network-access>,
+      <https://docs.microsoft.com/en-us/azure/mariadb/howto-deny-public-network-access>,
       in order to disable public network access for the database.
     iac_remediation_steps: In the database server resource (such as azurerm_postgresql_server, azurerm_mssql_server, etc.),
       set public_network_access_enabled to false.
@@ -36,7 +42,7 @@ rules_metadata:
     human_readable_logic: Cloudrail uses checkov to review the Azure instances configuration and
       ensure they are requiring SSH public key instead of password authentication. This rule will
       only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal>
       in order to create a virtual machine with SSH public key authentication instead of password authentication.
     iac_remediation_steps: For the azurerm_linux_virtual_machine resource, remove admin_password argument and set
       disable_password_authentication to true. In admin_ssk_key configuration block, set username and public_key parameters.
@@ -54,7 +60,7 @@ rules_metadata:
     human_readable_logic: Cloudrail uses checkov to review the Azure AKS clusters configuration and
       ensure logging is enabled. This rule will only review Terraform content and not any resources
       in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-enable-existing-clusters#enable-directly-from-aks-cluster-in-the-portal
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-enable-existing-clusters#enable-directly-from-aks-cluster-in-the-portal>
       in order to enable monitoring for an AKS cluster.
     iac_remediation_steps: For the azurerm_kubernetes_cluster resource, in addon_profile configuration block,
       add oms_agent block with enabled argument set to true and log_analytics_workspace_id argument set to
@@ -73,7 +79,7 @@ rules_metadata:
     human_readable_logic: Cloudrail uses checkov to review the Azure AKS clusters configuration and
       ensure role_based_access_control is enabled. This rule will only review Terraform content and not any resources in
       your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal>
       in order to create an AKS cluster with RBAC authentication enabled.
     iac_remediation_steps: For the azurerm_kubernetes_cluster resource, add a role_based_access_control block
       with enabled argument set to true.
@@ -90,7 +96,7 @@ rules_metadata:
     human_readable_logic: Cloudrail uses checkov to review the Azure AKS clusters configuration and ensure
       api_server_authorized_ip_ranges argument is configured. This rule will only review Terraform content and not any
       resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-ranges#update-disable-and-find-authorized-ip-ranges-using-azure-portal
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-ranges#update-disable-and-find-authorized-ip-ranges-using-azure-portal>
       in order to configure the authorized IP ranges that will have access to the AKS API server.
     iac_remediation_steps: For the azurerm_kubernetes_cluster resource, ensure the api_server_authorized_ip_ranges resource
       is set to a range of authorized IP addresses.
@@ -108,7 +114,7 @@ rules_metadata:
     human_readable_logic: Cloudrail uses checkov to review the Azure AKS cluster configuration and ensure it has a
       network_profile configuration block. This rule will only review Terraform content and not any resources in your
       cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/aks/use-network-policies
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/aks/use-network-policies>
       in order to create an AKS cluster with a Network Policy.
     iac_remediation_steps: For the azurerm_kubernetes_cluster resource resource, ensure the network_profile configuration
       block is configured.
@@ -125,7 +131,7 @@ rules_metadata:
       an additional attack vector.
     human_readable_logic: Cloudrail uses checkov to review the Azure AKS cluster configuration and ensure the Kubernetes
       dashboard is disabled. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/aks/kubernetes-dashboard#disable-the-kubernetes-dashboard
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/aks/kubernetes-dashboard#disable-the-kubernetes-dashboard>
       in order to disable the Kubernetes dashboard.
     iac_remediation_steps: For the azurerm_kubernetes_cluster resource, in the addon_profile block, ensure the kube_dashboard
       block has the enabled argument set to false.
@@ -142,7 +148,7 @@ rules_metadata:
       to reduce the attack surface.
     human_readable_logic: Cloudrail uses checkov to review the SQL firewall rules and ensure they are not allowing access
       from any IP. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-sql/database/firewall-configure#use-the-azure-portal-to-manage-server-level-ip-firewall-rules
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/azure-sql/database/firewall-configure#use-the-azure-portal-to-manage-server-level-ip-firewall-rules>
       in order to configured the SQL server firewall rules with specific Start and End IPs.
     iac_remediation_steps: For the azurerm_mariadb_firewall_rule, azurerm_mariadb_firewall_rule, azurerm_postgresql_firewall_rule,
       and azurerm_mysql_firewall_rule resources, set start_ip_address and end_ip_address arguments to a value other than
@@ -160,7 +166,7 @@ rules_metadata:
       data in transit.
     human_readable_logic: Cloudrail uses checkov to review the App Service web apps configuration and ensure all HTTP traffic
       is being redirected to HTTPS. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https>
       in order to enable HTTP redirect to HTTPS by setting the parameter HTTPS Only to ON.
     iac_remediation_steps: For the azurerm_app_service resource, set the https_only argument to true.
     rule_type: non_context_aware
@@ -176,7 +182,7 @@ rules_metadata:
       by industry standards.
     human_readable_logic: Cloudrail uses checkov to review the App Service web apps configuration and ensure it is using
       TLS 1.2 version. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-tls-versions
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-tls-versions>
       in order to enforce the use of the latest TLS version by setting the Minimum TLS Version to 1.2.
     iac_remediation_steps: For the azurerm_app_service resource, in site_conf block, set the min_tls_version argument to 1.2.
     rule_type: non_context_aware
@@ -192,7 +198,7 @@ rules_metadata:
       vulnerabilities, and others.
     human_readable_logic: Cloudrail uses checkov to review the Security Alert Policies for SQL Servers and ensure there
       are not disabled alerts. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-sql/database/threat-detection-overview
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/azure-sql/database/threat-detection-overview>
       in order to enable all Threat Detection Types for the SQL Server.
     iac_remediation_steps: For the azurerm_mssql_server_security_alert_policy resource, ensure disabled_alerts arguments is empty.
     rule_type: non_context_aware
@@ -208,7 +214,7 @@ rules_metadata:
       man-in-the-middle attacks.
     human_readable_logic: Cloudrail uses checkov to review MySQL Servers configuration in order to ensure SSL enforcement
       is enabled. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl#step-3--enforcing-ssl-connections-in-azure
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl#step-3--enforcing-ssl-connections-in-azure>
       in order to enable Enforce SSL connection.
     iac_remediation_steps: For the azurerm_mysql_server resource, set the ssl_enforcement_enabled argument to true.
     rule_type: non_context_aware
@@ -224,7 +230,7 @@ rules_metadata:
       man-in-the-middle attacks.
     human_readable_logic: Cloudrail uses checkov to review PostgreSQL Servers configuration in order to ensure SSL enforcement
       is enabled. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/postgresql/concepts-ssl-connection-security#configure-enforcement-of-tls
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/postgresql/concepts-ssl-connection-security#configure-enforcement-of-tls>
       in order to enable Enforce SSL connection.
     iac_remediation_steps: For the azurerm_postgresql_server resource, set the ssl_enforcement_enabled argument to true.
     rule_type: non_context_aware
@@ -241,7 +247,7 @@ rules_metadata:
     human_readable_logic: Cloudrail uses checkov to review the Storate Account configuration in order to ensure logging is
       enabled for read, write, and delete events. This rule will only review Terraform content and not any resources in
       your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/queues/monitor-queue-storage?tabs=azure-portal
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/queues/monitor-queue-storage?tabs=azure-portal>
       in order to enable StorageRead, StorageWrite, and StorageDelete.
     iac_remediation_steps: For the azurerm_storage_account resource, in the queue_properties, logging block,
       set delete/read/write arguments to true.
@@ -258,7 +264,7 @@ rules_metadata:
       information exposure.
     human_readable_logic: Cloudrail uses checkov to review the Storage Account configuration and ensure the container access
       type is set to private. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure?tabs=portal#set-the-public-access-level-for-a-container
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure?tabs=portal#set-the-public-access-level-for-a-container>
       in order to change the public access level for the container at set it to 'No public read access'.
     iac_remediation_steps: For the azurerm_storage_container resource, set the container_access_type argument to private.
     rule_type: non_context_aware
@@ -275,7 +281,7 @@ rules_metadata:
     human_readable_logic: Cloudrail uses checkov to review the Storage Account configuration and ensure the default action
       for its network rules is set to Deny. This rule will only review Terraform content and not any resources in your
       cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#change-the-default-network-access-rule
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#change-the-default-network-access-rule>
       in order to change the default network access rule.
     iac_remediation_steps: For the azurerm_storage_account resource with network_rules block, set the default_action to Deny.
       For azurerm_storage_account_network_rules resources, ensure the default_action argument is set to Deny.
@@ -291,7 +297,7 @@ rules_metadata:
     description: Key Vaul Secrets should have an expiration date in order to ensure they cannot be used beyond their lifetime.
     human_readable_logic: Cloudrail uses checkov to review the Key Vault Secrets configuration and ensure they have an
       expiration date set. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/secrets/about-secrets
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/key-vault/secrets/about-secrets>
       in order to set an expiration date for Key Vault secrets.
     iac_remediation_steps: For the azurerm_key_vault_secret resource, set a value for the expiration_date argument.
     rule_type: non_context_aware
@@ -307,7 +313,7 @@ rules_metadata:
       secrets, and certificates.
     human_readable_logic: Cloudrail uses checkov to review the Key Vault configuration and ensure it has purge protection
       and soft deletion enabled. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/key-vault-recovery?tabs=azure-portal
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/key-vault/general/key-vault-recovery?tabs=azure-portal>
       in order to enable soft delete and purge protection for the Key Vault.
     iac_remediation_steps: For the azurerm_key_vault resource, set soft_delete_enabled and purge_protection_enabled
       arguments to true.
@@ -324,7 +330,7 @@ rules_metadata:
       standards.
     human_readable_logic: Cloudrail uses checkov to review the Storage Account configuration and ensure it is enforcing the
       use of TLS 1.2. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/common/transport-layer-security-configure-minimum-version?tabs=portal#configure-the-minimum-tls-version-for-a-storage-account
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/common/transport-layer-security-configure-minimum-version?tabs=portal#configure-the-minimum-tls-version-for-a-storage-account>
       in order to configure the minimum TLS version for a storage account.
     iac_remediation_steps: For the azurerm_storage_account resource, set the min_tls_version argument to TLS1_2.
     rule_type: non_context_aware
@@ -341,7 +347,7 @@ rules_metadata:
     human_readable_logic: Cloudrail uses checkov to review the virtual machine configuration and ensure it does not contain
       credentials in the custom data field. This rule will only review Terraform content and not any resources in your
       cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/security/fundamentals/data-encryption-best-practices
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/security/fundamentals/data-encryption-best-practices>
       in order to implement best practices to pass credentials to Azure VMs.
     iac_remediation_steps: For the azurerm_virtual_machine resource, in the os_profile block, ensure custom_data argument
       does not include any credentials.
@@ -358,7 +364,7 @@ rules_metadata:
       man-in-the-middle attacks.
     human_readable_logic: Cloudrail uses checkov to review Azure MariaDB server configuraion and ensure it is enforcing SSL connection.
       This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/mariadb/howto-configure-ssl in
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/mariadb/howto-configure-ssl> in
       order to enable SSL connection for MariaDB.
     iac_remediation_steps: For the azurerm_mariadb_server resource, set the ssl_enforcement_enabled argument to true.
     rule_type: non_context_aware
@@ -374,7 +380,7 @@ rules_metadata:
       avoid its exposure to unauthorized parties.
     human_readable_logic: Cloudrail uses checkov to review Azure MariaDB server configuration and ensure it is not allowing
       public access. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/mariadb/howto-deny-public-network-access
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/mariadb/howto-deny-public-network-access>
       in order to deny public network access to MariaDB servers.
     iac_remediation_steps: For the azurerm_mariadb_server resource, set the public_network_access_enabled argument to false.
     rule_type: non_context_aware
@@ -405,7 +411,7 @@ rules_metadata:
     description: Azure MSSQL should use the latest version of TLS (1.2) in order to be compliant with industry standards.
     human_readable_logic: Cloudrail uses checkov to review MSSQL server configuration and ensure it is requiring a minimum
       TLS version of 1.2. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-sql/managed-instance/minimal-tls-version-configure
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/azure-sql/managed-instance/minimal-tls-version-configure>
       in order to set the minimum TLS version to 1.2.
     iac_remediation_steps: For the azurerm_mssql_server resource, set the minimum_tls_version argument to "1.2".
     rule_type: non_context_aware
@@ -422,7 +428,7 @@ rules_metadata:
       your cloud environment.
     human_readable_logic: Cloudrail uses checkov to review MySQL server configuration and ensure it is not allowing public
       access. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/mysql/howto-deny-public-network-access
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/mysql/howto-deny-public-network-access>
       in order to deny public network access to MySQL servers.
     iac_remediation_steps: For the azurerm_mysql_server resource, set the public_network_access_enabled argument to false.
     rule_type: non_context_aware
@@ -437,7 +443,7 @@ rules_metadata:
     description: Azure MySQL should use the latest version of TLS (1.2) in order to be compliant with industry standards.
     human_readable_logic: Cloudrail uses checkov to review MySQL server configuration and ensure it is requiring a minimum
       TLS version of 1.2. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/mysql/howto-tls-configurations
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/mysql/howto-tls-configurations>
       in order to set the minimum TLS version to 1.2.
     iac_remediation_steps: For the azurerm_mysql_server resource, set the ssl_minimal_tls_version_enforced argument to "TLS1_2".
     rule_type: non_context_aware
@@ -469,7 +475,7 @@ rules_metadata:
       avoid its exposure to unauthorized parties.
     human_readable_logic: Cloudrail uses checkov to review Azure File Sync configuration and ensure it is not allowing
       public network access. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/file-sync/file-sync-networking-endpoints?tabs=azure-portal
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/file-sync/file-sync-networking-endpoints?tabs=azure-portal>
       in order to disable public network access to Azure File Sync.
     iac_remediation_steps: For the azurerm_storage_sync resource, set the incoming_traffic_policy argument to AllowVirtualNetworksOnly.
     rule_type: non_context_aware
@@ -485,7 +491,7 @@ rules_metadata:
       avoid its exposure to unauthorized parties.
     human_readable_logic: Cloudrail uses checkov to review Azure PostgreSQL server configuration and ensure it is not allowing
       public network access. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/postgresql/howto-deny-public-network-access
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/postgresql/howto-deny-public-network-access>
       in order to deny public network access to PostgreSQL servers.
     iac_remediation_steps: For the azurerm_postgresql_server resource, set the public_network_access_enabled argument to false.
     rule_type: non_context_aware
@@ -500,7 +506,7 @@ rules_metadata:
     description: In order to protect data in transit, Azure Function Apps should only use HTTPS transport protocol.
     human_readable_logic: Cloudrail uses checkov to review Azure Function Apps and ensure it is enforcing HTTPS traffic only.
       This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-functions/security-concepts
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/azure-functions/security-concepts>
       in order to configure Azure Function Apps to use HTTPS only.
     iac_remediation_steps: For the azurerm_function_app resource, set the https_only argument to true.
     rule_type: non_context_aware
@@ -516,7 +522,7 @@ rules_metadata:
       protect from unauthorized access as this feature requires some inbound ports to be openened.
     human_readable_logic: Cloudrail uses checkov to review Azure App Services configuration and ensure the remote debugging
       feature is disabled. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-common#configure-general-settings
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/configure-common#configure-general-settings>
       in order to disable remote debugging for the App Service.
     iac_remediation_steps: For the azurerm_app_service resource, set the remote_debugging_enabled argument to false.
     rule_type: non_context_aware
@@ -532,7 +538,7 @@ rules_metadata:
       reflect spoofed UDP traffic from Azure VMs.
     human_readable_logic: Cloudrail uses checkov to review Network Security Groups configuration and ensure no UDP ports
       are open to the Internet. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/virtual-network/manage-network-security-group
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/virtual-network/manage-network-security-group>
       in order to modify the Network Security Group and delete the rule that is exposing the UDP ports or restrict the
       Source IP addresses/CIDR ranges that can reach those UDP ports.
     iac_remediation_steps: For the azurerm_network_security_group resource, in security_rule block, and/or for azurerm_network_security_rule resource,
@@ -551,7 +557,7 @@ rules_metadata:
       avoid its exposure to unauthorized parties.
     human_readable_logic: Cloudrail uses checkov to review Azure Cache for Redis configuration and ensure it is not allowing
       public access. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/cache-private-link
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/cache-private-link>
       in order to disable public network access flag and use private endpoints instead.
     iac_remediation_steps: For the azurerm_redis_cache resource, set the public_network_access_enabled argument to false.
     rule_type: non_context_aware
@@ -567,7 +573,7 @@ rules_metadata:
       in case of a regional outage.
     human_readable_logic: Cloudrail uses checkov to review Azure MySQL server configuration and ensure geo-redundant backups
       are enabled. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/mysql/howto-restore-server-portal#set-backup-configuration
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/mysql/howto-restore-server-portal#set-backup-configuration>
       in order to enable the Geo-Redundant flag in Backup Redundancy Options.
     iac_remediation_steps: For the azurerm_mysql_server resource, set the geo_redundant_backup_enabled argument to true.
     rule_type: non_context_aware
@@ -583,7 +589,7 @@ rules_metadata:
       other resources in the virtual network.
     human_readable_logic: Cloudrail uses checkov to review Azure Container group configuration and ensure it is being deployed
       into a Virtual Network. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/container-instances/container-instances-vnet
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/container-instances/container-instances-vnet>
       in order to deploy Azure Container group into a virtual network.
     iac_remediation_steps: For the azurerm_container_group resource, set the network_profile_id argument to the Network
       profile ID for deploying to virtual network.
@@ -600,8 +606,8 @@ rules_metadata:
       its exposure to unauthorized parties.
     human_readable_logic: Cloudrail uses checkov to review Azure Cosmos DB configuration and ensure it has public network
       access disabled, the virtual network filter is enabled, and a virtual network rule or ip range filter is configured.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-configure-vnet-service-endpoint
-      and https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-configure-firewall in order to restrict the access to
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-configure-vnet-service-endpoint>
+      and <https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-configure-firewall> in order to restrict the access to
       Azure Cosmos DB.
     iac_remediation_steps: For the azurerm_cosmosdb_account resource, set the public_network_access_enabled argument to false,
       set is_virtual_network_filter_enabled argument to true, and set virtual_network rule argument or ip_range_filter argument.
@@ -618,7 +624,7 @@ rules_metadata:
       avoid its exposure to unauthorized parties.
     human_readable_logic: Cloudrail uses checkov to review Azure Cosmos DB configuration and ensure it is not allowing
       public access. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-configure-private-endpoints#blocking-public-network-access-during-account-creation
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-configure-private-endpoints#blocking-public-network-access-during-account-creation>
       in order to disable public network access for Cosmos DB account.
     iac_remediation_steps: For the azurerm_cosmosdb_account resource, set public_network_access_enabled argument to false.
     rule_type: non_context_aware
@@ -634,7 +640,7 @@ rules_metadata:
       in case of a regional outage.
     human_readable_logic: Cloudrail uses checkov to review Azure PostgreSQL server configuration and ensure geo-redundant backups
       are enabled. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/postgresql/howto-restore-server-portal#set-backup-configuration
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/postgresql/howto-restore-server-portal#set-backup-configuration>
       in order to enable the Geo-Redundant flag in Backup Redundancy Options.
     iac_remediation_steps: For the azurerm_postgresql_server resource, set the geo_redundant_backup_enabled argument to true.
     rule_type: non_context_aware
@@ -650,7 +656,7 @@ rules_metadata:
       avoid its exposure to unauthorized parties.
     human_readable_logic: Cloudrail uses checkov to review Azure Data factory configuration and ensure it is not allowing
       public access. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/data-factory/data-factory-private-link?WT.mc_id=Portal-Microsoft_Azure_CreateUIDef#set-up-private-link-for-azure-data-factory
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/data-factory/data-factory-private-link?WT.mc_id=Portal-Microsoft_Azure_CreateUIDef#set-up-private-link-for-azure-data-factory>
       in order to disable the public endpoint for Data Factory.
     iac_remediation_steps: For the azurerm_data_factory resource, set public_network_enabled argument to false.
     rule_type: non_context_aware
@@ -666,7 +672,7 @@ rules_metadata:
       avoid its exposure to unauthorized parties.
     human_readable_logic: Cloudrail uses checkov to review Azure Event Grid Domain configuration and ensure it is not allowing
       public access. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/event-grid/configure-firewall
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/event-grid/configure-firewall>
       in order to disable public network access.
     iac_remediation_steps: For the azurerm_eventgrid_domain resource, set the public_network_access_enabled argument to false.
     rule_type: non_context_aware
@@ -682,7 +688,7 @@ rules_metadata:
       exposing traffic to the Internet.
     human_readable_logic: Cloudrail uses checkov to review Azure API Management configuration and ensure it is being deployed
       in a virtual network. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/api-management/api-management-using-with-vnet
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/api-management/api-management-using-with-vnet>
       in order to configure API Management with virtual networks.
     iac_remediation_steps: For the azurerm_api_management resource, set the virtual_network_configuration block and subnet_id argument.
     rule_type: non_context_aware
@@ -698,7 +704,7 @@ rules_metadata:
       avoid its exposure to unauthorized parties.
     human_readable_logic: Cloudrail uses checkov to review Azure IoT Hub configuration and ensure it is not allowing
       public access. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-public-network-access
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-public-network-access>
       in order to set Allow public network access to Disabled.
     iac_remediation_steps: For the azurerm_iothub resource, set the public_network_access_enabled argument to false.
     rule_type: non_context_aware
@@ -714,7 +720,7 @@ rules_metadata:
       action to "deny", only matched ip rules or virtual network subnet ids will be passed.
     human_readable_logic: Cloudrail uses checkov to review Azure Key Vault configuration and ensure it has "deny" as default
       action. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/network-security
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/key-vault/general/network-security>
       in order to configure Key Vault firewall and change the default action to "deny".
     iac_remediation_steps: For the azurerm_key_vault resource, in the network_acls block, set default_action argument to "deny".
     rule_type: non_context_aware
@@ -730,7 +736,7 @@ rules_metadata:
       prevent a deleted vault or object to be purged until the retention period is passed.
     human_readable_logic: Cloudrail uses checkov to review Azure Key Vault and ensure purge protection is enabled.
       This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/soft-delete-overview#purge-protection
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/key-vault/general/soft-delete-overview#purge-protection>
       in order to enable purge protection for the Key Vault.
     iac_remediation_steps: For the azurerm_key_vault resource, set the purge_protection_enabled argument to true.
     rule_type: non_context_aware
@@ -746,7 +752,7 @@ rules_metadata:
       period. This feature will prevent data loss due to accidental deletion of Key Vault and its objects.
     human_readable_logic: Cloudrail uses checkov to review Azure Key Vault and ensure soft-delete is enabled.
       This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/key-vault-recovery?tabs=azure-portal
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/key-vault/general/key-vault-recovery?tabs=azure-portal>
       in order to enable soft-delete for the Azure Key Vault.
     iac_remediation_steps: For the azurerm_key_vault resource, set the soft_delete_enabled argument to true.
     rule_type: non_context_aware
@@ -763,7 +769,7 @@ rules_metadata:
       your cloud environment.
     human_readable_logic: Cloudrail uses checkov to review MSSQL server configuration and ensure it is not allowing public
       access. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-sql/database/connectivity-settings
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/azure-sql/database/connectivity-settings>
       in order to disable public network access.
     iac_remediation_steps: For the azurerm_mssql_server resource, set public_network_access_enabled argument to false.
     rule_type: non_context_aware
@@ -779,7 +785,7 @@ rules_metadata:
       remains on the private network only, so no traffic is exposed to the Internet.
     human_readable_logic: Cloudrail uses checkov to review Azure AKS cluster configuration and ensure it has private cluster
       enabled. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/aks/private-clusters in order to
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/aks/private-clusters> in order to
       create private AKS clusters.
     iac_remediation_steps: For the azurerm_kubernetes_cluster resource, set the private_cluster_enabled to true.
     rule_type: non_context_aware
@@ -795,7 +801,7 @@ rules_metadata:
       avoid its exposure to unauthorized parties.
     human_readable_logic: Cloudrail uses checkov to review Azure Cognitive Search configuration and ensure it is not allowing
       public network access. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/search/service-configure-firewall
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/search/service-configure-firewall>
       in order to disable the public endpoint for Cognitive Search.
     iac_remediation_steps: For the azurerm_search_service resource, set the public_network_access_enabled argument to false.
     rule_type: non_context_aware
@@ -811,7 +817,7 @@ rules_metadata:
       harmful attempts to access or exploit databases.
     human_readable_logic: Cloudrail uses checkov to review MySQL server configuration and ensure it has Threat detection policy
       enabled. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/mysql/howto-database-threat-protection-portal
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/mysql/howto-database-threat-protection-portal>
       in order to enable Threat protection.
     iac_remediation_steps: For the azurerm_mysql_server resource, in threat_detection_policy block, set enabled argument to true.
     rule_type: non_context_aware
@@ -827,7 +833,7 @@ rules_metadata:
       harmful attempts to access or exploit databases.
     human_readable_logic: Cloudrail uses checkov to review PostgreSQL server configuration and ensure it has Threat detection policy
       enabled. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/postgresql/howto-database-threat-protection-portal
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/postgresql/howto-database-threat-protection-portal>
       in order to enable Threat protection.
     iac_remediation_steps: For the azurerm_postgresql_server resource, in threat_detection_policy block, set enabled argument to true.
     rule_type: non_context_aware
@@ -843,7 +849,7 @@ rules_metadata:
       in case of a regional outage.
     human_readable_logic: Cloudrail uses checkov to review Azure MariaDB server configuration and ensure geo-redundant backups
       are enabled. This rule will only review Terraform content and not any resources in your cloud environment.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/mariadb/howto-restore-server-portal#set-backup-configuration
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/mariadb/howto-restore-server-portal#set-backup-configuration>
       in order to enable the Geo-Redundant flag in Backup Redundancy Options.
     iac_remediation_steps: For the azurerm_mariadb_server resource, set the geo_redundant_backup_enabled to true.
     rule_type: non_context_aware
@@ -878,7 +884,7 @@ rules_metadata:
     human_readable_logic: Cloudrail will review the Function Apps configuration within your Azure subscription and
       Terraform plan to check if they are enforcing FTPS only or if they have FTP disabled.
     console_remediation_steps: Follow the guide at
-      https://docs.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#enforce-ftps in order to select
+      <https://docs.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#enforce-ftps> in order to select
       FTPS Only in FTP state.
     iac_remediation_steps: For the azurerm_function_app resource, set the site_config block with
       ftps_state argument set to "FtpsOnly".
@@ -893,7 +899,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the App service configuration in your environment. If an app has FTP enabled and is not enforcing FTPS only, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the App services configuration within your Azure subscription and Terraform plan to check if they are enforcing FTPS only or if they have FTP disabled.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#enforce-ftps in order to disable FTP or select FTPS Only in FTP state.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#enforce-ftps> in order to disable FTP or select FTPS Only in FTP state.
     iac_remediation_steps: For the azurerm_app_service resource, set the site_config block with ftps_state argument set to “FtpsOnly” to enforce FTPS or to “Disabled” if you want to disable FTP.
     rule_type: non_context_aware
     security_layer: networking
@@ -909,7 +915,7 @@ rules_metadata:
     human_readable_logic: Cloudrail will review the Function Apps configuration within your Azure subscription and
       Terraform plan to check if authentication is enabled.
     console_remediation_steps: Follow the guide at
-      https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-use-azure-function-app-settings?tabs=portal#auth
+      <https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-use-azure-function-app-settings?tabs=portal#auth>
       in order to enable authentication for the Function App.
     iac_remediation_steps: For the azurerm_function_app resource,
       set the auth_settings block with enabled argument set to true.
@@ -945,7 +951,7 @@ rules_metadata:
     human_readable_logic: Cloudrail will review the Function Apps configuration within your Azure subscription and
       Terraform plan to check if authentication is enabled.
     console_remediation_steps: Follow the guide at
-      https://docs.microsoft.com/en-us/azure/security-center/security-center-enable-data-collection#enable-auto-provisioning-of-the-log-analytics-agent-and-extensions-
+      <https://docs.microsoft.com/en-us/azure/security-center/security-center-enable-data-collection#enable-auto-provisioning-of-the-log-analytics-agent-and-extensions->
       in order to enable the automatic provision of the Log Analytics agent.
     remediation_steps_tf: For the azurerm_security_center_auto_provisioning resource, set the auto_provision argument to “On”.
     rule_type: non_context_aware
@@ -1017,7 +1023,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the Security Center configuration in your environment. If email notification of high severity alerts is not enabled, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Security Center Contact configuration within your Azure subscription and Terraform plan to ensure email notifications of security alerts is enabled.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/security-center/security-center-provide-security-contact-details in order to enable email notifications for security alerts.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/security-center/security-center-provide-security-contact-details> in order to enable email notifications for security alerts.
     remediation_steps_tf: For the azurerm_security_center_contact resource, set the alert_notifications argument to true.
     rule_type: non_context_aware
     security_layer: logging
@@ -1063,7 +1069,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the App Service (Web Apps) configuration in your environment. If an app does not have authentication enabled, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the App Service configuration within your Azure subscription and Terraform plan to check if authentication is enabled for web apps.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/overview-authentication-authorization in order to enable authentication for the web app.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/overview-authentication-authorization> in order to enable authentication for the web app.
     iac_remediation_steps: For the azurerm_app_service resource, set the auth_settings block with enabled argument set to true.
     rule_type: non_context_aware
     security_layer: iam
@@ -1094,7 +1100,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the Function Apps configuration in your environment. If a function does not have HTTPS only enabled, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Function Apps configuration within your Azure subscription and Terraform plan to check if HTTPS only is enabled.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https in order to configured HTTPS Only for the Function App.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https> in order to configured HTTPS Only for the Function App.
     iac_remediation_steps: For the azurerm_function_app resource, set the https_only argument to true.
     rule_type: non_context_aware
     security_layer: encryption
@@ -1107,7 +1113,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the Web Apps configuration in your environment. If a function does not have HTTPS only enabled, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Web Apps configuration within your Azure subscription and Terraform plan to check if HTTPS only is enabled.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https in order to configured HTTPS Only for the Web App.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https> in order to configured HTTPS Only for the Web App.
     iac_remediation_steps: For the azurerm_app_service resource, set the https_only argument to true.
     rule_type: non_context_aware
     security_layer: encryption
@@ -1139,7 +1145,7 @@ rules_metadata:
     severity: major
     description: Cloudrail will review the Web Apps configuration in your environment. If an app does not use the latest Azure supported TLS version (1.2), Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Web Apps configuration within your Azure subscription and Terraform plan to ensure they are using the latest Azure supported TLS version (1.2).
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-tls-versions in order to set the Minimum TLS Version to 1.2 for the Web App.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-tls-versions> in order to set the Minimum TLS Version to 1.2 for the Web App.
     iac_remediation_steps: For the azurerm_app_service resource, in site_config block, set the min_tls_version argument to 1.2.
     rule_type: non_context_aware
     security_layer: encryption
@@ -1152,7 +1158,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the Storage Accounts configuration in your environment. If an account is not requiring secure transfer (HTTPS), Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Storage Account configuration within your Azure subscription and Terraform plan to ensure that secure transfer is enabled.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/common/storage-require-secure-transfer in order to enable secure transfer.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/common/storage-require-secure-transfer> in order to enable secure transfer.
     iac_remediation_steps: For the azurerm_storage_account resource, set the enable_https_traffic_only argument to true.
     rule_type: non_context_aware
     security_layer: encryption
@@ -1303,7 +1309,7 @@ rules_metadata:
     severity: medium
     description: Cloudrail will review the Key Vault configuration in your environment. If a vault does not have diagnostic logs enabled, Cloudrail will highlight it as a violation.
     human_readable_logic: Cloudrail will review the Security Center Contact configuration within your Azure subscription and Terraform plan to ensure email notifications of security alerts is enabled.
-    console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/alert in order to enable diagnostic logs for Key Vault.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/key-vault/general/alert> in order to enable diagnostic logs for Key Vault.
     remediation_steps_tf: Create an azurerm_monitor_diagnostic_setting resource and set the target_resource_id to the Key Vault ID. In the log block, set the enabled argument to true. In log block, retention_policy block, set enabled argument to true and days argument to 0 (indefinitely) or a value greater than or equal to 365.
     rule_type: context_aware
     security_layer: logging

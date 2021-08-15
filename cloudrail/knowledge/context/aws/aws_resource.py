@@ -12,7 +12,7 @@ class AwsResource(Mergeable):
     def __init__(self,
                  account: str,
                  region: str,
-                 tf_resource_type: AwsServiceName,
+                 tf_resource_type: AwsServiceName = AwsServiceName.NONE,
                  aws_service_attributes: AwsServiceAttributes = None):
         super().__init__()
         self.account: str = account
@@ -44,6 +44,3 @@ class AwsResource(Mergeable):
 
     def is_arn_match(self, arn: str):
         return are_arns_intersected(arn, self.get_arn())
-
-    def get_attribute(self, cfn_attribute_name: str):
-        pass  # todo - should be abstract

@@ -1,30 +1,35 @@
 from typing import Optional, List
+
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
+from cloudrail.knowledge.context.azure.network.azure_network_security_group_rule import AzureNetworkSecurityRule
 
 
 class AzureNetworkSecurityGroup(AzureResource):
     """
         Attributes:
-            name: The NSG name
-            network_interface_ids: List of network interface ids which the NSG connected to (if any)
-            subnet_ids: List of subnet ids which the NSG is connected to (if any)
-            subnets: List of actual subnets which the NSG is connected to.
-            network_interfaces: List of actual network interfacs which the NSG is connected to.
+            name: The network security group name.
+            network_interface_ids: List of network interface ids which the network security group connected to (if any).
+            subnet_ids: List of subnet ids which the network security group is connected to (if any).
+            subnets: List of actual subnets which the network security group is connected to.
+            network_interfaces: List of actual network interfaces which the network security group is connected to.
+            network_security_rules: The rules that are assigned to this network security group.
     """
 
     def __init__(self,
                  name: str,
-                 network_interface_ids: Optional[List[str]] = None,
-                 subnet_ids: Optional[List[str]] = None) -> None:
+                 network_interface_ids: Optional[List[str]],
+                 subnet_ids: Optional[List[str]],
+                 network_security_rules: List[AzureNetworkSecurityRule]):
         super().__init__(AzureResourceType.AZURERM_NETWORK_SECURITY_GROUP)
         self.name: str = name
 
-        self.network_interface_ids: List[str] = network_interface_ids or []
-        self.subnet_ids: List[str] = subnet_ids or []
+        self.network_interface_ids: List[str] = network_interface_ids
+        self.subnet_ids: List[str] = subnet_ids
+        self.network_security_rules: List[AzureNetworkSecurityRule] = network_security_rules
 
         self.subnets: List['AzureSubnet'] = []
-        self.network_interfaces: List['AzureNic'] = []
+        self.network_interfaces: List['AzureNetworkInterface'] = []
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]

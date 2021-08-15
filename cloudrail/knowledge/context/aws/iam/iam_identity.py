@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import Iterable, List, Dict, Optional, Set, Union
 
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionInstance
+from cloudrail.knowledge.context.connection import ConnectionInstance
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.iam.policy import InlinePolicy, ManagedPolicy, Policy, PolicyType
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName

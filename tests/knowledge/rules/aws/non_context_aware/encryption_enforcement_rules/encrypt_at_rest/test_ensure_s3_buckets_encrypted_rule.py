@@ -2,7 +2,7 @@ import unittest
 
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionDirectionType, ConnectionInstance, PolicyConnectionProperty, \
+from cloudrail.knowledge.context.connection import ConnectionDirectionType, ConnectionInstance, PolicyConnectionProperty, \
     PrivateConnectionDetail, \
     PublicConnectionDetail
 from cloudrail.knowledge.context.aws.s3.s3_bucket import S3Bucket
