@@ -38,3 +38,4 @@ class TestAppServiceClientCertificatesRequiredRule(unittest.TestCase):
             self.assertEqual(1, len(result.issues))
         else:
             self.assertEqual(RuleResultType.SUCCESS, result.status)
+
