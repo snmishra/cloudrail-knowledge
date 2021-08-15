@@ -22,7 +22,7 @@ RULE_METADATA_NOT_FOUND = 'Rule {} metadata not found'
 
 class RulesMetadataStore:
     def __init__(self, rules_metadata_dict: dict):
-        self.rules_metadata = self._get_rules_metadata_from_dict(rules_metadata_dict)
+        self.rules_metadata: Dict[str, RuleMetadata] = self._get_rules_metadata_from_dict(rules_metadata_dict)
 
     def get_by_rule_id(self, rule_id: str) -> Optional[RuleMetadata]:
         return self.rules_metadata.get(rule_id)
