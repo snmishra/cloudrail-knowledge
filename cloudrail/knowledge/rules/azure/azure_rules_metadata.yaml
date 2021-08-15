@@ -1327,8 +1327,19 @@ rules_metadata:
     resource_type:
       - storage
 
-templates:
-  - azure_defender_enabled_description: Cloudrail will review the Security Center subscription pricing configuration in your environment. If the tier is not set to “Standard” for {0} resources, Cloudrail will highlight it as a violation.
-  - azure_defender_enabled_human_readable_logic: Cloudrail will review the Security Center Subscription Pricing configuration within your Azure subscription and Terraform plan to ensure Azure Defender is enabled (“Standard” tier pricing) for {0}.
-  - azure_defender_enabled_console_remediation_steps: Follow the guide at https://docs.microsoft.com/en-us/azure/security-center/enable-azure-defender in order to enable Azure Defender for {0}.
-  - azure_defender_enabled_console_remediation_steps_tf: For the azurerm_security_center_subscription_pricing resource, set the tier argument to “Standard” and ensure the resource_type argument contains the value “{0}”.
+  - rule_id: non_car_client_certificates_required_in_web_app
+      cloud_provider: azure
+      name: Ensure client certificates are required in Web App
+      severity: medium
+      description:
+        Cloudrail will review the Storage Accounts configuration in your environment. If the account network rules are not allowing access to trusted Azure services, Cloudrail will highlight it as a violation.
+      human_readable_logic:
+        Cloudrail will review the Web Apps configuration in your environment. If an app does not have client certificates enabled, Cloudrail will highlight it as a violation.
+      console_remediation_steps:
+        Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/app-service-web-configure-tls-mutual-auth> in order to enable client certificates for Web App.
+      iac_remediation_steps:
+        For the azurerm_app_service resource, set the client_cert_enabled argument to true.
+      rule_type: non_context_aware
+      security_layer: networking
+      resource_type:
+        - resource_compute

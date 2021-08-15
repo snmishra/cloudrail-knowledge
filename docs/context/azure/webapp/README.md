@@ -11,6 +11,16 @@ cloudrail/knowledge/rules/azure/non_context_aware/function_app_authentication_en
 ```
 </details>
 
+<details>
+<summary>non_car_client_certificates_required_in_web_app</summary>
+
+```python
+--8<--
+cloudrail/knowledge/rules/azure/non_context_aware/app_service_non_car_client_certificates_required_in_web_app_rulr.py
+--8<--
+```
+</details>
+
 ## ::: cloudrail.knowledge.context.azure.webapp.azure_function_app
     rendering:
       show_root_toc_entry: false
