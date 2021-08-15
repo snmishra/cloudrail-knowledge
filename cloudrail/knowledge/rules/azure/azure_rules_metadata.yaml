@@ -4,6 +4,12 @@ templates:
   - azure_defender_enabled_console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/security-center/enable-azure-defender> in order to enable Azure Defender for {0}.
   - azure_defender_enabled_console_remediation_steps_tf: For the azurerm_security_center_subscription_pricing resource, set the tier argument to “Standard” and ensure the resource_type argument contains the value “{0}”.
 
+  - vm_not_publicly_accessible_name: Ensure VM is not publicly accessible via {0}
+  - vm_not_publicly_accessible_description: Having Virtual Machines accessible publicly from the Internet on known administrative or management ports can be problematic. Cloudraill will attempt to determine if any of the virtual machines are accessible directly at their public IP address, or indirectly via NAT, at {0}’s port. If they are, a violation will be raised.
+  - vm_not_publicly_accessible_human_readable_name: Cloudrail will review the Virtual Machines configuration within your Azure subscription and Terraform plan. For each virtual machine, it will check the attached network interfaces that are reachable from the Internet, either using a public IP or an inbound NAT rule. It will ensure that the Network Security Groups of the NIC and the subnet are not allowing inbound TCP access to destination port {0}z ({1}, “*”, or a port range containing {1}) for any source IP address prefix (“*”, “Internet”).
+  - vm_not_publicly_accessible_console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/virtual-network/manage-network-security-group> in order to modify the Network Security Group rule to restrict {0} access from the Internet by setting a specific source IP address.
+  - vm_not_publicly_accessible_iac_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/virtual-network/manage-network-security-group> in order to modify the Network Security Group rule to restrict {0} access from the Internet by setting a specific source IP address.
+
 rules_metadata:
   - rule_id: non_car_azure_database_public_access
     cloud_provider: azure
@@ -1327,17 +1333,92 @@ rules_metadata:
     resource_type:
       - storage
 
+  - rule_id: non_car_kubernetes_cluster_rbac_enabled
+    cloud_provider: azure
+    name: Ensure Kubernetes cluster has Role-Based Access Control (RBAC) enabled
+    severity: medium
+    description:
+      Cloudrail will review the Kubernetes cluster configuration in your environment. If a cluster is not configured with role-based access control (RBAC) enabled, Cloudrail will highlight it as a violation.
+    human_readable_logic:
+      Cloudrail will review the Kubernetes clusters configuration within your Azure subscription and Terraform plan to ensure role-based access control is enabled.
+    console_remediation_steps:
+      Follow the guide at <https://docs.microsoft.com/en-us/azure/aks/manage-azure-rbac> in order to enable RBAC for a Kubernetes cluster.
+    iac_remediation_steps:
+      For the azurerm_kubernetes_cluster resource, in the role_based_access_control block set the enabled argument to true.
+    rule_type: non_context_aware
+    security_layer: iam
+    resource_type:
+      - kubernetes
+
+  - rule_id: car_vm_not_publicly_accessible_rdp
+    cloud_provider: azure
+    name:
+      template: vm_not_publicly_accessible_name
+      params:
+        - RDP
+    severity: major
+    description:
+      template: vm_not_publicly_accessible_description
+      params:
+        - RDP
+    human_readable_logic:
+      template: vm_not_publicly_accessible_human_readable_name
+      params:
+        - RDP
+        - 3389
+    console_remediation_steps:
+      template: vm_not_publicly_accessible_console_remediation_steps
+      params:
+        - RDP
+    iac_remediation_steps:
+      template: vm_not_publicly_accessible_iac_remediation_steps
+      params:
+        - RDP
+    rule_type: context_aware
+    security_layer: networking
+    resource_type:
+      - network
+
+  - rule_id: car_vm_not_publicly_accessible_ssh
+    cloud_provider: azure
+    name:
+      template: vm_not_publicly_accessible_name
+      params:
+        - SSH
+    severity: major
+    description:
+      template: vm_not_publicly_accessible_description
+      params:
+        - SSH
+    human_readable_logic:
+      template: vm_not_publicly_accessible_human_readable_name
+      params:
+        - SSH
+        - 22
+    console_remediation_steps:
+      template: vm_not_publicly_accessible_console_remediation_steps
+      params:
+        - SSH
+    iac_remediation_steps:
+      template: vm_not_publicly_accessible_iac_remediation_steps
+      params:
+        - SSH
+    rule_type: context_aware
+    security_layer: networking
+    resource_type:
+      - network
+
   - rule_id: non_car_unattached_managed_disks_encrypted
     cloud_provider: azure
     name: Ensure unattached Managed Disk are encrypted
     severity: medium
-    description: 
+    description:
       Cloudrail will review the unattached Managed Disks configuration in your environment. If a disk is not encrypted, Cloudrail will highlight it as a violation.
-    human_readable_logic: 
+    human_readable_logic:
       Cloudrail will review the unattached Managed Disks configuration within your Azure subscription and Terraform plan to ensure they are encrypted. To find unattached disks on the TF plan, the azurerm_virtual_machine_data_disk_attachment resources should be scanned.
-    console_remediation_steps: 
+    console_remediation_steps:
       Follow the guide at <https://docs.microsoft.com/en-us/azure/virtual-machines/disk-encryption> to enable disk encryption.
-    iac_remediation_steps: 
+    iac_remediation_steps:
       For the azurerm_managed_disk resource, set the encryption_settings block with enabled argument set to true, or create an azurerm_disk_encryption_set resource and set the disk_encryption_set_id argument.
     rule_type: non_context_aware
     security_layer: encryption

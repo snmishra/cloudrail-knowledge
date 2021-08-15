@@ -6,7 +6,7 @@ class IpProtocol:
 
     def __init__(self, protocol: Optional[Union[str, int]]):
         self._protocol: str
-        if not protocol or str(protocol).lower() in ('-1', 'all', 'any', -1):  # Representation for 'all' protocols in all cloud vendors.
+        if not protocol or str(protocol).lower() in ('-1', 'all', 'any', -1, '*'):  # Representation for 'all' protocols in all cloud vendors.
             self._protocol = self.ALL
         elif isinstance(protocol, int) or protocol.isdigit():
             protocol = int(protocol)
@@ -34,6 +34,15 @@ class IpProtocol:
 
     def __contains__(self, item):
         return self._protocol == self.ALL or self == item
+
+    def intersection(self, item):
+        if self._protocol == self.ALL:
+            return item
+        if item == self.ALL:
+            return self
+        if item == self:
+            return item
+        return None
 
 
 
