@@ -39,7 +39,8 @@ class TestEnsureS3BucketLoggingEnabledRule(unittest.TestCase):
 
     def test_non_car_s3_bucket_access_not_logging_enabled_as_logger(self):
         # Arrange
-        s3_bucket = S3Bucket('111111', 's3_bucket_name', 's3_bucket_arn', is_logger=True)
+        s3_bucket = S3Bucket('111111', 's3_bucket_name', 's3_bucket_arn')
+        s3_bucket.is_logger = True
         context = AwsEnvironmentContext(s3_buckets=AliasesDict(s3_bucket))
         # Act
         result = self.rule.run(context, {})
