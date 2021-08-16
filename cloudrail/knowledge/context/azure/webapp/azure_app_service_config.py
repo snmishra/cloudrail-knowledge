@@ -14,17 +14,17 @@ class AzureAppServiceConfig(AzureResource):
             auth_settings: App service authentication settings.
             minimum_tls_version: The minimum supported TLS version for the function app.
             http2_enabled: Indication if http2 protocol should be enabled or not.
-            client_certificates: Indicate if client certificates are required in Web App
+            client_cert_mode: Indicate if client certificates are required in Web App
     """
 
-    def __init__(self, name, ftps_state: FtpsState, auth_settings: AuthSettings, minimum_tls_version: str, http2_enabled: bool, client_certificates: bool) -> None:
+    def __init__(self, name, ftps_state: FtpsState, auth_settings: AuthSettings, minimum_tls_version: str, http2_enabled: bool, client_cert_mode: bool) -> None:
         super().__init__(AzureResourceType.NONE)
         self.name: str = name
         self.ftps_state: FtpsState = ftps_state
         self.auth_settings: AuthSettings = auth_settings
         self.minimum_tls_version: str = minimum_tls_version
         self.http2_enabled: bool = http2_enabled
-        self.client_certificates = client_certificates
+        self.client_cert_mode = client_cert_mode
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]

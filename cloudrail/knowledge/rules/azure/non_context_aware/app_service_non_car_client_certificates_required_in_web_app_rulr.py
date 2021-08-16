@@ -13,7 +13,7 @@ class AppServiceClientCertificatesRequiredRule(AzureBaseRule):
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for app_service in env_context.app_services:
-            if app_service.app_service_config is not None and not app_service.app_service_config.client_certificates:
+            if app_service.app_service_config is not None and not app_service.app_service_config.client_cert_mode:
                 issues.append(
                     Issue(
                         f'The web app `{app_service.get_friendly_name()}` does not have client certificates enabled.',
