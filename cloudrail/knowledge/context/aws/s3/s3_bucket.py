@@ -34,7 +34,7 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
             exposed_to_agw_methods: The ApiGateway methods that can acccess this bucket.
     """
     def __init__(self, account: str, bucket_name: str, arn: str, region: str = None,
-                 policy: S3Policy = None):
+                 policy: S3Policy = None, is_logger: bool = False):
         ResourceBasedPolicy.__init__(self, account, region, AwsServiceName.AWS_S3_BUCKET,
                                      AwsServiceAttributes(aws_service_type=AwsServiceType.S3.value, region=region))
         ConnectionInstance.__init__(self)
@@ -53,7 +53,7 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
         self.bucket_logging: Optional[S3BucketLogging] = None
         self.publicly_allowing_resources: List[AwsResource] = []
         self.exposed_to_agw_methods: List[ApiGatewayMethod] = []
-        self.is_logger = False
+        self.is_logger = is_logger
 
     def get_keys(self) -> List[str]:
         return [self.arn]
