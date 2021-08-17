@@ -74,7 +74,7 @@ class RuleMetadata:
     resource_types: Set[ResourceType]
     cloud_provider: CloudProvider = field(default=CloudProvider.AMAZON_WEB_SERVICES)
     is_deleted: bool = False
-    compliance: Set[str] = field(default_factory=list)
+    compliance: Set[str] = field(default_factory=set)
 
 
 def rule_matches_query(rule_id: str, rule_name: str, query: Optional[str]) -> bool:
