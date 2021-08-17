@@ -4,7 +4,7 @@ from typing import Dict, Optional, List
 import yaml
 
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
-from cloudrail.knowledge.rules.rule_metadata import RuleMetadata, RuleSeverity, RuleType, SecurityLayer, ResourceType
+from cloudrail.knowledge.rules.rule_metadata import RuleMetadata, RuleSeverity, RuleType, SecurityLayer, ResourceType, BenchmarkType
 
 RULE_ID = 'rule_id'
 NAME = 'name'
@@ -17,6 +17,7 @@ RULE_TYPE = 'rule_type'
 SECURITY_LAYER = 'security_layer'
 RESOURCE_TYPE = 'resource_type'
 CLOUD_PROVIDER = 'cloud_provider'
+COMPLIANCE = 'compliance'
 RULE_METADATA_NOT_FOUND = 'Rule {} metadata not found'
 
 
@@ -112,6 +113,15 @@ class RulesMetadataStore:
         cls._verify_id_unique(rules)
         cls._verify_rule_id_not_template(rules)
 
+    @staticmethod
+    def _parse_compliance(compliance_dict: dict) -> Dict[BenchmarkType, Dict[str, str]]:
+        result = {}
+        for framework, versions in compliance_dict.items():
+            result[BenchmarkType(framework)] = {}
+            for version, section in versions.items():
+                result[BenchmarkType(framework)][str(version)] = str(section)
+        return result
+
     def _get_rules_metadata_from_dict(self, raw_data: dict) -> Dict[str, RuleMetadata]:
         rules = self._fill_templates(raw_data.get('rules_metadata', []), raw_data.get('templates', []))
         self._verify_rules(rules)
@@ -127,7 +137,8 @@ class RulesMetadataStore:
             iac_remediation_steps=rule.get(IAC_REMEDIATION_STEPS, ''),
             console_remediation_steps=rule.get(CONSOLE_REMEDIATION_STEPS, ''),
             cloud_provider=CloudProvider(rule[CLOUD_PROVIDER]),
-            is_deleted=rule.get('is_deleted', False)) for rule in rules}
+            is_deleted=rule.get('is_deleted', False),
+            compliance=self._parse_compliance(rule.get(COMPLIANCE, {}))) for rule in rules}
 
 
 def read_metadata_file(file_path: str):
