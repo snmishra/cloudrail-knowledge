@@ -22,12 +22,12 @@ class TestAppServiceClientCertificatesRequiredRule(unittest.TestCase):
             ["Client certificates is not enabled", False, True]
         ]
     )
-    def test_states(self, unused_name: str, client_cert_mode: bool, should_alert: bool):
+    def test_states(self, unused_name: str, client_cert_required: bool, should_alert: bool):
         # Arrange
         app_service: AzureAppService = create_empty_entity(AzureAppService)
         app_service.name = 'tmp-name'
         app_service_config: AzureAppServiceConfig = create_empty_entity(AzureAppServiceConfig)
-        app_service_config.client_cert_mode = client_cert_mode
+        app_service_config.client_cert_required = client_cert_required
         app_service.app_service_config = app_service_config
         context = AzureEnvironmentContext(app_services=AliasesDict(app_service))
         # Act
