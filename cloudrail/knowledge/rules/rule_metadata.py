@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional, Set, Dict
+from typing import Optional, Set, Dict, List
 
 import yaml
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
@@ -74,7 +74,7 @@ class RuleMetadata:
     resource_types: Set[ResourceType]
     cloud_provider: CloudProvider = field(default=CloudProvider.AMAZON_WEB_SERVICES)
     is_deleted: bool = False
-    compliance: Dict[str, str] = field(default_factory=dict)
+    compliance: List[str] = field(default_factory=list)
 
 
 def rule_matches_query(rule_id: str, rule_name: str, query: Optional[str]) -> bool:
