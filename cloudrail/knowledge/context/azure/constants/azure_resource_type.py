@@ -35,3 +35,5 @@ class AzureResourceType(Enum):
     AZURERM_KUBERNETES_CLUSTER = 'azurerm_kubernetes_cluster'
     AZURERM_MANAGED_DISK = 'azurerm_managed_disk'
     AZURERM_VIRTUAL_MACHINE_SCALE_SET = 'azurerm_virtual_machine_scale_set'
+    AZURERM_LINUX_VIRTUAL_MACHINE_SCALE_SET = 'azurerm_linux_virtual_machine_scale_set'
+    AZURERM_WINDOWS_VIRTUAL_MACHINE_SCALE_SET = 'azurerm_windows_virtual_machine_scale_set'
