@@ -15,7 +15,7 @@ class EnsureS3BucketLoggingEnabledRule(AwsBaseRule):
         issues: List[Issue] = []
 
         for s3_bucket in env_context.s3_buckets:
-            if not s3_bucket.bucket_logging:
+            if not s3_bucket.bucket_logging and not s3_bucket.is_logger:
                 issues.append(
                     Issue(
                         f'The {s3_bucket.get_type()} `{s3_bucket.get_friendly_name()}` does not have access logging enabled', s3_bucket, s3_bucket))
