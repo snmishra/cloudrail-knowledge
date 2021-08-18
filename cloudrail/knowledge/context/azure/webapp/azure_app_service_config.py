@@ -17,7 +17,7 @@ class AzureAppServiceConfig(AzureResource):
             client_cert_required: Indicate if client certificates are required in Web App.
     """
 
-    def __init__(self, name, ftps_state: FtpsState, auth_settings: AuthSettings, minimum_tls_version: str, http2_enabled: bool, client_cert_required: bool) -> None:
+    def __init__(self, name, ftps_state: FtpsState, auth_settings: AuthSettings, minimum_tls_version: str, http2_enabled: bool, client_cert_required: bool):
         super().__init__(AzureResourceType.NONE)
         self.name: str = name
         self.ftps_state: FtpsState = ftps_state
