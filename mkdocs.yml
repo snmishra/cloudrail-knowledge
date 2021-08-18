@@ -67,6 +67,7 @@ nav:
       - 'storage': 'context/azure/storage/README.md'
       - 'vm': 'context/azure/vm/README.md'
       - 'webapp': 'context/azure/webapp/README.md'
+      - 'vmss': 'context/azure/vmss/README.md'
     - 'GCP Context':
       - 'sql': 'context/gcp/sql/README.md'
   - 'Contributing Rules':
