@@ -52,6 +52,7 @@ class LoadBalancer(NetworkEntity):
         self.load_balancer_arn: str = load_balancer_arn
         self.target_groups: List[LoadBalancerTargetGroup] = []
         self.listener_ports: List[int] = []
+        self.with_aliases(self.load_balancer_arn)
         self.raw_data = LoadBalancerRawData()
         self.load_balancer_attributes: Optional[LoadBalancerAttributes] = None
 
@@ -62,7 +63,7 @@ class LoadBalancer(NetworkEntity):
         return self.name
 
     def get_id(self) -> str:
-        pass
+        return self.get_arn()
 
     def get_arn(self) -> str:
         return self.load_balancer_arn
