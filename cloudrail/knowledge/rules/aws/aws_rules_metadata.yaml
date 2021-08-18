@@ -2671,11 +2671,7 @@ rules_metadata:
   rule_type: non_context_aware
   security_layer: iam
   severity: major
-- Remediation Steps Console: Find the IAM entity within the AWS console and remove
-    any policies attached that were not added originally through the infrastructure-as-code.
-  Remediation Steps Terraform: Consider updating the code to reflect the policy attachments
-    that were not originally done through the Terraform code. Adding the needed aws_iam_<user|role|group>_policy_attachment
-    resources that are missing would resolve this.
+- name: Ensure IAM entities policies are managed solely in infrastructure-as-code
   cloud_provider: amazon_web_services
   description: "When defining a new IAM entity in infrastructure-as-code (such as\
     \ Terraform), and assigning policies to it in the same set of code, a user has\
@@ -2690,10 +2686,12 @@ rules_metadata:
     code. For each entity, it will determine if there are additional policies attached
     to it, not through the Terraform code. For example, a policy attachment done in
     the AWS console directly. If such a case occurs, a violation will be flagged.
-  name: Ensure IAM entities policies are managed solely in infrastructure-as-code
   remediation_steps:
-    console: ''
-    terraform: ''
+    console: Find the IAM entity within the AWS console and remove
+      any policies attached that were not added originally through the infrastructure-as-code.
+    terraform: Consider updating the code to reflect the policy attachments
+      that were not originally done through the Terraform code. Adding the needed aws_iam_<user|role|group>_policy_attachment
+      resources that are missing would resolve this.
   resource_type:
   - iam
   rule_id: car_iam_policy_control_in_iac_only
@@ -3682,12 +3680,10 @@ rules_metadata:
   name: Ensure Lambda functions cannot be invoked by anonymous or all AWS authenticated
     users
   remediation_steps:
-    console: ''
-    terraform: ''
-  remediation_steps_console: Follow the steps in <https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html#permissions-resource-serviceinvoke>
-    Avoid using wildcards in the principal.
-  remediation_steps_tf: In resource aws_lambda_permission avoid using wildcards in
-    the principal.
+    console: Follow the steps in <https://docs.aws.amazon.com/lambda/latest/dg/access-control-resource-based.html#permissions-resource-serviceinvoke>
+      Avoid using wildcards in the principal.
+    terraform: In resource aws_lambda_permission avoid using wildcards in
+      the principal.
   resource_type:
   - compute
   rule_id: non_car_lambda_public_exposure
