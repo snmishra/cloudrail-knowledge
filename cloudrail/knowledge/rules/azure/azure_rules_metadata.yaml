@@ -22,7 +22,6 @@ rules_metadata:
     if any of them is set to have public access enabled.
   name: Ensure Azure database server is not set to be public
   remediation_steps:
-    cloudformation: ''
     console: Follow the guides at https://docs.microsoft.com/en-us/azure/azure-sql/database/connectivity-settings,
       https://docs.microsoft.com/en-us/azure/postgresql/howto-deny-public-network-access,
       https://docs.microsoft.com/en-us/azure/mysql/howto-deny-public-network-access,
@@ -46,7 +45,6 @@ rules_metadata:
     environment.
   name: Ensure Azure Instance authenticates using SSH keys
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/virtual-machines/linux/quick-create-portal
       in order to create a virtual machine with SSH public key authentication instead
       of password authentication.
@@ -67,7 +65,6 @@ rules_metadata:
     not any resources in your cloud environment.
   name: Ensure AKS logging to Azure Monitoring is configured
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-monitor/containers/container-insights-enable-existing-clusters#enable-directly-from-aks-cluster-in-the-portal
       in order to enable monitoring for an AKS cluster.
     terraform: For the azurerm_kubernetes_cluster resource, in addon_profile configuration
@@ -88,7 +85,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure RBAC is enabled on AKS clusters
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal
       in order to create an AKS cluster with RBAC authentication enabled.
     terraform: For the azurerm_kubernetes_cluster resource, add a role_based_access_control
@@ -107,7 +103,6 @@ rules_metadata:
     only review Terraform content and not any resources in your cloud environment.
   name: Ensure Azure AKS has an API Server Authorized IP Ranges enabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/aks/api-server-authorized-ip-ranges#update-disable-and-find-authorized-ip-ranges-using-azure-portal
       in order to configure the authorized IP ranges that will have access to the
       AKS API server.
@@ -127,7 +122,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure AKS cluster has Network Policy configured
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/aks/use-network-policies
       in order to create an AKS cluster with a Network Policy.
     terraform: For the azurerm_kubernetes_cluster resource resource, ensure the network_profile
@@ -146,7 +140,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure AKS cluster has Kube Dashboard disabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/aks/kubernetes-dashboard#disable-the-kubernetes-dashboard
       in order to disable the Kubernetes dashboard.
     terraform: For the azurerm_kubernetes_cluster resource, in the addon_profile block,
@@ -165,7 +158,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure SQL Databases do not allow ingress from 0.0.0.0/0
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-sql/database/firewall-configure#use-the-azure-portal-to-manage-server-level-ip-firewall-rules
       in order to configured the SQL server firewall rules with specific Start and
       End IPs.
@@ -187,7 +179,6 @@ rules_metadata:
     will only review Terraform content and not any resources in your cloud environment.
   name: Ensure App Service web app redirects all HTTP traffic to HTTPS
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https
       in order to enable HTTP redirect to HTTPS by setting the parameter HTTPS Only
       to ON.
@@ -207,7 +198,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure App Service web app is using the latest version of TLS encryption
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-tls-versions
       in order to enforce the use of the latest TLS version by setting the Minimum
       TLS Version to 1.2.
@@ -227,7 +217,6 @@ rules_metadata:
     review Terraform content and not any resources in your cloud environment.
   name: Ensure SQL Servers have 'Threat Detection Types' set to 'All'
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-sql/database/threat-detection-overview
       in order to enable all Threat Detection Types for the SQL Server.
     terraform: For the azurerm_mssql_server_security_alert_policy resource, ensure
@@ -246,7 +235,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure MySQL servers have Enforce SSL Connection enabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl#step-3--enforcing-ssl-connections-in-azure
       in order to enable Enforce SSL connection.
     terraform: For the azurerm_mysql_server resource, set the ssl_enforcement_enabled
@@ -265,7 +253,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure PostgreSQL servers have Enforce SSL Connection enabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/postgresql/concepts-ssl-connection-security#configure-enforcement-of-tls
       in order to enable Enforce SSL connection.
     terraform: For the azurerm_postgresql_server resource, set the ssl_enforcement_enabled
@@ -286,7 +273,6 @@ rules_metadata:
   name: Ensure Storage logging is enabled for Queue service for read, write and delete
     requests
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/queues/monitor-queue-storage?tabs=azure-portal
       in order to enable StorageRead, StorageWrite, and StorageDelete.
     terraform: For the azurerm_storage_account resource, in the queue_properties,
@@ -305,7 +291,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure Public Access Level is set to Private for blob containers
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure?tabs=portal#set-the-public-access-level-for-a-container
       in order to change the public access level for the container at set it to 'No
       public read access'.
@@ -326,7 +311,6 @@ rules_metadata:
     will only review Terraform content and not any resources in your cloud environment.
   name: Ensure default network access rule for Storage Accounts is set to deny
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#change-the-default-network-access-rule
       in order to change the default network access rule.
     terraform: For the azurerm_storage_account resource with network_rules block,
@@ -346,7 +330,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure that the expiration date is set on all Key Vault Secrets
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/secrets/about-secrets
       in order to set an expiration date for Key Vault secrets.
     terraform: For the azurerm_key_vault_secret resource, set a value for the expiration_date
@@ -365,7 +348,6 @@ rules_metadata:
     review Terraform content and not any resources in your cloud environment.
   name: Ensure Key Vault is recoverable
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/key-vault-recovery?tabs=azure-portal
       in order to enable soft delete and purge protection for the Key Vault.
     terraform: For the azurerm_key_vault resource, set soft_delete_enabled and purge_protection_enabled
@@ -384,7 +366,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure Storage Account is using the latest version of TLS encryption
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/common/transport-layer-security-configure-minimum-version?tabs=portal#configure-the-minimum-tls-version-for-a-storage-account
       in order to configure the minimum TLS version for a storage account.
     terraform: For the azurerm_storage_account resource, set the min_tls_version argument
@@ -404,7 +385,6 @@ rules_metadata:
     will only review Terraform content and not any resources in your cloud environment.
   name: Ensure that no credentials are exposed in VM custom_data
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/security/fundamentals/data-encryption-best-practices
       in order to implement best practices to pass credentials to Azure VMs.
     terraform: For the azurerm_virtual_machine resource, in the os_profile block,
@@ -423,7 +403,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure MariaDB servers have Enforce SSL Connection enabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/mariadb/howto-configure-ssl
       in order to enable SSL connection for MariaDB.
     terraform: For the azurerm_mariadb_server resource, set the ssl_enforcement_enabled
@@ -442,7 +421,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure MariaDB servers have Public Network Access Enabled disabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/mariadb/howto-deny-public-network-access
       in order to deny public network access to MariaDB servers.
     terraform: For the azurerm_mariadb_server resource, set the public_network_access_enabled
@@ -461,7 +439,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure Azure Linux Scale Set does not use basic authentication
   remediation_steps:
-    cloudformation: ''
     console: null
     terraform: For the azurerm_linux_virtual_machine_scale_set resource, remove admin_password
       argument and set disable_password_authentication to true. In admin_ssk_key configuration
@@ -480,7 +457,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure MSSQL is using the latest version of TLS encryption
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-sql/managed-instance/minimal-tls-version-configure
       in order to set the minimum TLS version to 1.2.
     terraform: For the azurerm_mssql_server resource, set the minimum_tls_version
@@ -500,7 +476,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure MySQL servers have Public Network Access Enabled disabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/mysql/howto-deny-public-network-access
       in order to deny public network access to MySQL servers.
     terraform: For the azurerm_mysql_server resource, set the public_network_access_enabled
@@ -519,7 +494,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure MySQL is using the latest version of TLS encryption
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/mysql/howto-tls-configurations
       in order to set the minimum TLS version to 1.2.
     terraform: For the azurerm_mysql_server resource, set the ssl_minimal_tls_version_enforced
@@ -538,7 +512,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure that Storage Accounts protect data in transit
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/common/storage-require-secure-transfer
       in order to enable secure transfer for the Storage Account.
     terraform: For the azurerm_storage_account resource, set the enable_https_traffic_only
@@ -557,7 +530,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure Azure File Sync has Public Network Access disabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/file-sync/file-sync-networking-endpoints?tabs=azure-portal
       in order to disable public network access to Azure File Sync.
     terraform: For the azurerm_storage_sync resource, set the incoming_traffic_policy
@@ -576,7 +548,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure PostgreSQL servers have Public Network Access disabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/postgresql/howto-deny-public-network-access
       in order to deny public network access to PostgreSQL servers.
     terraform: For the azurerm_postgresql_server resource, set the public_network_access_enabled
@@ -595,7 +566,6 @@ rules_metadata:
     and not any resources in your cloud environment.
   name: Ensure that Function apps is only accessible over HTTPS
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-functions/security-concepts
       in order to configure Azure Function Apps to use HTTPS only.
     terraform: For the azurerm_function_app resource, set the https_only argument
@@ -615,7 +585,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure that remote debugging is not enabled for App Services
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-common#configure-general-settings
       in order to disable remote debugging for the App Service.
     terraform: For the azurerm_app_service resource, set the remote_debugging_enabled
@@ -634,7 +603,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure that UDP Services are restricted from the Internet
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/virtual-network/manage-network-security-group
       in order to modify the Network Security Group and delete the rule that is exposing
       the UDP ports or restrict the Source IP addresses/CIDR ranges that can reach
@@ -657,7 +625,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure Azure Cache for Redis has Public Network Access disabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-cache-for-redis/cache-private-link
       in order to disable public network access flag and use private endpoints instead.
     terraform: For the azurerm_redis_cache resource, set the public_network_access_enabled
@@ -676,7 +643,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure that MySQL server enables geo-redundant backups
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/mysql/howto-restore-server-portal#set-backup-configuration
       in order to enable the Geo-Redundant flag in Backup Redundancy Options.
     terraform: For the azurerm_mysql_server resource, set the geo_redundant_backup_enabled
@@ -695,7 +661,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure that Azure Container group is deployed into virtual network
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/container-instances/container-instances-vnet
       in order to deploy Azure Container group into a virtual network.
     terraform: For the azurerm_container_group resource, set the network_profile_id
@@ -714,7 +679,6 @@ rules_metadata:
     enabled, and a virtual network rule or ip range filter is configured.
   name: Ensure Cosmos DB accounts have restricted access
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-configure-vnet-service-endpoint
       and https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-configure-firewall
       in order to restrict the access to Azure Cosmos DB.
@@ -735,7 +699,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure Azure Cosmos DB has Public Network Access disabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/cosmos-db/how-to-configure-private-endpoints#blocking-public-network-access-during-account-creation
       in order to disable public network access for Cosmos DB account.
     terraform: For the azurerm_cosmosdb_account resource, set public_network_access_enabled
@@ -754,7 +717,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure that PostgreSQL server enables geo-redundant backups
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/postgresql/howto-restore-server-portal#set-backup-configuration
       in order to enable the Geo-Redundant flag in Backup Redundancy Options.
     terraform: For the azurerm_postgresql_server resource, set the geo_redundant_backup_enabled
@@ -773,7 +735,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure Azure Data factory has Public Network Access disabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/data-factory/data-factory-private-link?WT.mc_id=Portal-Microsoft_Azure_CreateUIDef#set-up-private-link-for-azure-data-factory
       in order to disable the public endpoint for Data Factory.
     terraform: For the azurerm_data_factory resource, set public_network_enabled argument
@@ -792,7 +753,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure Azure Event Grid Domain has Public Network Access disabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/event-grid/configure-firewall
       in order to disable public network access.
     terraform: For the azurerm_eventgrid_domain resource, set the public_network_access_enabled
@@ -811,7 +771,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure that API management services use virtual networks
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/api-management/api-management-using-with-vnet
       in order to configure API Management with virtual networks.
     terraform: For the azurerm_api_management resource, set the virtual_network_configuration
@@ -830,7 +789,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure Azure IoT Hub has Public Network Access disabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/iot-hub/iot-hub-public-network-access
       in order to set Allow public network access to Disabled.
     terraform: For the azurerm_iothub resource, set the public_network_access_enabled
@@ -850,7 +808,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure that Key Vault only allows matched firewall rules
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/network-security
       in order to configure Key Vault firewall and change the default action to "deny".
     terraform: For the azurerm_key_vault resource, in the network_acls block, set
@@ -870,7 +827,6 @@ rules_metadata:
     not any resources in your cloud environment.
   name: Ensure that Key Vault enables purge protection
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/soft-delete-overview#purge-protection
       in order to enable purge protection for the Key Vault.
     terraform: For the azurerm_key_vault resource, set the purge_protection_enabled
@@ -890,7 +846,6 @@ rules_metadata:
     resources in your cloud environment.
   name: Ensure that Key Vault enables soft delete
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/key-vault-recovery?tabs=azure-portal
       in order to enable soft-delete for the Azure Key Vault.
     terraform: For the azurerm_key_vault resource, set the soft_delete_enabled argument
@@ -910,7 +865,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure MSSQL servers have Public Network Access disabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-sql/database/connectivity-settings
       in order to disable public network access.
     terraform: For the azurerm_mssql_server resource, set public_network_access_enabled
@@ -930,7 +884,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure that AKS enables private clusters
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/aks/private-clusters
       in order to create private AKS clusters.
     terraform: For the azurerm_kubernetes_cluster resource, set the private_cluster_enabled
@@ -949,7 +902,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure Azure Cognitive Search has Public Network Access disabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/search/service-configure-firewall
       in order to disable the public endpoint for Cognitive Search.
     terraform: For the azurerm_search_service resource, set the public_network_access_enabled
@@ -969,7 +921,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure that MySQL server enables Threat detection policy
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/mysql/howto-database-threat-protection-portal
       in order to enable Threat protection.
     terraform: For the azurerm_mysql_server resource, in threat_detection_policy block,
@@ -989,7 +940,6 @@ rules_metadata:
     Terraform content and not any resources in your cloud environment.
   name: Ensure that PostgreSQL server enables Threat detection policy
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/postgresql/howto-database-threat-protection-portal
       in order to enable Threat protection.
     terraform: For the azurerm_postgresql_server resource, in threat_detection_policy
@@ -1008,7 +958,6 @@ rules_metadata:
     content and not any resources in your cloud environment.
   name: Ensure that MariaDB server enables geo-redundant backups
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/mariadb/howto-restore-server-portal#set-backup-configuration
       in order to enable the Geo-Redundant flag in Backup Redundancy Options.
     terraform: For the azurerm_mariadb_server resource, set the geo_redundant_backup_enabled
@@ -1029,7 +978,6 @@ rules_metadata:
     attached to any network interfaces, Cloudrail will raise a violation.
   name: Ensure no unused Network Security Group exists in the subscription
   remediation_steps:
-    cloudformation: ''
     console: Delete the unused Network Security Group from your Azure Portal.
     terraform: Remove the unused azurerm_network_security_group resource, from your
       TF template.
@@ -1048,7 +996,6 @@ rules_metadata:
     only or if they have FTP disabled.
   name: Ensure Function App enforces FTPS only
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#enforce-ftps
       in order to select FTPS Only in FTP state.
     terraform: For the azurerm_function_app resource, set the site_config block with
@@ -1068,7 +1015,6 @@ rules_metadata:
     only or if they have FTP disabled.
   name: FTPS should be required in your Web App
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/deploy-ftp?tabs=portal#enforce-ftps
       in order to disable FTP or select FTPS Only in FTP state.
     terraform: "For the azurerm_app_service resource, set the site_config block with\
@@ -1088,7 +1034,6 @@ rules_metadata:
     your Azure subscription and Terraform plan to check if authentication is enabled.
   name: Ensure authentication is enabled in Function Apps
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/azure-functions/functions-how-to-use-azure-function-app-settings?tabs=portal#auth
       in order to enable authentication for the Function App.
     terraform: For the azurerm_function_app resource, set the auth_settings block
@@ -1107,7 +1052,6 @@ rules_metadata:
     environment. If any uses the "basic" SKU, Cloudrail will raise a violation.
   name: Ensure Azure VPN gateways don't use the basic SKU
   remediation_steps:
-    cloudformation: ''
     console: Change the SKU of the VPN gateway by deleting the old one and creating
       a new one with a different SKU.
     terraform: Change the 'sku' in the azurerm_virtual_network_gateway to a value
@@ -1126,7 +1070,6 @@ rules_metadata:
     your Azure subscription and Terraform plan to check if authentication is enabled.
   name: Ensure Auto provisioning of the Log Analytics agent is enabled on your subscription
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/security-center/security-center-enable-data-collection#enable-auto-provisioning-of-the-log-analytics-agent-and-extensions-
       in order to enable the automatic provision of the Log Analytics agent.
     terraform: "For the azurerm_security_center_auto_provisioning resource, set the\
@@ -1145,7 +1088,6 @@ rules_metadata:
     your Azure subscription and Terraform plan to ensure client certificates are required.
   name: Ensure client certificates are required in Function App
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/app-service-web-configure-tls-mutual-auth
       in order to require client certificates for Function App.
     terraform: For the azurerm_function_app resource, set the client_cert_mode argument
@@ -1166,7 +1108,6 @@ rules_metadata:
     is configured for web apps.
   name: Ensure HTTP version is the latest in Function Apps
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at <https://azure.microsoft.com/en-us/blog/announcing-http-2-support-in-azure-app-service/>
       in order to configure HTTP version for the web app.
     terraform: For the azurerm_function_app resource, set the site_config block with
@@ -1186,7 +1127,6 @@ rules_metadata:
     Azure supported TLS version (1.2).
   name: Ensure Function App is using the latest Azure supported TLS version (1.2)
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-tls-versions>
       in order to set the Minimum TLS Version to 1.2 for the Function App.
     terraform: "For the azurerm_function_app resource, in site_config block, set the\
@@ -1206,7 +1146,6 @@ rules_metadata:
     of security alerts is enabled.
   name: Ensure Email notification for high severity alerts is enabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/security-center/security-center-provide-security-contact-details
       in order to enable email notifications for security alerts.
     terraform: For the azurerm_security_center_contact resource, set the alert_notifications
@@ -1226,7 +1165,6 @@ rules_metadata:
     is enabled.
   name: Ensure PostgreSQL Servers are enforcing SSL
   remediation_steps:
-    cloudformation: ''
     console: "Follow the guide at <https://docs.microsoft.com/en-us/azure/postgresql/concepts-ssl-connection-security>\
       \ in order to enable \u201CEnforce SSL connection\u201D for the PostgreSQL server."
     terraform: For the azurerm_postgresql_server resource, set the ssl_enforcement_enabled
@@ -1245,7 +1183,6 @@ rules_metadata:
     your Azure subscription and Terraform plan to ensure that SSL enforcement is enabled.
   name: Ensure MySQL Servers are enforcing SSL
   remediation_steps:
-    cloudformation: ''
     console: "Follow the guide at <https://docs.microsoft.com/en-us/azure/mysql/howto-configure-ssl#step-3--enforcing-ssl-connections-in-azure>\
       \ in order to enable \u201CEnforce SSL connection\u201D for the MySQL server."
     terraform: For the azurerm_mysql_server resource, set the ssl_enforcement_enabled
@@ -1265,7 +1202,6 @@ rules_metadata:
     for web apps.
   name: Ensure authentication is enabled in Web Apps
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/overview-authentication-authorization
       in order to enable authentication for the web app.
     terraform: For the azurerm_app_service resource, set the auth_settings block with
@@ -1286,7 +1222,6 @@ rules_metadata:
     default network access.
   name: Ensure Storage Account has default network access denied
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#change-the-default-network-access-rule>
       in order to deny access by default.
     terraform: "For the azurerm_storage_account resource, in the network_rules block,\
@@ -1307,7 +1242,6 @@ rules_metadata:
     your Azure subscription and Terraform plan to check if HTTPS only is enabled.
   name: Ensure Function App is only accessible via HTTPS
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https
       in order to configured HTTPS Only for the Function App.
     terraform: For the azurerm_function_app resource, set the https_only argument
@@ -1326,7 +1260,6 @@ rules_metadata:
     Azure subscription and Terraform plan to check if HTTPS only is enabled.
   name: Ensure Web App is only accessible via HTTPS
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-https
       in order to configured HTTPS Only for the Web App.
     terraform: For the azurerm_app_service resource, set the https_only argument to
@@ -1346,7 +1279,6 @@ rules_metadata:
     your Azure subscription and Terraform plan to ensure that auditing is enabled.
   name: Ensure SQL servers have auditing enabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at <https://docs.microsoft.com/en-us/azure/azure-sql/database/auditing-overview>
       in order to configure auditing for SQL servers.
     terraform: For the azurerm_mssql_server resource, add the extended_auditing_policy
@@ -1369,7 +1301,6 @@ rules_metadata:
     supported TLS version (1.2).
   name: Ensure Web App is using the latest Azure supported TLS version (1.2)
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/app-service/configure-ssl-bindings#enforce-tls-versions
       in order to set the Minimum TLS Version to 1.2 for the Web App.
     terraform: For the azurerm_app_service resource, in site_config block, set the
@@ -1388,7 +1319,6 @@ rules_metadata:
     your Azure subscription and Terraform plan to ensure that secure transfer is enabled.
   name: Ensure Storage Account requires secure transfer
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/storage/common/storage-require-secure-transfer
       in order to enable secure transfer.
     terraform: For the azurerm_storage_account resource, set the enable_https_traffic_only
@@ -1410,7 +1340,6 @@ rules_metadata:
     template: azure_defender_enabled_human_readable_logic
   name: Ensure Azure Defender for container registries is enabled
   remediation_steps:
-    cloudformation: ''
     console:
       params:
       - Container Registries
@@ -1433,7 +1362,6 @@ rules_metadata:
     Azure subscription and Terraform plan to ensure purge protection is enabled.
   name: Ensure Key Vaults have purge protection enabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at <https://docs.microsoft.com/en-us/azure/key-vault/general/soft-delete-overview>
       in order to enable purge protection for a vault.
     terraform: For the azurerm_key_vault resource, set the purge_protection_enabled
@@ -1455,7 +1383,6 @@ rules_metadata:
     template: azure_defender_enabled_human_readable_logic
   name: Ensure Azure Defender for Azure SQL Database servers is enabled
   remediation_steps:
-    cloudformation: ''
     console:
       params:
       - Sql Servers
@@ -1481,7 +1408,6 @@ rules_metadata:
     template: azure_defender_enabled_human_readable_logic
   name: Ensure Azure Defender for Kubernetes is enabled
   remediation_steps:
-    cloudformation: ''
     console:
       params:
       - Kubernetes
@@ -1507,7 +1433,6 @@ rules_metadata:
     template: azure_defender_enabled_human_readable_logic
   name: Ensure Azure Defender for Storage is enabled
   remediation_steps:
-    cloudformation: ''
     console:
       params:
       - Storage
@@ -1533,7 +1458,6 @@ rules_metadata:
     template: azure_defender_enabled_human_readable_logic
   name: Ensure Azure Defender for Servers is enabled
   remediation_steps:
-    cloudformation: ''
     console:
       params:
       - Servers
@@ -1557,7 +1481,6 @@ rules_metadata:
     of security alerts is enabled.
   name: Ensure Key Vault has diagnostic logs enabled
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at https://docs.microsoft.com/en-us/azure/key-vault/general/alert
       in order to enable diagnostic logs for Key Vault.
     terraform: Create an azurerm_monitor_diagnostic_setting resource and set the target_resource_id
@@ -1579,7 +1502,6 @@ rules_metadata:
     have network access to the account.
   name: Ensure Storage Account is allowing network access to trusted Azure services
   remediation_steps:
-    cloudformation: ''
     console: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#grant-access-to-trusted-azure-services>
       in order to grant access to trusted Azure services.
     terraform: "For the azurerm_storage_account resource, in the network_rules block,\
