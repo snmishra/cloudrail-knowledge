@@ -32,6 +32,7 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
             versioning_data: Configuration of versioning on the bucket.
             publicly_allowing_resources: ACL's/Policies that expose this bucket to the internet.
             exposed_to_agw_methods: The ApiGateway methods that can acccess this bucket.
+            is_logger: Indicates if this bucket is the target bucket for logging of another bucket.
     """
     def __init__(self, account: str, bucket_name: str, arn: str, region: str = None,
                  policy: S3Policy = None):
@@ -53,6 +54,7 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
         self.bucket_logging: Optional[S3BucketLogging] = None
         self.publicly_allowing_resources: List[AwsResource] = []
         self.exposed_to_agw_methods: List[ApiGatewayMethod] = []
+        self.is_logger = False
 
     def get_keys(self) -> List[str]:
         return [self.arn]
