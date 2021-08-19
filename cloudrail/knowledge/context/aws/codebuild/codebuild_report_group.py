@@ -34,6 +34,7 @@ class CodeBuildReportGroup(AwsResource):
         self.export_config_s3_destination_encryption_key: str = export_config_s3_destination_encryption_key
         self.arn: str = arn
         self.export_config_s3_destination_kms_data: KmsKey = None
+        self.with_aliases(arn)
 
     def get_keys(self) -> List[str]:
         return [self.arn]
@@ -42,6 +43,9 @@ class CodeBuildReportGroup(AwsResource):
         return self.name
 
     def get_arn(self) -> str:
+        return self.arn
+
+    def get_id(self) -> str:
         return self.arn
 
     def get_type(self, is_plural: bool = False) -> str:
