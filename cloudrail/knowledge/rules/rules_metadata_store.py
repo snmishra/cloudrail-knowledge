@@ -4,14 +4,16 @@ from typing import Dict, Optional, List
 import yaml
 
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
-from cloudrail.knowledge.rules.rule_metadata import RuleMetadata, RuleSeverity, RuleType, SecurityLayer, ResourceType, BenchmarkType
+from cloudrail.knowledge.rules.rule_metadata import RuleMetadata, RuleSeverity, RuleType, SecurityLayer, ResourceType, BenchmarkType, RemediationSteps
 
 RULE_ID = 'rule_id'
 NAME = 'name'
 DESCRIPTION = 'description'
 LOGIC = 'human_readable_logic'
-CONSOLE_REMEDIATION_STEPS = 'console_remediation_steps'
-IAC_REMEDIATION_STEPS = 'iac_remediation_steps'
+REMEDIATION_STEPS = 'remediation_steps'
+CONSOLE = 'console'
+TERRAFORM = 'terraform'
+CLOUDFORMATION = 'cloudformation'
 SEVERITY = 'severity'
 RULE_TYPE = 'rule_type'
 SECURITY_LAYER = 'security_layer'
@@ -70,10 +72,13 @@ class RulesMetadataStore:
                 rule[DESCRIPTION] = RulesMetadataStore._fill_template(rule[DESCRIPTION], templates)
             if RulesMetadataStore._is_template(rule.get(LOGIC)):
                 rule[LOGIC] = RulesMetadataStore._fill_template(rule[LOGIC], templates)
-            if RulesMetadataStore._is_template(rule.get(IAC_REMEDIATION_STEPS)):
-                rule[IAC_REMEDIATION_STEPS] = RulesMetadataStore._fill_template(rule[IAC_REMEDIATION_STEPS], templates)
-            if RulesMetadataStore._is_template(rule.get(CONSOLE_REMEDIATION_STEPS)):
-                rule[CONSOLE_REMEDIATION_STEPS] = RulesMetadataStore._fill_template(rule[CONSOLE_REMEDIATION_STEPS], templates)
+            remediation_steps: dict = rule.get(REMEDIATION_STEPS, {})
+            if RulesMetadataStore._is_template(remediation_steps.get(TERRAFORM)):
+                remediation_steps[TERRAFORM] = RulesMetadataStore._fill_template(remediation_steps[TERRAFORM], templates)
+            if RulesMetadataStore._is_template(remediation_steps.get(CONSOLE)):
+                remediation_steps[CONSOLE] = RulesMetadataStore._fill_template(remediation_steps[CONSOLE], templates)
+            if RulesMetadataStore._is_template(remediation_steps.get(CLOUDFORMATION)):
+                remediation_steps[CLOUDFORMATION] = RulesMetadataStore._fill_template(remediation_steps[CLOUDFORMATION], templates)
         return rules
 
     @staticmethod
@@ -134,8 +139,9 @@ class RulesMetadataStore:
             rule_type=RuleType(rule[RULE_TYPE]),
             security_layer=SecurityLayer(rule[SECURITY_LAYER]),
             resource_types={ResourceType(resource_type) for resource_type in rule[RESOURCE_TYPE]},
-            iac_remediation_steps=rule.get(IAC_REMEDIATION_STEPS, ''),
-            console_remediation_steps=rule.get(CONSOLE_REMEDIATION_STEPS, ''),
+            remediation_steps=RemediationSteps(terraform=rule.get(REMEDIATION_STEPS).get(TERRAFORM, ''),
+                                               console=rule.get(REMEDIATION_STEPS).get(CONSOLE, ''),
+                                               cloudformation=rule.get(REMEDIATION_STEPS).get(CLOUDFORMATION, '')),
             cloud_provider=CloudProvider(rule[CLOUD_PROVIDER]),
             is_deleted=rule.get('is_deleted', False),
             compliance=self._parse_compliance(rule.get(COMPLIANCE, {}))) for rule in rules}
