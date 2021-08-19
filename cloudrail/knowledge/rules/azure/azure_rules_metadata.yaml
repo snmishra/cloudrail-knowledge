@@ -32,8 +32,6 @@ rules_metadata:
     resource_type:
       - database
 
-
-
   - rule_id: non_car_unused_network_security_group
     cloud_provider: azure
     name: Ensure no unused Network Security Group exists in the subscription
@@ -100,7 +98,6 @@ rules_metadata:
     security_layer: networking
     resource_type:
       - compute
-
 
   - rule_id: non_car_vpn_gateway_disallow_basic_sku
     cloud_provider: azure
@@ -511,21 +508,17 @@ rules_metadata:
       - storage
 
   - rule_id: non_car_client_certificates_required_in_web_app
-      cloud_provider: azure
-      name: Ensure client certificates are required in Web App
-      severity: medium
-      description:
-        Cloudrail will review the Storage Accounts configuration in your environment. If the account network rules are not allowing access to trusted Azure services, Cloudrail will highlight it as a violation.
-      human_readable_logic:
-        Cloudrail will review the Web Apps configuration in your environment. If an app does not have client certificates enabled, Cloudrail will highlight it as a violation.
-      console_remediation_steps:
-        Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/app-service-web-configure-tls-mutual-auth> in order to enable client certificates for Web App.
-      iac_remediation_steps:
-        For the azurerm_app_service resource, set the client_cert_enabled argument to true.
-      rule_type: non_context_aware
-      security_layer: networking
-      resource_type:
-        - resource_compute
+    cloud_provider: azure
+    name: Ensure client certificates are required in Web App
+    severity: medium
+    description: Cloudrail will review the Storage Accounts configuration in your environment. If the account network rules are not allowing access to trusted Azure services, Cloudrail will highlight it as a violation.
+    human_readable_logic: Cloudrail will review the Web Apps configuration in your environment. If an app does not have client certificates enabled, Cloudrail will highlight it as a violation.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/app-service-web-configure-tls-mutual-auth> in order to enable client certificates for Web App.
+    iac_remediation_steps: For the azurerm_app_service resource, set the client_cert_enabled argument to true.
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - compute
 
   - rule_id: non_car_diagnostic_logs_enabled_in_app_services
     cloud_provider: azure
