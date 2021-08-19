@@ -18,8 +18,8 @@ class TestAppServiceClientCertificatesRequiredRule(unittest.TestCase):
 
     @parameterized.expand(
         [
-            ["Client certificates is enabled", True, False],
-            ["Client certificates is not enabled", False, True]
+            ["Client certificates is enabled ", True, False],
+            ["Client certificates is not enabled ", False, True]
         ]
     )
     def test_states(self, unused_name: str, client_cert_required: bool, should_alert: bool):
