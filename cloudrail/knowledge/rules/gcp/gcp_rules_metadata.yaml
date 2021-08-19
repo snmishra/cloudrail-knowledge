@@ -6,8 +6,9 @@ rules_metadata:
     severity: major
     description: Ensure SQL database requires SSL
     human_readable_logic: Ensure SQL database requires SSL
-    console_remediation_steps: Ensure SQL database requires SSL
-    iac_remediation_steps: Ensure SQL database requires SSL
+    remediation_steps:
+      terraform: Ensure SQL database requires SSL
+      console: Ensure SQL database requires SSL
     rule_type: non_context_aware
     security_layer: networking
     resource_type:
