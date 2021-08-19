@@ -3,7 +3,7 @@ import time
 from abc import abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import List, Dict, TypeVar, Generic
+from typing import List, Dict, TypeVar, Generic, Optional
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
 from cloudrail.knowledge.context.mergeable import Mergeable
 from cloudrail.knowledge.context.aws.account.account import Account
@@ -27,6 +27,7 @@ class RuleResponse:
     rule_id: str
     status: RuleResultType
     issues: List[Issue] = field(default_factory=list)
+    reason: Optional[str] = None
 
 
 EnvCtx = TypeVar('EnvCtx')
