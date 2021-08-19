@@ -16,32 +16,19 @@ class EnsureVmAndVmssUseManagedDisksRule(AzureBaseRule):
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for virtual_machine in env_context.virtual_machines:
-            if issues_found := self._get_unmanaged_disks_usage(virtual_machine):
-                issues.extend(issues_found)
+            if not virtual_machine.disk_settings.os_disk.is_managed_disk:
+                self._append_issue(virtual_machine, issues)
         for vmss in env_context.virtual_machines_scale_sets:
-            if issues_found := self._get_unmanaged_disks_usage(vmss):
-                issues.extend(issues_found)
+            if not vmss.disk_settings.os_disk.is_managed_disk:
+                self._append_issue(vmss, issues)
         return issues
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
         return bool(environment_context.virtual_machines or environment_context.virtual_machines_scale_sets)
 
     @staticmethod
-    def _get_unmanaged_disks_usage(vm_entity: Union[AzureVirtualMachine, AzureVirtualMachineScaleSet]) -> list:
-        issues: List[Issue] = []
-        disks_types_unmanaged = set()
-        if not vm_entity.disk_settings.os_disk.is_managed_disk:
-            disks_types_unmanaged.add('os_disk')
-        elif (any(not disk.is_managed_disk for disk in vm_entity.disk_settings.data_disks)):
-            disks_types_unmanaged.add('data_disk')
-        if disks_types_unmanaged:
-            if len(disks_types_unmanaged) > 1:
-                issues.append(
-                    Issue(
-                        f"The {vm_entity.get_type()} `{vm_entity.get_friendly_name()}` is using an unmanaged disk for both it's os_disk and one of it's managed disks",
-                        vm_entity, vm_entity))
-            else:
-                issues.append(
-                    Issue(
-                        f"The {vm_entity.get_type()} `{vm_entity.get_friendly_name()}` is using an unmanaged disk for disk type {next(iter(disks_types_unmanaged))}", vm_entity, vm_entity))
-        return issues
+    def _append_issue(vm_entity: Union[AzureVirtualMachine, AzureVirtualMachineScaleSet], issues_list: List[Issue]):
+        issues_list.append(
+            Issue(
+                f"The {vm_entity.get_type()} `{vm_entity.get_friendly_name()}` is using an unmanaged disk",
+                vm_entity, vm_entity))

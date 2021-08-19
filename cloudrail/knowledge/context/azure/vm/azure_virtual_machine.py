@@ -14,6 +14,7 @@ class OsDisk:
 class DataDisk:
     name: Optional[str]
     is_managed_disk: bool
+
 @dataclass
 class DiskSettings:
     os_disk: OsDisk
