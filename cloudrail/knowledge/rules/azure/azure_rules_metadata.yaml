@@ -257,14 +257,14 @@ rules_metadata:
     cloud_provider: azure
     name: Ensure Storage Account has default network access denied
     severity: medium
-    description: 
+    description:
       Cloudrail will review the Storage Accounts configuration in your environment. If the account network rules are not denying default network access, Cloudrail will highlight it as a violation.
-    human_readable_logic: 
+    human_readable_logic:
       Cloudrail will review the Storage Account configuration within your Azure subscription and Terraform plan to ensure that its network rules (either defined in-line or using azurerm_storage_account_network_rules resource) are denying default network access.
-    console_remediation_steps: 
+    console_remediation_steps:
       Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#change-the-default-network-access-rule> in order to deny access by default.
-    iac_remediation_steps: 
-      For the azurerm_storage_account resource, in the network_rules block, set the default_action argument to “Deny”. 
+    iac_remediation_steps:
+      For the azurerm_storage_account resource, in the network_rules block, set the default_action argument to “Deny”.
       If azurerm_storage_account_network_rules resource is being used, set the default_action argument to “Deny”.
     rule_type: non_context_aware
     security_layer: networking
@@ -339,6 +339,19 @@ rules_metadata:
     iac_remediation_steps: For the azurerm_storage_account resource, set the enable_https_traffic_only argument to true.
     rule_type: non_context_aware
     security_layer: encryption
+    resource_type:
+      - storage
+
+  - rule_id: non_car_storage_account_public_access
+    cloud_provider: azure
+    name: Ensure Storage Account does not allow public access
+    severity: medium
+    description: Cloudrail will review the Storage Accounts configuration in your environment. If an account is allowing public access to containers and blobs, Cloudrail will highlight it as a violation.
+    human_readable_logic: Cloudrail will review the Storage Account configuration within your Azure subscription and Terraform plan to ensure that public access is disabled.
+    console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure?tabs=portal#allow-or-disallow-public-read-access-for-a-storage-account> in order to set Blob public access to Disabled.
+    iac_remediation_steps: For the azurerm_storage_account resource, set the allow_blob_public_access argument to false.
+    rule_type: non_context_aware
+    security_layer: networking
     resource_type:
       - storage
 
@@ -479,7 +492,7 @@ rules_metadata:
     security_layer: networking
     resource_type:
       - security_services
-      
+
   - rule_id: car_key_vault_diagnostic_logs_enabled
     cloud_provider: azure
     name: Ensure Key Vault has diagnostic logs enabled
@@ -497,13 +510,13 @@ rules_metadata:
     cloud_provider: azure
     name: Ensure Storage Account is allowing network access to trusted Azure services
     severity: medium
-    description: 
+    description:
       Cloudrail will review the Storage Accounts configuration in your environment. If the account network rules are not allowing access to trusted Azure services, Cloudrail will highlight it as a violation.
-    human_readable_logic: 
+    human_readable_logic:
       Cloudrail will review the Storage Account configuration within your Azure subscription and Terraform plan to ensure that trusted Azure services have network access to the account.
-    console_remediation_steps: 
+    console_remediation_steps:
       Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/common/storage-network-security?tabs=azure-portal#grant-access-to-trusted-azure-services> in order to grant access to trusted Azure services.
-    iac_remediation_steps: 
+    iac_remediation_steps:
       For the azurerm_storage_account resource, in the network_rules block, set the bypass argument to “AzureServices”. If azurerm_storage_account_network_rules resource is being used, set the bypass argument to “AzureServices”.
     rule_type: non_context_aware
     security_layer: networking
