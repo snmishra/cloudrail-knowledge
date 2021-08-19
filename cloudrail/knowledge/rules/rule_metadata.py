@@ -64,14 +64,20 @@ class BenchmarkType(str, Enum):
     CIS = "CIS"
 
 @dataclass
+class RemediationSteps:
+    console: str
+    terraform: Optional[str] = None
+    cloudformation: Optional[str] = None
+
+
+@dataclass
 class RuleMetadata:
     rule_id: str
     name: str
     description: str
     logic: str
     severity: RuleSeverity
-    iac_remediation_steps: str
-    console_remediation_steps: str
+    remediation_steps: RemediationSteps
     rule_type: RuleType
     security_layer: SecurityLayer
     resource_types: Set[ResourceType]
