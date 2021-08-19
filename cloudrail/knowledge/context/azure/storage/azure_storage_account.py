@@ -12,7 +12,7 @@ class AzureStorageAccount(AzureResource):
             account_replication_type: The replication type of the storage account
             network_rules: The networking rules to allow or deny access from.
             enable_https_traffic_only: A flag indicating if only https traffic is allowed
-            allow_blob_public_access: A flag indicating if enable public access to a container and blob
+            allow_blob_public_access: A flag indicator, True if enable public access to containers and blobs else disable.
     """
 
     def __init__(self, storage_name: str, account_tier: str, account_replication_type: str,
