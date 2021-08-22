@@ -37,8 +37,8 @@ class IamInstanceProfile(AwsResource):
         pass
 
     def get_cloud_resource_url(self) -> str:
-        return '{0}ec2/v2/home?region={1}#InstanceDetails:instanceId={2}'\
-            .format(self.AWS_CONSOLE_URL, self.region, self.ec2_instance_data.instance_id)
+        return 'iam/home#/roles/{}'\
+            .format(self.AWS_CONSOLE_URL, self.region, self.role_name)
 
     @property
     def is_tagable(self) -> bool:
