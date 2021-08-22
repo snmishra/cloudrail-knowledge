@@ -12,19 +12,22 @@ cloudrail/knowledge/rules/azure/non_context_aware/function_app_authentication_en
 </details>
 
 <details>
-<<<<<<< HEAD
 <summary>non_car_client_certificates_required_in_web_app</summary>
-
-```python
---8<--
-cloudrail/knowledge/rules/azure/non_context_aware/app_service_non_car_client_certificates_required_in_web_app_rulr.py
-=======
-<summary>non_car_diagnostic_logs_enabled_in_app_services</summary>
 
 ```python
 --8<--
 cloudrail/knowledge/rules/azure/non_context_aware/app_service_non_car_diagnostic_logs_enabled_in_app_services_rule.py
 >>>>>>> origin/main
+--8<--
+```
+</details>
+
+<details>
+<summary>non_car_client_certificates_required_in_web_app</summary>
+
+```python
+--8<--
+cloudrail/knowledge/rules/azure/non_context_aware/app_service_non_car_client_certificates_required_in_web_app_rulr.py
 --8<--
 ```
 </details>
