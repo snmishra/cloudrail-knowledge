@@ -17,7 +17,6 @@ cloudrail/knowledge/rules/azure/non_context_aware/function_app_authentication_en
 ```python
 --8<--
 cloudrail/knowledge/rules/azure/non_context_aware/app_service_non_car_diagnostic_logs_enabled_in_app_services_rule.py
->>>>>>> origin/main
 --8<--
 ```
 </details>
