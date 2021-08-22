@@ -80,7 +80,7 @@ def find_file(directory: str, file: str) -> str:
 
 def load_as_json(file_path: str) -> dict:
     try:
-        with open(file_path, "r", encoding='utf-8') as stream:
+        with open(file_path, 'r') as stream:
             return json.load(stream)
     except Exception as ex:
         logging.warning('failed load file {}, reason={}'.format(file_path, str(ex)), exc_info=1)
