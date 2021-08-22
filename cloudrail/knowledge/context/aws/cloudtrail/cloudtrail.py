@@ -26,6 +26,10 @@ class CloudTrail(AwsResource):
         self.arn: str = arn
         self.log_file_validation: bool = log_file_validation
         self.is_multi_region_trail: bool = is_multi_region_trail
+        self.with_aliases(name)
+
+    def get_id(self) -> str:
+        return self.name
 
     def get_keys(self) -> List[str]:
         return [self.arn]
