@@ -718,16 +718,17 @@ rules_metadata:
   rule_type: non_context_aware
   security_layer: encryption
   severity: medium
-
-- rule_id: non_car_client_certificates_required_in_web_app
-  cloud_provider: azure
+- cloud_provider: azure
+  description: Cloudrail will review the Web Apps configuration in your environment. If an app does not have client certificates enabled, Cloudrail will highlight it as a violation.
+  human_readable_logic: Cloudrail will review the Web Apps configuration within your Azure subscription and Terraform plan to ensure client certificates are enabled.
   name: Ensure client certificates are required in Web App
-  severity: medium
-  description: Cloudrail will review the Storage Accounts configuration in your environment. If the account network rules are not allowing access to trusted Azure services, Cloudrail will highlight it as a violation.
-  human_readable_logic: Cloudrail will review the Web Apps configuration in your environment. If an app does not have client certificates enabled, Cloudrail will highlight it as a violation.
-  console_remediation_steps: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/app-service-web-configure-tls-mutual-auth> in order to enable client certificates for Web App.
-  iac_remediation_steps: For the azurerm_app_service resource, set the client_cert_enabled argument to true.
-  rule_type: non_context_aware
-  security_layer: networking
+  remediation_steps:
+    console: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/app-service-web-configure-tls-mutual-auth> in order to enable client certificates for Web App.
+    terraform: For the azurerm_app_service resource, set the client_cert_enabled argument to true.
   resource_type:
-      - compute
+  - compute
+  rule_id: non_car_client_certificates_required_in_web_app
+  rule_type: non_context_aware
+  security_layer: iam
+  severity: medium
+
