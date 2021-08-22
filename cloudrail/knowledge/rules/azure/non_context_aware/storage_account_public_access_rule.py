@@ -17,7 +17,6 @@ class StorageAccountPublicAccessRule(AzureBaseRule):
             if storage_account.allow_blob_public_access:
                 issues.append(
                     Issue(
-
                         f'The {storage_account.get_type()} `{storage_account.get_friendly_name()}` is allowing public access to container and blobs.',
                         storage_account,
                         storage_account))

@@ -17,7 +17,6 @@ class TestStorageAccountPublicAccessRule(unittest.TestCase):
         [
             ['storage_account_public_access_disabled', False, False],
             ['storage_account_public_access_enabled', True, True],
-            ['storage_account_public_access_enabled', None, False],
         ]
     )
     def test_non_car_storage_account_public_access(self, unused_name: str, allow_public_access: bool, should_alert: bool):
