@@ -97,5 +97,5 @@ def get_rule_metadata_content(provider: CloudProvider) -> dict:
 
     current_path = os.path.dirname(os.path.abspath(__file__))
     rules_metadata_path = os.path.join(current_path, f'{provider_name}/{provider_name}_rules_metadata.yaml')
-    with open(rules_metadata_path, 'r') as file:
+    with open(rules_metadata_path, "r") as file:
         return yaml.load(file)
