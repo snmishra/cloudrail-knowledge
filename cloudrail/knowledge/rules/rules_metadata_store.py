@@ -148,7 +148,7 @@ class RulesMetadataStore:
 
 
 def read_metadata_file(file_path: str):
-    with open(file_path, "r") as file:
+    with open(file_path, "r", encoding=None) as file:
         return yaml.load(file)
 
 
