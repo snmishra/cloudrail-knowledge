@@ -1,4 +1,4 @@
-from typing import Dict, List, Set, Optional
+from typing import Dict, List, Set
 
 from cloudrail.knowledge.context.aws.iam.iam_identity import IamIdentity
 from cloudrail.knowledge.context.aws.iam.policy import Policy

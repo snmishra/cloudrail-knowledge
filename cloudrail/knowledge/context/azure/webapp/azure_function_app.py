@@ -16,13 +16,15 @@ class AzureFunctionApp(AzureResource):
     """
     def __init__(self, name: str,
                  client_cert_mode: FieldMode,
-                 https_only: bool) -> None:
+                 https_only: bool, java_version: Optional[str] = None, functions_worker_runtime: Optional[str] = None):
         super().__init__(AzureResourceType.AZURERM_FUNCTION_APP)
         self.name = name
         self.app_service_config: AzureAppServiceConfig = None
         self.client_cert_mode: FieldMode = client_cert_mode
         self.https_only = https_only
         self.with_aliases(name)
+        self.functions_worker_runtime = functions_worker_runtime
+        self.java_version: str = java_version
 
     def get_keys(self) -> List[str]:
         return [self.subscription_id, self.name, self.location]
