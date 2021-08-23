@@ -16,7 +16,7 @@ class AppServiceClientCertificatesRequiredRule(AzureBaseRule):
             if not app_service.client_cert_required:
                 issues.append(
                     Issue(
-                        f'The web app `{app_service.get_friendly_name()}` does not have client certificates enabled.',
+                        f'The {app_service.get_type()} `{app_service.get_friendly_name()}` does not have client certificates enabled.',
                         app_service,
                         app_service))
         return issues
