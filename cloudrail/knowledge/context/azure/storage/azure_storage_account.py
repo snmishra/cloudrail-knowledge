@@ -16,7 +16,7 @@ class AzureStorageAccount(AzureResource):
     """
 
     def __init__(self, storage_name: str, account_tier: str, account_replication_type: str,
-                 enable_https_traffic_only: bool, allow_blob_public_access: bool) -> None:
+                 enable_https_traffic_only: bool, allow_blob_public_access: bool):
         super().__init__(AzureResourceType.AZURERM_STORAGE_ACCOUNT)
         self.storage_name: str = storage_name
         self.with_aliases(storage_name)
