@@ -26,7 +26,7 @@ cloudrail/knowledge/rules/azure/non_context_aware/app_service_non_car_diagnostic
 
 ```python
 --8<--
-cloudrail/knowledge/rules/azure/non_context_aware/app_service_non_car_client_certificates_required_in_web_app_rulr.py
+cloudrail/knowledge/rules/azure/non_context_aware/app_service_non_car_client_certificates_required_in_web_app_rule.py
 --8<--
 ```
 </details>
