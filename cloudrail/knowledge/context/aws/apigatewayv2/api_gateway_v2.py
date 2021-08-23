@@ -31,6 +31,8 @@ class ApiGateway(NetworkEntity):
         self.api_gw_id: str = api_gw_id
         self.api_gw_name: str = api_gw_name
         self.protocol_type: str = protocol_type
+        self.api_endpoint: str = f'{protocol_type}://{api_gw_id}.execute-api.{region}.amazonaws.com'
+        self.with_aliases(api_gw_id)
         self.arn: Optional[str] = arn if arn else self._create_arn()
         self.api_gw_integration: ApiGatewayV2Integration = None
         self.vpc_link: ApiGatewayVpcLink = None

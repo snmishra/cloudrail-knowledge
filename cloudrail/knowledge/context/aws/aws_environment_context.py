@@ -1,5 +1,7 @@
 import functools
 from typing import List, Dict, Optional, Union, TypeVar, Callable, Set
+from cloudrail.knowledge.context.aws.ec2.vpc_gateway_attachment import VpcGatewayAttachment
+from cloudrail.knowledge.context.aws.ec2.availability_zone import AvailabilityZone
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.aws.account.account import Account
 from cloudrail.knowledge.context.aws.apigateway.api_gateway_integration import ApiGatewayIntegration
@@ -238,6 +240,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  dms_replication_instances: List[DmsReplicationInstance] = None,
                  vpcs_attributes: List[VpcAttribute] = None,
                  internet_gateways: List[InternetGateway] = None,
+                 vpc_gateway_attachment: AliasesDict[VpcGatewayAttachment] = None,
                  ecs_service_list: List[EcsService] = None,
                  cloud_watch_event_target_list: List[CloudWatchEventTarget] = None,
                  ecs_targets_list: List[EcsTarget] = None,
@@ -333,7 +336,8 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  redshift_logs: List[RedshiftLogging] = None,
                  s3_bucket_logs: List[S3BucketLogging] = None,
                  athena_databases: List[AthenaDatabase] = None,
-                 cfn_resources_info: List[CloudformationResourceInfo] = None):
+                 cfn_resources_info: List[CloudformationResourceInfo] = None,
+                 availability_zones: AliasesDict[AvailabilityZone] = None):
         BaseEnvironmentContext.__init__(self, invalidated_resources=invalidated_resources, unknown_blocks=unknown_blocks,
                                         managed_resources_summary=managed_resources_summary)
         self.athena_databases = athena_databases or []
@@ -435,6 +439,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.dms_replication_instances = dms_replication_instances or []
         self.vpcs_attributes = vpcs_attributes or []
         self.internet_gateways = internet_gateways or []
+        self.vpc_gateway_attachment: AliasesDict[VpcGatewayAttachment] = vpc_gateway_attachment or AliasesDict()
         self.ecs_service_list = ecs_service_list or []
         self.cloud_watch_event_target_list = cloud_watch_event_target_list or []
         self.ecs_targets_list = ecs_targets_list or []
@@ -500,6 +505,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.dms_replication_instance_subnet_groups = dms_replication_instance_subnet_groups or []
         self.invalidated_resources = invalidated_resources or set()
         self.cfn_resources_info: List[CloudformationResourceInfo] = cfn_resources_info or []
+        self.availability_zones: AliasesDict[AvailabilityZone] = availability_zones or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
     def get_used_network_interfaces(self) -> AliasesDict[NetworkInterface]:

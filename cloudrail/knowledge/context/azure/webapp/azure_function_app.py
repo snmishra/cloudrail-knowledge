@@ -1,26 +1,27 @@
 from typing import Optional, List
 
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
-from cloudrail.knowledge.context.azure.webapp.auth_settings import AuthSettings
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
+from cloudrail.knowledge.context.azure.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.webapp.constants import FieldMode
-from cloudrail.knowledge.context.azure.webapp.site_config import SiteConfig
 
 
 class AzureFunctionApp(AzureResource):
     """
         Attributes:
             name: Function app resource name.
-            auth_settings: Function app authentication settings.
-            site_config: Function app site settings.
+            app_service_config: App service configuration.
+            client_cert_mode: The mode of the Function App's client certificates requirement for incoming requests.
+            https_only: Indicates if the Function App only be accessed via HTTPS
     """
-    def __init__(self, name: str, auth_settings: AuthSettings, site_config: SiteConfig, os_type: str, client_cert_mode: FieldMode = None) -> None:
+    def __init__(self, name: str,
+                 client_cert_mode: FieldMode,
+                 https_only: bool) -> None:
         super().__init__(AzureResourceType.AZURERM_FUNCTION_APP)
         self.name = name
-        self.auth_settings: AuthSettings = auth_settings
-        self.site_config: SiteConfig = site_config
+        self.app_service_config: AzureAppServiceConfig = None
         self.client_cert_mode: FieldMode = client_cert_mode
-        self.os_type: str = os_type
+        self.https_only = https_only
         self.with_aliases(name)
 
     def get_keys(self) -> List[str]:

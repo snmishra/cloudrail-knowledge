@@ -14,7 +14,8 @@ class AppServiceFtpsRequiredRule(AzureBaseRule):
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for app_service in env_context.app_services:
-            if app_service.ftps_state == FtpsState.ALL_ALLOWED:
+            if app_service.app_service_config is not None and \
+                    app_service.app_service_config.ftps_state == FtpsState.ALL_ALLOWED:
                 issues.append(
                     Issue(
                         f'~{app_service.get_type()}~. '

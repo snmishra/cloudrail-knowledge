@@ -14,7 +14,9 @@ class FunctionAppAuthenticationEnableRule(AzureBaseRule):
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for func_app in env_context.function_apps:
-            if func_app.auth_settings is None or not func_app.auth_settings.enabled:
+            if func_app.app_service_config is not None and \
+                    func_app.app_service_config.auth_settings is not None and \
+                    not func_app.app_service_config.auth_settings.enabled:
                 issues.append(
                     Issue(
                         f'The Function App `{func_app.get_friendly_name()}` does not have authentication enabled.',

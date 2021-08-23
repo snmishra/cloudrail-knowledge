@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import Optional
 
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionInstance
+from cloudrail.knowledge.context.connection import ConnectionInstance
 from cloudrail.knowledge.context.aws.iam.role import Role
 
 

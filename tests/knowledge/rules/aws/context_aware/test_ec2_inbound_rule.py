@@ -1,10 +1,10 @@
 import unittest
 
-from cloudrail.knowledge.context.aws.aws_connection import PolicyConnectionProperty, ConnectionDirectionType, PublicConnectionDetail, PrivateConnectionDetail, \
+from cloudrail.knowledge.context.connection import PolicyConnectionProperty, ConnectionDirectionType, PublicConnectionDetail, \
+    PrivateConnectionDetail, \
     ConnectionInstance
 from cloudrail.knowledge.context.aws.ec2.ec2_instance import Ec2Instance
 from cloudrail.knowledge.context.aws.ec2.network_interface import NetworkInterface
-
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.rules.aws.context_aware.ec2_inbound_rule import Ec2InboundRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType

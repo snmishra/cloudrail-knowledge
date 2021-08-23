@@ -59,6 +59,16 @@ class ResourceType(str, Enum):
     STREAMING = 'streaming'
     SECURITY_SERVICES = 'security_services'
 
+class BenchmarkType(str, Enum):
+    PCI_DSS = "PCI DSS"
+    CIS = "CIS"
+
+@dataclass
+class RemediationSteps:
+    console: str
+    terraform: Optional[str] = None
+    cloudformation: Optional[str] = None
+
 
 @dataclass
 class RuleMetadata:
@@ -67,14 +77,13 @@ class RuleMetadata:
     description: str
     logic: str
     severity: RuleSeverity
-    iac_remediation_steps: str
-    console_remediation_steps: str
+    remediation_steps: RemediationSteps
     rule_type: RuleType
     security_layer: SecurityLayer
     resource_types: Set[ResourceType]
     cloud_provider: CloudProvider = field(default=CloudProvider.AMAZON_WEB_SERVICES)
     is_deleted: bool = False
-    compliance: Dict[str, str] = field(default_factory=dict)
+    compliance: Dict[BenchmarkType, Dict[str, str]] = field(default_factory=dict)
 
 
 def rule_matches_query(rule_id: str, rule_name: str, query: Optional[str]) -> bool:
