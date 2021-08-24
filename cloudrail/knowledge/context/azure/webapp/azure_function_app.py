@@ -23,7 +23,7 @@ class AzureFunctionApp(AzureResource):
         self.client_cert_mode: FieldMode = client_cert_mode
         self.https_only = https_only
         self.with_aliases(name)
-        self.functions_worker_runtime: str = functions_worker_runtime
+
         self.java_version: str = java_version
 
     def get_keys(self) -> List[str]:
