@@ -29,9 +29,6 @@ class S3BucketVersioning(AwsResource):
         return 'https://s3.console.aws.amazon.com/s3/buckets/{0}?region={1}&tab=properties' \
             .format(self.bucket_name, self.region)
 
-    def get_arn(self) -> str:
-        return f'arn:aws:s3:::{self.bucket_name}'
-
-    @property
-    def is_tagable(self) -> bool:
-        return True
+    @staticmethod
+    def is_standalone() -> bool:
+        return False
