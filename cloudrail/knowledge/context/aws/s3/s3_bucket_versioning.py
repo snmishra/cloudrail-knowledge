@@ -30,8 +30,8 @@ class S3BucketVersioning(AwsResource):
             .format(self.bucket_name, self.region)
 
     def get_arn(self) -> str:
-        pass
+        return f'arn:aws:s3:::{self.bucket_name}'
 
     @property
     def is_tagable(self) -> bool:
-        return False
+        return True
