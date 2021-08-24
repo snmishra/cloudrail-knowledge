@@ -22,14 +22,14 @@ class TestFunctionAppUseLatestTlsVersionRule(TestCase):
             ['java version win is 11 the rule should not alert', 'java', '11', False],
             ['java version linux is 1.8 the rule should alert', 'java', 'JAVA|8', True],
             ['java version win is 11 the rule should not alert', 'java', '1.8', True],
-            ['java version win is 11 the rule should not alert', 'python', None, False]
+            ['java version win is 11 the rule should not alert', 'python', '3.9', False]
         ]
     )
-    def test_non_car_function_app_using_latest_java_version(self, unused_name: str, functions_worker_runtime: str, java_version: str, should_alert: bool):
+    def test_non_car_function_app_using_latest_java_version(self, unused_name: str, language_type: str, language_version: str, should_alert: bool):
         # Arrange
         function_app: AzureFunctionApp = create_empty_entity(AzureFunctionApp)
-        function_app.functions_worker_runtime = functions_worker_runtime
-        function_app.java_version = java_version
+        function_app.language_type = language_type
+        function_app.language_version = language_version
         context = AzureEnvironmentContext(function_apps=AliasesDict(function_app))
         # Act
         result = self.rule.run(context, {})

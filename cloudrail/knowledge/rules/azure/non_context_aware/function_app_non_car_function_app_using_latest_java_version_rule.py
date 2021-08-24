@@ -13,8 +13,8 @@ class FunctionAppUsingLatestJavaVersionRule(AzureBaseRule):
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for func_app in env_context.function_apps:
-            if func_app.functions_worker_runtime == 'java':
-                if '11' not in func_app.java_version:
+            if func_app.language_type == 'java':
+                if '11' not in func_app.language_version:
                     issues.append(
                         Issue(
                             f'The {func_app.get_type()} `{func_app.get_friendly_name()}` does not use the latest Azure supported Java version (11).',
@@ -23,4 +23,5 @@ class FunctionAppUsingLatestJavaVersionRule(AzureBaseRule):
         return issues
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
+        #TODO - add azurerm_app_service_plan as condition
         return bool(environment_context.function_apps)
