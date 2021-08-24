@@ -29,6 +29,13 @@ class S3BucketEncryption(AwsResource):
         return 'https://s3.console.aws.amazon.com/s3/buckets/{0}?region={1}&tab=properties'\
             .format(self.bucket_name, self.region)
 
+    def get_arn(self) -> str:
+        pass
+
+    @property
+    def is_tagable(self) -> bool:
+        return False
+
     @staticmethod
     def is_standalone() -> bool:
         return False
