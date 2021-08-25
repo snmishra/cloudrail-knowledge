@@ -1,5 +1,5 @@
 import functools
-from typing import List, Dict, Optional, Union, TypeVar, Callable, Set
+from typing import List, Dict, Optional, Union, Callable, Set
 from cloudrail.knowledge.context.aws.ec2.vpc_gateway_attachment import VpcGatewayAttachment
 from cloudrail.knowledge.context.aws.ec2.availability_zone import AvailabilityZone
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
@@ -162,11 +162,10 @@ from cloudrail.knowledge.context.aws.workspaces.workspace_directory import Works
 from cloudrail.knowledge.context.aws.workspaces.workspaces import Workspace
 from cloudrail.knowledge.context.aws.xray.xray_encryption import XrayEncryption
 from cloudrail.knowledge.context.managed_resources_summary import ManagedResourcesSummary
-from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult
+from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult, _TMergeAble
 from cloudrail.knowledge.context.mergeable import Mergeable
 from cloudrail.knowledge.context.unknown_block import UnknownBlock
 
-_TMergeAble = TypeVar('_TMergeAble', bound=Mergeable)
 
 
 class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources should be in alias dict
@@ -512,26 +511,26 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         return AliasesDict(*[eni for eni in self.network_interfaces if eni.owner])
 
     @functools.lru_cache(maxsize=None)
-    def get_all_nodes_resources(self) -> List[NetworkResource]:
+    def get_all_nodes_resources(self) -> Set[NetworkResource]:
         return [instance.network_resource for instance in self.get_all_network_entities()]
 
     @functools.lru_cache(maxsize=None)
-    def get_all_network_entities(self) -> List[NetworkEntity]:
+    def get_all_network_entities(self) -> Set[NetworkEntity]:
         condition: Callable = lambda resource: isinstance(resource, NetworkEntity)
         return self.get_all_mergeable_resources(condition)
 
     @functools.lru_cache(maxsize=None)
-    def get_all_aws_clients(self) -> List[AwsClient]:
+    def get_all_aws_clients(self) -> Set[AwsClient]:
         condition: Callable = lambda resource: isinstance(resource, AwsClient)
         return self.get_all_mergeable_resources(condition)
 
     @functools.lru_cache(maxsize=None)
-    def get_iac_managed_policies(self) -> List[Policy]:
+    def get_iac_managed_policies(self) -> Set[Policy]:
         condition: Callable = lambda resource: isinstance(resource, Policy) and resource.is_managed_by_iac
         return self.get_all_mergeable_resources(condition)
 
     @functools.lru_cache(maxsize=None)
-    def get_all_network_entities_aws_clients(self) -> List[Union[NetworkEntity, AwsClient]]:
+    def get_all_network_entities_aws_clients(self) -> Set[Union[NetworkEntity, AwsClient]]:
         condition: Callable = lambda resource: isinstance(resource, AwsClient) and isinstance(resource, NetworkEntity)
         return self.get_all_mergeable_resources(condition)
 
@@ -540,35 +539,19 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         return self.roles + self.users + self.groups
 
     @functools.lru_cache(maxsize=None)
-    def get_all_non_iac_managed_resources(self) -> List[_TMergeAble]:
+    def get_all_non_iac_managed_resources(self) -> Set[_TMergeAble]:
         condition: Callable = lambda resource: isinstance(resource, AwsResource) and not resource.is_managed_by_iac
         return self.get_all_mergeable_resources(condition)
 
     @functools.lru_cache(maxsize=None)
-    def get_all_taggable_resources(self) -> List[_TMergeAble]:
+    def get_all_taggable_resources(self) -> Set[_TMergeAble]:
         condition: Callable = lambda aws_resource: aws_resource.is_tagable
         return self.get_all_mergeable_resources(condition)
 
     @functools.lru_cache(maxsize=None)
-    def get_all_ec2_instance_types_with_default_ebs_optimization(self) -> Optional[List[Ec2InstanceType]]:
+    def get_all_ec2_instance_types_with_default_ebs_optimization(self) -> Optional[Set[Ec2InstanceType]]:
         if self.accounts:
             condition: Callable = lambda resource: isinstance(resource, Ec2InstanceType) and resource.ebs_info.ebs_optimized_support == 'default'
             return self.get_all_mergeable_resources(condition)
         else:
             return []
-
-    def get_all_mergeable_resources(self, condition: Callable = lambda resource: True) -> List[_TMergeAble]:
-        all_resources: List[Mergeable] = []
-        for _, attribute in vars(self).items():
-            if attribute is self.invalidated_resources:
-                continue
-            if isinstance(attribute, list):
-                iterable = attribute
-            elif isinstance(attribute, (dict, AliasesDict)):
-                iterable = attribute.values()
-            else:
-                continue
-            for resource in iterable:
-                if isinstance(resource, Mergeable) and condition(resource):
-                    all_resources.append(resource)
-        return all_resources
