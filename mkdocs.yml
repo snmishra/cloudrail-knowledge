@@ -34,6 +34,7 @@ nav:
       - 'elb': 'context/aws/elb/README.md'
       - 'emr': 'context/aws/emr/README.md'
       - 'es': 'context/aws/es/README.md'
+      - 'fsx': 'context/aws/fsx/README.md'
       - 'glacier': 'context/aws/glacier/README.md'
       - 'globalaccelerator': 'context/aws/globalaccelerator/README.md'
       - 'glue': 'context/aws/glue/README.md'
