@@ -124,7 +124,6 @@ from cloudrail.knowledge.context.aws.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.kms.kms_key_policy import KmsKeyPolicy
 from cloudrail.knowledge.context.aws.lambda_.lambda_alias import LambdaAlias
 from cloudrail.knowledge.context.aws.lambda_.lambda_function import LambdaFunction
-from cloudrail.knowledge.context.aws.lambda_.lambda_policy_statements import LambdaPolicyStatements
 from cloudrail.knowledge.context.aws.mq.mq_broker import MqBroker
 from cloudrail.knowledge.context.aws.neptune.neptune_cluster import NeptuneCluster
 from cloudrail.knowledge.context.aws.neptune.neptune_instance import NeptuneInstance
@@ -165,7 +164,7 @@ from cloudrail.knowledge.context.managed_resources_summary import ManagedResourc
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult, _TMergeAble
 from cloudrail.knowledge.context.mergeable import Mergeable
 from cloudrail.knowledge.context.unknown_block import UnknownBlock
-
+from cloudrail.knowledge.context.aws.lambda_.lambda_policy import LambdaPolicy
 
 
 class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources should be in alias dict
@@ -266,6 +265,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  s3_bucket_regions: List[S3BucketRegions] = None,
                  s3_bucket_acls: List[S3ACL] = None,
                  s3_bucket_policies: List[S3Policy] = None,
+                 lambda_policies: List[LambdaPolicy] = None,
                  s3_bucket_access_points: List[S3BucketAccessPoint] = None,
                  s3_bucket_access_points_policies: List[S3AccessPointPolicy] = None,
                  s3_public_access_block_settings_list: List[PublicAccessBlockSettings] = None,
@@ -291,7 +291,6 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  rest_api_gw_policies: List[RestApiGwPolicy] = None,
                  cloudwatch_logs_destination_policies: List[CloudWatchLogsDestinationPolicy] = None,
                  elastic_search_domains_policies: List[ElasticSearchDomainPolicy] = None,
-                 lambda_policy_statements: List[LambdaPolicyStatements] = None,
                  lambda_aliases: AliasesDict[LambdaAlias] = None,
                  efs_file_systems_policies: List[EfsPolicy] = None,
                  glacier_vaults_policies: List[GlacierVaultPolicy] = None,
@@ -379,6 +378,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.load_balancer_listeners = load_balancer_listeners or []
         self.s3_buckets = s3_buckets or AliasesDict()
         self.s3_bucket_objects = s3_bucket_objects or []
+        self.lambda_policies = lambda_policies or []
         self.roles = roles or []
         self.users = users or []
         self.groups = groups or []
@@ -490,7 +490,6 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.rest_api_gw_policies = rest_api_gw_policies or []
         self.cloudwatch_logs_destination_policies = cloudwatch_logs_destination_policies or []
         self.elastic_search_domains_policies = elastic_search_domains_policies or []
-        self.lambda_policy_statements = lambda_policy_statements or []
         self.lambda_aliases = lambda_aliases or AliasesDict()
         self.efs_file_systems_policies = efs_file_systems_policies or []
         self.glacier_vaults_policies = glacier_vaults_policies or []
