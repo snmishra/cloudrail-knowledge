@@ -3,13 +3,29 @@ A few rules that use objects from this package:
 
 <details>
 <summary>non_car_unused_network_security_group</summary>
-<summary>non_car_vpn_gateway_disallow_basic_sku</summary>
-<summary>car_vm_not_publicly_accessible_rdp</summary>
 
 ```python
 --8<--
 cloudrail/knowledge/rules/azure/non_context_aware/unused_network_security_group_rule.py
+--8<--
+```
+</details>
+
+<details>
+<summary>non_car_vpn_gateway_disallow_basic_sku</summary>
+
+```python
+--8<--
 cloudrail/knowledge/rules/azure/non_context_aware/vpn_gateway_disallow_basic_sku_rule.py
+--8<--
+```
+</details>
+
+<details>
+<summary>car_vm_not_publicly_accessible_rdp</summary>
+
+```python
+--8<--
 cloudrail/knowledge/rules/azure/context_aware/not_publicly_accessible_rule.py
 --8<--
 ```
