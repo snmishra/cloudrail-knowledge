@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import List
 from cloudrail.knowledge.context.azure.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.constants.azure_resource_type import AzureResourceType
 

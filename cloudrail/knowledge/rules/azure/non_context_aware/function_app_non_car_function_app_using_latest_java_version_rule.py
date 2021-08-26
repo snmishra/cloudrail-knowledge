@@ -18,7 +18,7 @@ class FunctionAppUsingLatestJavaVersionRule(AzureBaseRule):
                     version = func_app.app_service_config.linux_fx_version.split('|')[1]
                 else:
                     version = func_app.app_service_config.java_version
-                if '11' != version:
+                if version != '11':
                     issues.append(
                         Issue(
                             f'The {func_app.get_type()} `{func_app.get_friendly_name()}` does not use the latest Azure supported Java version (11).',

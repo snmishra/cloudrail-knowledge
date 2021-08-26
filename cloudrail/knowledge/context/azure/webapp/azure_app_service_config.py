@@ -21,7 +21,8 @@ class AzureAppServiceConfig(AzureResource):
 
     """
 
-    def __init__(self, name, ftps_state: FtpsState, auth_settings: AuthSettings, minimum_tls_version: str, http2_enabled: bool, logs: DiagnosticLogs, linux_fx_version: str = '', java_version: Optional[str] = ''):
+    def __init__(self, name, ftps_state: FtpsState, auth_settings: AuthSettings, minimum_tls_version: str,
+                 http2_enabled: bool, logs: DiagnosticLogs, linux_fx_version: str = '', java_version: Optional[str] = ''):
         super().__init__(AzureResourceType.NONE)
         self.name: str = name
         self.ftps_state: FtpsState = ftps_state
