@@ -66,8 +66,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  public_ips: AliasesDict[AzurePublicIp] = None,
                  network_security_group_rules: List[AzureNetworkSecurityRule] = None,
                  app_security_groups: AliasesDict[AzureApplicationSecurityGroup] = None,
-                 nic_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = None,
-                 app_service_plans: AliasesDict[AzureAppServicePlan] = None,
+                 nic_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = None
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
