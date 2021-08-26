@@ -30,6 +30,7 @@ from cloudrail.knowledge.context.azure.vm.azure_virtual_machine import AzureVirt
 from cloudrail.knowledge.context.azure.webapp.azure_app_service import AzureAppService
 from cloudrail.knowledge.context.azure.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.webapp.azure_function_app import AzureFunctionApp
+from cloudrail.knowledge.context.azure.webapp.azurerm_app_service_plan import AzureAppServicePlan
 from cloudrail.knowledge.context.base_environment_context import (BaseEnvironmentContext, CheckovResult)
 
 
@@ -66,6 +67,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  network_security_group_rules: List[AzureNetworkSecurityRule] = None,
                  app_security_groups: AliasesDict[AzureApplicationSecurityGroup] = None,
                  nic_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = None,
+                 app_service_plans: AliasesDict[AzureAppServicePlan] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -100,3 +102,4 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.app_security_groups: AliasesDict[AzureApplicationSecurityGroup] = app_security_groups or AliasesDict()
         self.network_interface_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = \
             nic_application_security_group_association or AliasesDict()
+        self.app_service_plans: AliasesDict[AzureAppServicePlan] = app_service_plans or AliasesDict()
