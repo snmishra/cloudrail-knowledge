@@ -1,4 +1,4 @@
-pylint==2.9.6
+pylint==2.8.3
 pytest
 jsonpickle
 parameterized
