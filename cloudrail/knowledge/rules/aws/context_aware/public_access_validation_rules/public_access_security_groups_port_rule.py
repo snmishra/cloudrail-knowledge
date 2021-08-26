@@ -75,7 +75,6 @@ class PublicAccessSecurityGroupsPortRule(AwsBaseRule):
                         sg.get_friendly_name()),
                     eni.owner,
                     sg)
-                # pylint: disable=consider-using-dict-items
                 for eni in eni_to_sg_map for sg in eni_to_sg_map[eni]]
 
     @staticmethod
