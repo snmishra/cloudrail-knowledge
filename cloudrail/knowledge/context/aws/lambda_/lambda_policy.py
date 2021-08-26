@@ -7,7 +7,7 @@ from cloudrail.knowledge.context.aws.service_name import AwsServiceName
 from cloudrail.knowledge.utils.utils import hash_list
 
 
-class LambdaPolicyStatements(Policy):
+class LambdaPolicy(Policy):
     """
         Attributes:
             function_name: The name of the Lambda Function the policy statements are for.
@@ -20,7 +20,6 @@ class LambdaPolicyStatements(Policy):
                  statements: List[PolicyStatement], qualifier: str = None):
         super().__init__(account, statements, None, AwsServiceName.AWS_LAMBDA_PERMISSION)
         self.function_name: str = function_name
-        self.statements: List[PolicyStatement] = statements
         self.qualifier: str = qualifier
         self.region: str = region
 
