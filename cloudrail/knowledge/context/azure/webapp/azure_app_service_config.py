@@ -28,7 +28,6 @@ class AzureAppServiceConfig(AzureResource):
         self.http2_enabled: bool = http2_enabled
         self.logs: DiagnosticLogs = logs
 
-
     def get_keys(self) -> List[str]:
         return [self.get_name()]
 

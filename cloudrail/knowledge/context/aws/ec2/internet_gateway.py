@@ -44,4 +44,4 @@ class InternetGateway(AwsResource):
 
     @property
     def is_tagable(self) -> bool:
-        return False
+        return True

@@ -1,11 +1,14 @@
+import functools
 from dataclasses import dataclass
-from typing import Set, List
+from typing import Set, List, Callable, TypeVar
 
 from cloudrail.knowledge.context.managed_resources_summary import ManagedResourcesSummary
 
 from cloudrail.knowledge.context.mergeable import Mergeable
 from cloudrail.knowledge.context.unknown_block import UnknownBlock
+from cloudrail.knowledge.context.aliases_dict import AliasesDict
 
+_TMergeAble = TypeVar('_TMergeAble', bound=Mergeable)
 
 class BaseEnvironmentContext:
 
@@ -24,6 +27,23 @@ class BaseEnvironmentContext:
                     func.cache_clear()  # clearing lru_cache
                 except Exception:
                     pass
+
+    @functools.lru_cache(maxsize=None)
+    def get_all_mergeable_resources(self, condition: Callable = lambda resource: True) -> Set[_TMergeAble]:
+        all_resources: Set[Mergeable] = set()
+        for _, attribute in vars(self).items():
+            if attribute is self.invalidated_resources:
+                continue
+            if isinstance(attribute, list):
+                iterable = attribute
+            elif isinstance(attribute, (dict, AliasesDict)):
+                iterable = attribute.values()
+            else:
+                continue
+            for resource in iterable:
+                if isinstance(resource, Mergeable) and condition(resource):
+                    all_resources.add(resource)
+        return all_resources
 
 
 @dataclass
