@@ -1,5 +1,6 @@
 import functools
 from typing import List, Dict, Optional, Union, TypeVar, Callable, Set
+
 from cloudrail.knowledge.context.aws.ec2.vpc_gateway_attachment import VpcGatewayAttachment
 from cloudrail.knowledge.context.aws.ec2.availability_zone import AvailabilityZone
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
@@ -92,6 +93,7 @@ from cloudrail.knowledge.context.aws.emr.emr_cluster import EmrCluster
 from cloudrail.knowledge.context.aws.emr.emr_public_access_config import EmrPublicAccessConfiguration
 from cloudrail.knowledge.context.aws.es.elastic_search_domain import ElasticSearchDomain
 from cloudrail.knowledge.context.aws.es.elastic_search_domain_policy import ElasticSearchDomainPolicy
+from cloudrail.knowledge.context.aws.fsx.fsx_windows_file_system import FsxWindowsFileSystem
 from cloudrail.knowledge.context.aws.glacier.glacier_vault import GlacierVault
 from cloudrail.knowledge.context.aws.glacier.glacier_vault_policy import GlacierVaultPolicy
 from cloudrail.knowledge.context.aws.globalaccelerator.global_accelerator import GlobalAccelerator
@@ -337,7 +339,8 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  s3_bucket_logs: List[S3BucketLogging] = None,
                  athena_databases: List[AthenaDatabase] = None,
                  cfn_resources_info: List[CloudformationResourceInfo] = None,
-                 availability_zones: AliasesDict[AvailabilityZone] = None):
+                 availability_zones: AliasesDict[AvailabilityZone] = None,
+                 fsx_windows_file_systems: AliasesDict[FsxWindowsFileSystem] = None):
         BaseEnvironmentContext.__init__(self, invalidated_resources=invalidated_resources, unknown_blocks=unknown_blocks,
                                         managed_resources_summary=managed_resources_summary)
         self.athena_databases = athena_databases or []
@@ -506,6 +509,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.invalidated_resources = invalidated_resources or set()
         self.cfn_resources_info: List[CloudformationResourceInfo] = cfn_resources_info or []
         self.availability_zones: AliasesDict[AvailabilityZone] = availability_zones or AliasesDict()
+        self.fsx_windows_file_systems: AliasesDict[FsxWindowsFileSystem] = fsx_windows_file_systems or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
     def get_used_network_interfaces(self) -> AliasesDict[NetworkInterface]:
