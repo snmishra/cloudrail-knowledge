@@ -37,7 +37,6 @@ class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
         ResourceBasedPolicy.__init__(self, account, region, AwsServiceName.AWS_LAMBDA_FUNCTION,
                                      AwsServiceAttributes(aws_service_type=AwsServiceType.LAMBDA.value, region=region))
         AwsClient.__init__(self)
-        self.resource_based_policy = Policy(self.account, [])
         self.lambda_func_arn_set: Set[str] = {arn, create_lambda_function_arn(account, region, function_name, lambda_func_version)}
         self.arn: str = arn
         self.function_name: str = function_name
@@ -49,6 +48,7 @@ class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
         self.lambda_func_alias: Optional[LambdaAlias] = None
         self.log_group: CloudWatchLogGroup = None
         self.xray_tracing_enabled: bool = xray_tracing_enabled
+        self.resource_based_policy: Policy = None
 
     def get_keys(self) -> List[str]:
         return [self.get_arn()]
