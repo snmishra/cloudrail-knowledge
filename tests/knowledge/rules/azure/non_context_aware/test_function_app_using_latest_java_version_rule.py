@@ -24,7 +24,8 @@ class TestFunctionAppUseLatestTlsVersionRule(TestCase):
             ['java version linux is 1.8 the rule should alert', 'JAVA|8', '', True],
             ['java version win is 11 the rule should not alert', '', '1.8', True],
             ['java version win is 11 the rule should not alert', '', None, False],
-            ['java version win is 11 the rule should not alert', '', '1.11', True]
+            ['java version win is 11 the rule should not alert', '', '1.11', True],
+            ['java version linux is 11 the rule should alert', 'PYTHON|11', None, False]
         ]
     )
     def test_non_car_function_app_using_latest_java_version(self, unused_name: str, linux_fx_version: str, java_version: str, should_alert: bool):

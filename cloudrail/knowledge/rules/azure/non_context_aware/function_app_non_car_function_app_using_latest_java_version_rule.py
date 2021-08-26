@@ -12,18 +12,24 @@ class FunctionAppUsingLatestJavaVersionRule(AzureBaseRule):
 
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
+        java = False
+        version = ''
         for func_app in env_context.function_apps:
             if func_app.app_service_config.linux_fx_version or func_app.app_service_config.java_version:
-                if func_app.app_service_config.linux_fx_version:
-                    version = func_app.app_service_config.linux_fx_version.split('|')[1]
-                else:
+                if func_app.app_service_config.linux_fx_version and func_app.app_service_config.linux_fx_version.split('|')[0] == 'JAVA':
+                    if func_app.app_service_config.linux_fx_version.split('|')[0] == 'JAVA':
+                        version = func_app.app_service_config.linux_fx_version.split('|')[1]
+                        java = True
+                elif func_app.app_service_config.java_version:
                     version = func_app.app_service_config.java_version
-                if version != '11':
-                    issues.append(
-                        Issue(
-                            f'The {func_app.get_type()} `{func_app.get_friendly_name()}` does not use the latest Azure supported Java version (11).',
-                            func_app,
-                            func_app))
+                    java = True
+                if java:
+                    if version != '11':
+                        issues.append(
+                            Issue(
+                                f'The {func_app.get_type()} `{func_app.get_friendly_name()}` does not use the latest Azure supported Java version (11).',
+                                func_app,
+                                func_app))
         return issues
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
