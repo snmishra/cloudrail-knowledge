@@ -33,7 +33,6 @@ class AzureAppServiceConfig(AzureResource):
         self.linux_fx_version: str = linux_fx_version
         self.java_version: str = java_version
 
-
     def get_keys(self) -> List[str]:
         return [self.get_name()]
 

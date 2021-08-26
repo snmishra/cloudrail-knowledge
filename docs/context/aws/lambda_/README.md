@@ -23,7 +23,7 @@ cloudrail/knowledge/rules/aws/context_aware/indirect_public_access_rules/s3_buck
     selection:
       inherited_members: true
 
-## ::: cloudrail.knowledge.context.aws.lambda_.lambda_policy_statements
+## ::: cloudrail.knowledge.context.aws.lambda_.lambda_policy
     rendering:
       show_root_toc_entry: false
     selection:
