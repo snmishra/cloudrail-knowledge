@@ -16,10 +16,12 @@ class AzureAppServiceConfig(AzureResource):
             minimum_tls_version: The minimum supported TLS version for the function app.
             http2_enabled: Indication if http2 protocol should be enabled or not.
             logs: The DiagnosticLogs indicate if the logs (detailed error messages, HTTP logging, and failed requests tracing) are enabled or not
+            linux_fx_version: The version function app using if the kind is Linux
+            java_version: The java version function app using if the kind is FunctionApp
 
     """
 
-    def __init__(self, name, ftps_state: FtpsState, auth_settings: AuthSettings, minimum_tls_version: str, http2_enabled: bool, logs: DiagnosticLogs):
+    def __init__(self, name, ftps_state: FtpsState, auth_settings: AuthSettings, minimum_tls_version: str, http2_enabled: bool, logs: DiagnosticLogs, linux_fx_version: Optional[str] = '', java_version: Optional[str] = ''):
         super().__init__(AzureResourceType.NONE)
         self.name: str = name
         self.ftps_state: FtpsState = ftps_state
@@ -27,6 +29,8 @@ class AzureAppServiceConfig(AzureResource):
         self.minimum_tls_version: str = minimum_tls_version
         self.http2_enabled: bool = http2_enabled
         self.logs: DiagnosticLogs = logs
+        self.linux_fx_version: str = linux_fx_version
+        self.java_version: str = java_version
 
 
     def get_keys(self) -> List[str]:

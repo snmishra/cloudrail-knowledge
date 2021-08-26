@@ -5,8 +5,8 @@ from parameterized import parameterized
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
+from cloudrail.knowledge.context.azure.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.webapp.azure_function_app import AzureFunctionApp
-from cloudrail.knowledge.context.azure.webapp.azurerm_app_service_plan import AzureAppServicePlan
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_non_car_function_app_using_latest_java_version_rule import \
     FunctionAppUsingLatestJavaVersionRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
@@ -19,22 +19,22 @@ class TestFunctionAppUseLatestTlsVersionRule(TestCase):
 
     @parameterized.expand(
         [
-            ['java version linux is 11 the rule should alert', 'Linux', 'java', 'JAVA|11', False],
-            ['java version win is 11 the rule should not alert', 'FunctionApp', 'java', '11', False],
-            ['java version linux is 1.8 the rule should alert', 'Linux', 'java', 'JAVA|8', True],
-            ['java version win is 11 the rule should not alert', 'FunctionApp', 'java', '1.8', True],
-            ['java version win is 11 the rule should not alert', 'Linux', 'python', '3.9', False],
-            ['java version win is 11 the rule should not alert', 'elastic', 'java', '3.9', False]
+            ['java version linux is 11 the rule should alert', 'JAVA|11', '', False],
+            ['java version win is 11 the rule should not alert', '', '11', False],
+            ['java version linux is 1.8 the rule should alert', 'JAVA|8', '', True],
+            ['java version win is 11 the rule should not alert', '', '1.8', True],
+            ['java version win is 11 the rule should not alert', '', '', False],
+            ['java version win is 11 the rule should not alert', '', '1.11', True]
         ]
     )
-    def test_non_car_function_app_using_latest_java_version(self, unused_name: str, kind: str, language_type: str, language_version: str, should_alert: bool):
+    def test_non_car_function_app_using_latest_java_version(self, unused_name: str, linux_fx_version: str, java_version: str, should_alert: bool):
         # Arrange
         function_app: AzureFunctionApp = create_empty_entity(AzureFunctionApp)
-        app_service_plan: AzureAppServicePlan = create_empty_entity(AzureAppServicePlan)
-        app_service_plan.kind = kind
-        function_app.language_type = language_type
-        function_app.language_version = language_version
-        context = AzureEnvironmentContext(function_apps=AliasesDict(function_app), app_service_plans=AliasesDict(app_service_plan))
+        function_app_config: AzureAppServiceConfig = create_empty_entity(AzureAppServiceConfig)
+        function_app_config.linux_fx_version = linux_fx_version
+        function_app_config.java_version = java_version
+        function_app.app_service_config = function_app_config
+        context = AzureEnvironmentContext(function_apps=AliasesDict(function_app))
         # Act
         result = self.rule.run(context, {})
         # Assert

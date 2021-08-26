@@ -12,22 +12,18 @@ class AzureFunctionApp(AzureResource):
             name: Function app resource name.
             app_service_config: App service configuration.
             client_cert_mode: The mode of the Function App's client certificates requirement for incoming requests.
-            https_only: Indicates if the Function App only be accessed via HTTPS
-            language_type: The language the function app using- FUNCTIONS_WORKER_RUNTIME
-            language_version: The language version function aoo using
+            https_only: Indicates if the Function App only be accessed via HTTPS.
 
     """
     def __init__(self, name: str,
                  client_cert_mode: FieldMode,
-                 https_only: bool, language_version: Optional[str] = None, language_type: Optional[str] = None):
+                 https_only: bool):
         super().__init__(AzureResourceType.AZURERM_FUNCTION_APP)
         self.name = name
         self.app_service_config: AzureAppServiceConfig = None
         self.client_cert_mode: FieldMode = client_cert_mode
         self.https_only = https_only
         self.with_aliases(name)
-        self.language_type: str = language_type
-        self.language_version: str = language_version
 
     def get_keys(self) -> List[str]:
         return [self.subscription_id, self.name, self.location]
