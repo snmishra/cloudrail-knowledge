@@ -1,4 +1,3 @@
-from typing import Optional
 from unittest import TestCase
 
 from parameterized import parameterized
