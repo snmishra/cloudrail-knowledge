@@ -21,7 +21,8 @@ class TestFunctionAppUseLatestTlsVersionRule(TestCase):
         [
             ['python version is 3.9 the rule should not alert', 'Python|3.9', False],
             ['python version is 3.10 the rule should not alert', 'Python|3.10', False],
-            ['python version is 3.8 the rule should alert', 'Python|3.8', True]
+            ['python version is 3.8 the rule should alert', 'Python|3.8', True],
+            ['python version is empty the rule should not alert', '', False]
         ]
     )
     def test_non_car_function_app_using_latest_tls_version_fail(self, unused_name: str, linux_fx_version: str, should_alert: bool):
