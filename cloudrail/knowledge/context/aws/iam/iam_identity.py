@@ -27,7 +27,7 @@ class IamIdentity(AwsResource, ConnectionInstance, Cloneable):
         self.arn: str = arn
         self.permissions_policies: List[Union[ManagedPolicy, InlinePolicy]] = []
         self.permission_boundary: Optional[Policy] = None
-        self.policy_to_escalation_actions_map: Dict[str, Set[str]] = dict()
+        self.policy_to_escalation_actions_map: Dict[str, Set[str]] = {}
         self.policy_attach_origin_map: List[Dict] = []
 
     @abstractmethod

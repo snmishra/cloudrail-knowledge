@@ -3,11 +3,19 @@ A few rules that use objects from this package:
 
 <details>
 <summary>non_car_auto_provisioning_log_analytics_agent_enabled</summary>
-<summary>non_car_email_notification_high_severity_alerts_enabled</summary>
 
 ```python
 --8<--
 cloudrail/knowledge/rules/azure/non_context_aware/auto_provisioning_log_analytics_agent_disabled_rule.py
+--8<--
+```
+</details>
+
+<details>
+<summary>non_car_email_notification_high_severity_alerts_enabled</summary>
+
+```python
+--8<--
 cloudrail/knowledge/rules/azure/non_context_aware/email_notification_high_severity_alerts_enabled_rule.py
 --8<--
 ```

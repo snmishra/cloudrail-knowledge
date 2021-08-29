@@ -153,6 +153,7 @@ class AwsServiceName(Enum):
     AWS_CONFIG_CONFIGURATION_AGGREGATOR = 'aws_config_configuration_aggregator'
     AWS_API_GATEWAY_STAGE = 'aws_api_gateway_stage'
     AWS_ATHENA_DATABASE = 'aws_athena_database'
+    AWS_FSX_WINDOWS_FILE_SYSTEM = 'aws_fsx_windows_file_system'
 
 
 AWS_SERVICES_DOMAIN: str = ".amazonaws.com"

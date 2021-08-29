@@ -12,9 +12,11 @@ class AzureStorageAccount(AzureResource):
             account_replication_type: The replication type of the storage account
             network_rules: The networking rules to allow or deny access from.
             enable_https_traffic_only: A flag indicating if only https traffic is allowed
+            allow_blob_public_access: A flag indicator, True if enable public access to containers and blobs else disable.
     """
 
-    def __init__(self, storage_name: str, account_tier: str, account_replication_type: str, enable_https_traffic_only: bool) -> None:
+    def __init__(self, storage_name: str, account_tier: str, account_replication_type: str,
+                 enable_https_traffic_only: bool, allow_blob_public_access: bool):
         super().__init__(AzureResourceType.AZURERM_STORAGE_ACCOUNT)
         self.storage_name: str = storage_name
         self.with_aliases(storage_name)
@@ -22,6 +24,7 @@ class AzureStorageAccount(AzureResource):
         self.account_replication_type: str = account_replication_type
         self.enable_https_traffic_only: bool = enable_https_traffic_only
         self.network_rules: AzureStorageAccountNetworkRules = None
+        self.allow_blob_public_access: bool = allow_blob_public_access
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]

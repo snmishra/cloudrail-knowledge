@@ -417,6 +417,21 @@ rules_metadata:
   security_layer: encryption
   severity: medium
 - cloud_provider: azure
+  description: Cloudrail will review the Storage Accounts configuration in your environment.
+    If an account is allowing public access to containers and blobs, Cloudrail will highlight it as a violation.
+  human_readable_logic: Cloudrail will review the Storage Account configuration within your Azure subscription and Terraform plan to ensure that public access is disabled.
+  name: Ensure Storage Account does not allow public access
+  remediation_steps:
+    console: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure?tabs=portal#allow-or-disallow-public-read-access-for-a-storage-account>
+      in order to set Blob public access to Disabled.
+    terraform: For the azurerm_storage_account resource, set the allow_blob_public_access argument to false.
+  resource_type:
+    - storage
+  rule_id: non_car_storage_account_public_access
+  rule_type: non_context_aware
+  security_layer: networking
+  severity: medium
+- cloud_provider: azure
   description:
     params:
     - Container Registries
@@ -717,6 +732,56 @@ rules_metadata:
   rule_id: non_car_unattached_managed_disks_encrypted
   rule_type: non_context_aware
   security_layer: encryption
+  severity: medium
+- cloud_provider: azure
+  description: Cloudrail will review the Web Apps configuration in your environment. If an app does not have client certificates enabled, Cloudrail will highlight it as a violation.
+  human_readable_logic: Cloudrail will review the Web Apps configuration within your Azure subscription and Terraform plan to ensure client certificates are enabled.
+  name: Ensure client certificates are required in Web App
+  remediation_steps:
+    console: Follow the guide at <https://docs.microsoft.com/en-us/azure/app-service/app-service-web-configure-tls-mutual-auth> in order to enable client certificates for Web App.
+    terraform: For the azurerm_app_service resource, set the client_cert_enabled argument to true.
+  resource_type:
+  - compute
+  rule_id: non_car_client_certificates_required_in_web_app
+  rule_type: non_context_aware
+  security_layer: iam
+  severity: medium
+- cloud_provider: azure
+  description:
+    Cloudrail will review the Virtual Machines and Virtual Machine Scale Sets configuration in your environment.
+    If they are using unmanaged disks, Cloudrail will highlight it as a violation.
+  human_readable_logic:
+    Cloudrail will review the Virtual Machines and Virtual Machines Scale Sets configuration within your Azure subscription and Terraform plan to ensure they are using Managed Disks.
+  name: Ensure Virtual Machines and Virtual Machine Scale Sets only use managed disks
+  remediation_steps:
+    console:
+      Follow the guide at <https://docs.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview> in order to attach managed disks to a Virtual Machine. Follow the guide at <https://docs.microsoft.com/en-us/azure/virtual-machine-scale-sets/tutorial-use-disks-powershell> in order to attache managed disk to a Virtual Machine Scale Set.
+    terraform:
+      For the azurerm_virtual_machine resource, in storage_data_disk and storage_os_disk blocks, remove the vhd_uri argument and set the managed_disk_type and managed_disk_id arguments or create an azurerm_virtual_machine_data_disk_attachment resource. For azurerm_virtual_machine_scale_set resource, in storage_profile_os_disk block, remove the vhd_containers argument and set the managed_disk_type argument; in storage_profile_data_disk block, set the managed_disk_type argument.
+  resource_type:
+  - compute
+  rule_id: non_car_virtual_machines_and_virtual_machine_scale_sets_only_use_managed_disks
+  rule_type: non_context_aware
+  security_layer: storage
+  severity: medium
+- cloud_provider: azure
+  description:
+    Cloudrail will review the Function Apps configuration in your environment.
+    If a function of kind “functionapp” or “linux” is not using the latest Azure supported Java version (11), Cloudrail will highlight it as a violation.
+  human_readable_logic:
+    Cloudrail will review the Function Apps configuration within your Azure subscription and Terraform plan to ensure that, if they are of kind “functionapp” or “linux”, they are using the latest Azure supported Java version (11).
+    You will need to check the resource azurerm_app_service_plan, associated to the Function app (app_service_plan_id), in order to get the “kind” argument.
+  name: Ensure Function App is using the latest Azure supported Java version (11)
+  remediation_steps:
+    console:
+      Follow the guide at <https://docs.microsoft.com/en-gb/azure/azure-functions/functions-reference-java> in order to set the latest Java version for the Function app.
+    terraform:
+       For the azurerm_function_app resource, in site_config block, set the linux_fx_version argument to “JAVA|11”.
+  resource_type:
+    - compute
+  rule_id: non_car_function_app_using_latest_java_version
+  rule_type: non_context_aware
+  security_layer: runtime
   severity: medium
 - cloud_provider: azure
   description: Cloudrail will review the Function Apps configuration in your environment.
