@@ -19,17 +19,21 @@ class TestFunctionAppUseLatestTlsVersionRule(TestCase):
 
     @parameterized.expand(
         [
-            ['java version linux is 11 the rule should alert', 'JAVA|11', False],
-            ['java version win is 11 the rule should not alert', '', False],
-            ['java version linux is 1.8 the rule should alert', 'JAVA|8', True],
-            ['java version linux is 11 the rule should alert', 'PYTHON|11', False]
+            ['java version linux is 11 the rule should alert', 'JAVA|11', None, False],
+            ['java version win is 11 the rule should not alert', '', '11', False],
+            ['java version linux is 1.8 the rule should alert', 'JAVA|8', '', True],
+            ['java version win is 11 the rule should not alert', '', '1.8', True],
+            ['java version win is 11 the rule should not alert', '', None, False],
+            ['java version win is 11 the rule should not alert', '', '1.11', True],
+            ['java version linux is 11 the rule should alert', 'PYTHON|11', None, False]
         ]
     )
-    def test_non_car_function_app_using_latest_java_version(self, unused_name: str, linux_fx_version: str, should_alert: bool):
+    def test_non_car_function_app_using_latest_java_version(self, unused_name: str, linux_fx_version: str, java_version: str, should_alert: bool):
         # Arrange
         function_app: AzureFunctionApp = create_empty_entity(AzureFunctionApp)
         function_app_config: AzureAppServiceConfig = create_empty_entity(AzureAppServiceConfig)
         function_app_config.linux_fx_version = linux_fx_version
+        function_app_config.java_version = java_version
         function_app.app_service_config = function_app_config
         context = AzureEnvironmentContext(function_apps=AliasesDict(function_app))
         # Act
