@@ -25,6 +25,7 @@ class FunctionAppUsingLatestJavaVersionRule(AzureBaseRule):
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
         return bool(environment_context.function_apps)
 
+
 def _get_function_worker(linux_fx_version, java_version):
     function_worker = None
     version = None
