@@ -15,7 +15,7 @@ class FunctionAppUseLatestPythonVersionRule(AzureBaseRule):
         issues: List[Issue] = []
         for func_app in env_context.function_apps:
             if func_app.app_service_config is not None:
-                if len(func_app.app_service_config.linux_fx_version):
+                if func_app.app_service_config.linux_fx_version:
                     framework_type, framework_version = func_app.app_service_config.linux_fx_version.split("|")
                     if str(framework_type).lower() == 'python':
                         framework_version = version.parse(framework_version)
