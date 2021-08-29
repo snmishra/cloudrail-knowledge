@@ -31,7 +31,6 @@ class AzureAppServiceConfig(AzureResource):
         self.http2_enabled: bool = http2_enabled
         self.logs: DiagnosticLogs = logs
         self.linux_fx_version: str = linux_fx_version
-        self.java_version: str = java_version
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]
