@@ -14,16 +14,15 @@ class FunctionAppUseLatestPythonVersionRule(AzureBaseRule):
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for func_app in env_context.function_apps:
-            if func_app.app_service_config is not None:
-                if func_app.app_service_config.linux_fx_version:
-                    framework_type, framework_version = func_app.app_service_config.linux_fx_version.split("|")
-                    if str(framework_type).lower() == 'python':
-                        framework_version = version.parse(framework_version)
-                        if framework_version < version.parse('3.9'):
-                            issues.append(
-                                Issue(
-                                    f'The {func_app.get_type()} `{func_app.get_friendly_name()}` uses `{framework_version}` for '
-                                    f'Python version, instead of 3.9.', func_app, func_app))
+            if func_app.app_service_config and func_app.app_service_config.linux_fx_version:
+                framework_type, framework_version = func_app.app_service_config.linux_fx_version.split("|")
+                if str(framework_type).lower() == 'python':
+                    framework_version = version.parse(framework_version)
+                    if framework_version < version.parse('3.9'):
+                        issues.append(
+                            Issue(
+                                f'The {func_app.get_type()} `{func_app.get_friendly_name()}` uses `{framework_version}` for '
+                                f'Python version, instead of 3.9.', func_app, func_app))
         return issues
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
