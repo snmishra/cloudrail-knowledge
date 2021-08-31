@@ -1197,7 +1197,7 @@ rules_metadata:
     terraform: For the aws_cloudfront_distribution resource, in default_cache_behavior/ordered_cache_behavior
       blocks, set the viewer_protocol_policy argument to https-only or redirect-to-https.
   resource_type:
-  - cloudfront
+  - content_delivery
   rule_id: non_car_cloudfront_distribution_encrypt_in_transit
   rule_type: non_context_aware
   security_layer: encryption
