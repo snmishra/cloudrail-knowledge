@@ -50,7 +50,6 @@ class ResourceType(str, Enum):
     KEY_MGMT = 'key_mgmt'
     NETWORK = 'network'
     DATABASE = 'database'
-    CLOUDFRONT = 'cloudfront'
     CONTENT_DELIVERY = 'content_delivery'
     SERVICE_ENDPOINT = 'service_endpoint'
     CODE = 'code'

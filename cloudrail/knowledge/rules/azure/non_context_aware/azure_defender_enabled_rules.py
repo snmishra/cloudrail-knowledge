@@ -61,6 +61,19 @@ class NonCarAzureSqlServersDefenderEnabled(NonCarAzureBaseDefenderEnabled):
         return f"Azure Defender is not enabled for Azure SQL Database servers in the subscription `{subscription_id}`."
 
 
+class NonCarAzureSqlServersOnVirtualMachinesDefenderEnabled(NonCarAzureBaseDefenderEnabled):
+    def get_id(self) -> str:
+        return 'non_car_azure_defender_for_sql_servers_on_machines_enabled'
+
+    @abstractmethod
+    def _get_resource_type(self) -> SubscriptionPricingResourceType:
+        return SubscriptionPricingResourceType.SQL_SERVER_VIRTUAL_MACHINES
+
+    @abstractmethod
+    def _get_evidence(self, subscription_id) -> str:
+        return f'Azure Defender is not enabled for SQL Servers on Virtual Machines in the subscription `{subscription_id}`.'
+
+
 class NonCarAzureKubernetesDefenderEnabled(NonCarAzureBaseDefenderEnabled):
     def get_id(self) -> str:
         return 'non_car_azure_defender_for_kubernetes_enabled'
