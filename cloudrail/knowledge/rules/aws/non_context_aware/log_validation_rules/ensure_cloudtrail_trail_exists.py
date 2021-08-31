@@ -24,5 +24,4 @@ class EnsureCloudtrailTrailExists(AwsBaseRule):
         return issues
 
     def should_run_rule(self, environment_context: AwsEnvironmentContext) -> bool:
-        if environment_context.accounts:
-            return True
+        return bool(environment_context.accounts)
