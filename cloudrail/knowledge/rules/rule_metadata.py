@@ -60,9 +60,11 @@ class ResourceType(str, Enum):
     STREAMING = 'streaming'
     SECURITY_SERVICES = 'security_services'
 
+
 class BenchmarkType(str, Enum):
     PCI_DSS = "PCI DSS"
     CIS = "CIS"
+
 
 @dataclass
 class RemediationSteps:
