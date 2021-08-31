@@ -22,18 +22,12 @@ jobs:
     - name: Check binary
       if: ${{ github.event_name == 'pull_request' }}
       run: |
-        echo ${{github.event_name}}
-        echo $GITHUB_EVENT_NAME
-        echo $GITHUB_HEAD_REF
-        echo $GITHUB_BASE_REF
-        if [[ ! -z "$GITHUB_HEAD_REF" ]]; then
-          chmod +x ./.github/workflows/check-binary.sh
-          git fetch --no-tags origin $GITHUB_HEAD_REF:refs/remotes/origin/$GITHUB_HEAD_REF
-          git fetch --no-tags origin $GITHUB_BASE_REF:refs/remotes/origin/$GITHUB_BASE_REF
-          src='remotes/origin/'$GITHUB_HEAD_REF
-          dst='remotes/origin/'$GITHUB_BASE_REF
-          ./.github/workflows/check-binary.sh $src $dst
-        fi
+        chmod +x ./.github/workflows/check-binary.sh
+        git fetch --no-tags origin $GITHUB_HEAD_REF:refs/remotes/origin/$GITHUB_HEAD_REF
+        git fetch --no-tags origin $GITHUB_BASE_REF:refs/remotes/origin/$GITHUB_BASE_REF
+        src='remotes/origin/'$GITHUB_HEAD_REF
+        dst='remotes/origin/'$GITHUB_BASE_REF
+        ./.github/workflows/check-binary.sh $src $dst
       shell: bash
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
