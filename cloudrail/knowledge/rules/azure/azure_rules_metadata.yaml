@@ -764,3 +764,22 @@ rules_metadata:
   rule_type: non_context_aware
   security_layer: storage
   severity: medium
+- cloud_provider: azure
+  description:
+    Cloudrail will review the Function Apps configuration in your environment.
+    If a function of kind “functionapp” or “linux” is not using the latest Azure supported Java version (11), Cloudrail will highlight it as a violation.
+  human_readable_logic:
+    Cloudrail will review the Function Apps configuration within your Azure subscription and Terraform plan to ensure that, if they are of kind “functionapp” or “linux”, they are using the latest Azure supported Java version (11).
+    You will need to check the resource azurerm_app_service_plan, associated to the Function app (app_service_plan_id), in order to get the “kind” argument.
+  name: Ensure Function App is using the latest Azure supported Java version (11)
+  remediation_steps:
+    console:
+      Follow the guide at <https://docs.microsoft.com/en-gb/azure/azure-functions/functions-reference-java> in order to set the latest Java version for the Function app.
+    terraform:
+       For the azurerm_function_app resource, in site_config block, set the linux_fx_version argument to “JAVA|11”.
+  resource_type:
+    - compute
+  rule_id: non_car_function_app_using_latest_java_version
+  rule_type: non_context_aware
+  security_layer: runtime
+  severity: medium

@@ -20,6 +20,7 @@ jobs:
       with:
         config-file: './.github/workflows/md-link-check.config.json'
     - name: Check binary
+      if: ${{ github.event_name == 'pull_request' }}
       run: |
         chmod +x ./.github/workflows/check-binary.sh
         git fetch --no-tags origin $GITHUB_HEAD_REF:refs/remotes/origin/$GITHUB_HEAD_REF
