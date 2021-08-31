@@ -37,6 +37,7 @@ class SecurityLayer(str, Enum):
     DISASTER_RECOVERY = 'disaster_recovery'
     STORAGE = 'storage'
     TAGGING = 'tagging'
+    RUN_TIME = 'runtime'
 
 
 class ResourceType(str, Enum):
@@ -49,7 +50,6 @@ class ResourceType(str, Enum):
     KEY_MGMT = 'key_mgmt'
     NETWORK = 'network'
     DATABASE = 'database'
-    CLOUDFRONT = 'cloudfront'
     CONTENT_DELIVERY = 'content_delivery'
     SERVICE_ENDPOINT = 'service_endpoint'
     CODE = 'code'
