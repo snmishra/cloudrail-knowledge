@@ -417,6 +417,21 @@ rules_metadata:
   security_layer: encryption
   severity: medium
 - cloud_provider: azure
+  description: Cloudrail will review the Storage Accounts configuration in your environment.
+    If an account is allowing public access to containers and blobs, Cloudrail will highlight it as a violation.
+  human_readable_logic: Cloudrail will review the Storage Account configuration within your Azure subscription and Terraform plan to ensure that public access is disabled.
+  name: Ensure Storage Account does not allow public access
+  remediation_steps:
+    console: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/blobs/anonymous-read-access-configure?tabs=portal#allow-or-disallow-public-read-access-for-a-storage-account>
+      in order to set Blob public access to Disabled.
+    terraform: For the azurerm_storage_account resource, set the allow_blob_public_access argument to false.
+  resource_type:
+    - storage
+  rule_id: non_car_storage_account_public_access
+  rule_type: non_context_aware
+  security_layer: networking
+  severity: medium
+- cloud_provider: azure
   description:
     params:
     - Container Registries
