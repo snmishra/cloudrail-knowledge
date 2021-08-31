@@ -6,7 +6,7 @@ from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
 
 
-class StorageAccountSecureTransfer(AzureBaseRule):
+class StorageAccountSecureTransferRule(AzureBaseRule):
 
     def get_id(self) -> str:
         return 'non_car_storage_account_secure_transfer'
@@ -17,7 +17,7 @@ class StorageAccountSecureTransfer(AzureBaseRule):
             if not storage_account.enable_https_traffic_only:
                 issues.append(
                     Issue(
-                        f'The Storage Account `{storage_account.name}` is not requiring secure transfer',
+                        f'The {storage_account.get_type()} `{storage_account.get_friendly_name()}` is not requiring secure transfer',
                         storage_account,
                         storage_account))
         return issues

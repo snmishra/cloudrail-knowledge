@@ -13,7 +13,6 @@ class AzureSecurityCenterContact(AzureResource):
     def __init__(self, alert_notifications: bool):
         super().__init__(AzureResourceType.AZURERM_SECURITY_CENTER_CONTACT)
         self.alert_notifications: bool = alert_notifications
-        self.with_aliases(self.subscription_id)
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'https://portal.azure.com/#blade/Microsoft_Azure_Security/PolicyMenuBlade/emailNotifications/subscriptionId/' \

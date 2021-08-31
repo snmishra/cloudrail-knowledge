@@ -1,6 +1,6 @@
 from typing import List, Dict, Optional
 
-from cloudrail.knowledge.context.aws.aws_connection import PolicyEvaluation
+from cloudrail.knowledge.context.connection import PolicyEvaluation
 from cloudrail.knowledge.context.aws.iam.policy import AssumeRolePolicy
 from cloudrail.knowledge.context.aws.iam.role_last_used import RoleLastUsed
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName

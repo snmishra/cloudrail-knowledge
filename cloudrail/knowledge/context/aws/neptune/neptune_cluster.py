@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionInstance
+from cloudrail.knowledge.context.connection import ConnectionInstance
 from cloudrail.knowledge.context.aws.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.neptune.neptune_instance import NeptuneInstance

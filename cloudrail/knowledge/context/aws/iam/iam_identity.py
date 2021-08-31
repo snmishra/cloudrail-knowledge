@@ -1,7 +1,7 @@
 from abc import abstractmethod
 from typing import Iterable, List, Dict, Optional, Set, Union
 
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionInstance
+from cloudrail.knowledge.context.connection import ConnectionInstance
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.iam.policy import InlinePolicy, ManagedPolicy, Policy, PolicyType
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
@@ -27,7 +27,7 @@ class IamIdentity(AwsResource, ConnectionInstance, Cloneable):
         self.arn: str = arn
         self.permissions_policies: List[Union[ManagedPolicy, InlinePolicy]] = []
         self.permission_boundary: Optional[Policy] = None
-        self.policy_to_escalation_actions_map: Dict[str, Set[str]] = dict()
+        self.policy_to_escalation_actions_map: Dict[str, Set[str]] = {}
         self.policy_attach_origin_map: List[Dict] = []
 
     @abstractmethod

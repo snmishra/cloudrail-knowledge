@@ -59,3 +59,6 @@ class LoadBalancerListener(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def get_id(self) -> str:
+        return super().get_arn()

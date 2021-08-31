@@ -13,7 +13,7 @@ from cloudrail.knowledge.context.aws.neptune.neptune_instance import NeptuneInst
 from cloudrail.knowledge.context.aws.rds.rds_cluster import RdsCluster
 from cloudrail.knowledge.context.aws.rds.rds_instance import RdsInstance
 from cloudrail.knowledge.context.aws.redshift.redshift import RedshiftCluster
-from cloudrail.knowledge.context.aws.aws_connection import ConnectionType, PortConnectionProperty, ConnectionDetail
+from cloudrail.knowledge.context.connection import ConnectionType, PortConnectionProperty, ConnectionDetail
 from cloudrail.knowledge.context.aws.ec2.network_interface import NetworkInterface
 from cloudrail.knowledge.context.aws.ec2.security_group import SecurityGroup
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
@@ -54,7 +54,6 @@ class PublicAccessSecurityGroupsPortRule(AwsBaseRule):
                         sg.get_friendly_name()),
                     eni.owner,
                     sg)
-                # pylint: disable=consider-using-dict-items
                 for eni in eni_to_sg_map for sg in eni_to_sg_map[eni]]
 
         else:
@@ -75,7 +74,6 @@ class PublicAccessSecurityGroupsPortRule(AwsBaseRule):
                         sg.get_friendly_name()),
                     eni.owner,
                     sg)
-                # pylint: disable=consider-using-dict-items
                 for eni in eni_to_sg_map for sg in eni_to_sg_map[eni]]
 
     @staticmethod

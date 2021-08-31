@@ -1,5 +1,6 @@
 import functools
-from typing import List, Dict, Optional, Union, TypeVar, Callable, Set
+from typing import List, Dict, Optional, Union, Callable, Set
+from cloudrail.knowledge.context.aws.ec2.vpc_gateway_attachment import VpcGatewayAttachment
 from cloudrail.knowledge.context.aws.ec2.availability_zone import AvailabilityZone
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.aws.account.account import Account
@@ -91,6 +92,7 @@ from cloudrail.knowledge.context.aws.emr.emr_cluster import EmrCluster
 from cloudrail.knowledge.context.aws.emr.emr_public_access_config import EmrPublicAccessConfiguration
 from cloudrail.knowledge.context.aws.es.elastic_search_domain import ElasticSearchDomain
 from cloudrail.knowledge.context.aws.es.elastic_search_domain_policy import ElasticSearchDomainPolicy
+from cloudrail.knowledge.context.aws.fsx.fsx_windows_file_system import FsxWindowsFileSystem
 from cloudrail.knowledge.context.aws.glacier.glacier_vault import GlacierVault
 from cloudrail.knowledge.context.aws.glacier.glacier_vault_policy import GlacierVaultPolicy
 from cloudrail.knowledge.context.aws.globalaccelerator.global_accelerator import GlobalAccelerator
@@ -123,7 +125,6 @@ from cloudrail.knowledge.context.aws.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.kms.kms_key_policy import KmsKeyPolicy
 from cloudrail.knowledge.context.aws.lambda_.lambda_alias import LambdaAlias
 from cloudrail.knowledge.context.aws.lambda_.lambda_function import LambdaFunction
-from cloudrail.knowledge.context.aws.lambda_.lambda_policy_statements import LambdaPolicyStatements
 from cloudrail.knowledge.context.aws.mq.mq_broker import MqBroker
 from cloudrail.knowledge.context.aws.neptune.neptune_cluster import NeptuneCluster
 from cloudrail.knowledge.context.aws.neptune.neptune_instance import NeptuneInstance
@@ -161,11 +162,10 @@ from cloudrail.knowledge.context.aws.workspaces.workspace_directory import Works
 from cloudrail.knowledge.context.aws.workspaces.workspaces import Workspace
 from cloudrail.knowledge.context.aws.xray.xray_encryption import XrayEncryption
 from cloudrail.knowledge.context.managed_resources_summary import ManagedResourcesSummary
-from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult
+from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult, _TMergeAble
 from cloudrail.knowledge.context.mergeable import Mergeable
 from cloudrail.knowledge.context.unknown_block import UnknownBlock
-
-_TMergeAble = TypeVar('_TMergeAble', bound=Mergeable)
+from cloudrail.knowledge.context.aws.lambda_.lambda_policy import LambdaPolicy
 
 
 class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources should be in alias dict
@@ -239,6 +239,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  dms_replication_instances: List[DmsReplicationInstance] = None,
                  vpcs_attributes: List[VpcAttribute] = None,
                  internet_gateways: List[InternetGateway] = None,
+                 vpc_gateway_attachment: AliasesDict[VpcGatewayAttachment] = None,
                  ecs_service_list: List[EcsService] = None,
                  cloud_watch_event_target_list: List[CloudWatchEventTarget] = None,
                  ecs_targets_list: List[EcsTarget] = None,
@@ -265,6 +266,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  s3_bucket_regions: List[S3BucketRegions] = None,
                  s3_bucket_acls: List[S3ACL] = None,
                  s3_bucket_policies: List[S3Policy] = None,
+                 lambda_policies: List[LambdaPolicy] = None,
                  s3_bucket_access_points: List[S3BucketAccessPoint] = None,
                  s3_bucket_access_points_policies: List[S3AccessPointPolicy] = None,
                  s3_public_access_block_settings_list: List[PublicAccessBlockSettings] = None,
@@ -290,7 +292,6 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  rest_api_gw_policies: List[RestApiGwPolicy] = None,
                  cloudwatch_logs_destination_policies: List[CloudWatchLogsDestinationPolicy] = None,
                  elastic_search_domains_policies: List[ElasticSearchDomainPolicy] = None,
-                 lambda_policy_statements: List[LambdaPolicyStatements] = None,
                  lambda_aliases: AliasesDict[LambdaAlias] = None,
                  efs_file_systems_policies: List[EfsPolicy] = None,
                  glacier_vaults_policies: List[GlacierVaultPolicy] = None,
@@ -335,7 +336,8 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  s3_bucket_logs: List[S3BucketLogging] = None,
                  athena_databases: List[AthenaDatabase] = None,
                  cfn_resources_info: List[CloudformationResourceInfo] = None,
-                 availability_zones: AliasesDict[AvailabilityZone] = None):
+                 availability_zones: AliasesDict[AvailabilityZone] = None,
+                 fsx_windows_file_systems: AliasesDict[FsxWindowsFileSystem] = None):
         BaseEnvironmentContext.__init__(self, invalidated_resources=invalidated_resources, unknown_blocks=unknown_blocks,
                                         managed_resources_summary=managed_resources_summary)
         self.athena_databases = athena_databases or []
@@ -378,6 +380,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.load_balancer_listeners = load_balancer_listeners or []
         self.s3_buckets = s3_buckets or AliasesDict()
         self.s3_bucket_objects = s3_bucket_objects or []
+        self.lambda_policies = lambda_policies or []
         self.roles = roles or []
         self.users = users or []
         self.groups = groups or []
@@ -437,6 +440,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.dms_replication_instances = dms_replication_instances or []
         self.vpcs_attributes = vpcs_attributes or []
         self.internet_gateways = internet_gateways or []
+        self.vpc_gateway_attachment: AliasesDict[VpcGatewayAttachment] = vpc_gateway_attachment or AliasesDict()
         self.ecs_service_list = ecs_service_list or []
         self.cloud_watch_event_target_list = cloud_watch_event_target_list or []
         self.ecs_targets_list = ecs_targets_list or []
@@ -488,7 +492,6 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.rest_api_gw_policies = rest_api_gw_policies or []
         self.cloudwatch_logs_destination_policies = cloudwatch_logs_destination_policies or []
         self.elastic_search_domains_policies = elastic_search_domains_policies or []
-        self.lambda_policy_statements = lambda_policy_statements or []
         self.lambda_aliases = lambda_aliases or AliasesDict()
         self.efs_file_systems_policies = efs_file_systems_policies or []
         self.glacier_vaults_policies = glacier_vaults_policies or []
@@ -503,32 +506,33 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.invalidated_resources = invalidated_resources or set()
         self.cfn_resources_info: List[CloudformationResourceInfo] = cfn_resources_info or []
         self.availability_zones: AliasesDict[AvailabilityZone] = availability_zones or AliasesDict()
+        self.fsx_windows_file_systems: AliasesDict[FsxWindowsFileSystem] = fsx_windows_file_systems or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
     def get_used_network_interfaces(self) -> AliasesDict[NetworkInterface]:
         return AliasesDict(*[eni for eni in self.network_interfaces if eni.owner])
 
     @functools.lru_cache(maxsize=None)
-    def get_all_nodes_resources(self) -> List[NetworkResource]:
-        return [instance.network_resource for instance in self.get_all_network_entities()]
+    def get_all_nodes_resources(self) -> Set[NetworkResource]:
+        return {instance.network_resource for instance in self.get_all_network_entities()}
 
     @functools.lru_cache(maxsize=None)
-    def get_all_network_entities(self) -> List[NetworkEntity]:
+    def get_all_network_entities(self) -> Set[NetworkEntity]:
         condition: Callable = lambda resource: isinstance(resource, NetworkEntity)
         return self.get_all_mergeable_resources(condition)
 
     @functools.lru_cache(maxsize=None)
-    def get_all_aws_clients(self) -> List[AwsClient]:
+    def get_all_aws_clients(self) -> Set[AwsClient]:
         condition: Callable = lambda resource: isinstance(resource, AwsClient)
         return self.get_all_mergeable_resources(condition)
 
     @functools.lru_cache(maxsize=None)
-    def get_iac_managed_policies(self) -> List[Policy]:
+    def get_iac_managed_policies(self) -> Set[Policy]:
         condition: Callable = lambda resource: isinstance(resource, Policy) and resource.is_managed_by_iac
         return self.get_all_mergeable_resources(condition)
 
     @functools.lru_cache(maxsize=None)
-    def get_all_network_entities_aws_clients(self) -> List[Union[NetworkEntity, AwsClient]]:
+    def get_all_network_entities_aws_clients(self) -> Set[Union[NetworkEntity, AwsClient]]:
         condition: Callable = lambda resource: isinstance(resource, AwsClient) and isinstance(resource, NetworkEntity)
         return self.get_all_mergeable_resources(condition)
 
@@ -537,35 +541,19 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         return self.roles + self.users + self.groups
 
     @functools.lru_cache(maxsize=None)
-    def get_all_non_iac_managed_resources(self) -> List[_TMergeAble]:
+    def get_all_non_iac_managed_resources(self) -> Set[_TMergeAble]:
         condition: Callable = lambda resource: isinstance(resource, AwsResource) and not resource.is_managed_by_iac
         return self.get_all_mergeable_resources(condition)
 
     @functools.lru_cache(maxsize=None)
-    def get_all_taggable_resources(self) -> List[_TMergeAble]:
+    def get_all_taggable_resources(self) -> Set[_TMergeAble]:
         condition: Callable = lambda aws_resource: aws_resource.is_tagable
         return self.get_all_mergeable_resources(condition)
 
     @functools.lru_cache(maxsize=None)
-    def get_all_ec2_instance_types_with_default_ebs_optimization(self) -> Optional[List[Ec2InstanceType]]:
+    def get_all_ec2_instance_types_with_default_ebs_optimization(self) -> Optional[Set[Ec2InstanceType]]:
         if self.accounts:
             condition: Callable = lambda resource: isinstance(resource, Ec2InstanceType) and resource.ebs_info.ebs_optimized_support == 'default'
             return self.get_all_mergeable_resources(condition)
         else:
             return []
-
-    def get_all_mergeable_resources(self, condition: Callable = lambda resource: True) -> List[_TMergeAble]:
-        all_resources: List[Mergeable] = []
-        for _, attribute in vars(self).items():
-            if attribute is self.invalidated_resources:
-                continue
-            if isinstance(attribute, list):
-                iterable = attribute
-            elif isinstance(attribute, (dict, AliasesDict)):
-                iterable = attribute.values()
-            else:
-                continue
-            for resource in iterable:
-                if isinstance(resource, Mergeable) and condition(resource):
-                    all_resources.append(resource)
-        return all_resources

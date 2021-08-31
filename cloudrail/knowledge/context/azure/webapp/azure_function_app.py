@@ -16,7 +16,7 @@ class AzureFunctionApp(AzureResource):
     """
     def __init__(self, name: str,
                  client_cert_mode: FieldMode,
-                 https_only: bool) -> None:
+                 https_only: bool):
         super().__init__(AzureResourceType.AZURERM_FUNCTION_APP)
         self.name = name
         self.app_service_config: AzureAppServiceConfig = None
