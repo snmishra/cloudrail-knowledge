@@ -502,17 +502,17 @@ rules_metadata:
 - cloud_provider: azure
   description:
     params:
-    - Sql Servers Virtual Machines
+    - Sql Servers on Virtual Machines
     template: azure_defender_enabled_description
   human_readable_logic:
     params:
-    - Sql Servers Virtual Machines
+    - Sql Servers on Virtual Machines
     template: azure_defender_enabled_human_readable_logic
   name: Ensure Azure Defender for SQL servers on machines is enabled
   remediation_steps:
     console:
       params:
-      - Sql Servers Virtual Machines
+      - Sql Servers on Virtual Machines
       template: azure_defender_enabled_console_remediation_steps
     terraform:
       params:
