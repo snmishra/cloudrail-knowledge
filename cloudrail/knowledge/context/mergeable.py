@@ -3,13 +3,15 @@ import re
 from abc import abstractmethod
 from enum import Enum
 from typing import List, Set, Dict, Optional
-
 from cloudrail.knowledge.context.iac_state import IacState
+from cloudrail.knowledge.context.iac_type import IacType
 
 
 class EntityOrigin(str, Enum):
+    NONE = None
     LIVE_ENV = 'live_environment'
     TERRAFORM = 'terraform'
+    CLOUDFORMATION = 'cloudformation'
     PSEUDO = 'pseudo'
 
 
@@ -82,13 +84,18 @@ class Mergeable:
         if self.is_pseudo:
             return EntityOrigin.PSEUDO
         elif self.iac_state:
-            return EntityOrigin.TERRAFORM
+            if self.iac_state.iac_type == IacType.TERRAFORM:
+                return EntityOrigin.TERRAFORM
+            elif self.iac_state.iac_type == IacType.CLOUDFORMATION:
+                return EntityOrigin.CLOUDFORMATION
+            else:
+                return EntityOrigin.NONE
         else:
             return EntityOrigin.LIVE_ENV
 
     @property
     def is_managed_by_iac(self) -> bool:
-        return self.origin == EntityOrigin.TERRAFORM
+        return bool(self.iac_state)
 
     @property
     @abstractmethod
