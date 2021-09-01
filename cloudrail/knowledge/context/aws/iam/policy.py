@@ -113,6 +113,9 @@ class ManagedPolicy(Policy):
     def get_cloud_resource_url(self) -> str:
         pass
 
+    @property
+    def is_tagable(self) -> bool:
+        return True
 
 class InlinePolicy(Policy):
 

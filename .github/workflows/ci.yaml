@@ -19,6 +19,17 @@ jobs:
     - uses: gaurav-nelson/github-action-markdown-link-check@v1
       with:
         config-file: './.github/workflows/md-link-check.config.json'
+    - name: Check binary
+      if: ${{ github.event_name == 'pull_request' }}
+      run: |
+        brhead="${GITHUB_REF//merge/head}"
+        git fetch --no-tags origin $brhead:refs/remotes/origin/$brhead
+        chmod +x ./.github/workflows/check-binary.sh
+        git fetch --no-tags origin $GITHUB_BASE_REF:refs/remotes/origin/$GITHUB_BASE_REF
+        src='remotes/origin/'$brhead
+        dst='remotes/origin/'$GITHUB_BASE_REF
+        ./.github/workflows/check-binary.sh $src $dst
+      shell: bash
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:

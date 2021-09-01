@@ -34,12 +34,12 @@ class IamInstanceProfile(AwsResource):
             return 'IAM Instance profiles'
 
     def get_arn(self) -> str:
-        pass
+        return f'arn:aws:iam::{self.account}:instance-profile/{self.iam_instance_profile_name}'
 
     def get_cloud_resource_url(self) -> str:
-        return '{0}ec2/v2/home?region={1}#InstanceDetails:instanceId={2}'\
-            .format(self.AWS_CONSOLE_URL, self.region, self.ec2_instance_data.instance_id)
+        return '{0}iam/home#/roles/{1}'\
+            .format(self.AWS_CONSOLE_URL, self.role_name)
 
     @property
     def is_tagable(self) -> bool:
-        return False
+        return True

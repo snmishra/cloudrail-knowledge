@@ -10,13 +10,15 @@ class AzureAppService(AzureResource):
             name: The name of this AppService.
             app_service_config: App service configuration.
             https_only: Indicates if the App Service only be accessed via HTTPS.
+            client_cert_required: Indicate if client certificates are required in Web App.
     """
 
-    def __init__(self, name: str, https_only: bool) -> None:
+    def __init__(self, name: str, https_only: bool, client_cert_required: bool):
         super().__init__(AzureResourceType.AZURERM_APP_SERVICE)
         self.name: str = name
         self.app_service_config: AzureAppServiceConfig = None
         self.https_only: bool = https_only
+        self.client_cert_required: bool = client_cert_required
 
     def get_keys(self) -> List[str]:
         return [self.get_name()]
