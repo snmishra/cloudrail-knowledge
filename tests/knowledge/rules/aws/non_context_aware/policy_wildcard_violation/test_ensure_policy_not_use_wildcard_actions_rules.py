@@ -741,7 +741,7 @@ class TestEnsureEcrRepositoryPolicyNotUseWildcard(unittest.TestCase):
         ecr_repo.policy = EcrRepositoryPolicy('repo_name', [PolicyStatement(StatementEffect.ALLOW, ['ecr:*'],
                                                                             ['*'], Principal(PrincipalType.PUBLIC,
                                                                                              ['*']))],
-                                              'raw_doc', 'account')
+                                              'raw_doc', 'account', 'us-east-1')
         context = AwsEnvironmentContext(ecr_repositories=[ecr_repo])
         # Act
         result = self.rule.run(context, {})
@@ -756,7 +756,7 @@ class TestEnsureEcrRepositoryPolicyNotUseWildcard(unittest.TestCase):
         ecr_repo.policy = EcrRepositoryPolicy('repo_name', [PolicyStatement(StatementEffect.ALLOW, ['ecr:*'],
                                                                             ['*'], Principal(PrincipalType.PUBLIC,
                                                                                              ['arn:aws:iam::123456789012:root']))],
-                                              'raw_doc', 'account')
+                                              'raw_doc', 'account', 'us-east-1')
         context = AwsEnvironmentContext(ecr_repositories=[ecr_repo])
         # Act
         result = self.rule.run(context, {})
@@ -771,7 +771,7 @@ class TestEnsureEcrRepositoryPolicyNotUseWildcard(unittest.TestCase):
         ecr_repo.policy = EcrRepositoryPolicy('repo_name', [PolicyStatement(StatementEffect.ALLOW, ['ecr:GetLogs'],
                                                                             ['*'], Principal(PrincipalType.PUBLIC,
                                                                                              ['*']))],
-                                              'raw_doc', 'account')
+                                              'raw_doc', 'account', 'us-east-1')
         context = AwsEnvironmentContext(ecr_repositories=[ecr_repo])
         # Act
         result = self.rule.run(context, {})
@@ -797,7 +797,7 @@ class TestEnsureEcrRepositoryPolicyNotUseWildcard(unittest.TestCase):
         ecr_repo.policy = EcrRepositoryPolicy('repo_name', [PolicyStatement(StatementEffect.ALLOW, ['ecr:GetLogs'],
                                                                             ['*'], Principal(PrincipalType.PUBLIC,
                                                                                              ['arn:aws:iam::123456789012:root']))],
-                                              'raw_doc', 'account')
+                                              'raw_doc', 'account', 'us-east-1')
         context = AwsEnvironmentContext(ecr_repositories=[ecr_repo])
         # Act
         result = self.rule.run(context, {})
