@@ -87,6 +87,19 @@ class NonCarAzureKubernetesDefenderEnabled(NonCarAzureBaseDefenderEnabled):
         return f"Azure Defender is not enabled for Kubernetes in the subscription `{subscription_id}`."
 
 
+class NonCarAzureKeyVaultDefenderEnabled(NonCarAzureBaseDefenderEnabled):
+    def get_id(self) -> str:
+        return 'non_car_azure_defender_for_key_vault_enabled'
+
+    @abstractmethod
+    def _get_resource_type(self) -> SubscriptionPricingResourceType:
+        return SubscriptionPricingResourceType.KEY_VAULTS
+
+    @abstractmethod
+    def _get_evidence(self, subscription_id) -> str:
+        return f"Azure Defender is not enabled for Key Vault in the subscription `{subscription_id}`."
+
+
 class NonCarAzureStorageDefenderEnabled(NonCarAzureBaseDefenderEnabled):
     def get_id(self) -> str:
         return 'non_car_azure_defender_for_storage_enabled'
