@@ -666,7 +666,7 @@ class TestEnsureEfsPolicyNotUseWildcard(unittest.TestCase):
         efs: ElasticFileSystem = create_empty_entity(ElasticFileSystem)
         efs.policy = EfsPolicy('efs_id', [PolicyStatement(StatementEffect.ALLOW, ['elasticfilesystem:*'],
                                                           ['*'], Principal(PrincipalType.PUBLIC, ['*']))],
-                               'raw_doc', 'account')
+                               'raw_doc', 'account', 'us-east-1')
         context = AwsEnvironmentContext(efs_file_systems=[efs])
         # Act
         result = self.rule.run(context, {})
@@ -681,7 +681,7 @@ class TestEnsureEfsPolicyNotUseWildcard(unittest.TestCase):
         efs.policy = EfsPolicy('efs_id', [PolicyStatement(StatementEffect.ALLOW, ['elasticfilesystem:*'],
                                                           ['*'], Principal(PrincipalType.PUBLIC,
                                                                            ['arn:aws:iam::123456789012:root']))],
-                               'raw_doc', 'account')
+                               'raw_doc', 'account', 'us-east-1')
         context = AwsEnvironmentContext(efs_file_systems=[efs])
         # Act
         result = self.rule.run(context, {})
@@ -696,7 +696,7 @@ class TestEnsureEfsPolicyNotUseWildcard(unittest.TestCase):
         efs.policy = EfsPolicy('efs_id', [PolicyStatement(StatementEffect.ALLOW, ['elasticfilesystem:GetLogs'],
                                                           ['*'], Principal(PrincipalType.PUBLIC,
                                                                            ['*']))],
-                               'raw_doc', 'account')
+                               'raw_doc', 'account', 'us-east-1')
         context = AwsEnvironmentContext(efs_file_systems=[efs])
         # Act
         result = self.rule.run(context, {})
@@ -722,7 +722,7 @@ class TestEnsureEfsPolicyNotUseWildcard(unittest.TestCase):
         efs.policy = EfsPolicy('efs_id', [PolicyStatement(StatementEffect.ALLOW, ['elasticfilesystem:GetLogs'],
                                                           ['*'], Principal(PrincipalType.PUBLIC,
                                                                            ['arn:aws:iam::123456789012:root']))],
-                               'raw_doc', 'account')
+                               'raw_doc', 'account', 'us-east-1')
         context = AwsEnvironmentContext(efs_file_systems=[efs])
         # Act
         result = self.rule.run(context, {})
