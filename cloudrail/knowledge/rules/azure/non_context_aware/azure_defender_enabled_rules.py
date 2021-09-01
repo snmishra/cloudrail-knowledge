@@ -87,7 +87,7 @@ class NonCarAzureKubernetesDefenderEnabled(NonCarAzureBaseDefenderEnabled):
         return f"Azure Defender is not enabled for Kubernetes in the subscription `{subscription_id}`."
 
 
-class NonCarAzureKeyVaultDefenderEnabled(NonCarAzureBaseDefenderEnabled):
+class NonCarAzureKeyVaultsDefenderEnabled(NonCarAzureBaseDefenderEnabled):
     def get_id(self) -> str:
         return 'non_car_azure_defender_for_key_vault_enabled'
 
