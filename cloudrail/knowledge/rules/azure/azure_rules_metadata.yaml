@@ -596,7 +596,7 @@ rules_metadata:
       template: azure_defender_enabled_console_remediation_steps
     terraform:
       params:
-      - KeyVault
+      - KeyVaults
       template: azure_defender_enabled_console_remediation_steps_tf
   resource_type:
   - security_services
