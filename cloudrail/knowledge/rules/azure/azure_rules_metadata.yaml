@@ -657,7 +657,7 @@ rules_metadata:
     params:
     - Key Vault
     template: azure_defender_enabled_human_readable_logic
-  name: Ensure Azure Defender for Storage is enabled
+  name: Ensure Azure Defender for Key Vault is enabled
   remediation_steps:
     console:
       params:
