@@ -76,7 +76,7 @@ class Policy(AwsResource, Cloneable):
                         statements=[stat.clone() for stat in self.statements],
                         raw_document=self.raw_document)
         policy.tf_resource_type = self.tf_resource_type
-        policy.aliases = self.aliases
+        policy.with_aliases(*self._aliases)
         policy.iac_state = self.iac_state
         policy.is_pseudo = self.is_pseudo
         policy.aws_service_attributes = self.aws_service_attributes
