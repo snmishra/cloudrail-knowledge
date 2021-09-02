@@ -29,7 +29,7 @@ class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
 
     ARN_PARSER: ArnParser = ArnParser()
 
-    def __init__(self, account: str, region: str, arn: str, function_name: str,
+    def __init__(self, account: str, region: str, arn: str, qualified_arn: str, function_name: str,
                  lambda_func_version: str, role_arn: str, handler: str,
                  runtime: str, vpc_config: NetworkConfiguration, xray_tracing_enabled: bool):
         NetworkEntity.__init__(self, function_name, account, region, AwsServiceName.AWS_LAMBDA_FUNCTION,
@@ -37,8 +37,9 @@ class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
         ResourceBasedPolicy.__init__(self, account, region, AwsServiceName.AWS_LAMBDA_FUNCTION,
                                      AwsServiceAttributes(aws_service_type=AwsServiceType.LAMBDA.value, region=region))
         AwsClient.__init__(self)
-        self.lambda_func_arn_set: Set[str] = {arn, create_lambda_function_arn(account, region, function_name, lambda_func_version)}
+        self.lambda_func_arn_set: Set[str] = {arn, qualified_arn, create_lambda_function_arn(account, region, function_name, lambda_func_version)}
         self.arn: str = arn
+        self.qualified_arn: str = qualified_arn
         self.function_name: str = function_name
         self.lambda_func_version: str = lambda_func_version
         self.execution_role_arn: str = role_arn
@@ -51,7 +52,7 @@ class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
         self.resource_based_policy: Policy = None
 
     def get_keys(self) -> List[str]:
-        return [self.get_arn()]
+        return [self.qualified_arn]
 
     def get_name(self) -> str:
         return self.function_name
