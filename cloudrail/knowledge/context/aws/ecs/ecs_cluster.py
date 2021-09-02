@@ -36,7 +36,7 @@ class EcsCluster(AwsResource):
         self.cluster_name: str = cluster_name
         self.service_list: List[EcsService] = []
         self.event_target_list: List[CloudWatchEventTarget] = []
-        self.aliases.update({self.cluster_id, self.cluster_arn})
+        self.with_aliases(self.cluster_id, self.cluster_arn)
         self.is_container_insights_enabled: bool = is_container_insights_enabled
 
     def add_services(self, service_list: List[EcsService]):

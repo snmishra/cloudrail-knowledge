@@ -46,10 +46,6 @@ class RouteTable(AwsResource):
 
         return ', '.join([vpc_id])
 
-    def with_raw_data(self, is_default: bool):
-        self.raw_data.is_default = is_default
-        return self
-
     def get_most_specific_route(self, cidr_block: str) -> Optional[Route]:
         most_specific_route: Optional[Route] = None
         for route in self.routes:
