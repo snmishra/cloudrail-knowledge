@@ -53,18 +53,21 @@ class AliasesDict(Generic[_VT]):
     def where(self, condition: Callable[[_VT], bool]) -> Set[_VT]:
         return {val for val in self._values if condition(val)}
 
-    def remove(self, *items: _VT) -> None:
+    def remove(self, *items: _VT, search_duplicates: bool = False) -> None:
         for item in items:
             for alias in item.aliases:
-                self._dict.pop(alias, None)
+                value = self._dict.pop(alias, None)
+                if value:
+                    self._values.remove(value)
 
-            values_to_remove = []
-            for value in self._values:
-                if any(alias in value.aliases for alias in item.aliases):
-                    values_to_remove.append(value)
+            if search_duplicates:
+                values_to_remove = []
+                for value in self._values:
+                    if any(alias in value.aliases for alias in item.aliases):
+                        values_to_remove.append(value)
 
-            for value_to_remove in values_to_remove:
-                self._values.remove(value_to_remove)
+                for value_to_remove in values_to_remove:
+                    self._values.remove(value_to_remove)
 
     def __add__(self, other: 'AliasesDict[_VT]') -> 'AliasesDict[_VT]':
         return AliasesDict(*self._values, *other.values())
