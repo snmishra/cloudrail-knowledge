@@ -43,7 +43,7 @@ class Subnet(AwsResource):
         self.route_table: RouteTable = None
         self.network_acl: NetworkAcl = None
         self.vpc: 'Vpc' = None
-        self.aliases.add(subnet_id)
+        self.with_aliases(subnet_id)
 
     def get_keys(self) -> List[str]:
         return [self.subnet_id]

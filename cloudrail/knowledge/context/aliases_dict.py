@@ -55,8 +55,16 @@ class AliasesDict(Generic[_VT]):
 
     def remove(self, *items: _VT) -> None:
         for item in items:
-            if not any(self.pop(alias, None) for alias in item.aliases):
-                raise ValueError(f'Item with aliases: [{", ".join(item.aliases)}] was not found')
+            for alias in item.aliases:
+                self._dict.pop(alias, None)
+
+            values_to_remove = []
+            for value in self._values:
+                if any(alias in value.aliases for alias in item.aliases):
+                    values_to_remove.append(value)
+
+            for value_to_remove in values_to_remove:
+                self._values.remove(value_to_remove)
 
     def __add__(self, other: 'AliasesDict[_VT]') -> 'AliasesDict[_VT]':
         return AliasesDict(*self._values, *other.values())

@@ -32,7 +32,7 @@ class SecurityGroup(AwsResource):
         self.outbound_permissions: List[SecurityGroupRule] = []
         self.is_default = is_default
         self.vpc: 'Vpc' = None
-        self.aliases.add(security_group_id)
+        self.with_aliases(security_group_id)
         self.has_description: bool = has_description
         self._used_by: Set[AwsResource] = set()
 

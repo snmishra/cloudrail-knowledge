@@ -1,16 +1,11 @@
-from dataclasses import dataclass
 from typing import List, Optional
+
 from netaddr import IPNetwork
 
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
 from cloudrail.knowledge.utils.utils import is_subset
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.ec2.route import Route, RouteTargetType
-
-
-@dataclass
-class RouteTableRawData:
-    is_default: bool = False
 
 
 class RouteTable(AwsResource):
@@ -33,10 +28,9 @@ class RouteTable(AwsResource):
         self.route_table_id: str = route_table_id
         self.vpc_id: str = vpc_id
         self.name: str = name
-        self.aliases.add(route_table_id)
+        self.with_aliases(route_table_id)
         self.routes: List[Route] = []
         self.is_main_route_table: bool = is_main_route_table
-        self.raw_data: RouteTableRawData = RouteTableRawData()
 
     def get_keys(self) -> List[str]:
         return [self.route_table_id]
