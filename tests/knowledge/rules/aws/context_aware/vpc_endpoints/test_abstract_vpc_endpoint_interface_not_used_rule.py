@@ -23,8 +23,10 @@ class TestEc2VpcEndpointExposureRule(unittest.TestCase):
         ec2.region = default_region
         vpc: Vpc = create_empty_entity(Vpc)
         vpc.region = default_region
+        vpc.with_aliases('vpc-alias')
         network_interface: NetworkInterface = create_empty_entity(NetworkInterface)
         subnet: Subnet = create_empty_entity(Subnet)
+        subnet.vpc_id = 'vpc-alias'
         subnet.vpc = vpc
         network_interface.subnet = subnet
         network_interface.owner = ec2
@@ -46,9 +48,11 @@ class TestEc2VpcEndpointExposureRule(unittest.TestCase):
         ec2: Ec2Instance = create_empty_entity(Ec2Instance)
         ec2.region = default_region
         vpc: Vpc = create_empty_entity(Vpc)
+        vpc.with_aliases('vpc-alias')
         vpc.region = default_region
         network_interface: NetworkInterface = create_empty_entity(NetworkInterface)
         subnet: Subnet = create_empty_entity(Subnet)
+        subnet.vpc_id = 'vpc-alias'
         subnet.vpc = vpc
         network_interface.subnet = subnet
         network_interface.owner = ec2
