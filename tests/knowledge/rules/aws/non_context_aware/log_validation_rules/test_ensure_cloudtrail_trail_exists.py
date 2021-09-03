@@ -13,8 +13,8 @@ class TestEnsureCloudtrailTrailExists(unittest.TestCase):
     def test_ensure_cloudtrail_trail_exists_fail(self):
         # Arrange
         context = AwsEnvironmentContext()
-        account_one = Account("77465564674","account", False)
-        context.accounts.append(account_one)
+        account_test_fail = Account("77465564674","account", False)
+        context.accounts.append(account_test_fail)
 
         # Act
         result = self.rule.run(context, {})
@@ -26,9 +26,11 @@ class TestEnsureCloudtrailTrailExists(unittest.TestCase):
     def test_ensure_cloudtrail_trail_exists_pass(self):
         # Arrange
         context = AwsEnvironmentContext()
-
+        account_test_pass = Account("77465564674","account", False)
+        context.accounts.append(account_test_pass)
         cloudtrail_trail = CloudTrail("trail",False,"any",False,"region","account",True)
         context.cloudtrail.append(cloudtrail_trail)
+
 
         # Act
         result = self.rule.run(context, {})
@@ -36,3 +38,4 @@ class TestEnsureCloudtrailTrailExists(unittest.TestCase):
         # Assert
         self.assertEqual(RuleResultType.SUCCESS, result.status)
         self.assertEqual(0, len(result.issues))
+  
