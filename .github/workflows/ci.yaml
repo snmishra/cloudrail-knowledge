@@ -47,6 +47,10 @@ jobs:
       run: |
         cd tests
         pytest --junit-xml ../pytest.xml
+    - name: Test New with pytest
+      run: |
+        cd tests-tmp
+        pytest context --junit-xml ../pytest.xml
     - name: Upload Unit Test Results
       uses: actions/upload-artifact@v2
       if: success() || failure()
