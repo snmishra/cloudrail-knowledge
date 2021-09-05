@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import List, Dict, Optional
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.aws.iam.policy import Policy
 from cloudrail.knowledge.context.aws.iam.policy_statement import StatementEffect
@@ -28,7 +28,9 @@ class EnsureLambdaFunctionCannotBeInvokedPublicRule(AwsBaseRule):
         return bool(environment_context.lambda_function_list)
 
     @staticmethod
-    def _is_lambda_can_publicly_invoked(lambda_policy: Policy) -> bool:
+    def _is_lambda_can_publicly_invoked(lambda_policy: Optional[Policy]) -> bool:
+        if not lambda_policy:
+            return False
         return any(statement.effect == StatementEffect.ALLOW
                    and not statement.condition_block
                    and get_intersected_actions(statement.actions, 'lambda:InvokeFunction')

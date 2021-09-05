@@ -24,6 +24,7 @@ class BatchComputeEnvironment(NetworkEntity):
         self.compute_name: str = compute_name
         self.arn: str = arn
         self.vpc_config: NetworkConfiguration = vpc_config
+        self.with_aliases(self.arn)
 
     def get_keys(self) -> List[str]:
         return [self.arn]
@@ -32,6 +33,9 @@ class BatchComputeEnvironment(NetworkEntity):
         return self.compute_name
 
     def get_arn(self) -> str:
+        return self.arn
+
+    def get_id(self) -> str:
         return self.arn
 
     def get_all_network_configurations(self) -> Optional[List[NetworkConfiguration]]:

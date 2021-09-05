@@ -1,5 +1,6 @@
 import functools
 from typing import List, Dict, Optional, Union, Callable, Set
+
 from cloudrail.knowledge.context.aws.ec2.vpc_gateway_attachment import VpcGatewayAttachment
 from cloudrail.knowledge.context.aws.ec2.availability_zone import AvailabilityZone
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
@@ -248,7 +249,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  routes: List[Route] = None,
                  route_table_associations: List[RouteTableAssociation] = None,
                  main_route_table_associations: List[MainRouteTableAssociation] = None,
-                 network_acls: List[NetworkAcl] = None,
+                 network_acls: AliasesDict[NetworkAcl] = None,
                  network_acl_rules: List[NetworkAclRule] = None,
                  load_balancer_target_groups: List[LoadBalancerTargetGroup] = None,
                  load_balancer_target_group_associations: List[LoadBalancerTargetGroupAssociation] = None,
@@ -449,7 +450,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.routes = routes or []
         self.route_table_associations = route_table_associations or []
         self.main_route_table_associations = main_route_table_associations or []
-        self.network_acls = network_acls or []
+        self.network_acls = network_acls or AliasesDict()
         self.network_acl_rules = network_acl_rules or []
         self.load_balancer_target_groups = load_balancer_target_groups or []
         self.load_balancer_target_group_associations = load_balancer_target_group_associations or []
