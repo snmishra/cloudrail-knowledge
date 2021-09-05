@@ -35,7 +35,7 @@ class LoadBalancerTargetGroup(AwsResource):
         self.target_group_name: str = target_group_name
         self.target_type: str = target_type
         self.targets: List[LoadBalancerTarget] = []
-        self.aliases.add(target_group_arn)
+        self.with_aliases(target_group_arn)
 
     def get_keys(self) -> List[str]:
         return [self.target_group_arn]
