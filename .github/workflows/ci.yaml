@@ -45,7 +45,8 @@ jobs:
         pylint ./cloudrail
     - name: Test with pytest
       run: |
-        pytest --junit-xml pytest.xml
+        cd tests
+        pytest --junit-xml ../pytest.xml
     - name: Upload Unit Test Results
       uses: actions/upload-artifact@v2
       if: success() || failure()
