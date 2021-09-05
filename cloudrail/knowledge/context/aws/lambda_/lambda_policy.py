@@ -2,12 +2,12 @@ from typing import List, Optional
 
 from cloudrail.knowledge.context.aws.lambda_.lambda_alias import create_lambda_function_arn
 from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement
-from cloudrail.knowledge.context.aws.iam.policy import Policy
+from cloudrail.knowledge.context.aws.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
 from cloudrail.knowledge.utils.utils import hash_list
 
 
-class LambdaPolicy(Policy):
+class LambdaPolicy(ResourceBasedPolicy):
     """
         Attributes:
             function_name: The name of the Lambda Function the policy statements are for.

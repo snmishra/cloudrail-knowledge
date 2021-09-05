@@ -1,20 +1,19 @@
-from abc import abstractmethod
-from typing import Optional, List
-from cloudrail.knowledge.context.aws.iam.policy import Policy
-from cloudrail.knowledge.context.aws.aws_resource import AwsResource
-from cloudrail.knowledge.context.aws.service_name import AwsServiceName, AwsServiceAttributes
+from typing import List
+from cloudrail.knowledge.context.aws.iam.policy import Policy, PolicyType
+from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement
+from cloudrail.knowledge.context.aws.service_name import AwsServiceName
 
 
-class ResourceBasedPolicy(AwsResource):
+class ResourceBasedPolicy(Policy):
 
-    def __init__(self, account: str, region: str, tf_resource_type: AwsServiceName, aws_service_attributes: AwsServiceAttributes = None):
-        super().__init__(account, region, tf_resource_type, aws_service_attributes)
-        self.resource_based_policy: Optional[Policy] = None
+    def __init__(self,
+                 account: str,
+                 statements: List[PolicyStatement],
+                 raw_document: str = None,
+                 aws_service_name: AwsServiceName = AwsServiceName.AWS_IAM_POLICY,
+                 policy_type: PolicyType = PolicyType.RESOURCE_POLICY):
+        super().__init__(account, statements, raw_document, aws_service_name, policy_type)
 
-    @abstractmethod
-    def get_keys(self) -> List[str]:
-        pass
-
-    @property
-    def is_tagable(self) -> bool:
+    @staticmethod
+    def is_standalone() -> bool:
         return False

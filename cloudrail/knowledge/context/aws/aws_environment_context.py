@@ -113,7 +113,7 @@ from cloudrail.knowledge.context.aws.iam.iam_policy_attachment import IamPolicyA
 from cloudrail.knowledge.context.aws.iam.iam_user import IamUser
 from cloudrail.knowledge.context.aws.iam.iam_user_group_membership import IamUserGroupMembership
 from cloudrail.knowledge.context.aws.iam.iam_users_login_profile import IamUsersLoginProfile
-from cloudrail.knowledge.context.aws.iam.policy import AssumeRolePolicy, InlinePolicy, ManagedPolicy, S3Policy, S3AccessPointPolicy, Policy
+from cloudrail.knowledge.context.aws.iam.policy import AssumeRolePolicy, InlinePolicy, ManagedPolicy, Policy
 from cloudrail.knowledge.context.aws.iam.policy_group_attachment import PolicyGroupAttachment
 from cloudrail.knowledge.context.aws.iam.policy_role_attachment import PolicyRoleAttachment
 from cloudrail.knowledge.context.aws.iam.policy_user_attachment import PolicyUserAttachment
@@ -141,6 +141,7 @@ from cloudrail.knowledge.context.aws.redshift.redshift_logging import RedshiftLo
 from cloudrail.knowledge.context.aws.redshift.redshift_subnet_group import RedshiftSubnetGroup
 from cloudrail.knowledge.context.aws.resourcegroupstaggingapi.resource_tag_mapping_list import ResourceTagMappingList
 from cloudrail.knowledge.context.aws.s3.public_access_block_settings import PublicAccessBlockSettings
+from cloudrail.knowledge.context.aws.s3.s3_access_point_policy import S3AccessPointPolicy
 from cloudrail.knowledge.context.aws.s3.s3_acl import S3ACL
 from cloudrail.knowledge.context.aws.s3.s3_bucket import S3Bucket
 from cloudrail.knowledge.context.aws.s3.s3_bucket_access_point import S3BucketAccessPoint
@@ -149,6 +150,7 @@ from cloudrail.knowledge.context.aws.s3.s3_bucket_logging import S3BucketLogging
 from cloudrail.knowledge.context.aws.s3.s3_bucket_object import S3BucketObject
 from cloudrail.knowledge.context.aws.s3.s3_bucket_regions import S3BucketRegions
 from cloudrail.knowledge.context.aws.s3.s3_bucket_versioning import S3BucketVersioning
+from cloudrail.knowledge.context.aws.s3.s3_policy import S3Policy
 from cloudrail.knowledge.context.aws.s3outposts.s3outpost_endpoint import S3OutpostEndpoint
 from cloudrail.knowledge.context.aws.sagemaker.sagemaker_endpoint_config import SageMakerEndpointConfig
 from cloudrail.knowledge.context.aws.sagemaker.sagemaker_notebook_instance import SageMakerNotebookInstance

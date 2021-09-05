@@ -13,7 +13,7 @@ from cloudrail.knowledge.context.aws.es.elastic_search_domain import ElasticSear
 from cloudrail.knowledge.context.aws.es.elastic_search_domain_policy import ElasticSearchDomainPolicy
 from cloudrail.knowledge.context.aws.glacier.glacier_vault import GlacierVault
 from cloudrail.knowledge.context.aws.glacier.glacier_vault_policy import GlacierVaultPolicy
-from cloudrail.knowledge.context.aws.iam.policy import Policy, S3Policy
+from cloudrail.knowledge.context.aws.iam.policy import Policy
 from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement, StatementEffect
 from cloudrail.knowledge.context.aws.iam.principal import Principal, PrincipalType
 from cloudrail.knowledge.context.aws.kms.kms_key import KmsKey
@@ -21,6 +21,7 @@ from cloudrail.knowledge.context.aws.kms.kms_key_manager import KeyManager
 from cloudrail.knowledge.context.aws.kms.kms_key_policy import KmsKeyPolicy
 from cloudrail.knowledge.context.aws.lambda_.lambda_function import LambdaFunction
 from cloudrail.knowledge.context.aws.s3.s3_bucket import S3Bucket
+from cloudrail.knowledge.context.aws.s3.s3_policy import S3Policy
 from cloudrail.knowledge.context.aws.secretsmanager.secrets_manager_secret import SecretsManagerSecret
 from cloudrail.knowledge.context.aws.secretsmanager.secrets_manager_secret_policy import SecretsManagerSecretPolicy
 from cloudrail.knowledge.context.aws.sqs.sqs_queue import SqsQueue

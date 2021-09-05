@@ -1,8 +1,8 @@
 from enum import Enum
 from typing import List, Tuple
 
+from cloudrail.knowledge.context.aws.s3.s3_policy import S3Policy
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
-from cloudrail.knowledge.context.aws.iam.policy import S3Policy
 from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement, StatementEffect
 from cloudrail.knowledge.context.aws.iam.principal import Principal, PrincipalType
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource

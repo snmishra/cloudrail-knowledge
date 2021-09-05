@@ -3,6 +3,7 @@ from typing import List, Optional, Set
 from botocore.utils import ArnParser
 
 from cloudrail.knowledge.context.aws.aws_client import AwsClient
+from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.cloudwatch.cloud_watch_log_group import CloudWatchLogGroup
 from cloudrail.knowledge.context.aws.iam.policy import Policy
 from cloudrail.knowledge.context.aws.lambda_.lambda_alias import create_lambda_function_arn, LambdaAlias
@@ -13,7 +14,7 @@ from cloudrail.knowledge.context.aws.service_name import AwsServiceAttributes, A
 from cloudrail.knowledge.utils.arn_utils import are_arns_intersected, is_valid_arn
 
 
-class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
+class LambdaFunction(NetworkEntity, AwsResource, AwsClient):
     """
         Attributes:
             arn: The ARN of the function.
@@ -34,7 +35,7 @@ class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
                  runtime: str, vpc_config: NetworkConfiguration, xray_tracing_enabled: bool):
         NetworkEntity.__init__(self, function_name, account, region, AwsServiceName.AWS_LAMBDA_FUNCTION,
                                AwsServiceAttributes(aws_service_type=AwsServiceType.LAMBDA.value, region=region))
-        ResourceBasedPolicy.__init__(self, account, region, AwsServiceName.AWS_LAMBDA_FUNCTION,
+        AwsResource.__init__(self, account, region, AwsServiceName.AWS_LAMBDA_FUNCTION,
                                      AwsServiceAttributes(aws_service_type=AwsServiceType.LAMBDA.value, region=region))
         AwsClient.__init__(self)
         self.lambda_func_arn_set: Set[str] = {arn, qualified_arn, create_lambda_function_arn(account, region, function_name, lambda_func_version)}
