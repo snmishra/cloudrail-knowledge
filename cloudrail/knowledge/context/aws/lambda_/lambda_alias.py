@@ -1,4 +1,5 @@
 from typing import List, Optional
+
 from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
 from cloudrail.knowledge.utils.arn_utils import is_valid_arn
@@ -19,7 +20,7 @@ class LambdaAlias(AwsResource):
         super().__init__(account, region, AwsServiceName.AWS_LAMBDA_ALIAS)
         self.arn: str = arn
         self.name: str = name
-        self.aliases.add(arn)
+        self.with_aliases(arn)
         self.function_version: str = function_version
         self.description: str = description
         self.function_name_or_arn: str = function_name_or_arn
@@ -27,7 +28,7 @@ class LambdaAlias(AwsResource):
             self.function_arn = function_name_or_arn
         else:
             self.function_arn = create_lambda_function_arn(account, region, function_name_or_arn, function_version)
-        self.aliases.add(self.function_arn)
+        self.with_aliases(self.function_arn)
 
     def get_keys(self) -> List[str]:
         return [self.function_arn, self.name]

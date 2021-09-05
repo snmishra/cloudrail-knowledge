@@ -46,7 +46,7 @@ class LaunchConfiguration(AwsResource):
         self.security_group_ids: List[str] = security_group_ids
         self.http_tokens: str = http_tokens
         self.associate_public_ip_address: Optional[bool] = associate_public_ip_address
-        self.aliases.add(self.name)
+        self.with_aliases(self.name)
         self.iam_instance_profile: Optional[str] = iam_instance_profile
         self.ebs_optimized: bool = ebs_optimized
         self.monitoring_enabled: bool = monitoring_enabled

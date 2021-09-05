@@ -55,7 +55,7 @@ class NetworkInterface(ConnectionInstance, AwsResource):
         self.subnet: 'Subnet' = None
         self.security_groups: List['SecurityGroup'] = []
         self.owner: Optional[AwsResource] = None
-        self.aliases.add(eni_id)
+        self.with_aliases(eni_id)
 
         ConnectionInstance.__init__(self)
 

@@ -32,7 +32,7 @@ class NetworkAcl(AwsResource):
         self.subnet_ids: List[str] = subnet_ids
         self.inbound_rules: List[NetworkAclRule] = []
         self.outbound_rules: List[NetworkAclRule] = []
-        self.aliases.add(network_acl_id)
+        self.with_aliases(network_acl_id)
 
     def get_keys(self) -> List[str]:
         return [self.network_acl_id]
