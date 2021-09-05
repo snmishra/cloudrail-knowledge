@@ -1,11 +1,11 @@
 from typing import List
 
-from cloudrail.knowledge.context.aws.iam.policy import Policy
 from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement
+from cloudrail.knowledge.context.aws.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
 
 
-class EcrRepositoryPolicy(Policy):
+class EcrRepositoryPolicy(ResourceBasedPolicy):
     """
         Attributes:
             repo_name: The repository the policy applies to.

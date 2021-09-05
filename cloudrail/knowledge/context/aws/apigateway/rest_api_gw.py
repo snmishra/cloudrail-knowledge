@@ -3,8 +3,8 @@ from typing import List, Optional
 
 from cloudrail.knowledge.context.aws.apigateway.api_gateway_method import ApiGatewayMethod
 from cloudrail.knowledge.context.aws.apigateway.api_gateway_stage import ApiGatewayStage
+from cloudrail.knowledge.context.aws.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement
-from cloudrail.knowledge.context.aws.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.apigateway.rest_api_gw_domain import RestApiGwDomain
 from cloudrail.knowledge.context.aws.apigateway.rest_api_gw_policy import RestApiGwPolicy
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName, AwsServiceType, AwsServiceAttributes
@@ -17,7 +17,7 @@ class ApiGatewayType(Enum):
     PRIVATE = 'PRIVATE'
 
 
-class RestApiGw(ResourceBasedPolicy):
+class RestApiGw(AwsResource):
     """
     Attributes:
         rest_api_gw_id: The ID of the REST API Gateway.
@@ -44,6 +44,7 @@ class RestApiGw(ResourceBasedPolicy):
         self.is_public: bool = None
         self.api_gateway_methods: List[ApiGatewayMethod] = []
         self.agw_methods_with_valid_integrations_and_allowed_lambda_access: List[ApiGatewayMethod] = []
+        self.resource_based_policy: RestApiGwPolicy = None
 
     def get_keys(self) -> List[str]:
         return [self.rest_api_gw_id]

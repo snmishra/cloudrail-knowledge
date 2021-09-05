@@ -1,10 +1,11 @@
 from typing import List
+
+from cloudrail.knowledge.context.aws.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
-from cloudrail.knowledge.context.aws.iam.policy import Policy
 from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement
 
 
-class CloudWatchLogsDestinationPolicy(Policy):
+class CloudWatchLogsDestinationPolicy(ResourceBasedPolicy):
     """
         Attributes:
             destination_name: The name of the destination the policy applies to.

@@ -1,10 +1,10 @@
 from typing import List
-from cloudrail.knowledge.context.aws.iam.policy import Policy
 from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement
+from cloudrail.knowledge.context.aws.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.service_name import AwsServiceName
 
 
-class SecretsManagerSecretPolicy(Policy):
+class SecretsManagerSecretPolicy(ResourceBasedPolicy):
     """
         Attributes:
             secret_arn: The ARN of the secret.
