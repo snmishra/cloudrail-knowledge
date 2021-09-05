@@ -54,18 +54,22 @@ jobs:
         cd tests
         pytest --junit-xml ../pytest.xml
 
-    - name: Credentials to get knowledge tests binary files
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.S3_DATA_AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.S3_DATA_AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+    # - name: Credentials to get knowledge tests binary files
+    #   uses: aws-actions/configure-aws-credentials@v1
+    #   with:
+    #     aws-access-key-id: ${{ secrets.S3_DATA_AWS_ACCESS_KEY_ID }}
+    #     aws-secret-access-key: ${{ secrets.S3_DATA_AWS_SECRET_ACCESS_KEY }}
+    #     aws-region: us-east-1
 
     - name: Get tests binaries
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.S3_DATA_AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_DATA_AWS_SECRET_ACCESS_KEY }}
+        AWS_DEFAULT_REGION: us-east-1
       run: |
         cd tests-tmp
-        aws s3 sync s3://cloudrail-knowledge-tests-data . --no-progress
-        ls -la | grep zip
+        aws s3 sync s3://cloudrail-knowledge-tests-data . --quiet
+        /bin/bash -c "find . -type f | grep zip"
 
     - name: Test New with pytest
       run: |
