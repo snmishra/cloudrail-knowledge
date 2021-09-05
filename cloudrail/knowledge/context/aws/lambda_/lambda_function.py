@@ -9,7 +9,6 @@ from cloudrail.knowledge.context.aws.iam.policy import Policy
 from cloudrail.knowledge.context.aws.lambda_.lambda_alias import create_lambda_function_arn, LambdaAlias
 from cloudrail.knowledge.context.aws.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.networking_config.network_entity import NetworkEntity
-from cloudrail.knowledge.context.aws.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.service_name import AwsServiceAttributes, AwsServiceName, AwsServiceType
 from cloudrail.knowledge.utils.arn_utils import are_arns_intersected, is_valid_arn
 
