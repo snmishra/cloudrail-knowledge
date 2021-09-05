@@ -30,3 +30,7 @@ class SqsQueuePolicy(Policy):
             return 'SQS queue resource policy'
         else:
             return 'SQS queue resource policies'
+
+    @staticmethod
+    def is_standalone() -> bool:
+        return False
