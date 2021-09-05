@@ -729,6 +729,7 @@ rules_metadata:
   security_layer: networking
   severity: major
 - cloud_provider: azure
+  compliance:
     PCI DSS:
       3.2.1: '5.2'
     CIS:
