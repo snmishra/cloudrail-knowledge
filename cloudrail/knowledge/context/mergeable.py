@@ -16,6 +16,12 @@ class EntityOrigin(str, Enum):
     PSEUDO = 'pseudo'
 
 
+class UnSupportedEntityOriginType(Exception):
+
+    def __init__(self) -> None:
+        super().__init__(f'origin entity type don\'t supported')
+
+
 class Mergeable:
 
     def __init__(self):
@@ -94,7 +100,7 @@ class Mergeable:
             elif self.iac_state.iac_type == IacType.CLOUDFORMATION:
                 return EntityOrigin.CLOUDFORMATION
             else:
-                return EntityOrigin.NONE
+                raise UnSupportedEntityOriginType()
         else:
             return EntityOrigin.LIVE_ENV
 
