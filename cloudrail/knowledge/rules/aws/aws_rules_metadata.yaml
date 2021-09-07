@@ -3584,10 +3584,10 @@ rules_metadata:
     export is enabled.
   name: Ensure RDS instances and clusters have logging enabled
   remediation_steps:
-    console: Follow the guide at <https://docs.aws.amazon.com/neptune/latest/userguide/cloudwatch-logs.html>
-      in order to enable log export to Cloudwatch for Neptune cluster.
-    terraform: "For the aws_neptune_cluster resource, set enable_cloudwatch_logs_exports\
-      \ argument to a list containing the element \u201Caudit\u201D."
+    console: Follow the guide at <https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_LogAccess.html#USER_LogAccess.Procedural.UploadtoCloudWatch>
+     in order to enable log export to Cloudwatch for RDS instances and clusters.
+    terraform: For the aws_db_instance or aws_rds_cluster resource, set enabled_cloudwatch_logs_exports argument 
+      to a list containing at least one of the supported log types.
   resource_type:
   - database
   rule_id: non_car_rds_instance_and_cluster_logging_enabled
