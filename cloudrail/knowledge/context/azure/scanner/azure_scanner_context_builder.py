@@ -36,7 +36,7 @@ from cloudrail.knowledge.context.environment_context.scanner_context_builder imp
 class AzureScannerContextBuilder(ScannerContextBuilder):
 
     @staticmethod
-    def build(account_data_dir: Optional[str], account_id: Optional[str], **extra_args) -> AzureEnvironmentContext:
+    def build(account_data_dir: Optional[str], account_id: Optional[str], salt: Optional[str] = None, **extra_args) -> AzureEnvironmentContext:
         if not account_data_dir:
             return AzureEnvironmentContext()
         if not os.path.exists(account_data_dir):

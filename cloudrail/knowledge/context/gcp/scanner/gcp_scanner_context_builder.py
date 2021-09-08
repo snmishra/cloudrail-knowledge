@@ -11,7 +11,7 @@ from cloudrail.knowledge.context.environment_context.scanner_context_builder imp
 class GcpScannerContextBuilder(ScannerContextBuilder):
 
     @staticmethod
-    def build(account_data_dir: str, account_id: Optional[str], **extra_args) -> GcpEnvironmentContext:
+    def build(account_data_dir: str, account_id: Optional[str], salt: Optional[str] = None, **extra_args) -> GcpEnvironmentContext:
         if not account_data_dir:
             return GcpEnvironmentContext()
         if not os.path.exists(account_data_dir):

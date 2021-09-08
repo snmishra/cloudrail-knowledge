@@ -73,7 +73,7 @@ class AsyncQueueExecutor:
                 conn.close()
         return []
 
-    def _wait_processes_until_timeout(self, conn_to_process_map, result, process_to_task_name_map):
+    def _wait_processes_until_timeout(self, conn_to_process_map, result, unused_process_to_task_name_map):
         timeout: int = 60
         end_time: float = time.time() + timeout
 
