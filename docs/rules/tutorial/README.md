@@ -90,7 +90,7 @@ Your rule should now look like this:
 
 ```python
 from typing import List, Dict
-from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
+from cloudrail.knowledge.context.aws.resources.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.rules.base_rule import BaseRule, Issue
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
 
@@ -136,7 +136,7 @@ The above code requires that you also add imports at the top of the class:
 
 ```python
 from cloudrail.knowledge.utils.arn_utils import build_arn
-from cloudrail.knowledge.context.aws.resources.iam import StatementEffect
+from cloudrail.knowledge.context.aws.resources.resources.iam import StatementEffect
 ```
 
 The logic here iterates over all the roles in the context (which represents all roles in the 
@@ -199,12 +199,12 @@ test class. This is the test we need for the above rule:
 ```python
 import unittest
 
-from cloudrail.knowledge.context.aws.resources.account import Account
-from cloudrail.knowledge.context.aws.resources.iam import AssumeRolePolicy
-from cloudrail.knowledge.context.aws.resources.iam import PolicyStatement, StatementEffect
-from cloudrail.knowledge.context.aws.resources.iam import Principal, PrincipalType
-from cloudrail.knowledge.context.aws.resources.iam import Role
-from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
+from cloudrail.knowledge.context.aws.resources.resources.account import Account
+from cloudrail.knowledge.context.aws.resources.resources.iam import AssumeRolePolicy
+from cloudrail.knowledge.context.aws.resources.resources.iam import PolicyStatement, StatementEffect
+from cloudrail.knowledge.context.aws.resources.resources.iam import Principal, PrincipalType
+from cloudrail.knowledge.context.aws.resources.resources.iam import Role
+from cloudrail.knowledge.context.aws.resources.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 from src.ensure_only_approved_third_parties_can_assume_roles import EnsureOnlyAssumesThirdPartiesCanAssumeRoles
 
