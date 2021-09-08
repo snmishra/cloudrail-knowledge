@@ -651,7 +651,7 @@
     "workmail:List*",
     "workmail:Search*",
     "workspaces:Describe*",
-    "xray:BatchGet*",
-    "xray:Get*"
+    "xray:Get*",
+    "xray:BatchGet*"
   ]
 }
