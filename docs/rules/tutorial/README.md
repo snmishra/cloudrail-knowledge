@@ -136,7 +136,7 @@ The above code requires that you also add imports at the top of the class:
 
 ```python
 from cloudrail.knowledge.utils.arn_utils import build_arn
-from cloudrail.knowledge.context.aws.iam.policy_statement import StatementEffect
+from cloudrail.knowledge.context.aws.resources.iam import StatementEffect
 ```
 
 The logic here iterates over all the roles in the context (which represents all roles in the 
@@ -199,11 +199,11 @@ test class. This is the test we need for the above rule:
 ```python
 import unittest
 
-from cloudrail.knowledge.context.aws.account.account import Account
-from cloudrail.knowledge.context.aws.iam.policy import AssumeRolePolicy
-from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement, StatementEffect
-from cloudrail.knowledge.context.aws.iam.principal import Principal, PrincipalType
-from cloudrail.knowledge.context.aws.iam.role import Role
+from cloudrail.knowledge.context.aws.resources.account import Account
+from cloudrail.knowledge.context.aws.resources.iam import AssumeRolePolicy
+from cloudrail.knowledge.context.aws.resources.iam import PolicyStatement, StatementEffect
+from cloudrail.knowledge.context.aws.resources.iam import Principal, PrincipalType
+from cloudrail.knowledge.context.aws.resources.iam import Role
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 from src.ensure_only_approved_third_parties_can_assume_roles import EnsureOnlyAssumesThirdPartiesCanAssumeRoles
