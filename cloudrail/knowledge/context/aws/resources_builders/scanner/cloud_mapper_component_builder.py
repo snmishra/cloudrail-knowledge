@@ -945,7 +945,7 @@ def build_rds_instance(raw_data: dict) -> RdsInstance:
                                [security_group_details['VpcSecurityGroupId']
                                 for security_group_details in raw_data['VpcSecurityGroups']
                                 if security_group_details['Status'] == 'active'],
-                               raw_data.get('DBClusterIdentifier'),
+                               raw_data.get('DBClusterIdentifier', raw_data.get('DBInstanceIdentifier')),
                                raw_data['StorageEncrypted'],
                                raw_data.get('PerformanceInsightsEnabled', False),
                                raw_data.get('PerformanceInsightsKMSKeyId') if raw_data.get('PerformanceInsightsEnabled', False) else None,
