@@ -147,7 +147,7 @@ class CloudformationMetadataParser:
         for resource in self._get_resources().values():
             if iac_url_template:
                 resource['iac_url_template'] = iac_url_template
-            if salt:
+            if salt and resource.get('Properties'):
                 resource['Properties']['salt'] = salt
 
     def _set_resource_state(self):
