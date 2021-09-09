@@ -35,7 +35,7 @@ class LambdaFunction(NetworkEntity, AwsResource, AwsClient):
                  runtime: str, vpc_config: NetworkConfiguration, xray_tracing_enabled: bool):
         NetworkEntity.__init__(self, function_name, account, region, AwsServiceName.AWS_LAMBDA_FUNCTION,
                                AwsServiceAttributes(aws_service_type=AwsServiceType.LAMBDA.value, region=region))
-        ResourceBasedPolicy.__init__(self, account, region, AwsServiceName.AWS_LAMBDA_FUNCTION,
+        AwsResource.__init__(self, account, region, AwsServiceName.AWS_LAMBDA_FUNCTION,
                                      AwsServiceAttributes(aws_service_type=AwsServiceType.LAMBDA.value, region=region))
         AwsClient.__init__(self)
         self.lambda_func_arn_set: Set[str] = {arn, qualified_arn, create_lambda_function_arn(account, region, function_name, lambda_func_version)}

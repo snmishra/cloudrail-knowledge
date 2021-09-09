@@ -7,7 +7,7 @@ from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_object import S3Buck
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_versioning import S3BucketVersioning
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName, AwsServiceType, AwsServiceAttributes
 from cloudrail.knowledge.context.connection import ConnectionInstance
-from cloudrail.knowledge.context.aws.resources.iam.policy import S3Policy
+from cloudrail.knowledge.context.aws.resources.s3.s3_policy import S3Policy
 from cloudrail.knowledge.context.aws.resources.s3.public_access_block_settings import PublicAccessBlockSettings
 from cloudrail.knowledge.context.aws.resources.s3.s3_acl import S3ACL
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_access_point import S3BucketAccessPoint, S3BucketAccessPointNetworkOriginType
@@ -35,7 +35,7 @@ class S3Bucket(ConnectionInstance, AwsResource):
     """
     def __init__(self, account: str, bucket_name: str, arn: str, region: str = None,
                  policy: S3Policy = None):
-        ResourceBasedPolicy.__init__(self, account, region, AwsServiceName.AWS_S3_BUCKET,
+        AwsResource.__init__(self, account, region, AwsServiceName.AWS_S3_BUCKET,
                                      AwsServiceAttributes(aws_service_type=AwsServiceType.S3.value, region=region))
         ConnectionInstance.__init__(self)
         self.resource_based_policy = policy

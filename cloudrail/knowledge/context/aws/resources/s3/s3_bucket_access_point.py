@@ -3,7 +3,7 @@ from enum import Enum
 from typing import List
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
-from cloudrail.knowledge.context.aws.resources.iam.policy import S3AccessPointPolicy
+from cloudrail.knowledge.context.aws.resources.s3.s3_access_point_policy import S3AccessPointPolicy
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 
 

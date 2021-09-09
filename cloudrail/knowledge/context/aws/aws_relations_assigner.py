@@ -107,7 +107,7 @@ from cloudrail.knowledge.context.aws.resources.iam.iam_instance_profile import I
 from cloudrail.knowledge.context.aws.resources.iam.iam_policy_attachment import IamPolicyAttachment
 from cloudrail.knowledge.context.aws.resources.iam.iam_user import IamUser
 from cloudrail.knowledge.context.aws.resources.iam.iam_user_group_membership import IamUserGroupMembership
-from cloudrail.knowledge.context.aws.resources.iam.policy import AssumeRolePolicy, InlinePolicy, ManagedPolicy, S3AccessPointPolicy, S3Policy
+from cloudrail.knowledge.context.aws.resources.iam.policy import AssumeRolePolicy, InlinePolicy, ManagedPolicy
 from cloudrail.knowledge.context.aws.resources.iam.policy_group_attachment import PolicyGroupAttachment
 from cloudrail.knowledge.context.aws.resources.iam.policy_role_attachment import PolicyRoleAttachment
 from cloudrail.knowledge.context.aws.resources.iam.policy_user_attachment import PolicyUserAttachment
@@ -142,6 +142,8 @@ from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_encryption import S3
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_logging import S3BucketLogging
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_object import S3BucketObject
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_versioning import S3BucketVersioning
+from cloudrail.knowledge.context.aws.resources.s3.s3_access_point_policy import S3AccessPointPolicy
+from cloudrail.knowledge.context.aws.resources.s3.s3_policy import S3Policy
 from cloudrail.knowledge.context.aws.resources.s3outposts.s3outpost_endpoint import S3OutpostEndpoint
 from cloudrail.knowledge.context.aws.resources.sagemaker.sagemaker_notebook_instance import SageMakerNotebookInstance
 from cloudrail.knowledge.context.aws.resources.secretsmanager.secrets_manager_secret import SecretsManagerSecret
