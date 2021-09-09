@@ -21,7 +21,7 @@ class RdsInstance(NetworkEntity, INetworkConfiguration):
             security_group_ids: The IDs of the security groups in use
                 with the instance.
             db_cluster_id: The cluster ID, if this instance is part of a cluster,
-                or None otherwise.
+                or the DB instance ID otherwise.
             encrypted_at_rest: True is encryption at rest is enabled.
             performance_insights_enabled: True if performance insights is enabled.
             performance_insights_kms_key: The ARN of the KMS Key used to encrypt

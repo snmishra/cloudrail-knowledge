@@ -962,7 +962,7 @@ def build_rds_db_instance(attributes: dict) -> RdsInstance:
                                publicly_accessible=attributes['publicly_accessible'],
                                db_subnet_group_name=_get_known_value(attributes, "db_subnet_group_name"),
                                security_group_ids=_get_known_value(attributes, "vpc_security_group_ids", []),
-                               db_cluster_id=_get_known_value(attributes, 'cluster_identifier'),
+                               db_cluster_id=_get_known_value(attributes, 'id'),
                                encrypted_at_rest=get_dict_value(attributes, 'storage_encrypted', False),
                                performance_insights_enabled=_get_known_value(attributes, 'performance_insights_enabled', False),
                                performance_insights_kms_key=_get_known_value(attributes, 'performance_insights_kms_key_id')
