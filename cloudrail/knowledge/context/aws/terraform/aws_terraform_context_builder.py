@@ -199,6 +199,7 @@ class AwsTerraformContextBuilder(IacContextBuilder):
         for resource in resources.values():
             for entity in resource:
                 entity['account_id'] = account_id
+                entity['salt'] = salt
                 entity['region'] = aws_terraform_utils.get_resource_region(entity['tf_address'])
                 entity['iac_url_template'] = iac_url_template
 
