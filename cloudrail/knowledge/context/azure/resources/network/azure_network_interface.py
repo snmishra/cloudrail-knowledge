@@ -36,14 +36,12 @@ class AzureNetworkInterface(AzureResource):
     """
         Attributes:
             name: The name of this network interface.
-            network_security_group_id: The id of the security group that's attached to this network interface.
-            network_security_group: The actual security group that's attached to this network interface.
+            network_security_group: The security group that's attached to this network interface.
             ip_configurations: IP configurations of a network interface.
     """
 
-    def __init__(self, name: str, network_security_group_id: Optional[str], ip_configurations: List[IpConfiguration]):
+    def __init__(self, name: str, ip_configurations: List[IpConfiguration]):
         AzureResource.__init__(self, AzureResourceType.AZURERM_NETWORK_INTERFACE)
-        self.network_security_group_id: str = network_security_group_id
         self.name: str = name
         self.ip_configurations: List[IpConfiguration] = ip_configurations
 
