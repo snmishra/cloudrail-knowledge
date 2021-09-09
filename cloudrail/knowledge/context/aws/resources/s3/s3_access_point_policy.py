@@ -1,7 +1,7 @@
 from typing import List
 
-from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement
-from cloudrail.knowledge.context.aws.resource_based_policy import ResourceBasedPolicy
+from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement
+from cloudrail.knowledge.context.aws.resources.resource_based_policy import ResourceBasedPolicy
 
 
 class S3AccessPointPolicy(ResourceBasedPolicy):
