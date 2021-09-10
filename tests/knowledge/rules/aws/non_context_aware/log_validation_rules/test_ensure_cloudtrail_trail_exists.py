@@ -1,9 +1,9 @@
 import unittest
 
-from cloudrail.knowledge.context.aws.cloudtrail.cloudtrail import CloudTrail
+from cloudrail.knowledge.context.aws.resources.cloudtrail.cloudtrail import CloudTrail
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.rules.base_rule import RuleResultType
-from cloudrail.knowledge.context.aws.account.account import Account
+from cloudrail.knowledge.context.aws.resources.account.account import Account
 from cloudrail.knowledge.rules.aws.non_context_aware.log_validation_rules.ensure_cloudtrail_trail_exists import \
      EnsureCloudtrailTrailExists
 
