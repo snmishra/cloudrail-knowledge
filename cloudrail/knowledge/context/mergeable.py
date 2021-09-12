@@ -17,7 +17,7 @@ class EntityOrigin(str, Enum):
 class UnSupportedEntityOriginType(Exception):
 
     def __init__(self) -> None:
-        super().__init__(f'origin entity type don\'t supported')
+        super().__init__('origin entity type don\'t supported')
 
 
 class Mergeable:
