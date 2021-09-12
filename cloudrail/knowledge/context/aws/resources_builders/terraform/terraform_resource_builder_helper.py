@@ -305,7 +305,6 @@ def build_load_balancer_target_group(attributes: dict) -> LoadBalancerTargetGrou
 def build_load_balancer_target(attributes: dict) -> LoadBalancerTarget:
     return LoadBalancerTarget(port=attributes['port'],
                               target_group_arn=attributes['target_group_arn'],
-                              target_health='',  # TODO no target health
                               target_id=attributes['target_id'],
                               account=attributes['account_id'],
                               region=attributes['region'])
@@ -1122,7 +1121,8 @@ def build_ecs_target(attributes: dict) -> CloudWatchEventTarget:
         network_conf_list: List[NetworkConfiguration] = \
             [NetworkConfiguration(conf["assign_public_ip"], conf["security_groups"], conf["subnets"])
              for conf in event_target_dict["network_configuration"]]
-        target: EcsTarget = EcsTarget(attributes["tf_address"] + str(counter),
+        target: EcsTarget = EcsTarget(attributes["tf_address"] + str(counter)
+                                      if not _is_known_value(attributes, 'arn') else attributes['arn'].split(':')[-1] + '.target.name',
                                       attributes["id"],
                                       LaunchType(event_target_dict["launch_type"]),
                                       attributes['account_id'],
@@ -1135,7 +1135,7 @@ def build_ecs_target(attributes: dict) -> CloudWatchEventTarget:
         counter += 1
     return CloudWatchEventTarget(account=attributes['account_id'],
                                  region=attributes['region'],
-                                 name=attributes["tf_address"],
+                                 name=attributes["tf_address"] if not _is_known_value(attributes, 'arn') else attributes['arn'].split(':')[-1],
                                  rule_name=attributes["rule"],
                                  target_id=attributes["target_id"],
                                  role_arn=attributes["role_arn"],
@@ -1379,7 +1379,7 @@ def build_launch_template(attributes: dict) -> LaunchTemplate:
     if metadata_options:
         http_tokens = _get_known_value(metadata_options[0], 'http_tokens')
     security_group_ids = _get_known_value(attributes, 'vpc_security_group_ids') or _get_known_value(attributes, 'security_group_names') or []
-    version = _get_known_value(attributes, 'latest_version', 0) + 1
+    version = _get_known_value(attributes, 'latest_version', 1)
     network_configurations: List[NetworkConfiguration] = []
     for net_conf in get_dict_value(attributes, 'network_interfaces', []):
         assign_public_ip: Optional[bool] = get_dict_value(net_conf, 'associate_public_ip_address', None)
@@ -1497,8 +1497,7 @@ def build_dynamodb_table(attributes: dict) -> DynamoDbTable:
     if _get_known_value(attributes, 'server_side_encryption'):
         server_side_encryption = attributes['server_side_encryption'][0]['enabled']
         kms_key_id = attributes['server_side_encryption'][0].get('kms_key_arn')
-    return DynamoDbTable(table_name=attributes["name"], region=attributes["region"], account=attributes['account_id'],
-                         table_id=attributes["id"], table_arn=attributes["arn"],
+    return DynamoDbTable(table_name=attributes["name"], region=attributes["region"], account=attributes['account_id'], table_arn=attributes["arn"],
                          billing_mode=billing_mode,
                          partition_key=attributes["hash_key"], sort_key=attributes.get("range_key"),
                          write_capacity=attributes.get("write_capacity") or 0, read_capacity=attributes.get("read_capacity") or 0,
@@ -1760,7 +1759,8 @@ def build_ecr_repository_policy(attributes: dict) -> EcrRepositoryPolicy:
     return EcrRepositoryPolicy(attributes['repository'],
                                _build_policy_statements_from_str(attributes, 'policy'),
                                _get_known_value(attributes, 'policy'),
-                               attributes['account_id'])
+                               attributes['account_id'],
+                               attributes['region'])
 
 
 def build_cloudwatch_logs_destination(attributes: dict) -> CloudWatchLogsDestination:
@@ -1906,7 +1906,8 @@ def build_efs_policy(attributes: dict) -> EfsPolicy:
     return EfsPolicy(attributes['file_system_id'],
                      _build_policy_statements_from_str(attributes, 'policy'),
                      _get_known_value(attributes, 'policy'),
-                     attributes['account_id'])
+                     attributes['account_id'],
+                     attributes['region'])
 
 
 def build_glue_data_catalog_policy(attributes: dict) -> GlueDataCatalogPolicy:

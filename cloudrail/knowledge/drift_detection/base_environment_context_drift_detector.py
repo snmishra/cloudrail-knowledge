@@ -3,13 +3,24 @@ import json
 import logging
 from abc import abstractmethod
 from enum import Enum
-from typing import List, Union, Optional
+from typing import List, Optional, Union
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
+from cloudrail.knowledge.context.aws.resources.athena.athena_database import AthenaDatabase
+from cloudrail.knowledge.context.aws.resources.cloudhsmv2.cloudhsm_v2_cluster import CloudHsmV2Cluster
+from cloudrail.knowledge.context.aws.resources.cloudhsmv2.cloudhsm_v2_hsm import CloudHsmV2Hsm
+from cloudrail.knowledge.context.aws.resources.ec2.transit_gateway_route_table_propagation import TransitGatewayRouteTablePropagation
+from cloudrail.knowledge.context.aws.resources.ec2.vpc_endpoint_route_table_association import VpcEndpointRouteTableAssociation
+from cloudrail.knowledge.context.aws.resources.glue.glue_connection import GlueConnection
+from cloudrail.knowledge.context.aws.resources.iam.iam_group_membership import IamGroupMembership
+from cloudrail.knowledge.context.aws.resources.iam.iam_policy_attachment import IamPolicyAttachment
 from cloudrail.knowledge.context.aws.resources.lambda_.lambda_alias import LambdaAlias
+from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_object import S3BucketObject
+from cloudrail.knowledge.context.aws.resources.s3outposts.s3outpost_endpoint import S3OutpostEndpoint
+from cloudrail.knowledge.context.aws.resources.worklink.worklink_fleet import WorkLinkFleet
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 from cloudrail.knowledge.context.mergeable import Mergeable
-from cloudrail.knowledge.drift_detection.drift_detection_result import DriftDetectionResult, Drift
+from cloudrail.knowledge.drift_detection.drift_detection_result import (Drift, DriftDetectionResult)
 from cloudrail.knowledge.utils.utils import hash_list
 from deepdiff import DeepDiff
 
@@ -60,7 +71,21 @@ class BaseEnvironmentContextDriftDetector:
                 if old:
                     if drift := cls._compare_entity(mergeable(new), mergeable(old)):
                         drifts[drift.resource_id] = drift
-                else:
+                # If the resource is missing from the cloud provider (=old), we will report it, 
+                # unless this is a resource which we do not build from the first place, due to API limitations.
+                elif not old and not(isinstance(new, (AthenaDatabase, GlueConnection, WorkLinkFleet,
+                                                      S3OutpostEndpoint, CloudHsmV2Hsm, CloudHsmV2Cluster,
+                                                      S3BucketObject, TransitGatewayRouteTablePropagation, IamGroupMembership,
+                                                      VpcEndpointRouteTableAssociation, IamPolicyAttachment))):
+                    drifts[mergeable(new).iac_state.address] = Drift(mergeable(new).get_type(),
+                                                                     mergeable(new).iac_state.address,
+                                                                     cls._to_simple_dict(mergeable(new)),
+                                                                     {},
+                                                                     mergeable(new).iac_state.resource_metadata and dataclasses.asdict(
+                                                                         mergeable(new).iac_state.resource_metadata),
+                                                                     f'resource {mergeable(new).iac_state.address} was not found in your cloud-account',
+                                                                     '',
+                                                                     mergeable(new).iac_state.iac_resource_url)
                     logging.warning(f'missing entity in live env {mergeable(new).iac_state.address}')
         return list(drifts.values())
 

@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from typing import List
 
 from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement, StatementCondition, StatementEffect
@@ -79,3 +80,6 @@ def _build_principal(raw_data: str or dict) -> Principal:
 
 def get_dict_value(dict_ref: dict, key: str, default):
     return default if (key not in dict_ref or dict_ref[key] is None or not dict_ref[key]) else dict_ref[key]
+
+def extract_attribute_from_file_path(path: str, key_to_replace: str):
+    return os.path.basename(path).replace(key_to_replace, '').replace('.json', '')

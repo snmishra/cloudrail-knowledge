@@ -157,10 +157,9 @@ from cloudrail.knowledge.context.aws.resources.workspaces.workspace_directory im
 from cloudrail.knowledge.context.aws.resources.workspaces.workspaces import Workspace
 from cloudrail.knowledge.context.aws.resources.xray.xray_encryption import XrayEncryption
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
-from cloudrail.knowledge.utils.arn_utils import get_arn_resource
 from cloudrail.knowledge.utils.port_utils import get_port_by_engine
 from cloudrail.knowledge.utils.utils import flat_list
-from cloudrail.knowledge.context.environment_context.common_component_builder import build_policy_statement, build_policy_statements_from_str, get_dict_value
+from cloudrail.knowledge.context.environment_context.common_component_builder import build_policy_statement, build_policy_statements_from_str, get_dict_value, extract_attribute_from_file_path
 from cloudrail.knowledge.utils.tags_utils import extract_name_from_tags
 from setuptools.namespaces import flatten
 
@@ -351,7 +350,7 @@ def build_s3_public_access_block_settings(raw_data: dict) -> PublicAccessBlockSe
     level: PublicAccessBlockLevel = get_dict_value(raw_data, "access_level", PublicAccessBlockLevel.BUCKET)
     bucket_name_or_account_id: str = raw_data['Account']
     if level == PublicAccessBlockLevel.BUCKET:
-        bucket_name_or_account_id = os.path.basename(raw_data['FilePath'])
+        bucket_name_or_account_id = extract_attribute_from_file_path(raw_data['FilePath'], 'Bucket-')
     return PublicAccessBlockSettings(bucket_name_or_account_id=bucket_name_or_account_id,
                                      block_public_acls=settings_dict["BlockPublicAcls"],
                                      block_public_policy=settings_dict["BlockPublicPolicy"],
@@ -386,12 +385,11 @@ def build_peering_connection(raw_data: dict) -> PeeringConnection:
 
 def build_load_balancer_target(raw_data: dict) -> LoadBalancerTarget:
     target_group_arn = raw_data['TargetGroupArn']
-    target_health = raw_data['TargetHealth'].get('State')
     target_id = raw_data['Target'].get('Id')
     port = raw_data['Target'].get('Port')
     account = raw_data['Account']
     region = raw_data['Region']
-    return LoadBalancerTarget(target_group_arn, target_health, target_id, port, account, region)
+    return LoadBalancerTarget(target_group_arn, target_id, port, account, region)
 
 
 def build_load_balancer_target_group(raw_data: dict) -> LoadBalancerTargetGroup:
@@ -826,7 +824,7 @@ def build_redshift_logging(attributes: dict) -> RedshiftLogging:
     logs_data = attributes['Value']
     return RedshiftLogging(attributes['Account'],
                            attributes['Region'],
-                           os.path.basename(attributes['FilePath']).replace('ClusterIdentifier-', '').replace('.json', ''),
+                           extract_attribute_from_file_path(attributes['FilePath'], 'ClusterIdentifier-'),
                            logs_data.get('BucketName'),
                            logs_data.get('S3KeyPrefix'),
                            logs_data['LoggingEnabled'])
@@ -871,9 +869,9 @@ def build_cloud_watch_event_target(raw_data: dict) -> Optional[CloudWatchEventTa
         conf: NetworkConfiguration = NetworkConfiguration(conf_dict["AssignPublicIp"] == "ENABLED",
                                                           conf_dict["SecurityGroups"],
                                                           conf_dict["Subnets"])
-        target: EcsTarget = EcsTarget(name=get_arn_resource(raw_data["Arn"]) + ".target.name",
+        target: EcsTarget = EcsTarget(name=raw_data["Arn"].split(':')[-1] + ".target.name",
                                       target_id=raw_data["Id"],
-                                      launch_type=raw_data["EcsParameters"]["LaunchType"],
+                                      launch_type=LaunchType(raw_data["EcsParameters"]["LaunchType"]),
                                       account=raw_data['Account'],
                                       region=raw_data['Region'],
                                       cluster_arn=raw_data["Arn"],
@@ -883,14 +881,15 @@ def build_cloud_watch_event_target(raw_data: dict) -> Optional[CloudWatchEventTa
         target_list.append(target)
 
     if target_list:
-        rule_name = raw_data['RuleName']
+        rule_name = extract_attribute_from_file_path(raw_data['FilePath'], 'Rule-')
+        cluster_arn = raw_data["Arn"]
         event_target: CloudWatchEventTarget = CloudWatchEventTarget(account=raw_data['Account'],
                                                                     region=raw_data['Region'],
-                                                                    name=rule_name,
+                                                                    name=cluster_arn.split(':')[-1],
                                                                     rule_name=rule_name,
-                                                                    target_id=rule_name + ".id",
+                                                                    target_id=raw_data['Id'],
                                                                     role_arn=target_list[0].role_arn,
-                                                                    cluster_arn=target_list[0].cluster_arn if target_list else None,
+                                                                    cluster_arn=cluster_arn,
                                                                     ecs_target_list=target_list)
         return event_target
     return None
@@ -900,7 +899,7 @@ def build_ecs_task_definition(attributes: dict) -> EcsTaskDefinition:
     account = attributes['Account']
     region = attributes['Region']
     attributes = attributes['Value']
-    network_mode: NetworkMode = NetworkMode(get_dict_value(attributes, 'networkMode', 'bridge'))
+    network_mode: NetworkMode = NetworkMode(get_dict_value(attributes, 'networkMode', 'none'))
     container_definitions: List[ContainerDefinition] = []
     efs_volume_data = []
     for volume in attributes.get('volumes', []):
@@ -908,20 +907,19 @@ def build_ecs_task_definition(attributes: dict) -> EcsTaskDefinition:
             efs_volume_data.append(EfsVolume(volume['name'],
                                              volume['efsVolumeConfiguration']['fileSystemId'],
                                              bool(volume['efsVolumeConfiguration'].get('transitEncryption') == 'ENABLED')))
-    if network_mode != NetworkMode.NONE:
-        for container in attributes['containerDefinitions']:
-            port_mappings: List[PortMappings] = []
-            for port_map in get_dict_value(container, 'portMappings', []):
-                host_port: int = get_dict_value(port_map, 'hostPort', -1)
-                container_port: int = get_dict_value(port_map, 'containerPort', -1)
-                if network_mode == NetworkMode.AWS_VPC:
-                    host_port = container_port
-                port_mappings.append(PortMappings(container_port=container_port,
-                                                  host_port=host_port,
-                                                  protocol=IpProtocol(get_dict_value(port_map, 'protocol', ''))))
-            container_definitions.append(ContainerDefinition(container_name=container['name'],
-                                                             image=container['image'],
-                                                             port_mappings=port_mappings))
+    for container in attributes['containerDefinitions']:
+        port_mappings: List[PortMappings] = []
+        for port_map in get_dict_value(container, 'portMappings', []):
+            host_port: int = get_dict_value(port_map, 'hostPort', -1)
+            container_port: int = get_dict_value(port_map, 'containerPort', -1)
+            if network_mode == NetworkMode.AWS_VPC:
+                host_port = container_port
+            port_mappings.append(PortMappings(container_port=container_port,
+                                                host_port=host_port,
+                                                protocol=IpProtocol(get_dict_value(port_map, 'protocol', ''))))
+        container_definitions.append(ContainerDefinition(container_name=container['name'],
+                                                            image=container['image'],
+                                                            port_mappings=port_mappings))
     return EcsTaskDefinition(task_arn=attributes['taskDefinitionArn'],
                              family=attributes['family'],
                              revision=attributes['revision'],
@@ -1166,7 +1164,7 @@ def build_launch_template(raw_data: dict) -> LaunchTemplate:
     network_configurations: List[NetworkConfiguration] = []
 
     for net_conf in get_dict_value(template_data, 'NetworkInterfaces', []):
-        assign_public_ip: Optional[bool] = get_dict_value(net_conf, 'AssociatePublicIpAddress', False)
+        assign_public_ip: Optional[bool] = get_dict_value(net_conf, 'AssociatePublicIpAddress', None)
         security_groups: List[str] = get_dict_value(net_conf, 'Groups', [])
         subnet_id: str = get_dict_value(net_conf, 'SubnetId', None)
         network_configurations.append(NetworkConfiguration(assign_public_ip=assign_public_ip, security_groups_ids=security_groups,
@@ -1322,7 +1320,6 @@ def build_dynamodb_table(attributes: dict) -> DynamoDbTable:
     return DynamoDbTable(table_name=attributes["TableName"],
                          region=region,
                          account=account,
-                         table_id=attributes["TableId"],
                          table_arn=attributes["TableArn"],
                          billing_mode=billing_mode, partition_key=partition_key,
                          sort_key=sort_key, write_capacity=write_capacity,
@@ -1373,13 +1370,13 @@ def build_docdb_cluster_parameter_group(attributes: dict) -> DocDbClusterParamet
     for parameter in attributes['Value']['Parameters']:
         list_parameters.append(DocDbClusterParameter(parameter.get('ParameterName'), parameter.get('ParameterValue')))
     return DocDbClusterParameterGroup(list_parameters,
-                                      os.path.basename(attributes['FilePath']).replace('DBClusterParameterGroupName-', '').replace('.json', ''),
+                                      extract_attribute_from_file_path(attributes['FilePath'], 'DBClusterParameterGroupName-'),
                                       attributes['Account'],
                                       attributes['Region'])
 
 
 def build_s3_bucket_encryption(attributes: dict) -> S3BucketEncryption:
-    return S3BucketEncryption(os.path.basename(attributes['FilePath']).replace('Bucket-', '').replace('.json', ''),
+    return S3BucketEncryption(extract_attribute_from_file_path(attributes['FilePath'], 'Bucket-'),
                               True,
                               attributes['Region'],
                               attributes['Account'])
@@ -1389,7 +1386,7 @@ def build_s3_bucket_versioning(attributes: dict) -> S3BucketVersioning:
     bucket_versioning = False
     if get_dict_value(attributes, 'Value', {}).get('Status') == 'Enabled':
         bucket_versioning = True
-    return S3BucketVersioning(os.path.basename(attributes['FilePath']).replace('Bucket-', '').replace('.json', ''),
+    return S3BucketVersioning(extract_attribute_from_file_path(attributes['FilePath'], 'Bucket-'),
                               bucket_versioning,
                               attributes['Account'],
                               attributes['Region'])
@@ -1545,7 +1542,8 @@ def build_ecr_repository_policy(attributes: dict) -> EcrRepositoryPolicy:
     return EcrRepositoryPolicy(attributes['Value']['repositoryName'],
                                _build_policy_statements(json.loads(attributes['Value']['policyText'])['Statement']),
                                attributes['Value']['policyText'],
-                               attributes['Account'])
+                               attributes['Account'],
+                               attributes['Region'])
 
 
 def build_cloudwatch_logs_destination(attributes: dict) -> CloudWatchLogsDestination:
@@ -1632,8 +1630,7 @@ def build_lambda_policy(attributes: dict) -> LambdaPolicy:
 
 
 def build_lambda_alias(attributes: dict) -> LambdaAlias:
-    lambda_function_name: str = os.path.basename(attributes['FilePath'])
-    lambda_function_name = lambda_function_name.replace('FunctionName-', '').replace('.json', '')
+    lambda_function_name = extract_attribute_from_file_path(attributes['FilePath'], 'FunctionName-')
     return LambdaAlias(account=attributes['Account'],
                        region=attributes['Region'],
                        arn=attributes['AliasArn'],
@@ -1671,7 +1668,8 @@ def build_efs_policy(attributes: dict) -> EfsPolicy:
     return EfsPolicy(attributes['Value']['FileSystemId'],
                      build_policy_statements_from_str(attributes['Value']['Policy']),
                      attributes['Value']['Policy'],
-                     attributes['Account'])
+                     attributes['Account'],
+                     attributes['Region'])
 
 
 def build_glue_data_catalog_policy(attributes: dict) -> GlueDataCatalogPolicy:
@@ -1700,7 +1698,7 @@ def build_secrets_manager_secret_policy(attributes: dict) -> SecretsManagerSecre
 
 def build_rest_api_gw_mapping(attributes: dict) -> RestApiGwMapping:
     return RestApiGwMapping(attributes['restApiId'],
-                            os.path.basename(attributes['FilePath']),
+                            extract_attribute_from_file_path(attributes['FilePath'], 'domainName-'),
                             attributes['Region'],
                             attributes['Account'])
 
@@ -1877,7 +1875,7 @@ def build_efs_mount_target_base(attributes: dict) -> EfsMountTarget:
 
 def build_efs_mount_target_security_groups(attributes: dict) -> MountTargetSecurityGroups:
     return MountTargetSecurityGroups(attributes['Value']['SecurityGroups'],
-                                     os.path.basename(attributes['FilePath']).replace('MountTargetId-', '').replace('.json', ''))
+                                     extract_attribute_from_file_path(attributes['FilePath'], 'MountTargetId-'))
 
 
 def build_workspaces_directory(attributes: dict) -> WorkspaceDirectory:
@@ -1923,7 +1921,7 @@ def build_load_balancer_attributes(attributes: dict) -> LoadBalancerAttributes:
                                             attributes_dict['access_logs.s3.enabled'])
     return LoadBalancerAttributes(attributes['Account'],
                                   attributes['Region'],
-                                  urllib.parse.unquote(os.path.basename(attributes['FilePath']).replace('LoadBalancerArn-', '').replace('.json', '')),
+                                  urllib.parse.unquote(extract_attribute_from_file_path(attributes['FilePath'], 'LoadBalancerArn-')),
                                   attributes_dict.get('routing.http.drop_invalid_header_fields.enabled', False),
                                   lb_access_logs)
 
@@ -1963,8 +1961,7 @@ def build_api_gateway(attributes: dict) -> ApiGateway:
 
 
 def build_api_gateway_v2_integration(attributes: dict) -> ApiGatewayV2Integration:
-    file_name = os.path.basename(attributes['FilePath'])
-    rest_api_id = file_name.replace('ApiId-', '').replace('.json', '')
+    rest_api_id = extract_attribute_from_file_path(attributes['FilePath'], 'ApiId-')
     return ApiGatewayV2Integration(attributes['Account'],
                                    attributes['Region'],
                                    rest_api_id,
@@ -2092,7 +2089,7 @@ def build_s3_bucket_logging(attributes: dict) -> S3BucketLogging:
     if attributes['Value'].get('LoggingEnabled'):
         target_bucket = attributes['Value']['LoggingEnabled'].get('TargetBucket')
         target_prefix = attributes['Value']['LoggingEnabled'].get('TargetPrefix')
-    return S3BucketLogging(os.path.basename(attributes['FilePath']).replace('Bucket-', '').replace('.json', ''),
+    return S3BucketLogging(extract_attribute_from_file_path(attributes['FilePath'], 'Bucket-'),
                            target_bucket,
                            target_prefix,
                            attributes['Account'],
