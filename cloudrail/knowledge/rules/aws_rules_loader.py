@@ -1,4 +1,5 @@
 # pylint: disable=line-too-long
+from cloudrail.knowledge.rules.aws.non_context_aware.log_validation_rules.ensure_cloudtrail_trail_exists import EnsureCloudtrailTrailExists
 from typing import Dict, List
 
 from cloudrail.knowledge.rules.aws.context_aware.disallow_ec2_classic_mode_rule import DisallowEc2ClassicModeRule
@@ -203,8 +204,6 @@ from cloudrail.knowledge.rules.aws.non_context_aware.log_validation_rules.ensure
     EnsureRestApiGwAccessLoggingEnabledRule
 from cloudrail.knowledge.rules.aws.non_context_aware.log_validation_rules.ensure_s3_bucket_logging_enabled_rule import \
     EnsureS3BucketLoggingEnabledRule
-from cloudrail.knowledge.rules.aws.non_context_aware.log_validation_rules.ensure_cloudtrail_trail_exists import \
-    EnsureCloudtrailTrailExists
 from cloudrail.knowledge.rules.aws.non_context_aware.performance_optimization.ensure_ec2_instance_ebs_optimized_rule import \
     EnsureEc2InstanceEbsOptimizedRule
 from cloudrail.knowledge.rules.aws.non_context_aware.policy_wildcard_violation.ensure_glue_data_catalog_policy_not_use_wildcard_rule import \
