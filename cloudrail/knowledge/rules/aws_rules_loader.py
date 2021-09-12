@@ -204,6 +204,8 @@ from cloudrail.knowledge.rules.aws.non_context_aware.log_validation_rules.ensure
     EnsureRestApiGwAccessLoggingEnabledRule
 from cloudrail.knowledge.rules.aws.non_context_aware.log_validation_rules.ensure_s3_bucket_logging_enabled_rule import \
     EnsureS3BucketLoggingEnabledRule
+from cloudrail.knowledge.rules.aws.non_context_aware.log_validation_rules.ensure_cloudtrail_trail_exists import \
+    EnsureCloudtrailTrailExists
 from cloudrail.knowledge.rules.aws.non_context_aware.performance_optimization.ensure_ec2_instance_ebs_optimized_rule import \
     EnsureEc2InstanceEbsOptimizedRule
 from cloudrail.knowledge.rules.aws.non_context_aware.policy_wildcard_violation.ensure_glue_data_catalog_policy_not_use_wildcard_rule import \
@@ -392,10 +394,10 @@ class AwsRulesLoader(AbstractRulesLoader):
             EnsureRedshiftClusterLoggingEnabledRule(),
             EnsureRestApiGwAccessLoggingEnabledRule(),
             EnsureS3BucketLoggingEnabledRule(),
+            EnsureCloudtrailTrailExists(),
             EnsureAthenaDatabaseEncryptedAtRestRule(),
             EnsureLambdaFunctionCannotBeInvokedPublicRule(),
             FsxWindowsFileSystemEncryptedAtRestWithCustomerManagedCmkRule(),
             EnsureLambdaFunctionCannotBeInvokedPublicRule(),
-            EnsureCloudtrailTrailExists()
         ]
         return {rule.get_id(): rule for rule in rules}
