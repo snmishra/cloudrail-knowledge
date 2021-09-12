@@ -831,9 +831,12 @@ def build_redshift_logging(attributes: dict) -> RedshiftLogging:
 
 
 def build_ecs_cluster(raw_data: dict) -> EcsCluster:
+    container_insights_enabled = False
+    if raw_data['settings']:
+        container_insights_enabled = bool(raw_data['settings'][0]['value'] == 'enabled')
     ecs_cluster: EcsCluster = EcsCluster(raw_data['Account'], raw_data['Region'],
                                          raw_data["clusterArn"], raw_data["clusterName"],
-                                         bool(raw_data['settings'][0]['value'] == 'enabled'), None)
+                                         container_insights_enabled, None)
     return ecs_cluster
 
 

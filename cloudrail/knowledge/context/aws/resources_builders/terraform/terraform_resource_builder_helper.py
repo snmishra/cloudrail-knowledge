@@ -1840,7 +1840,7 @@ def build_lambda_policy(attributes: dict) -> LambdaPolicy:
     if attributes.get('source_account', None):
         condition_block.append(StatementCondition("StringEquals", "AWS:SourceAccount", [attributes.get('source_account')]))
     principal_type: PrincipalType = PrincipalType.NO_PRINCIPAL
-    if attributes['principal'].isnumeric():
+    if attributes['principal'].isnumeric() or ':' in attributes['principal']:
         principal_type = PrincipalType.AWS
     elif attributes['principal'].endswith(".com"):
         principal_type = PrincipalType.SERVICE
@@ -1851,20 +1851,28 @@ def build_lambda_policy(attributes: dict) -> LambdaPolicy:
     for index, value in enumerate(principal.principal_values):
         if value == account:
             principal.principal_values[index] = f'arn:aws:iam::{account}:root'
+    lambda_function_name = get_lambda_function_name_for_lambda_policy(attributes['function_name'], qualifier)
     statement: PolicyStatement = PolicyStatement(effect=StatementEffect.ALLOW,
                                                  actions=[attributes['action']],
                                                  resources=[create_lambda_function_arn(account, attributes['region'],
-                                                                                       attributes['function_name'], qualifier)
+                                                                                       lambda_function_name, qualifier)
                                                             ],
                                                  principal=principal,
                                                  statement_id=attributes['statement_id'],
                                                  condition_block=condition_block)
     return LambdaPolicy(account=account,
                                   region=attributes['region'],
-                                  function_name=attributes['function_name'],
+                                  function_name=lambda_function_name,
                                   statements=[statement],
                                   qualifier=qualifier)
 
+def get_lambda_function_name_for_lambda_policy(raw_lambda_function_name: str, qualifier: Optional[str]) -> str:
+    if ':' in raw_lambda_function_name:
+        if qualifier and qualifier in raw_lambda_function_name:
+            return raw_lambda_function_name.split(':')[-2]
+        else:
+            return raw_lambda_function_name.split(':')[-1]
+    return raw_lambda_function_name
 
 def build_lambda_alias(attributes: dict) -> LambdaAlias:
     return LambdaAlias(account=attributes['account_id'],
