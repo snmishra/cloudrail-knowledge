@@ -9,7 +9,7 @@ from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
 
 
-class BaseDefenderEnabled(AzureBaseRule):
+class BaseDefenderEnabledRule(AzureBaseRule):
 
     @abstractmethod
     def _get_resource_type(self) -> SubscriptionPricingResourceType:
@@ -35,7 +35,7 @@ class BaseDefenderEnabled(AzureBaseRule):
         return bool(environment_context.security_center_subscription_pricings)
 
 
-class ContainerRegistriesDefenderEnabled(BaseDefenderEnabled):
+class ContainerRegistriesDefenderEnabledRule(BaseDefenderEnabledRule):
     def get_id(self) -> str:
         return 'non_car_azure_defender_for_container_registries_enabled'
 
@@ -48,7 +48,7 @@ class ContainerRegistriesDefenderEnabled(BaseDefenderEnabled):
         return f'Azure Defender is not enabled for container registries in the subscription `{subscription_id}`.'
 
 
-class SqlServersDefenderEnabled(BaseDefenderEnabled):
+class SqlServersDefenderEnabledRule(BaseDefenderEnabledRule):
     def get_id(self) -> str:
         return 'non_car_azure_defender_for_azure_sql_servers_enabled'
 
@@ -61,7 +61,7 @@ class SqlServersDefenderEnabled(BaseDefenderEnabled):
         return f"Azure Defender is not enabled for Azure SQL Database servers in the subscription `{subscription_id}`."
 
 
-class SqlServersOnVirtualMachinesDefenderEnabled(BaseDefenderEnabled):
+class SqlServersOnVirtualMachinesDefenderEnabledRule(BaseDefenderEnabledRule):
     def get_id(self) -> str:
         return 'non_car_azure_defender_for_sql_servers_on_machines_enabled'
 
@@ -74,7 +74,7 @@ class SqlServersOnVirtualMachinesDefenderEnabled(BaseDefenderEnabled):
         return f'Azure Defender is not enabled for SQL Servers on Virtual Machines in the subscription `{subscription_id}`.'
 
 
-class KubernetesDefenderEnabled(BaseDefenderEnabled):
+class KubernetesDefenderEnabledRule(BaseDefenderEnabledRule):
     def get_id(self) -> str:
         return 'non_car_azure_defender_for_kubernetes_enabled'
 
@@ -87,7 +87,7 @@ class KubernetesDefenderEnabled(BaseDefenderEnabled):
         return f"Azure Defender is not enabled for Kubernetes in the subscription `{subscription_id}`."
 
 
-class KeyVaultsDefenderEnabled(BaseDefenderEnabled):
+class KeyVaultsDefenderEnabledRule(BaseDefenderEnabledRule):
     def get_id(self) -> str:
         return 'non_car_azure_defender_for_key_vault_enabled'
 
@@ -100,7 +100,7 @@ class KeyVaultsDefenderEnabled(BaseDefenderEnabled):
         return f"Azure Defender is not enabled for Key Vault in the subscription `{subscription_id}`."
 
 
-class StorageDefenderEnabled(BaseDefenderEnabled):
+class StorageDefenderEnabledRule(BaseDefenderEnabledRule):
     def get_id(self) -> str:
         return 'non_car_azure_defender_for_storage_enabled'
 
@@ -113,7 +113,7 @@ class StorageDefenderEnabled(BaseDefenderEnabled):
         return f"Azure Defender is not enabled for Storage in the subscription `{subscription_id}`."
 
 
-class ServersDefenderEnabled(BaseDefenderEnabled):
+class ServersDefenderEnabledRule(BaseDefenderEnabledRule):
     def get_id(self) -> str:
         return 'non_car_azure_defender_for_servers_enabled'
 
@@ -126,7 +126,7 @@ class ServersDefenderEnabled(BaseDefenderEnabled):
         return f"Azure Defender is not enabled for Servers in the subscription `{subscription_id}`."
 
 
-class AppServicesDefenderEnabled(BaseDefenderEnabled):
+class AppServicesDefenderEnabledRule(BaseDefenderEnabledRule):
     def get_id(self) -> str:
         return 'non_car_azure_defender_for_app_services_enabled'
 
