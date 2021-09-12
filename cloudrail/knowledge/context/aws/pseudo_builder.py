@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
-from cloudrail.knowledge.context.aws.resources.autoscaling.launch_configuration import AutoScalingGroup, LaunchConfiguration
+from cloudrail.knowledge.context.aws.resources.autoscaling.launch_configuration import LaunchConfiguration
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.aws.resources.cloudwatch.cloud_watch_log_group import CloudWatchLogGroup
 from cloudrail.knowledge.context.aws.resources.ec2.ec2_instance import AssociatePublicIpAddress, Ec2Instance

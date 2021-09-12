@@ -71,7 +71,7 @@ class BaseEnvironmentContextDriftDetector:
                 if old:
                     if drift := cls._compare_entity(mergeable(new), mergeable(old)):
                         drifts[drift.resource_id] = drift
-                # If the resource is missing from the cloud provider (=old), we will report it, 
+                # If the resource is missing from the cloud provider (=old), we will report it,
                 # unless this is a resource which we do not build from the first place, due to API limitations.
                 elif not old and not(isinstance(new, (AthenaDatabase, GlueConnection, WorkLinkFleet,
                                                       S3OutpostEndpoint, CloudHsmV2Hsm, CloudHsmV2Cluster,
