@@ -74,7 +74,8 @@ class AzureRelationsAssigner(DependencyInvocation):
     def _assign_network_security_group_to_network_interface(network_interface: AzureNetworkInterface,
                                                             security_groups: AliasesDict[AzureNetworkSecurityGroup],
                                                             network_interface_network_security_group_association: List[AzureNetworkInterfaceSecurityGroupAssociation]):
-        if nsg_id := next((ast.network_security_group_id for ast in network_interface_network_security_group_association if ast.network_interface_id == network_interface.get_id()), None):
+        if nsg_id := next((ast.network_security_group_id for ast in network_interface_network_security_group_association
+                        if ast.network_interface_id == network_interface.get_id()), network_interface.network_security_group_id):
             network_interface.network_security_group = ResourceInvalidator.get_by_id(security_groups, nsg_id, True, network_interface)
             network_interface.network_security_group.network_interfaces.append(network_interface)
 

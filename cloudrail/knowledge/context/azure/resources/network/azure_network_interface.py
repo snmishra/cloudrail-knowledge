@@ -40,12 +40,17 @@ class AzureNetworkInterface(AzureResource):
             ip_configurations: IP configurations of a network interface.
     """
 
-    def __init__(self, name: str, ip_configurations: List[IpConfiguration]):
+    def __init__(self, name: str, ip_configurations: List[IpConfiguration], network_security_group_id: Optional[str] = None):
         AzureResource.__init__(self, AzureResourceType.AZURERM_NETWORK_INTERFACE)
         self.name: str = name
         self.ip_configurations: List[IpConfiguration] = ip_configurations
 
         self.network_security_group: Optional[AzureNetworkSecurityGroup] = None
+        self._network_security_group_id: Optional[str] = network_security_group_id
+
+    @property
+    def network_security_group_id(self):
+        return self._network_security_group_id or (self.network_security_group and self.network_security_group.get_id())
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/' \
