@@ -39,4 +39,3 @@ class TestEnsureCloudtrailTrailExists(unittest.TestCase):
         # Assert
         self.assertEqual(RuleResultType.SUCCESS, result.status)
         self.assertEqual(0, len(result.issues))
-  
