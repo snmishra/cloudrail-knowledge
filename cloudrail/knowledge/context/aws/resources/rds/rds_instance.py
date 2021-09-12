@@ -100,7 +100,7 @@ class RdsInstance(NetworkEntity, INetworkConfiguration):
 
     def get_cloud_resource_url(self) -> Optional[str]:
         if self.db_cluster_id:
-            return '{0}rds/home?region={1}#database:id={2};is-cluster=false'\
+            return '{0}rds/home?region={1}#database:id={2};is-cluster=true'\
                 .format(self.AWS_CONSOLE_URL, self.region, self.db_cluster_id)
         else:
             return '{0}rds/home?region={1}#database:id={2};is-cluster=false'\
