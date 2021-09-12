@@ -12,6 +12,7 @@ class EntityOrigin(str, Enum):
     LIVE_ENV = 'live_environment'
     TERRAFORM = 'terraform'
     PSEUDO = 'pseudo'
+    CLOUDFORMATION = 'cloudformation'
 
 
 class UnSupportedEntityOriginType(Exception):
