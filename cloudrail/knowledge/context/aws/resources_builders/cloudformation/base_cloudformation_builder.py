@@ -1,7 +1,5 @@
-import uuid
 from abc import abstractmethod
 from typing import List, Dict, Union, Optional
-
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.iac_resource_metadata import IacResourceMetadata
 from cloudrail.knowledge.context.iac_state import IacState
