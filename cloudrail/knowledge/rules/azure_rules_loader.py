@@ -11,9 +11,9 @@ from cloudrail.knowledge.rules.azure.non_context_aware.app_service_non_car_diagn
 from cloudrail.knowledge.rules.azure.non_context_aware.app_service_use_latest_tls_version_rule import AppServiceUseLatestTlsVersionRule
 from cloudrail.knowledge.rules.azure.non_context_aware.auto_provisioning_log_analytics_agent_disabled_rule import \
     AutoProvisioningLogAnalyticsAgentDisabledRule
-from cloudrail.knowledge.rules.azure.non_context_aware.azure_defender_enabled_rules import NonCarAzureContainerRegistriesDefenderEnabled, \
-    NonCarAzureSqlServersDefenderEnabled, NonCarAzureStorageDefenderEnabled, NonCarAzureServersDefenderEnabled, NonCarAzureKubernetesDefenderEnabled, \
-    NonCarAzureSqlServersOnVirtualMachinesDefenderEnabled, NonCarAzureAppServicesDefenderEnabled, NonCarAzureKeyVaultsDefenderEnabled
+from cloudrail.knowledge.rules.azure.non_context_aware.defender_enabled_rules import ContainerRegistriesDefenderEnabled, \
+    SqlServersDefenderEnabled, StorageDefenderEnabled, ServersDefenderEnabled, KubernetesDefenderEnabled, \
+    SqlServersOnVirtualMachinesDefenderEnabled, AppServicesDefenderEnabled, KeyVaultsDefenderEnabled
 from cloudrail.knowledge.rules.azure.non_context_aware.email_notification_high_severity_alerts_enabled_rule import \
     EmailNotificationHighSeverityAlertsEnabledRule
 from cloudrail.knowledge.rules.azure.non_context_aware.ensure_managed_disks_encrypted_rule import EnsureManagedDisksEncryptedRule
@@ -59,16 +59,16 @@ class AzureRulesLoader(AbstractRulesLoader):
             FunctionAppUseLatestHttpVersionRule(),
             EmailNotificationHighSeverityAlertsEnabledRule(),
             AutoProvisioningLogAnalyticsAgentDisabledRule(),
-            NonCarAzureAppServicesDefenderEnabled(),
+            AppServicesDefenderEnabled(),
             FunctionAppUseLatestTlsVersionRule(),
             KeyVaultDiagnosticLogsEnabledRule(),
-            NonCarAzureContainerRegistriesDefenderEnabled(),
-            NonCarAzureSqlServersDefenderEnabled(),
-            NonCarAzureSqlServersOnVirtualMachinesDefenderEnabled(),
-            NonCarAzureKubernetesDefenderEnabled(),
-            NonCarAzureStorageDefenderEnabled(),
-            NonCarAzureServersDefenderEnabled(),
-            NonCarAzureKeyVaultsDefenderEnabled(),
+            ContainerRegistriesDefenderEnabled(),
+            SqlServersDefenderEnabled(),
+            SqlServersOnVirtualMachinesDefenderEnabled(),
+            KubernetesDefenderEnabled(),
+            StorageDefenderEnabled(),
+            ServersDefenderEnabled(),
+            KeyVaultsDefenderEnabled(),
             MySqlServerEnforcingSslRule(),
             AppServiceAuthenticationEnableRule(),
             EnsureStorageAccountDefaultNetworkDenyRule(),
