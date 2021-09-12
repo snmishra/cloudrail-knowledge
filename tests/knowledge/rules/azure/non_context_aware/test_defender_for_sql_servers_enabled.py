@@ -7,12 +7,12 @@ from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnv
 from cloudrail.knowledge.context.azure.resources.security.azure_security_center_subscription_pricing import AzureSecurityCenterSubscriptionPricing, \
     SubscriptionPricingResourceType, SubscriptionPricingTier
 from cloudrail.knowledge.rules.base_rule import RuleResultType
-from cloudrail.knowledge.rules.azure.non_context_aware.defender_enabled_rules import SqlServersDefenderEnabled
+from cloudrail.knowledge.rules.azure.non_context_aware.defender_enabled_rules import SqlServersDefenderEnabledRule
 
 
-class TestSqlServersDefenderEnabled(unittest.TestCase):
+class TestSqlServersDefenderEnabledRule(unittest.TestCase):
     def setUp(self):
-        self.rule = SqlServersDefenderEnabled()
+        self.rule = SqlServersDefenderEnabledRule()
 
     @parameterized.expand(
         [
