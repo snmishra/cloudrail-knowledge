@@ -3,6 +3,7 @@ from typing import List, Dict, Union, Optional
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.iac_resource_metadata import IacResourceMetadata
 from cloudrail.knowledge.context.iac_state import IacState
+from cloudrail.knowledge.context.iac_type import IacType
 from cloudrail.knowledge.context.terraform_action_type import TerraformActionType
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_utils import ELEMENT_POSITION_KEY
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
@@ -78,7 +79,8 @@ class BaseCloudformationBuilder:
         resource.iac_state = IacState(address=cfn_resource['logical_id'],
                                       action=cfn_resource['iac_action'],
                                       is_new=cfn_resource['iac_action'] == TerraformActionType.CREATE,
-                                      resource_metadata=metadata)
+                                      resource_metadata=metadata,
+                                      iac_type=IacType.CLOUDFORMATION)
         resource.iac_state.iac_resource_url = metadata and metadata.get_iac_resource_url(cfn_resource.get('iac_url_template'))
         attributes = cfn_resource.get('Properties')
         resource.tags = get_aws_tags(attributes)
