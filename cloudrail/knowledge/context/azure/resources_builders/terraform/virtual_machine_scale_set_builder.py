@@ -47,7 +47,7 @@ def _build_vmss(attributes: dict, os_type: OperatingSystemType, vm_tf_type: str,
     else:
         os_disk_profile = attributes['os_disk']
         if data_disks_list_data := get_known_value_function(attributes, 'data_disk'):
-            for data in data_disks_list_data:
+            for _ in data_disks_list_data:
                 data_disks_list.append(DataDisk(None, True))
         disk_settings = DiskSettings(OsDisk(None, True), data_disks_list)
     network_profile_data = attributes.get('network_profile') or attributes.get('network_interface')
