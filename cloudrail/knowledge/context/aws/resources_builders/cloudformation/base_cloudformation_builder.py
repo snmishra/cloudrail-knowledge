@@ -1,7 +1,5 @@
-import uuid
 from abc import abstractmethod
 from typing import List, Dict, Union, Optional
-
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.iac_resource_metadata import IacResourceMetadata
 from cloudrail.knowledge.context.iac_state import IacState
@@ -9,6 +7,7 @@ from cloudrail.knowledge.context.terraform_action_type import TerraformActionTyp
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_utils import ELEMENT_POSITION_KEY
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.cloudformation.intrinsic_functions.cloudformation_intrinsic_functions import CloudformationFunction
+from cloudrail.knowledge.utils.string_utils import generate_random_string
 from cloudrail.knowledge.utils.tags_utils import get_aws_tags
 
 
@@ -85,4 +84,4 @@ class BaseCloudformationBuilder:
         resource.tags = get_aws_tags(attributes)
 
     def create_random_pseudo_identifier(self) -> str:
-        return f'{self.CFN_PSEUDO_PREFIX}-{str(uuid.uuid4())}'
+        return f'{self.CFN_PSEUDO_PREFIX}-{generate_random_string()}'
