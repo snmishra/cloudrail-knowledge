@@ -53,4 +53,6 @@ class AwsEnvironmentContextDriftDetector(BaseEnvironmentContextDriftDetector):
                 'lambda_func_arn_set',
                 'arn',
                 'lambda_func_version',
-                'qualified_arn'}
+                'qualified_arn',
+                'owner_id',
+                'owner_name'}

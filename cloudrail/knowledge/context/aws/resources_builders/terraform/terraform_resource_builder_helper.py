@@ -1123,7 +1123,7 @@ def build_ecs_target(attributes: dict) -> CloudWatchEventTarget:
              for conf in event_target_dict["network_configuration"]]
         target: EcsTarget = EcsTarget(attributes["tf_address"] + str(counter)
                                       if not _is_known_value(attributes, 'arn') else attributes['arn'].split(':')[-1] + '.target.name',
-                                      attributes["id"],
+                                      attributes["target_id"],
                                       LaunchType(event_target_dict["launch_type"]),
                                       attributes['account_id'],
                                       attributes['region'],

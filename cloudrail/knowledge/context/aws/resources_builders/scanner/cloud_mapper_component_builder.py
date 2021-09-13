@@ -1517,18 +1517,19 @@ def build_neptune_cluster(attributes: dict) -> NeptuneCluster:
     return neptune_cluster_resource
 
 
-def build_neptune_instance(attributes: dict) -> NeptuneInstance:
+def build_neptune_instance(attributes: dict) -> List[NeptuneInstance]:
+    neptune_instances_list: List[NeptuneInstance] = []
     neptune_instances = [instance_data for instance_data in attributes['Value']['DBInstances'] if 'neptune' in instance_data['Endpoint']['Address']]
     for instance_data in neptune_instances:
-        return NeptuneInstance(attributes['Account'],
-                               attributes['Region'],
-                               instance_data['DBInstanceIdentifier'],
-                               instance_data['DBInstanceArn'],
-                               instance_data['Endpoint']['Port'],
-                               instance_data['DBClusterIdentifier'],
-                               instance_data['PubliclyAccessible'],
-                               instance_data['DBInstanceIdentifier'])
-
+        neptune_instances_list.append(NeptuneInstance(attributes['Account'],
+                                                      attributes['Region'],
+                                                      instance_data['DBInstanceIdentifier'],
+                                                      instance_data['DBInstanceArn'],
+                                                      instance_data['Endpoint']['Port'],
+                                                      instance_data['DBClusterIdentifier'],
+                                                      instance_data['PubliclyAccessible'],
+                                                      instance_data['DBInstanceIdentifier']))
+    return neptune_instances_list
 
 def build_ecr_repository(attributes: dict) -> EcrRepository:
     return EcrRepository(attributes['repositoryName'],
