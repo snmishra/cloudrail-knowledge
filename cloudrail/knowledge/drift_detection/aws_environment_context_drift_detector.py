@@ -1,3 +1,4 @@
+from cloudrail.knowledge.context.mergeable import Mergeable
 from cloudrail.knowledge.context.aws.resources.athena.athena_database import AthenaDatabase
 from cloudrail.knowledge.context.aws.resources.cloudhsmv2.cloudhsm_v2_cluster import CloudHsmV2Cluster
 from cloudrail.knowledge.context.aws.resources.cloudhsmv2.cloudhsm_v2_hsm import CloudHsmV2Hsm
@@ -9,7 +10,6 @@ from cloudrail.knowledge.context.aws.resources.iam.iam_policy_attachment import 
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_object import S3BucketObject
 from cloudrail.knowledge.context.aws.resources.s3outposts.s3outpost_endpoint import S3OutpostEndpoint
 from cloudrail.knowledge.context.aws.resources.worklink.worklink_fleet import WorkLinkFleet
-from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from typing import Set
 
 from cloudrail.knowledge.drift_detection.base_environment_context_drift_detector import BaseEnvironmentContextDriftDetector
@@ -70,8 +70,8 @@ class AwsEnvironmentContextDriftDetector(BaseEnvironmentContextDriftDetector):
                 'owner_name'}
 
     @classmethod
-    def supported_aws_drift_resources(cls, new: AwsResource) -> bool:
-        return not (isinstance(new, (AthenaDatabase, GlueConnection, WorkLinkFleet,
-                                     S3OutpostEndpoint, CloudHsmV2Hsm, CloudHsmV2Cluster,
-                                     S3BucketObject, TransitGatewayRouteTablePropagation, IamGroupMembership,
-                                     VpcEndpointRouteTableAssociation, IamPolicyAttachment)))
+    def supported_drift_resource(cls, mergeable: Mergeable) -> bool:
+        return not (isinstance(mergeable, (AthenaDatabase, GlueConnection, WorkLinkFleet,
+                                           S3OutpostEndpoint, CloudHsmV2Hsm, CloudHsmV2Cluster,
+                                           S3BucketObject, TransitGatewayRouteTablePropagation, IamGroupMembership,
+                                           VpcEndpointRouteTableAssociation, IamPolicyAttachment)))

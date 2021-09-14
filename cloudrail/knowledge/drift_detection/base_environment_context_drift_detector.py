@@ -1,4 +1,3 @@
-from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 import dataclasses
 import json
 import logging
@@ -31,7 +30,7 @@ class BaseEnvironmentContextDriftDetector:
 
     @classmethod
     @abstractmethod
-    def supported_aws_drift_resources(cls, new: AwsResource):
+    def supported_drift_resource(cls, mergeable: Mergeable):
         pass
 
     @classmethod
@@ -68,7 +67,7 @@ class BaseEnvironmentContextDriftDetector:
                         drifts[drift.resource_id] = drift
                 # If the resource is missing from the cloud provider (=old), we will report it,
                 # unless this is a resource which we do not build from the first place, due to API limitations.
-                elif not old and cls.supported_aws_drift_resources(new):
+                elif not old and cls.supported_drift_resource(new):
                     drifts[mergeable(new).iac_state.address] = Drift(mergeable(new).get_type(),
                                                                      mergeable(new).iac_state.address,
                                                                      cls._to_simple_dict(mergeable(new)),
