@@ -684,8 +684,9 @@ def build_transit_gateway_route(raw_data: dict) -> TransitGatewayRoute:
     destination_cidr_block = ipv4_block if ipv4_block else ipv6_block
     state = TransitGatewayRouteState(raw_data['State'])
     route_type = TransitGatewayRouteType(raw_data['Type'])
-    raw_attachments = raw_data['TransitGatewayAttachments']
-    attachment_ids = [x['TransitGatewayAttachmentId'] for x in raw_attachments]
+    attachment_ids = []
+    if raw_attachments := raw_data.get('TransitGatewayAttachments'):
+        attachment_ids = [x['TransitGatewayAttachmentId'] for x in raw_attachments]
     route_table_id = raw_data['RouteTableId']
     return TransitGatewayRoute(destination_cidr_block,
                                state,

@@ -284,7 +284,8 @@ def build_load_balancer(attributes: dict) -> LoadBalancer:
 
 def build_load_balancer_target_group_association(attributes: dict) -> LoadBalancerTargetGroupAssociation:
     load_balancer_arn = attributes['load_balancer_arn']
-    target_group_arns = [action['target_group_arn'] for action in attributes['default_action']]
+    target_group_arns = [action['target_group_arn'] for action in attributes['default_action'] 
+                         if action['target_group_arn'] is not None]
     port = attributes['port']
     account = attributes['account_id']
     region = attributes['region']
