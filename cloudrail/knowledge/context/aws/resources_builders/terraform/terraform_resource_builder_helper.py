@@ -1134,15 +1134,16 @@ def build_ecs_target(attributes: dict) -> CloudWatchEventTarget:
                                       event_target_dict.get("task_definition_arn", None))
         ecs_target_list.append(target)
         counter += 1
-    return CloudWatchEventTarget(account=attributes['account_id'],
-                                 region=attributes['region'],
-                                 name=attributes["tf_address"] if not _is_known_value(attributes, 'arn') else attributes['arn'].split(':')[-1],
-                                 rule_name=attributes["rule"],
-                                 target_id=attributes["target_id"],
-                                 role_arn=attributes["role_arn"],
-                                 cluster_arn=attributes["arn"],
-                                 ecs_target_list=ecs_target_list)
-
+    if ecs_target_list:
+        return CloudWatchEventTarget(account=attributes['account_id'],
+                                    region=attributes['region'],
+                                    name=attributes["tf_address"] if not _is_known_value(attributes, 'arn') else attributes['arn'].split(':')[-1],
+                                    rule_name=attributes["rule"],
+                                    target_id=attributes["target_id"],
+                                    role_arn=attributes["role_arn"],
+                                    cluster_arn=attributes["arn"],
+                                    ecs_target_list=ecs_target_list)
+    return None
 
 def build_ecs_task_definition(attributes: dict) -> EcsTaskDefinition:
     network_mode: NetworkMode = NetworkMode(_get_known_value(attributes, 'network_mode', 'none'))
@@ -1862,10 +1863,10 @@ def build_lambda_policy(attributes: dict) -> LambdaPolicy:
                                                  statement_id=attributes['statement_id'],
                                                  condition_block=condition_block)
     return LambdaPolicy(account=account,
-                                  region=attributes['region'],
-                                  function_name=lambda_function_name,
-                                  statements=[statement],
-                                  qualifier=qualifier)
+                        region=attributes['region'],
+                        function_name=lambda_function_name,
+                        statements=[statement],
+                        qualifier=qualifier)
 
 def get_lambda_function_name_for_lambda_policy(raw_lambda_function_name: str, qualifier: Optional[str]) -> str:
     if ':' in raw_lambda_function_name:
