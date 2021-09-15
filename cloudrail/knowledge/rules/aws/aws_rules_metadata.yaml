@@ -4287,9 +4287,13 @@ rules_metadata:
   rule_type: non_context_aware
   security_layer: iam
   severity: medium
-
-- rule_id: non_car_fsx_windows_file_system_encrypted_at_rest_with_customer_managed_cmk
-  cloud_provider: amazon_web_services
+  compliance:
+    "PCI DSS":
+      "3.2.1": 
+        - "1.2"
+        - "1.3"
+        - "7.2"
+- cloud_provider: amazon_web_services
   description: Cloudrail will review the FSx Windows File Systems being created in your environment. If a file system is not set to be encrypted at rest using a customer-managed CMK, Cloudrail will highlight it as a violation.
   human_readable_logic: Cloudrail will identify all FSx Windows File Systems in the Terraform plan that are going to be created and are not configured to be encrypted at rest using a customer-managed CMK.
   name: Ensure FSx Windows File Systems being created are set to be encrypted at rest using customer-managed CMK
@@ -4298,6 +4302,29 @@ rules_metadata:
     terraform: For the aws_fsx_windows_file_system resource, set kms_key_id argument to use a customer-managed CMK ARN.
   resource_type:
   - storage
+  rule_id: non_car_fsx_windows_file_system_encrypted_at_rest_with_customer_managed_cmk
   rule_type: non_context_aware
   security_layer: encryption
   severity: low
+  compliance:
+    "PCI DSS":
+      "3.2.1": 
+        - "3.4"
+- cloud_provider: amazon_web_services
+  description: It is critical to enable Cloudtrail and store it in a bucket for logging and incident response.
+  human_readable_logic: Cloudrail will ensure that there is at least one trail enabled in the account.
+  name: Ensure there is at least one trail enabled in Cloudtrail
+  remediation_steps:
+    console: Go to Cloudtrail and in the Dashboard click on Create trail, make sure multi-region is enabled.
+    terraform: Create terraform resource aws_cloudtrail and send logs to an S3 bucket.
+  resource_type:
+  - logging
+  rule_id: ensure_cloudtrail_trail_exists
+  rule_type: non_context_aware
+  security_layer: logging
+  severity: major
+  compliance:
+    "PCI DSS":
+      "3.2.1": 
+        - "10.1"
+        - "10.2"
