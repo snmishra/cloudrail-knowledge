@@ -2,32 +2,32 @@ import unittest
 
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
-from cloudrail.knowledge.context.aws.apigateway.rest_api_gw import RestApiGw
-from cloudrail.knowledge.context.aws.apigateway.rest_api_gw_policy import RestApiGwPolicy
-from cloudrail.knowledge.context.aws.cloudwatch.cloudwatch_logs_destination import CloudWatchLogsDestination
-from cloudrail.knowledge.context.aws.cloudwatch.cloudwatch_logs_destination_policy import CloudWatchLogsDestinationPolicy
-from cloudrail.knowledge.context.aws.ecr.ecr_repository import EcrRepository
-from cloudrail.knowledge.context.aws.ecr.ecr_repository_policy import EcrRepositoryPolicy
-from cloudrail.knowledge.context.aws.efs.efs_policy import EfsPolicy
-from cloudrail.knowledge.context.aws.es.elastic_search_domain import ElasticSearchDomain
-from cloudrail.knowledge.context.aws.es.elastic_search_domain_policy import ElasticSearchDomainPolicy
-from cloudrail.knowledge.context.aws.glacier.glacier_vault import GlacierVault
-from cloudrail.knowledge.context.aws.glacier.glacier_vault_policy import GlacierVaultPolicy
-from cloudrail.knowledge.context.aws.iam.policy import Policy, S3Policy
-from cloudrail.knowledge.context.aws.iam.policy_statement import PolicyStatement, StatementEffect
-from cloudrail.knowledge.context.aws.iam.principal import Principal, PrincipalType
-from cloudrail.knowledge.context.aws.kms.kms_key import KmsKey
-from cloudrail.knowledge.context.aws.kms.kms_key_manager import KeyManager
-from cloudrail.knowledge.context.aws.kms.kms_key_policy import KmsKeyPolicy
-from cloudrail.knowledge.context.aws.lambda_.lambda_function import LambdaFunction
-from cloudrail.knowledge.context.aws.s3.s3_bucket import S3Bucket
-from cloudrail.knowledge.context.aws.secretsmanager.secrets_manager_secret import SecretsManagerSecret
-from cloudrail.knowledge.context.aws.secretsmanager.secrets_manager_secret_policy import SecretsManagerSecretPolicy
-from cloudrail.knowledge.context.aws.sqs.sqs_queue import SqsQueue
-from cloudrail.knowledge.context.aws.sqs.sqs_queue_policy import SqsQueuePolicy
+from cloudrail.knowledge.context.aws.resources.apigateway.rest_api_gw import RestApiGw
+from cloudrail.knowledge.context.aws.resources.apigateway.rest_api_gw_policy import RestApiGwPolicy
+from cloudrail.knowledge.context.aws.resources.cloudwatch.cloudwatch_logs_destination import CloudWatchLogsDestination
+from cloudrail.knowledge.context.aws.resources.cloudwatch.cloudwatch_logs_destination_policy import CloudWatchLogsDestinationPolicy
+from cloudrail.knowledge.context.aws.resources.ecr.ecr_repository import EcrRepository
+from cloudrail.knowledge.context.aws.resources.ecr.ecr_repository_policy import EcrRepositoryPolicy
+from cloudrail.knowledge.context.aws.resources.efs.efs_policy import EfsPolicy
+from cloudrail.knowledge.context.aws.resources.es.elastic_search_domain import ElasticSearchDomain
+from cloudrail.knowledge.context.aws.resources.es.elastic_search_domain_policy import ElasticSearchDomainPolicy
+from cloudrail.knowledge.context.aws.resources.glacier.glacier_vault import GlacierVault
+from cloudrail.knowledge.context.aws.resources.glacier.glacier_vault_policy import GlacierVaultPolicy
+from cloudrail.knowledge.context.aws.resources.iam.policy import Policy, S3Policy
+from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement, StatementEffect
+from cloudrail.knowledge.context.aws.resources.iam.principal import Principal, PrincipalType
+from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
+from cloudrail.knowledge.context.aws.resources.kms.kms_key_manager import KeyManager
+from cloudrail.knowledge.context.aws.resources.kms.kms_key_policy import KmsKeyPolicy
+from cloudrail.knowledge.context.aws.resources.lambda_.lambda_function import LambdaFunction
+from cloudrail.knowledge.context.aws.resources.s3.s3_bucket import S3Bucket
+from cloudrail.knowledge.context.aws.resources.secretsmanager.secrets_manager_secret import SecretsManagerSecret
+from cloudrail.knowledge.context.aws.resources.secretsmanager.secrets_manager_secret_policy import SecretsManagerSecretPolicy
+from cloudrail.knowledge.context.aws.resources.sqs.sqs_queue import SqsQueue
+from cloudrail.knowledge.context.aws.resources.sqs.sqs_queue_policy import SqsQueuePolicy
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.iac_state import IacState
-from cloudrail.knowledge.context.terraform_action_type import TerraformActionType
+from cloudrail.knowledge.context.iac_action_type import IacActionType
 from cloudrail.knowledge.rules.aws.non_context_aware.policy_wildcard_violation.ensure_policy_not_use_wildcard_actions_rules import \
     EnsureCloudWatchLogDestinationPolicyNotUseWildcard, EnsureEcrRepositoryPolicyNotUseWildcard, EnsureEfsPolicyNotUseWildcard, \
     EnsureElasticSearchDomainPolicyNotUseWildcard, \
@@ -39,7 +39,7 @@ from cloudrail.knowledge.rules.aws.non_context_aware.policy_wildcard_violation.e
     EnsureSecretsManagerSecretPolicyNotUseWildcard, \
     EnsureSqsQueuePolicyNotUseWildcard
 from cloudrail.knowledge.rules.base_rule import RuleResultType
-from cloudrail.knowledge.context.aws.efs.efs_file_system import ElasticFileSystem
+from cloudrail.knowledge.context.aws.resources.efs.efs_file_system import ElasticFileSystem
 
 
 class TestEnsureLambdaFunctionPolicyNotUseWildcard(unittest.TestCase):
@@ -366,7 +366,7 @@ class TestEnsureS3BucketPolicyNotUseWildcard(unittest.TestCase):
     def test_non_car_aws_s3_bucket_policy_wildcard_fail(self):
         # Arrange
         s3_bucket = S3Bucket('111111', 's3_bucket_name', 's3_bucket_arn')
-        s3_bucket.iac_state = IacState('dummy_path', TerraformActionType.CREATE, None, True)
+        s3_bucket.iac_state = IacState('dummy_path', IacActionType.CREATE, None, True)
         s3_bucket.resource_based_policy = S3Policy('account', 'bucket_name', [PolicyStatement(StatementEffect.ALLOW, ['s3:*'],
                                                                                               ['*'], Principal(PrincipalType.PUBLIC, ['*']))],
                                                    'raw_doc')
@@ -381,7 +381,7 @@ class TestEnsureS3BucketPolicyNotUseWildcard(unittest.TestCase):
     def test_non_car_aws_s3_bucket_policy_wildcard__only_action__fail(self):
         # Arrange
         s3_bucket = S3Bucket('111111', 's3_bucket_name', 's3_bucket_arn')
-        s3_bucket.iac_state = IacState('dummy_path', TerraformActionType.CREATE, None, True)
+        s3_bucket.iac_state = IacState('dummy_path', IacActionType.CREATE, None, True)
         s3_bucket.resource_based_policy = S3Policy('account', 'bucket_name', [PolicyStatement(StatementEffect.ALLOW, ['s3:*'],
                                                                                               ['*'], Principal(PrincipalType.PUBLIC,
                                                                                                                ['arn:aws:iam::123456789012:root']))],
@@ -397,7 +397,7 @@ class TestEnsureS3BucketPolicyNotUseWildcard(unittest.TestCase):
     def test_non_car_aws_s3_bucket_policy_wildcard__only_principal__fail(self):
         # Arrange
         s3_bucket = S3Bucket('111111', 's3_bucket_name', 's3_bucket_arn')
-        s3_bucket.iac_state = IacState('dummy_path', TerraformActionType.CREATE, None, True)
+        s3_bucket.iac_state = IacState('dummy_path', IacActionType.CREATE, None, True)
         s3_bucket.resource_based_policy = S3Policy('account', 'bucket_name', [PolicyStatement(StatementEffect.ALLOW, ['s3:GetLogs'],
                                                                                               ['*'], Principal(PrincipalType.PUBLIC, ['*']))],
                                                    'raw_doc')
@@ -412,7 +412,7 @@ class TestEnsureS3BucketPolicyNotUseWildcard(unittest.TestCase):
     def test_non_car_aws_s3_bucket_policy_wildcard__no_policy__fail(self):
         # Arrange
         s3_bucket = S3Bucket('111111', 's3_bucket_name', 's3_bucket_arn')
-        s3_bucket.iac_state = IacState('dummy_path', TerraformActionType.CREATE, None, True)
+        s3_bucket.iac_state = IacState('dummy_path', IacActionType.CREATE, None, True)
         context = AwsEnvironmentContext(s3_buckets=AliasesDict(*[s3_bucket]))
         # Act
         result = self.rule.run(context, {})
