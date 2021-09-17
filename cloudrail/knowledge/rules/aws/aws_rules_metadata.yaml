@@ -1314,7 +1314,7 @@ rules_metadata:
   rule_type: non_context_aware
   security_layer: networking
   severity: medium
-    compliance:
+  compliance:
     "PCI DSS":
       "3.2.1": 
         - "4.1"
