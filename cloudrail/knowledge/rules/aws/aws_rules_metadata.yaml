@@ -4306,7 +4306,6 @@ rules_metadata:
   rule_type: non_context_aware
   security_layer: encryption
   severity: low
-<<<<<<< HEAD
   compliance:
     "PCI DSS":
       "3.2.1": 
@@ -4329,8 +4328,6 @@ rules_metadata:
       "3.2.1": 
         - "10.1"
         - "10.2"
-=======
-  
 - rule_id: ensure_cloudtrail_trail_exists
   cloud_provider: amazon_web_services
   name: Ensure there is at least one trail enabled in Cloudtrail
@@ -4344,4 +4341,3 @@ rules_metadata:
   security_layer: logging
   resource_type:
   - logging
->>>>>>> 769d84b64224184a6196594320388ec33a69cb0b
