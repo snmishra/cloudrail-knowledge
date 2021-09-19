@@ -424,12 +424,14 @@ def build_role_inline_policy(attributes: dict) -> InlinePolicy:
 
 
 def build_iam_role_nested_policy(attributes: dict) -> InlinePolicy:
-    for inline_policy_dict in _get_known_value(attributes, 'inline_policy', []):
+    if _get_known_value(attributes, 'inline_policy') and _get_known_value(attributes['inline_policy'][0], 'policy'):
+        inline_role_policy = attributes['inline_policy'][0]
         return InlinePolicy(account=attributes['account_id'],
                             owner_name=attributes['id'],
-                            policy_name=inline_policy_dict['name'],
-                            statements=_build_policy_statements_from_str(inline_policy_dict, 'policy'),
-                            raw_document=_get_known_value(inline_policy_dict, 'policy'))
+                            policy_name=inline_role_policy['name'],
+                            statements=_build_policy_statements_from_str(inline_role_policy, 'policy'),
+                            raw_document=_get_known_value(inline_role_policy, 'policy'))
+    return None
 
 
 def build_group_inline_policy(attributes: dict) -> InlinePolicy:
