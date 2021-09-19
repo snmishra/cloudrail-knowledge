@@ -106,12 +106,10 @@ class BaseRule(Generic[EnvCtx]):
     def _filter_unknown_resources_issues(cls,
                                          rule_id: str,
                                          issues: List[Issue],
-                                         ctx: EnvCtx):
-        if not ctx:
-            return issues
+                                         all_resources: Set[Mergeable]):
         return [issue for issue in issues if
-                cls._validate_resource_in_context(rule_id, issue.exposed, ctx) and
-                cls._validate_resource_in_context(rule_id, issue.violating, ctx)]
+                cls._validate_resource_in_context(rule_id, issue.exposed, all_resources) and
+                cls._validate_resource_in_context(rule_id, issue.violating, all_resources)]
 
     @classmethod
     def _validate_resource_in_context(cls,
