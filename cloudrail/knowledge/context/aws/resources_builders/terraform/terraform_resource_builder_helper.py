@@ -284,7 +284,8 @@ def build_load_balancer(attributes: dict) -> LoadBalancer:
 
 def build_load_balancer_target_group_association(attributes: dict) -> LoadBalancerTargetGroupAssociation:
     load_balancer_arn = attributes['load_balancer_arn']
-    target_group_arns = [action['target_group_arn'] for action in attributes['default_action']]
+    target_group_arns = [action['target_group_arn'] for action in attributes['default_action']
+                         if action['target_group_arn'] is not None]
     port = attributes['port']
     account = attributes['account_id']
     region = attributes['region']
@@ -423,12 +424,14 @@ def build_role_inline_policy(attributes: dict) -> InlinePolicy:
 
 
 def build_iam_role_nested_policy(attributes: dict) -> InlinePolicy:
-    for inline_policy_dict in _get_known_value(attributes, 'inline_policy', []):
+    if _get_known_value(attributes, 'inline_policy') and _get_known_value(attributes['inline_policy'][0], 'policy'):
+        inline_role_policy = attributes['inline_policy'][0]
         return InlinePolicy(account=attributes['account_id'],
                             owner_name=attributes['id'],
-                            policy_name=inline_policy_dict['name'],
-                            statements=_build_policy_statements_from_str(inline_policy_dict, 'policy'),
-                            raw_document=_get_known_value(inline_policy_dict, 'policy'))
+                            policy_name=inline_role_policy['name'],
+                            statements=_build_policy_statements_from_str(inline_role_policy, 'policy'),
+                            raw_document=_get_known_value(inline_role_policy, 'policy'))
+    return None
 
 
 def build_group_inline_policy(attributes: dict) -> InlinePolicy:
@@ -1123,7 +1126,7 @@ def build_ecs_target(attributes: dict) -> CloudWatchEventTarget:
              for conf in event_target_dict["network_configuration"]]
         target: EcsTarget = EcsTarget(attributes["tf_address"] + str(counter)
                                       if not _is_known_value(attributes, 'arn') else attributes['arn'].split(':')[-1] + '.target.name',
-                                      attributes["id"],
+                                      attributes["target_id"],
                                       LaunchType(event_target_dict["launch_type"]),
                                       attributes['account_id'],
                                       attributes['region'],
@@ -1133,15 +1136,16 @@ def build_ecs_target(attributes: dict) -> CloudWatchEventTarget:
                                       event_target_dict.get("task_definition_arn", None))
         ecs_target_list.append(target)
         counter += 1
-    return CloudWatchEventTarget(account=attributes['account_id'],
-                                 region=attributes['region'],
-                                 name=attributes["tf_address"] if not _is_known_value(attributes, 'arn') else attributes['arn'].split(':')[-1],
-                                 rule_name=attributes["rule"],
-                                 target_id=attributes["target_id"],
-                                 role_arn=attributes["role_arn"],
-                                 cluster_arn=attributes["arn"],
-                                 ecs_target_list=ecs_target_list)
-
+    if ecs_target_list:
+        return CloudWatchEventTarget(account=attributes['account_id'],
+                                    region=attributes['region'],
+                                    name=attributes["tf_address"] if not _is_known_value(attributes, 'arn') else attributes['arn'].split(':')[-1],
+                                    rule_name=attributes["rule"],
+                                    target_id=attributes["target_id"],
+                                    role_arn=attributes["role_arn"],
+                                    cluster_arn=attributes["arn"],
+                                    ecs_target_list=ecs_target_list)
+    return None
 
 def build_ecs_task_definition(attributes: dict) -> EcsTaskDefinition:
     network_mode: NetworkMode = NetworkMode(_get_known_value(attributes, 'network_mode', 'none'))
@@ -1840,7 +1844,7 @@ def build_lambda_policy(attributes: dict) -> LambdaPolicy:
     if attributes.get('source_account', None):
         condition_block.append(StatementCondition("StringEquals", "AWS:SourceAccount", [attributes.get('source_account')]))
     principal_type: PrincipalType = PrincipalType.NO_PRINCIPAL
-    if attributes['principal'].isnumeric():
+    if attributes['principal'].isnumeric() or ':' in attributes['principal']:
         principal_type = PrincipalType.AWS
     elif attributes['principal'].endswith(".com"):
         principal_type = PrincipalType.SERVICE
@@ -1851,20 +1855,28 @@ def build_lambda_policy(attributes: dict) -> LambdaPolicy:
     for index, value in enumerate(principal.principal_values):
         if value == account:
             principal.principal_values[index] = f'arn:aws:iam::{account}:root'
+    lambda_function_name = get_lambda_function_name_for_lambda_policy(attributes['function_name'], qualifier)
     statement: PolicyStatement = PolicyStatement(effect=StatementEffect.ALLOW,
                                                  actions=[attributes['action']],
                                                  resources=[create_lambda_function_arn(account, attributes['region'],
-                                                                                       attributes['function_name'], qualifier)
+                                                                                       lambda_function_name, qualifier)
                                                             ],
                                                  principal=principal,
                                                  statement_id=attributes['statement_id'],
                                                  condition_block=condition_block)
     return LambdaPolicy(account=account,
-                                  region=attributes['region'],
-                                  function_name=attributes['function_name'],
-                                  statements=[statement],
-                                  qualifier=qualifier)
+                        region=attributes['region'],
+                        function_name=lambda_function_name,
+                        statements=[statement],
+                        qualifier=qualifier)
 
+def get_lambda_function_name_for_lambda_policy(raw_lambda_function_name: str, qualifier: Optional[str]) -> str:
+    if ':' in raw_lambda_function_name:
+        if qualifier and qualifier in raw_lambda_function_name:
+            return raw_lambda_function_name.split(':')[-2]
+        else:
+            return raw_lambda_function_name.split(':')[-1]
+    return raw_lambda_function_name
 
 def build_lambda_alias(attributes: dict) -> LambdaAlias:
     return LambdaAlias(account=attributes['account_id'],

@@ -1,3 +1,6 @@
+from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import LambdaPolicy
+import collections
+import copy
 import json
 from typing import List, Dict, Optional
 
@@ -453,7 +456,8 @@ class AwsTerraformContextBuilder(IacContextBuilder):
 
         lambda_function_list = LambdaFunctionBuilder(resources).build()
 
-        lambda_policies = LambdaPolicyBuilder(resources).build()
+        lambda_policies_not_unified = LambdaPolicyBuilder(resources).build()
+        lambda_policies = cls.unify_lambda_functions_policies(lambda_policies_not_unified)
 
         lambda_aliases = AliasesDict(*LambdaAliasBuilder(resources).build())
 
@@ -753,3 +757,24 @@ class AwsTerraformContextBuilder(IacContextBuilder):
     @staticmethod
     def to_managed_resources_summary(dic: Dict[str, int]):
         return ManagedResourcesSummary(dic.get('created', 0), dic.get('updated', 0), dic.get('deleted', 0), dic.get('total', 0))
+
+    @staticmethod
+    def unify_lambda_functions_policies(lambda_policies: List[LambdaPolicy]) -> List[LambdaPolicy]:
+        arns_list = [policy.lambda_func_arn for policy in lambda_policies]
+        dup_arns = [k for k, v in collections.Counter(arns_list).items() if v > 1]
+        if dup_arns:
+            lambda_policies_clone = copy.deepcopy(lambda_policies)
+            dup_policies = [policy for policy in lambda_policies if policy.lambda_func_arn in dup_arns]
+            dup_statements_per_arn = {}
+            for arn in dup_arns:
+                dup_statements_per_arn.update({arn:
+                    [policy.statements[0] for policy in dup_policies if policy.lambda_func_arn == arn]})
+            for arn in dup_arns:
+                policy_to_remove = next((policy for policy in lambda_policies_clone if policy.lambda_func_arn == arn), None)
+                lambda_policies_clone.remove(policy_to_remove)
+            for key, value in dup_statements_per_arn.items():
+                for policy in lambda_policies_clone:
+                    if policy.lambda_func_arn == key:
+                        policy.statements = value
+            return lambda_policies_clone
+        return lambda_policies

@@ -684,8 +684,9 @@ def build_transit_gateway_route(raw_data: dict) -> TransitGatewayRoute:
     destination_cidr_block = ipv4_block if ipv4_block else ipv6_block
     state = TransitGatewayRouteState(raw_data['State'])
     route_type = TransitGatewayRouteType(raw_data['Type'])
-    raw_attachments = raw_data['TransitGatewayAttachments']
-    attachment_ids = [x['TransitGatewayAttachmentId'] for x in raw_attachments]
+    attachment_ids = []
+    if raw_attachments := raw_data.get('TransitGatewayAttachments'):
+        attachment_ids = [x['TransitGatewayAttachmentId'] for x in raw_attachments]
     route_table_id = raw_data['RouteTableId']
     return TransitGatewayRoute(destination_cidr_block,
                                state,
@@ -831,9 +832,12 @@ def build_redshift_logging(attributes: dict) -> RedshiftLogging:
 
 
 def build_ecs_cluster(raw_data: dict) -> EcsCluster:
+    container_insights_enabled = False
+    if raw_data['settings']:
+        container_insights_enabled = bool(raw_data['settings'][0]['value'] == 'enabled')
     ecs_cluster: EcsCluster = EcsCluster(raw_data['Account'], raw_data['Region'],
                                          raw_data["clusterArn"], raw_data["clusterName"],
-                                         bool(raw_data['settings'][0]['value'] == 'enabled'), None)
+                                         container_insights_enabled, None)
     return ecs_cluster
 
 
@@ -1514,18 +1518,19 @@ def build_neptune_cluster(attributes: dict) -> NeptuneCluster:
     return neptune_cluster_resource
 
 
-def build_neptune_instance(attributes: dict) -> NeptuneInstance:
+def build_neptune_instance(attributes: dict) -> List[NeptuneInstance]:
+    neptune_instances_list: List[NeptuneInstance] = []
     neptune_instances = [instance_data for instance_data in attributes['Value']['DBInstances'] if 'neptune' in instance_data['Endpoint']['Address']]
     for instance_data in neptune_instances:
-        return NeptuneInstance(attributes['Account'],
-                               attributes['Region'],
-                               instance_data['DBInstanceIdentifier'],
-                               instance_data['DBInstanceArn'],
-                               instance_data['Endpoint']['Port'],
-                               instance_data['DBClusterIdentifier'],
-                               instance_data['PubliclyAccessible'],
-                               instance_data['DBInstanceIdentifier'])
-
+        neptune_instances_list.append(NeptuneInstance(attributes['Account'],
+                                                      attributes['Region'],
+                                                      instance_data['DBInstanceIdentifier'],
+                                                      instance_data['DBInstanceArn'],
+                                                      instance_data['Endpoint']['Port'],
+                                                      instance_data['DBClusterIdentifier'],
+                                                      instance_data['PubliclyAccessible'],
+                                                      instance_data['DBInstanceIdentifier']))
+    return neptune_instances_list
 
 def build_ecr_repository(attributes: dict) -> EcrRepository:
     return EcrRepository(attributes['repositoryName'],

@@ -27,7 +27,7 @@ class LoadBalancerTargetGroupAssociationBuilder(AwsTerraformBuilder):
 
     def do_build(self, attributes):
         return build_load_balancer_target_group_association(attributes) \
-            if all(action['target_group_arn'] for action in attributes['default_action']) else None
+            if any(action['target_group_arn'] for action in attributes['default_action']) else None
 
     def get_service_name(self) -> AwsServiceName:
         return AwsServiceName.AWS_LOAD_BALANCER_LISTENER
