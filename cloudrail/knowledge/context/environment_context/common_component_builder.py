@@ -84,5 +84,5 @@ def get_dict_value(dict_ref: dict, key: str, default):
 def extract_attribute_from_file_path(path: str, strings_to_remove: list):
     attribute = os.path.basename(path)
     for string in strings_to_remove:
-        attribute.replace(string, '')
+        attribute = attribute.replace(string, '')
     return attribute.replace('.json', '')
