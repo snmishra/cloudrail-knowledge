@@ -143,3 +143,9 @@ AWS::Batch::ComputeEnvironment:
         pass:
             - ComputeEnvironmentName
             - ComputeResources
+
+AWS::EC2::NatGateway:
+    known_fields:
+        pass:
+            - AllocationId
+            - SubnetId

@@ -19,6 +19,7 @@ from cloudrail.knowledge.context.aws.resources.elb.load_balancer import LoadBala
 from cloudrail.knowledge.context.aws.resources.elb.load_balancer_listener import LoadBalancerListener
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket import S3Bucket
 from cloudrail.knowledge.context.aws.resources.batch.batch_compute_environment import BatchComputeEnvironment
+from cloudrail.knowledge.context.aws.resources.ec2.nat_gateways import NatGateways
 
 
 class CloudformationAttributesCallableStore:
@@ -153,6 +154,7 @@ class CloudformationResourceAttributesMapper:
         CloudTrail: CloudformationAttributesCallableStore.get_cloudtrail_attribute,
         CodeBuildReportGroup: CloudformationAttributesCallableStore.get_codebuild_report_group_attribute,
         BatchComputeEnvironment: CloudformationAttributesCallableStore.get_none_attribute,
+        NatGateways: CloudformationAttributesCallableStore.get_none_attribute,
     }
 
     @classmethod

@@ -6,6 +6,7 @@ from cloudrail.knowledge.context.aws.cloudformation.cloudformation_utils import 
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_info import CloudformationResourceInfo
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_status import CloudformationResourceStatus
 from cloudrail.knowledge.context.aws.resources.ec2.security_group import SecurityGroup
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.nat_gw.cloudformation_nat_gw_builder import CloudformationNatGatewayBuilder
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
@@ -107,6 +108,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
                                 CloudformationSecurityGroupInlineRuleBuilder(cfn_by_type_map).build()
 
         return AwsEnvironmentContext(
+            nat_gateway_list=CloudformationNatGatewayBuilder(cfn_by_type_map).build(),
             vpcs=AliasesDict(*CloudformationVpcBuilder(cfn_by_type_map).build()),
             s3_buckets=AliasesDict(*CloudformationS3BucketBuilder(cfn_by_type_map).build()),
             s3_bucket_encryption=CloudformationS3BucketEncryptionBuilder(cfn_by_type_map).build(),
