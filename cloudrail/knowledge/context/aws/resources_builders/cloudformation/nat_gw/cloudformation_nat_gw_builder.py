@@ -18,4 +18,3 @@ class CloudformationNatGatewayBuilder(BaseCloudformationBuilder):
                            subnet_id=subnet_id, eni_id=None,
                            private_ip=None, public_ip=None,
                            account=cfn_res_attr['account_id'], region=cfn_res_attr['region'])
-
