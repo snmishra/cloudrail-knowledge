@@ -82,6 +82,7 @@ class BaseCloudformationBuilder:
         resource.iac_state.iac_resource_url = metadata and metadata.get_iac_resource_url(cfn_resource.get('iac_url_template'))
         attributes = cfn_resource.get('Properties')
         resource.tags = get_aws_tags(attributes)
+        resource.with_aliases(cfn_resource['logical_id'], resource.get_id())
 
     def create_random_pseudo_identifier(self) -> str:
         return f'{self.CFN_PSEUDO_PREFIX}-{generate_random_string()}'
