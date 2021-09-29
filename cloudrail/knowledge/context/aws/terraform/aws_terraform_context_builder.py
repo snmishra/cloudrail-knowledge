@@ -766,7 +766,7 @@ class AwsTerraformContextBuilder(IacContextBuilder):
             else:
                 policy_statements[policy.lambda_func_arn].append(policy.statements[0])
 
-        arns = set([lambda_policy.lambda_func_arn for lambda_policy in lambda_policies])
+        arns = {lambda_policy.lambda_func_arn for lambda_policy in lambda_policies}
         policies = []
         for arn in arns:
             policy = next(policy for policy in lambda_policies if policy.lambda_func_arn == arn)
