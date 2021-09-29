@@ -1250,9 +1250,9 @@ class AwsRelationsAssigner(DependencyInvocation):
                                              iam_instance_profile: str,
                                              instance_type: str, monitoring: bool, ebs_optimized: bool) -> Optional[Ec2Instance]:
 
-        ec2_in_group : Ec2Instance = next((ec2 for ec2 in ec2s
-                                           if ec2.tags.get('aws:autoscaling:groupName') == auto_scaling_group.name
-                                           and subnet_id in ec2.network_resource.subnet_ids), None)
+        ec2_in_group = any(ec2 for ec2 in ec2s
+                           if ec2.tags.get('aws:autoscaling:groupName') == auto_scaling_group.name
+                           and subnet_id in ec2.network_resource.subnet_ids)
 
         subnet = ResourceInvalidator.get_by_id(subnets, subnet_id, False)
         assign_public_ip = self._get_assign_public_ip_for_asg_data(subnet, auto_scaling_group)

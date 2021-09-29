@@ -64,7 +64,7 @@ class DynamoDbTable(AwsResource):
         self.kms_data: Optional[KmsKey] = None
 
     def get_keys(self) -> List[str]:
-        return [self.table_name, self.table_arn]
+        return [self.table_arn]
 
     def get_name(self) -> str:
         return self.table_name
