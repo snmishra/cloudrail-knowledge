@@ -716,7 +716,7 @@ class TestEnsureEfsPolicyNotUseWildcard(unittest.TestCase):
                                                                            ['*']))],
                                'raw_doc', 'account', 'us-east-1')
         efs.policy = policy
-        context = AwsEnvironmentContext(efs_file_systems=[efs])
+        context = AwsEnvironmentContext(efs_file_systems=[efs], efs_file_systems_policies=[policy])
         # Act
         result = self.rule.run(context, {})
         # Assert
