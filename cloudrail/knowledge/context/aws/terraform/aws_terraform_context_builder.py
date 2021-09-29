@@ -1,5 +1,4 @@
 from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import LambdaPolicy
-import collections
 import json
 from typing import List, Dict, Optional
 
@@ -759,23 +758,19 @@ class AwsTerraformContextBuilder(IacContextBuilder):
 
     @staticmethod
     def unify_lambda_functions_policies(lambda_policies: List[LambdaPolicy]) -> List[LambdaPolicy]:
-        full_arns_list = [policy.lambda_func_arn for policy in lambda_policies]
-        dup_arns = [arn for arn, counter in collections.Counter(full_arns_list).items() if counter > 1]
-        dup_policies = [policy for policy in lambda_policies if policy.lambda_func_arn in dup_arns]
-        statements_per_arn_map = [{policy.lambda_func_arn: policy.statements[0]} for policy in dup_policies]
-        combined_statements_per_arn = {arn: [item.get(arn) for item in statements_per_arn_map] for arn in set().union(*statements_per_arn_map)}
-        dup_policies_to_reduce_per_arn = [{arn: counter - 1} for arn, counter in collections.Counter(full_arns_list).items() if counter > 1]
-        for item in dup_policies_to_reduce_per_arn:
-            counter = next(iter(item.values()))
-            for policy in lambda_policies:
-                if counter == 0:
-                    break
-                else:
-                    if policy.lambda_func_arn == next(iter(item.keys())):
-                        lambda_policies.remove(policy)
-                        counter -= 1
-        for key, value in combined_statements_per_arn.items():
-            for policy in lambda_policies:
-                if policy.lambda_func_arn == key:
-                    policy.statements = value
-        return lambda_policies
+        policy_statements = {}
+
+        for policy in lambda_policies:
+            if policy.lambda_func_arn not in policy_statements:
+                policy_statements[policy.lambda_func_arn] = [policy.statements[0]]
+            else:
+                policy_statements[policy.lambda_func_arn].append(policy.statements[0])
+
+        arns = set([lambda_policy.lambda_func_arn for lambda_policy in lambda_policies])
+        policies = []
+        for arn in arns:
+            policy = next(policy for policy in lambda_policies if policy.lambda_func_arn == arn)
+            policy.statements = policy_statements[arn]
+            policies.append(policy)
+
+        return policies
