@@ -15,10 +15,10 @@ class EntityOrigin(str, Enum):
     CLOUDFORMATION = 'cloudformation'
 
 
-class UnSupportedEntityOriginType(Exception):
+class UnSupportedIacType(Exception):
 
     def __init__(self) -> None:
-        super().__init__('origin entity type don\'t supported')
+        super().__init__('IaC type don\'t supported')
 
 
 class Mergeable:
@@ -99,7 +99,7 @@ class Mergeable:
             elif self.iac_state.iac_type == IacType.CLOUDFORMATION:
                 return EntityOrigin.CLOUDFORMATION
             else:
-                raise UnSupportedEntityOriginType()
+                raise UnSupportedIacType()
         else:
             return EntityOrigin.LIVE_ENV
 
