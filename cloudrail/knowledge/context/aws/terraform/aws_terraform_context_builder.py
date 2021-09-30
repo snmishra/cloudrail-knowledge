@@ -1,3 +1,4 @@
+from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import LambdaPolicy
 import json
 from typing import List, Dict, Optional
 
@@ -455,7 +456,8 @@ class AwsTerraformContextBuilder(IacContextBuilder):
 
         lambda_function_list = LambdaFunctionBuilder(resources).build()
 
-        lambda_policies = LambdaPolicyBuilder(resources).build()
+        lambda_policies_not_unified = LambdaPolicyBuilder(resources).build()
+        lambda_policies = cls.unify_lambda_functions_policies(lambda_policies_not_unified)
 
         lambda_aliases = AliasesDict(*LambdaAliasBuilder(resources).build())
 
@@ -755,3 +757,23 @@ class AwsTerraformContextBuilder(IacContextBuilder):
     @staticmethod
     def to_managed_resources_summary(dic: Dict[str, int]):
         return ManagedResourcesSummary(dic.get('created', 0), dic.get('updated', 0), dic.get('deleted', 0), dic.get('total', 0))
+
+    @staticmethod
+    def unify_lambda_functions_policies(lambda_policies: List[LambdaPolicy]) -> List[LambdaPolicy]:
+        policy_statements = {}
+
+        for policy in lambda_policies:
+            if policy.lambda_func_arn not in policy_statements:
+                policy_statements[policy.lambda_func_arn] = [policy.statements[0]]
+            else:
+                policy_statements[policy.lambda_func_arn].append(policy.statements[0])
+
+        arns = {lambda_policy.lambda_func_arn for lambda_policy in lambda_policies}
+        policies = []
+        for arn in arns:
+            policy = next(policy for policy in lambda_policies
+                          if policy.lambda_func_arn == arn and policy.iac_state.action != IacActionType.DELETE)
+            policy.statements = policy_statements[arn]
+            policies.append(policy)
+
+        return policies
