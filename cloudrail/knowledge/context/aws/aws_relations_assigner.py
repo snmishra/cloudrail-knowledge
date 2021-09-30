@@ -783,7 +783,7 @@ class AwsRelationsAssigner(DependencyInvocation):
     def _assign_s3_bucket_policy(bucket: S3Bucket, policies: List[S3Policy]):
         bucket.resource_based_policy = ResourceInvalidator.get_by_logic(
             lambda: next((policy for policy in policies
-                          if policy.bucket_name == bucket.bucket_name or policy.bucket_name in bucket.aliases), bucket.resource_based_policy),
+                          if policy.bucket_name in bucket.aliases), bucket.resource_based_policy),
             False
         )
 
