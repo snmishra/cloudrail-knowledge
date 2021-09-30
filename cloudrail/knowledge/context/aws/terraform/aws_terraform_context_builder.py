@@ -1,6 +1,4 @@
 from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import LambdaPolicy
-import collections
-import copy
 import json
 from typing import List, Dict, Optional
 
@@ -19,6 +17,7 @@ from cloudrail.knowledge.context.aws.resources.iam.policy_role_attachment import
 from cloudrail.knowledge.context.aws.resources.iam.policy_user_attachment import PolicyUserAttachment
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_regions import S3BucketRegions
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
+from cloudrail.knowledge.context.iac_type import IacType
 from cloudrail.knowledge.context.managed_resources_summary import ManagedResourcesSummary
 from cloudrail.knowledge.context.iac_action_type import IacActionType
 from cloudrail.knowledge.context.iac_state import IacState
@@ -215,7 +214,8 @@ class AwsTerraformContextBuilder(IacContextBuilder):
                 target.iac_state = IacState(address=event_target.iac_state.address + 'ecs_target',
                                             action=IacActionType.NO_OP,
                                             resource_metadata=event_target.iac_state.resource_metadata,
-                                            is_new=event_target.iac_state.is_new)
+                                            is_new=event_target.iac_state.is_new,
+                                            iac_type=IacType.TERRAFORM)
                 ecs_targets_list.append(target)
         ecs_task_definitions: List[EcsTaskDefinition] = EcsTaskDefinitionBuilder(resources).build()
 
@@ -760,21 +760,20 @@ class AwsTerraformContextBuilder(IacContextBuilder):
 
     @staticmethod
     def unify_lambda_functions_policies(lambda_policies: List[LambdaPolicy]) -> List[LambdaPolicy]:
-        arns_list = [policy.lambda_func_arn for policy in lambda_policies]
-        dup_arns = [k for k, v in collections.Counter(arns_list).items() if v > 1]
-        if dup_arns:
-            lambda_policies_clone = copy.deepcopy(lambda_policies)
-            dup_policies = [policy for policy in lambda_policies if policy.lambda_func_arn in dup_arns]
-            dup_statements_per_arn = {}
-            for arn in dup_arns:
-                dup_statements_per_arn.update({arn:
-                    [policy.statements[0] for policy in dup_policies if policy.lambda_func_arn == arn]})
-            for arn in dup_arns:
-                policy_to_remove = next((policy for policy in lambda_policies_clone if policy.lambda_func_arn == arn), None)
-                lambda_policies_clone.remove(policy_to_remove)
-            for key, value in dup_statements_per_arn.items():
-                for policy in lambda_policies_clone:
-                    if policy.lambda_func_arn == key:
-                        policy.statements = value
-            return lambda_policies_clone
-        return lambda_policies
+        policy_statements = {}
+
+        for policy in lambda_policies:
+            if policy.lambda_func_arn not in policy_statements:
+                policy_statements[policy.lambda_func_arn] = [policy.statements[0]]
+            else:
+                policy_statements[policy.lambda_func_arn].append(policy.statements[0])
+
+        arns = {lambda_policy.lambda_func_arn for lambda_policy in lambda_policies}
+        policies = []
+        for arn in arns:
+            policy = next(policy for policy in lambda_policies
+                          if policy.lambda_func_arn == arn and policy.iac_state.action != IacActionType.DELETE)
+            policy.statements = policy_statements[arn]
+            policies.append(policy)
+
+        return policies

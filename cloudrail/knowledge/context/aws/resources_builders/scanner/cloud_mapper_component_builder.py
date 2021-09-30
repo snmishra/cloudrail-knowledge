@@ -350,7 +350,7 @@ def build_s3_public_access_block_settings(raw_data: dict) -> PublicAccessBlockSe
     level: PublicAccessBlockLevel = get_dict_value(raw_data, "access_level", PublicAccessBlockLevel.BUCKET)
     bucket_name_or_account_id: str = raw_data['Account']
     if level == PublicAccessBlockLevel.BUCKET:
-        bucket_name_or_account_id = extract_attribute_from_file_path(raw_data['FilePath'], 'Bucket-')
+        bucket_name_or_account_id = extract_attribute_from_file_path(raw_data['FilePath'], ['Bucket-'])
     return PublicAccessBlockSettings(bucket_name_or_account_id=bucket_name_or_account_id,
                                      block_public_acls=settings_dict["BlockPublicAcls"],
                                      block_public_policy=settings_dict["BlockPublicPolicy"],
@@ -825,7 +825,7 @@ def build_redshift_logging(attributes: dict) -> RedshiftLogging:
     logs_data = attributes['Value']
     return RedshiftLogging(attributes['Account'],
                            attributes['Region'],
-                           extract_attribute_from_file_path(attributes['FilePath'], 'ClusterIdentifier-'),
+                           extract_attribute_from_file_path(attributes['FilePath'], ['ClusterIdentifier-']),
                            logs_data.get('BucketName'),
                            logs_data.get('S3KeyPrefix'),
                            logs_data['LoggingEnabled'])
@@ -885,7 +885,7 @@ def build_cloud_watch_event_target(raw_data: dict) -> Optional[CloudWatchEventTa
         target_list.append(target)
 
     if target_list:
-        rule_name = extract_attribute_from_file_path(raw_data['FilePath'], 'Rule-')
+        rule_name = extract_attribute_from_file_path(raw_data['FilePath'], ['Rule-'])
         cluster_arn = raw_data["Arn"]
         event_target: CloudWatchEventTarget = CloudWatchEventTarget(account=raw_data['Account'],
                                                                     region=raw_data['Region'],
@@ -1374,13 +1374,13 @@ def build_docdb_cluster_parameter_group(attributes: dict) -> DocDbClusterParamet
     for parameter in attributes['Value']['Parameters']:
         list_parameters.append(DocDbClusterParameter(parameter.get('ParameterName'), parameter.get('ParameterValue')))
     return DocDbClusterParameterGroup(list_parameters,
-                                      extract_attribute_from_file_path(attributes['FilePath'], 'DBClusterParameterGroupName-'),
+                                      extract_attribute_from_file_path(attributes['FilePath'], ['DBClusterParameterGroupName-']),
                                       attributes['Account'],
                                       attributes['Region'])
 
 
 def build_s3_bucket_encryption(attributes: dict) -> S3BucketEncryption:
-    return S3BucketEncryption(extract_attribute_from_file_path(attributes['FilePath'], 'Bucket-'),
+    return S3BucketEncryption(extract_attribute_from_file_path(attributes['FilePath'], ['Bucket-']),
                               True,
                               attributes['Region'],
                               attributes['Account'])
@@ -1390,7 +1390,7 @@ def build_s3_bucket_versioning(attributes: dict) -> S3BucketVersioning:
     bucket_versioning = False
     if get_dict_value(attributes, 'Value', {}).get('Status') == 'Enabled':
         bucket_versioning = True
-    return S3BucketVersioning(extract_attribute_from_file_path(attributes['FilePath'], 'Bucket-'),
+    return S3BucketVersioning(extract_attribute_from_file_path(attributes['FilePath'], ['Bucket-']),
                               bucket_versioning,
                               attributes['Account'],
                               attributes['Region'])
@@ -1461,8 +1461,7 @@ def build_sqs_queue(attributes: dict) -> SqsQueue:
                                   encrypted_at_rest,
                                   attributes['Account'],
                                   attributes['Region'],
-                                  urllib.parse.unquote(os.path.basename(attributes['FilePath'])
-                                                       .replace('QueueUrl-', '').replace('_AttributeNames.json', '')))
+                                  urllib.parse.unquote(extract_attribute_from_file_path(attributes['FilePath'], ['QueueUrl-', '_AttributeNames'])))
     if attributes['Value'].get('KmsMasterKeyId'):
         sqs_queue_resource.encrypted_at_rest = True
         sqs_queue_resource.kms_key = attributes['Value'].get('KmsMasterKeyId')
@@ -1623,7 +1622,7 @@ def build_lambda_function(attributes: dict) -> LambdaFunction:
 
 
 def build_lambda_policy(attributes: dict) -> LambdaPolicy:
-    lambda_function_name: str = os.path.basename(attributes['FilePath']).replace('FunctionName-', '').replace('.json', '').split('_Qualifier')[0]
+    lambda_function_name: str = extract_attribute_from_file_path(attributes['FilePath'], ['FunctionName-']).split('_Qualifier')[0]
     statements: List[PolicyStatement] = build_policy_statements_from_str(attributes['Value'])
     # each statement should contains exactly 1 one resource (lambda arn itself)
     qualifier: str = LambdaFunction.parse_qualifier_from_arn(statements[0].resources[0])
@@ -1635,7 +1634,7 @@ def build_lambda_policy(attributes: dict) -> LambdaPolicy:
 
 
 def build_lambda_alias(attributes: dict) -> LambdaAlias:
-    lambda_function_name = extract_attribute_from_file_path(attributes['FilePath'], 'FunctionName-')
+    lambda_function_name = extract_attribute_from_file_path(attributes['FilePath'], ['FunctionName-'])
     return LambdaAlias(account=attributes['Account'],
                        region=attributes['Region'],
                        arn=attributes['AliasArn'],
@@ -1703,7 +1702,7 @@ def build_secrets_manager_secret_policy(attributes: dict) -> SecretsManagerSecre
 
 def build_rest_api_gw_mapping(attributes: dict) -> RestApiGwMapping:
     return RestApiGwMapping(attributes['restApiId'],
-                            extract_attribute_from_file_path(attributes['FilePath'], 'domainName-'),
+                            extract_attribute_from_file_path(attributes['FilePath'], ['domainName-']),
                             attributes['Region'],
                             attributes['Account'])
 
@@ -1880,7 +1879,7 @@ def build_efs_mount_target_base(attributes: dict) -> EfsMountTarget:
 
 def build_efs_mount_target_security_groups(attributes: dict) -> MountTargetSecurityGroups:
     return MountTargetSecurityGroups(attributes['Value']['SecurityGroups'],
-                                     extract_attribute_from_file_path(attributes['FilePath'], 'MountTargetId-'))
+                                     extract_attribute_from_file_path(attributes['FilePath'], ['MountTargetId-']))
 
 
 def build_workspaces_directory(attributes: dict) -> WorkspaceDirectory:
@@ -1926,7 +1925,7 @@ def build_load_balancer_attributes(attributes: dict) -> LoadBalancerAttributes:
                                             attributes_dict['access_logs.s3.enabled'])
     return LoadBalancerAttributes(attributes['Account'],
                                   attributes['Region'],
-                                  urllib.parse.unquote(extract_attribute_from_file_path(attributes['FilePath'], 'LoadBalancerArn-')),
+                                  urllib.parse.unquote(extract_attribute_from_file_path(attributes['FilePath'], ['LoadBalancerArn-'])),
                                   attributes_dict.get('routing.http.drop_invalid_header_fields.enabled', False),
                                   lb_access_logs)
 
@@ -1966,7 +1965,7 @@ def build_api_gateway(attributes: dict) -> ApiGateway:
 
 
 def build_api_gateway_v2_integration(attributes: dict) -> ApiGatewayV2Integration:
-    rest_api_id = extract_attribute_from_file_path(attributes['FilePath'], 'ApiId-')
+    rest_api_id = extract_attribute_from_file_path(attributes['FilePath'], ['ApiId-'])
     return ApiGatewayV2Integration(attributes['Account'],
                                    attributes['Region'],
                                    rest_api_id,
@@ -2029,15 +2028,14 @@ def build_global_accelerator(attributes: dict) -> GlobalAccelerator:
 def build_global_accelerator_listener(attributes: dict) -> GlobalAcceleratorListener:
     return GlobalAcceleratorListener(attributes['Account'],
                                      attributes['ListenerArn'],
-                                     os.path.basename(attributes['FilePath']).replace('AcceleratorArn-', '').replace('%3A', ':').replace('%2F', '/')
+                                     urllib.parse.unquote(extract_attribute_from_file_path(attributes['FilePath'], ['AcceleratorArn-']))
                                      .replace('.json', ''))
 
 
 def build_global_accelerator_endpoint_group(attributes: dict) -> GlobalAcceleratorEndpointGroup:
     endpoint_config = attributes.get('EndpointDescriptions', [{}])
     return GlobalAcceleratorEndpointGroup(attributes['Account'],
-                                          os.path.basename(attributes['FilePath']).replace('ListenerArn-', '').replace('%3A', ':')
-                                          .replace('%2F', '/').replace('.json', ''),
+                                          urllib.parse.unquote(extract_attribute_from_file_path(attributes['FilePath'], ['ListenerArn-'])),
                                           attributes['EndpointGroupArn'],
                                           endpoint_config[0].get('EndpointId'),
                                           endpoint_config[0].get('ClientIPPreservationEnabled', False),
@@ -2084,8 +2082,7 @@ def build_global_accelerator_attribute(attributes: dict) -> GlobalAcceleratorAtt
                                       attributes['Value']['FlowLogsEnabled'],
                                       attributes['Value'].get('FlowLogsS3Bucket'),
                                       attributes['Value'].get('FlowLogsS3Prefix'),
-                                      urllib.parse.unquote(os.path.basename(attributes['FilePath'])
-                                                           .replace('AcceleratorArn-', '').replace('.json', '')))
+                                      urllib.parse.unquote(extract_attribute_from_file_path(attributes['FilePath'], ['AcceleratorArn-'])))
 
 
 def build_s3_bucket_logging(attributes: dict) -> S3BucketLogging:
@@ -2094,7 +2091,7 @@ def build_s3_bucket_logging(attributes: dict) -> S3BucketLogging:
     if attributes['Value'].get('LoggingEnabled'):
         target_bucket = attributes['Value']['LoggingEnabled'].get('TargetBucket')
         target_prefix = attributes['Value']['LoggingEnabled'].get('TargetPrefix')
-    return S3BucketLogging(extract_attribute_from_file_path(attributes['FilePath'], 'Bucket-'),
+    return S3BucketLogging(extract_attribute_from_file_path(attributes['FilePath'], ['Bucket-']),
                            target_bucket,
                            target_prefix,
                            attributes['Account'],
