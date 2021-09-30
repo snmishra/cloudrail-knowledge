@@ -1,6 +1,5 @@
 from abc import abstractmethod
-from typing import Dict, Union, List
-from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
+from typing import Union, List
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.base_cloudformation_builder import BaseCloudformationBuilder
 from cloudrail.knowledge.utils.arn_utils import build_arn
