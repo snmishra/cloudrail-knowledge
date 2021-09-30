@@ -6,6 +6,7 @@ from typing import List, Set, Dict, Optional, FrozenSet
 
 from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.context.iac_type import IacType
+from cloudrail.knowledge.exceptions import UnsupportedIacTypeException
 
 
 class EntityOrigin(str, Enum):
@@ -13,12 +14,6 @@ class EntityOrigin(str, Enum):
     TERRAFORM = 'terraform'
     PSEUDO = 'pseudo'
     CLOUDFORMATION = 'cloudformation'
-
-
-class UnSupportedIacType(Exception):
-
-    def __init__(self) -> None:
-        super().__init__('IaC type don\'t supported')
 
 
 class Mergeable:
@@ -99,7 +94,7 @@ class Mergeable:
             elif self.iac_state.iac_type == IacType.CLOUDFORMATION:
                 return EntityOrigin.CLOUDFORMATION
             else:
-                raise UnSupportedIacType()
+                raise UnsupportedIacTypeException()
         else:
             return EntityOrigin.LIVE_ENV
 
