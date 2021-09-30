@@ -8,10 +8,6 @@ from cloudrail.knowledge.utils.arn_utils import build_arn
 
 class CloudformationBaseIamBuilder(BaseCloudformationBuilder):
 
-    def __init__(self, cfn_resource_type: CloudformationResourceType,
-                 cfn_by_type_map: Dict[CloudformationResourceType, Dict[str, Dict]]) -> None:
-        super().__init__(cfn_resource_type, cfn_by_type_map)
-
     @abstractmethod
     def parse_resource(self, cfn_res_attr: dict) -> Union[AwsResource, List[AwsResource]]:
         pass
