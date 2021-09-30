@@ -45,9 +45,9 @@ class AzureRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_network_security_group_rule_to_network_security_group, ctx.network_security_group_rules, (ctx.net_security_groups,)),
             IterFunctionData(self._assign_application_security_group_to_ip_config, ctx.network_interfaces, (ctx.app_security_groups, ctx.network_interface_application_security_group_association)),
             ### App Service
-            IterFunctionData(self._assign_config_to_app_service, ctx.app_service_configs, (ctx.app_services,)),
+            IterFunctionData(self._assign_config_to_app_service, ctx.app_services, (ctx.app_service_configs,)),
             ### Function App
-            IterFunctionData(self._assign_config_to_function_app, ctx.function_app_configs, (ctx.function_apps,)),
+            IterFunctionData(self._assign_config_to_function_app, ctx.function_apps, (ctx.function_app_configs,)),
             ### MSQL server
             IterFunctionData(self._assign_audit_policy_to_mssql_server, ctx.sql_servers, (ctx.sql_server_extended_audit_policies,)),
             ### Storage Account
