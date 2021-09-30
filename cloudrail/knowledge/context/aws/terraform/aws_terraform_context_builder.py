@@ -769,7 +769,7 @@ class AwsTerraformContextBuilder(IacContextBuilder):
         arns = {lambda_policy.lambda_func_arn for lambda_policy in lambda_policies}
         policies = []
         for arn in arns:
-            policy = next(policy for policy in lambda_policies 
+            policy = next(policy for policy in lambda_policies
                           if policy.lambda_func_arn == arn and policy.iac_state.action != IacActionType.DELETE)
             policy.statements = policy_statements[arn]
             policies.append(policy)
