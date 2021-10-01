@@ -43,6 +43,12 @@ class IacFieldsStore:
 
     @staticmethod
     @functools.lru_cache(maxsize=None)
+    def get_pulumi_aws_supported_services() -> Dict[str, SupportedSection]:
+        pulumi_fields_file_path = os.path.join(IacFieldsStore.CURRENT_PATH, '../context/aws/pulumi/aws_pulumi_fields.yaml')
+        return IacFieldsStore._get_cloud_provider_supported_services(pulumi_fields_file_path)
+
+    @staticmethod
+    @functools.lru_cache(maxsize=None)
     def get_terraform_gcp_supported_services() -> Dict[str, SupportedSection]:
         terraform_fields_file_path = os.path.join(IacFieldsStore.CURRENT_PATH, '../context/gcp/terraform/gcp_terraform_fields.yaml')
         return IacFieldsStore._get_cloud_provider_supported_services(terraform_fields_file_path)
