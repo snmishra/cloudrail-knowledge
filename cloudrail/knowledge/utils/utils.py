@@ -274,5 +274,13 @@ def is_port_in_ranges(port_range_tuples: List[Tuple[int, int]], port: int) -> bo
     return False
 
 
+def is_first_octet_in_range(ip: str, _range: Tuple):
+    if not is_ip_address(ip):
+        return False
+    first_octet = int(ip.split('.')[0])
+
+    return first_octet in range(_range[0], _range[1])
+
+
 def build_lambda_function_integration_endpoint_uri(region: str, lambda_arn: str) -> str:
     return f"arn:aws:apigateway:{region}:lambda:path/2015-03-31/functions/{lambda_arn}/invocations"
