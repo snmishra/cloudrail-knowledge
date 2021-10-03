@@ -155,3 +155,19 @@ AWS::EC2::VPCEndpoint:
             - SubnetIds
             - SecurityGroupIds
             - NetworkInterfaceIds
+
+AWS::IAM::Role:
+    known_fields:
+        pass:
+            - RoleName
+            - Path
+            - PermissionsBoundary
+            - Policies
+            - PolicyDocument
+            - AssumeRolePolicyDocument
+
+AWS::S3::BucketPolicy:
+    known_fields:
+        pass:
+            - PolicyDocument
+            - Bucket

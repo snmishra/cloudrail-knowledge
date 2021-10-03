@@ -238,7 +238,9 @@ class CloudformationMetadataParser:
             CloudformationResourceType.CLOUDTRAIL: AliasesDict(*scanner_context.cloudtrail),
             CloudformationResourceType.CODEBUILD_REPORTGROUP: AliasesDict(*scanner_context.codebuild_report_groups),
             CloudformationResourceType.BATCH_COMPUTE_ENVIRONMENT: AliasesDict(*scanner_context.batch_compute_environments),
-            CloudformationResourceType.VPC_ENDPOINT: AliasesDict(*scanner_context.vpc_endpoints)
+            CloudformationResourceType.VPC_ENDPOINT: AliasesDict(*scanner_context.vpc_endpoints),
+            CloudformationResourceType.IAM_ROLE: AliasesDict(*scanner_context.roles),
+            CloudformationResourceType.S3_BUCKET_POLICY: AliasesDict(*scanner_context.s3_bucket_policies)
         }
 
     def _cfn_template_crawler(self, current_node, parent_node, current_key: str = None):

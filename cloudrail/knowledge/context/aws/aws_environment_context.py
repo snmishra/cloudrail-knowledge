@@ -169,7 +169,7 @@ from cloudrail.knowledge.context.unknown_block import UnknownBlock
 from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import LambdaPolicy
 
 
-class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources should be in alias dict
+class AwsEnvironmentContext(BaseEnvironmentContext):
     def __init__(self,
                  vpcs: AliasesDict[Vpc] = None,
                  subnets: AliasesDict[Subnet] = None,
