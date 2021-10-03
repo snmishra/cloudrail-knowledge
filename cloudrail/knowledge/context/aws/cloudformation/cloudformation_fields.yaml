@@ -143,3 +143,15 @@ AWS::Batch::ComputeEnvironment:
         pass:
             - ComputeEnvironmentName
             - ComputeResources
+
+AWS::EC2::VPCEndpoint:
+    known_fields:
+        pass:
+            - VpcId
+            - ServiceName
+            - PolicyDocument
+            - VpcEndpointType
+            - RouteTableIds
+            - SubnetIds
+            - SecurityGroupIds
+            - NetworkInterfaceIds

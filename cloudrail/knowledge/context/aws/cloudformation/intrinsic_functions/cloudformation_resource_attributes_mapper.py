@@ -13,6 +13,7 @@ from cloudrail.knowledge.context.aws.resources.ec2.security_group import Securit
 from cloudrail.knowledge.context.aws.resources.ec2.subnet import Subnet
 from cloudrail.knowledge.context.aws.resources.ec2.vpc import Vpc
 from cloudrail.knowledge.context.aws.resources.codebuild.codebuild_report_group import CodeBuildReportGroup
+from cloudrail.knowledge.context.aws.resources.ec2.vpc_endpoint import VpcEndpointInterface
 from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.resources.ec2.vpc_gateway_attachment import VpcGatewayAttachment
 from cloudrail.knowledge.context.aws.resources.elb.load_balancer import LoadBalancer
@@ -131,6 +132,13 @@ class CloudformationAttributesCallableStore:
             return codebuild_report_group.get_arn()
         return None
 
+    @staticmethod
+    def get_vpc_endpoint_interface_attribute(vpc_endpoint: VpcEndpointInterface, attribute_name: str):
+        if attribute_name == "NetworkInterfaceIds":
+            return vpc_endpoint.network_interface_ids
+        return None
+
+
 class CloudformationResourceAttributesMapper:
 
     RESOURCE_ATTRIBUTES_MAP: Dict[Type[AwsResource], Callable] = {
@@ -153,6 +161,7 @@ class CloudformationResourceAttributesMapper:
         CloudTrail: CloudformationAttributesCallableStore.get_cloudtrail_attribute,
         CodeBuildReportGroup: CloudformationAttributesCallableStore.get_codebuild_report_group_attribute,
         BatchComputeEnvironment: CloudformationAttributesCallableStore.get_none_attribute,
+        VpcEndpointInterface: CloudformationAttributesCallableStore.get_vpc_endpoint_interface_attribute
     }
 
     @classmethod

@@ -3,6 +3,7 @@ from enum import Enum
 
 class CloudformationResourceType(str, Enum):
     VPC = 'AWS::EC2::VPC'
+    VPC_ENDPOINT = 'AWS::EC2::VPCEndpoint'
     INTERNET_GATEWAY = 'AWS::EC2::InternetGateway'
     VPC_GATEWAY_ATTACHMENT = 'AWS::EC2::VPCGatewayAttachment'
     EC2_INSTANCE = 'AWS::EC2::Instance'
