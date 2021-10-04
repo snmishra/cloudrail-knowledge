@@ -171,3 +171,12 @@ AWS::S3::BucketPolicy:
         pass:
             - PolicyDocument
             - Bucket
+
+AWS::Lambda::Function:
+    known_fields:
+        pass:
+            - VpcConfig
+            - FunctionName
+            - Role
+            - Handler
+            - Runtime

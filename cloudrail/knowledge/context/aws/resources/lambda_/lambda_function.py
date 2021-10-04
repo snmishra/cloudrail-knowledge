@@ -81,7 +81,7 @@ class LambdaFunction(NetworkEntity, ResourceBasedPolicy, AwsClient):
         return ''
 
     def get_id(self) -> str:
-        return self.get_arn()
+        return self.get_arn()  # todo - conflicts with CFN Ref Doc
 
     def get_cloud_resource_url(self) -> str:
         return '{0}lambda/home?region={1}#/functions/{2}?tab=configure' \

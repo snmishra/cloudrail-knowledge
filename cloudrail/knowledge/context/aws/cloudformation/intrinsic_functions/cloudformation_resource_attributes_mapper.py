@@ -12,6 +12,7 @@ from cloudrail.knowledge.context.aws.resources.elb.load_balancer import LoadBala
 from cloudrail.knowledge.context.aws.resources.elb.load_balancer_listener import LoadBalancerListener
 from cloudrail.knowledge.context.aws.resources.iam.role import Role
 from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
+from cloudrail.knowledge.context.aws.resources.lambda_.lambda_function import LambdaFunction
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket import S3Bucket
 
 
@@ -135,6 +136,12 @@ class CloudformationAttributesCallableStore:
             return iam_role.role_id
         return None
 
+    @staticmethod
+    def get_lambda_func_attribute(lambda_func: LambdaFunction, attribute_name: str):
+        if attribute_name == "Arn":
+            return lambda_func.get_arn()
+        return None
+
 
 class CloudformationResourceAttributesMapper:
 
@@ -151,7 +158,8 @@ class CloudformationResourceAttributesMapper:
         CloudTrail: CloudformationAttributesCallableStore.get_cloudtrail_attribute,
         CodeBuildReportGroup: CloudformationAttributesCallableStore.get_codebuild_report_group_attribute,
         VpcEndpointInterface: CloudformationAttributesCallableStore.get_vpc_endpoint_interface_attribute,
-        Role: CloudformationAttributesCallableStore.get_iam_role_attribute
+        Role: CloudformationAttributesCallableStore.get_iam_role_attribute,
+        LambdaFunction: CloudformationAttributesCallableStore.get_lambda_func_attribute
     }
 
     @classmethod

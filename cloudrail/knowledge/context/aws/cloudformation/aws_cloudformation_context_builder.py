@@ -10,6 +10,8 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.ec2.cloud
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_role_builder import CloudformationIamRoleBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_policies_builder import \
     CloudformationAssumeRolePolicyBuilder, CloudformationInlineRolePolicyBuilder, CloudformationS3BucketPolicyBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.lambda_function.cloudformation_lambda_function_builder import \
+    CloudformationLambdaFunctionBuilder
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
@@ -55,8 +57,8 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.load_bala
     CloudformationLoadBalancerListenerBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.load_balancer.cloudformation_load_balancer_target_builder import \
     CloudformationLoadBalancerTargetBuilder
-from cloudrail.knowledge.context.aws.resources_builders.cloudformation.load_balancer.cloudformation_load_balancer_target_group_association_builder import \
-    CloudformationLoadBalancerTargetGroupAssociationBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.load_balancer.\
+    cloudformation_load_balancer_target_group_association_builder import CloudformationLoadBalancerTargetGroupAssociationBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.load_balancer.cloudformation_load_balancer_target_group_builder import \
     CloudformationLoadBalancerTargetGroupBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.s3_bucket.cloudformation_s3_bucket_builder import \
@@ -143,7 +145,8 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             assume_role_policies=CloudformationAssumeRolePolicyBuilder(cfn_by_type_map).build(),
             role_inline_policies=CloudformationInlineRolePolicyBuilder(cfn_by_type_map).build(),
             s3_bucket_policies=CloudformationS3BucketPolicyBuilder(cfn_by_type_map).build(),
-            vpc_endpoints=CloudformationVpcEndpointBuilder(cfn_by_type_map).build()
+            vpc_endpoints=CloudformationVpcEndpointBuilder(cfn_by_type_map).build(),
+            lambda_function_list=CloudformationLambdaFunctionBuilder(cfn_by_type_map).build()
         )
 
     @staticmethod
