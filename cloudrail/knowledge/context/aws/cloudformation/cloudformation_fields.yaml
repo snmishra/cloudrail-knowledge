@@ -143,3 +143,13 @@ AWS::Batch::ComputeEnvironment:
         pass:
             - ComputeEnvironmentName
             - ComputeResources
+
+AWS::DynamoDB::Table:
+    known_fields:
+        pass:
+            - TableName
+            - BillingMode
+            - KeySchema
+            - SSESpecification
+            - ProvisionedThroughput
+            - AttributeDefinitions

@@ -237,7 +237,8 @@ class CloudformationMetadataParser:
             CloudformationResourceType.SUBNET: scanner_context.subnets,
             CloudformationResourceType.CLOUDTRAIL: AliasesDict(*scanner_context.cloudtrail),
             CloudformationResourceType.CODEBUILD_REPORTGROUP: AliasesDict(*scanner_context.codebuild_report_groups),
-            CloudformationResourceType.BATCH_COMPUTE_ENVIRONMENT: AliasesDict(*scanner_context.batch_compute_environments)
+            CloudformationResourceType.BATCH_COMPUTE_ENVIRONMENT: AliasesDict(*scanner_context.batch_compute_environments),
+            CloudformationResourceType.DYNAMODB_TABLE: AliasesDict(*scanner_context.dynamodb_table_list),
         }
 
     def _cfn_template_crawler(self, current_node, parent_node, current_key: str = None):
