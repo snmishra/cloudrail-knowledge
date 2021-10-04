@@ -3,6 +3,7 @@ from typing import Dict
 from cloudrail.knowledge.context.aws.resources.configservice.config_aggregator import ConfigAggregator
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.base_cloudformation_builder import BaseCloudformationBuilder
+from cloudrail.knowledge.utils.arn_utils import build_arn
 
 
 class CloudformationConfigServiceAggregatorBuilder(BaseCloudformationBuilder):
@@ -15,7 +16,7 @@ class CloudformationConfigServiceAggregatorBuilder(BaseCloudformationBuilder):
         aggregator_name = self.get_property(properties, 'ConfigurationAggregatorName', self.create_random_pseudo_identifier())
         account=cfn_res_attr['account_id']
         region=cfn_res_attr['region']
-        arn = f'arn:aws:config:{region}:{account}:config-aggregator/config-aggregator-{self.create_random_pseudo_identifier()}'
+        arn = build_arn('config', region, account, 'config-aggregator/', 'config-aggregator-', self.create_random_pseudo_identifier())
         organization_aggregation_all_regions_enabled = False
         account_aggregation_all_regions_enabled = False
         account_aggregation_used = bool(properties.get('AccountAggregationSources'))
