@@ -3,6 +3,7 @@ from typing import Dict, Optional, List
 from cloudrail.knowledge.context.aws.resources.dynamodb.dynamodb_table import DynamoDbTable, TableField, TableFieldType, BillingMode
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.base_cloudformation_builder import BaseCloudformationBuilder
+from cloudrail.knowledge.utils.arn_utils import build_arn
 
 
 class CloudformationDynamoDbTableBuilder(BaseCloudformationBuilder):
@@ -15,7 +16,7 @@ class CloudformationDynamoDbTableBuilder(BaseCloudformationBuilder):
         account = cfn_res_attr['account_id']
         region = cfn_res_attr['region']
         table_name = properties['TableName']
-        table_arn = f'arn::aws:dynamodb:{region}:{account}:table/{table_name}:{self.create_random_pseudo_identifier()}'
+        table_arn = build_arn('dynamodb', region, account, 'table', None, table_name)
         billing_mode: BillingMode = BillingMode.PROVISIONED
         if 'BillingMode' in properties:
             billing_mode = BillingMode(properties['BillingMode'])
