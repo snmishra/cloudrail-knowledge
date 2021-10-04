@@ -2618,7 +2618,7 @@ class AwsRelationsAssigner(DependencyInvocation):
         if gc_endpoint_group.endpoint_config_id:
             def get_endpoint():
                 endpoint = next((resource for resource in endpoints
-                                 if resource.allocation_id == gc_endpoint_group.endpoint_config_id
+                                 if resource.get_id() == gc_endpoint_group.endpoint_config_id
                                  or resource.get_arn() == gc_endpoint_group.endpoint_config_id), None)
                 return endpoint
 

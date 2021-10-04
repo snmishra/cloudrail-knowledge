@@ -21,10 +21,10 @@ class ElasticIp(AwsResource):
         self.private_ip: Optional[str] = private_ip
 
     def get_keys(self) -> List[str]:
-        return [self.public_ip]
+        return [self.allocation_id]
 
     def get_id(self) -> str:
-        return self.public_ip
+        return self.allocation_id
 
     def get_type(self, is_plural: bool = False) -> str:
         if not is_plural:
