@@ -6,6 +6,7 @@ from cloudrail.knowledge.context.aws.cloudformation.cloudformation_utils import 
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_info import CloudformationResourceInfo
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_status import CloudformationResourceStatus
 from cloudrail.knowledge.context.aws.resources.ec2.security_group import SecurityGroup
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.configservice.config_service_aggregator_builder import CloudformationConfigServiceAggregatorBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_role_builder import CloudformationIamRoleBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_policies_builder import \
     CloudformationAssumeRolePolicyBuilder, CloudformationInlineRolePolicyBuilder, CloudformationS3BucketPolicyBuilder
@@ -141,7 +142,8 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             roles=CloudformationIamRoleBuilder(cfn_by_type_map).build(),
             assume_role_policies=CloudformationAssumeRolePolicyBuilder(cfn_by_type_map).build(),
             role_inline_policies=CloudformationInlineRolePolicyBuilder(cfn_by_type_map).build(),
-            s3_bucket_policies=CloudformationS3BucketPolicyBuilder(cfn_by_type_map).build()
+            s3_bucket_policies=CloudformationS3BucketPolicyBuilder(cfn_by_type_map).build(),
+            aws_config_aggregators=CloudformationConfigServiceAggregatorBuilder(cfn_by_type_map).build()
         )
 
     @staticmethod
