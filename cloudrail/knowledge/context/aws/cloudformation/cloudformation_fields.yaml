@@ -149,3 +149,10 @@ AWS::EC2::NatGateway:
         pass:
             - AllocationId
             - SubnetId
+
+AWS::Config::ConfigurationAggregator:
+    known_fields:
+        pass:
+            - ConfigurationAggregatorName
+            - AccountAggregationSources
+            - OrganizationAggregationSource
