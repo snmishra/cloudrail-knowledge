@@ -1,4 +1,5 @@
 from typing import Dict
+import json
 
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.base_cloudformation_builder import BaseCloudformationBuilder
@@ -30,6 +31,6 @@ class CloudformationCloudwatchLogsDestinationPolicyBuilder(BaseCloudformationBui
         region = cfn_res_attr['region']
         account = cfn_res_attr['account_id']
         name = properties['DestinationName']
-        policy_statements = [build_policy_statement(raw_statement) for raw_statement in properties['DestinationPolicy']]
+        policy_statements = [build_policy_statement(raw_statement) for raw_statement in json.loads(properties['DestinationPolicy'])['Statement']]
         return CloudWatchLogsDestinationPolicy(account=account, region=region, destination_name=name,
                                                policy_statements=policy_statements, raw_document=properties['DestinationPolicy'])
