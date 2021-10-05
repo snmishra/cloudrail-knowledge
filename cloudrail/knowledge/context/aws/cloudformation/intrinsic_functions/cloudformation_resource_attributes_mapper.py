@@ -139,6 +139,7 @@ class CloudformationAttributesCallableStore:
             return dynamodb_table.get_arn()
         if attribute_name == 'StreamArn':
             return None
+        return None
 
     @staticmethod
     def get_config_service_aggregator_attribute(config_service_aggregator: ConfigAggregator, attribute_name: str):
