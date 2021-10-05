@@ -6,6 +6,7 @@ from cloudrail.knowledge.context.aws.resources.athena.athena_workgroup import At
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.cloudtrail.cloudtrail import CloudTrail
 from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
+from cloudrail.knowledge.context.aws.resources.dynamodb.dynamodb_table import DynamoDbTable
 from cloudrail.knowledge.context.aws.resources.configservice.config_aggregator import ConfigAggregator
 from cloudrail.knowledge.context.aws.resources.ec2.internet_gateway import InternetGateway
 from cloudrail.knowledge.context.aws.resources.ec2.route import Route
@@ -21,6 +22,8 @@ from cloudrail.knowledge.context.aws.resources.elb.load_balancer import LoadBala
 from cloudrail.knowledge.context.aws.resources.elb.load_balancer_listener import LoadBalancerListener
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket import S3Bucket
 from cloudrail.knowledge.context.aws.resources.batch.batch_compute_environment import BatchComputeEnvironment
+from cloudrail.knowledge.context.aws.resources.ec2.nat_gateways import NatGateways
+from cloudrail.knowledge.context.aws.resources.ec2.elastic_ip import ElasticIp
 
 
 class CloudformationAttributesCallableStore:
@@ -120,6 +123,12 @@ class CloudformationAttributesCallableStore:
         return None
 
     @staticmethod
+    def get_eip_attribute(elastic_ip: ElasticIp, attribute_name: str):
+        if attribute_name == "AllocationId":
+            return elastic_ip.allocation_id
+        return None
+
+    @staticmethod
     def get_cloudtrail_attribute(cloudtrail: CloudTrail, attribute_name: str):
         if attribute_name == "Arn":
             return cloudtrail.arn
@@ -131,6 +140,14 @@ class CloudformationAttributesCallableStore:
     def get_codebuild_report_group_attribute(codebuild_report_group: CodeBuildReportGroup, attribute_name: str):
         if attribute_name == "Arn":
             return codebuild_report_group.get_arn()
+        return None
+
+    @staticmethod
+    def get_dynamo_db_table_attribute(dynamodb_table: DynamoDbTable, attribute_name: str):
+        if attribute_name == "Arn":
+            return dynamodb_table.get_arn()
+        if attribute_name == 'StreamArn':
+            return None
         return None
 
     @staticmethod
@@ -163,6 +180,9 @@ class CloudformationResourceAttributesMapper:
         CloudTrail: CloudformationAttributesCallableStore.get_cloudtrail_attribute,
         CodeBuildReportGroup: CloudformationAttributesCallableStore.get_codebuild_report_group_attribute,
         BatchComputeEnvironment: CloudformationAttributesCallableStore.get_none_attribute,
+        NatGateways: CloudformationAttributesCallableStore.get_none_attribute,
+        ElasticIp: CloudformationAttributesCallableStore.get_eip_attribute,
+        DynamoDbTable: CloudformationAttributesCallableStore.get_dynamo_db_table_attribute,
         ConfigAggregator: CloudformationAttributesCallableStore.get_config_service_aggregator_attribute,
         CloudfrontDistributionLogging: CloudformationAttributesCallableStore.get_none_attribute,
     }
