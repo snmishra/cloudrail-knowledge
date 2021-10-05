@@ -144,6 +144,12 @@ AWS::Batch::ComputeEnvironment:
             - ComputeEnvironmentName
             - ComputeResources
 
+AWS::EC2::NatGateway:
+    known_fields:
+        pass:
+            - AllocationId
+            - SubnetId
+
 AWS::DynamoDB::Table:
     known_fields:
         pass:
