@@ -153,3 +153,10 @@ AWS::DynamoDB::Table:
             - SSESpecification
             - ProvisionedThroughput
             - AttributeDefinitions
+
+AWS::Config::ConfigurationAggregator:
+    known_fields:
+        pass:
+            - ConfigurationAggregatorName
+            - AccountAggregationSources
+            - OrganizationAggregationSource

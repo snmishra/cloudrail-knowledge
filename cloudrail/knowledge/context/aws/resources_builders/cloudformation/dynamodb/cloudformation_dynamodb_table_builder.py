@@ -15,7 +15,7 @@ class CloudformationDynamoDbTableBuilder(BaseCloudformationBuilder):
         properties: dict = cfn_res_attr['Properties']
         account = cfn_res_attr['account_id']
         region = cfn_res_attr['region']
-        table_name = properties['TableName']
+        table_name = self.get_property(properties, 'TableName', self.get_resource_id(cfn_res_attr))
         table_arn = build_arn('dynamodb', region, account, 'table', None, table_name)
         billing_mode: BillingMode = BillingMode.PROVISIONED
         if 'BillingMode' in properties:
