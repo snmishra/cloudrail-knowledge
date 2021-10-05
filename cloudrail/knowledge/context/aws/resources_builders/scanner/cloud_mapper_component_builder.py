@@ -472,7 +472,7 @@ def _build_network_acl_rule(raw_data: dict, network_acl_id: str, region: str, ac
         to_port = raw_data['PortRange'].get('To')
     rule_action = RuleAction(raw_data['RuleAction'])
     rule_number = raw_data['RuleNumber']
-    rule_type = RuleType.OUTBOUND if raw_data['Egress'] else RuleType.INBOUND
+    rule_type = RuleType.OUTBOUND if 'Egress' in raw_data else RuleType.INBOUND
     ip_protocol_type = IpProtocol(raw_data["Protocol"])
     return NetworkAclRule(region, account, network_acl_id, cidr_block, from_port, to_port, rule_action, rule_number, rule_type, ip_protocol_type)
 

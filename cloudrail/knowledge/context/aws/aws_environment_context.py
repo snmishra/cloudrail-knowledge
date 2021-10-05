@@ -1,6 +1,7 @@
 import functools
 from typing import List, Dict, Optional, Union, Callable, Set
 
+from cloudrail.knowledge.context.aws.resources.ec2.network_acl_association import NetworkAclAssociation
 from cloudrail.knowledge.context.aws.resources.ec2.vpc_gateway_attachment import VpcGatewayAttachment
 from cloudrail.knowledge.context.aws.resources.ec2.availability_zone import AvailabilityZone
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
@@ -251,6 +252,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):
                  main_route_table_associations: List[MainRouteTableAssociation] = None,
                  network_acls: AliasesDict[NetworkAcl] = None,
                  network_acl_rules: List[NetworkAclRule] = None,
+                 network_acl_associations: AliasesDict[NetworkAclAssociation] = None,
                  load_balancer_target_groups: List[LoadBalancerTargetGroup] = None,
                  load_balancer_target_group_associations: List[LoadBalancerTargetGroupAssociation] = None,
                  load_balancer_targets: List[LoadBalancerTarget] = None,
@@ -452,6 +454,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):
         self.main_route_table_associations = main_route_table_associations or []
         self.network_acls = network_acls or AliasesDict()
         self.network_acl_rules = network_acl_rules or []
+        self.network_acl_associations: AliasesDict[NetworkAclAssociation] = network_acl_associations or AliasesDict()
         self.load_balancer_target_groups = load_balancer_target_groups or []
         self.load_balancer_target_group_associations = load_balancer_target_group_associations or []
         self.load_balancer_targets = load_balancer_targets or []

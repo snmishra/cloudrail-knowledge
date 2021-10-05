@@ -4,6 +4,7 @@ common:
             - CidrBlock
             - Name
             - VpcId
+            - Tags
 
 AWS::EC2::VPC:
     known_fields:
@@ -180,3 +181,26 @@ AWS::Lambda::Function:
             - Role
             - Handler
             - Runtime
+
+AWS::AWS::EC2::NetworkAcl:
+    known_fields:
+        pass:
+            - VpcId
+
+AWS::AWS::EC2::SubnetNetworkAclAssociation:
+    known_fields:
+        pass:
+            - NetworkAclId
+            - SubnetId
+
+AWS::AWS::EC2::NetworkAclEntry:
+    known_fields:
+        pass:
+            - NetworkAclId
+            - Ipv6CidrBlock
+            - CidrBlock
+            - PortRange
+            - RuleAction
+            - RuleNumber
+            - Egress
+            - Protocol

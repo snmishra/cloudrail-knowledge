@@ -21,6 +21,7 @@ from cloudrail.knowledge.context.aws.resources.apigatewayv2.api_gateway_v2_vpc_l
 from cloudrail.knowledge.context.aws.resources.athena.athena_workgroup import AthenaWorkgroup
 from cloudrail.knowledge.context.aws.resources.autoscaling.launch_configuration import AutoScalingGroup, LaunchConfiguration
 from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template import LaunchTemplate
+from cloudrail.knowledge.context.aws.resources.ec2.network_acl_association import NetworkAclAssociation
 from cloudrail.knowledge.context.aws.resources.fsx.fsx_windows_file_system import FsxWindowsFileSystem
 from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import LambdaPolicy
 from cloudrail.knowledge.context.connection import PolicyEvaluation
@@ -262,11 +263,13 @@ class AwsRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_subnet_route_table, ctx.subnets, (ctx.route_tables, ctx.route_table_associations),
                              [self._assign_vpc_default_and_main_route_tables, self._assign_subnet_vpc]),
             IterFunctionData(self._assign_subnet_network_acl, ctx.subnets, (ctx.network_acls,), [self._assign_subnet_vpc,
-                                                                                                 self._assign_vpc_default_nacl]),
+                                                                                                 self._assign_vpc_default_nacl,
+                                                                                                 self._assign_subnet_to_nacl]),
             ### NACL ###
             IterFunctionData(self._assign_network_acl_rules, ctx.network_acls, (ctx.network_acl_rules,), [self._assign_subnet_network_acl]),
             IterFunctionData(self._assign_default_network_acl_rules_for_tf, [nacl for nacl in ctx.network_acls if nacl.is_managed_by_iac],
                              (ctx.vpcs,)),
+            IterFunctionData(self._assign_subnet_to_nacl, ctx.network_acl_associations, (ctx.network_acls,)),
             ### EC2 ###
             IterFunctionData(self._assign_ec2_role_permissions, ctx.ec2s, (ctx.roles, ctx.iam_instance_profiles),
                              [self._add_auto_scale_ec2s]),
@@ -974,6 +977,14 @@ class AwsRelationsAssigner(DependencyInvocation):
                 return subnet.vpc.main_route_table
 
         subnet.route_table = ResourceInvalidator.get_by_logic(get_route_table, True, subnet, 'Could not associate a route table')
+
+    @classmethod
+    def _assign_subnet_to_nacl(cls, nacl_assoc: NetworkAclAssociation, nacls: AliasesDict[NetworkAcl]):
+        nacl = ResourceInvalidator.get_by_id(nacls, nacl_assoc.network_acl_id, False)
+        if nacl.subnet_ids is None:
+            nacl.subnet_ids = [nacl_assoc.subnet_id]
+        else:
+            nacl.subnet_ids.append(nacl_assoc.subnet_id)
 
     @classmethod
     def _assign_subnet_network_acl(cls, subnet: Subnet, network_acls: AliasesDict[NetworkAcl]):

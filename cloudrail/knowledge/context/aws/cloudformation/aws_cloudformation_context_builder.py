@@ -6,6 +6,8 @@ from cloudrail.knowledge.context.aws.cloudformation.cloudformation_utils import 
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_info import CloudformationResourceInfo
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_status import CloudformationResourceStatus
 from cloudrail.knowledge.context.aws.resources.ec2.security_group import SecurityGroup
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.ec2.cloudformation_network_acl_builder import \
+    CloudformationNetworkAclAssociationBuilder, CloudformationNetworkAclBuilder, NetworkAclRuleBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.ec2.cloudformation_vpc_endpoint_builder import CloudformationVpcEndpointBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_role_builder import CloudformationIamRoleBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_policies_builder import \
@@ -146,7 +148,10 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             role_inline_policies=CloudformationInlineRolePolicyBuilder(cfn_by_type_map).build(),
             s3_bucket_policies=CloudformationS3BucketPolicyBuilder(cfn_by_type_map).build(),
             vpc_endpoints=CloudformationVpcEndpointBuilder(cfn_by_type_map).build(),
-            lambda_function_list=CloudformationLambdaFunctionBuilder(cfn_by_type_map).build()
+            lambda_function_list=CloudformationLambdaFunctionBuilder(cfn_by_type_map).build(),
+            network_acls=AliasesDict(*CloudformationNetworkAclBuilder(cfn_by_type_map).build()),
+            network_acl_associations=AliasesDict(*CloudformationNetworkAclAssociationBuilder(cfn_by_type_map).build()),
+            network_acl_rules=NetworkAclRuleBuilder(cfn_by_type_map).build()
         )
 
     @staticmethod
@@ -169,7 +174,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
     @staticmethod
     def create_logical_id_to_resource_info_map(scanner_context: AwsEnvironmentContext, stack_name: str) -> Dict[str, CloudformationResourceInfo]:
         logical_id_to_resource_map: Dict[str, CloudformationResourceInfo] = {}
-        for cfn_resource in scanner_context.cfn_resources_info:  # todo - convert 'cfn_resources_info' to aliases
+        for cfn_resource in scanner_context.cfn_resources_info:
             if cfn_resource.resource_status in (CloudformationResourceStatus.CREATE_COMPLETE, CloudformationResourceStatus.ROLLBACK_COMPLETE,
                                                 CloudformationResourceStatus.UPDATE_COMPLETE, CloudformationResourceStatus.UPDATE_ROLLBACK_COMPLETE,
                                                 CloudformationResourceStatus.IMPORT_COMPLETE,

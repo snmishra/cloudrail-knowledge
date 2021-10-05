@@ -31,3 +31,6 @@ class CloudformationResourceType(str, Enum):
     ELASTIC_LOAD_BALANCER_TARGET_GROUP = 'AWS::ElasticLoadBalancingV2::TargetGroup'
     ELASTIC_IP = 'AWS::EC2::EIP'
     LAMBDA_FUNCTION = 'AWS::Lambda::Function'
+    NETWORK_ACL = 'AWS::EC2::NetworkAcl'
+    SUBNET_NETWORK_ACL_ASSOCIATION = 'AWS::EC2::SubnetNetworkAclAssociation'
+    NETWORK_ACL_ENTRY = 'AWS::EC2::NetworkAclEntry'
