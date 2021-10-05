@@ -30,3 +30,4 @@ class CloudformationResourceType(str, Enum):
     ELASTIC_LOAD_BALANCER_TARGET_GROUP = 'AWS::ElasticLoadBalancingV2::TargetGroup'
     ELASTIC_IP = 'AWS::EC2::EIP'
     CONFIG_SERVICE_AGGREGATOR = 'AWS::Config::ConfigurationAggregator'
+    CLOUDFRONT_DISTRIBUTION_LOGGING = 'AWS::CloudFront::Distribution'
