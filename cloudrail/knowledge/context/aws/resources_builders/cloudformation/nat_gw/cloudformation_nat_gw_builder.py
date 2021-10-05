@@ -15,6 +15,8 @@ class CloudformationNatGatewayBuilder(BaseCloudformationBuilder):
         properties: dict = cfn_res_attr['Properties']
         allocation_id = self.get_property(properties, 'AllocationId')
         subnet_id = self.get_property(properties, 'SubnetId')
+        # we are generating random public ip because the public ip is the name of nat gateway resource.
+        # we will replace the real public ip value in '_update_object_properties' function
         public_ip = generate_random_public_ipv4()
         return NatGateways(nat_gateway_id=self.get_resource_id(cfn_res_attr), allocation_id=allocation_id,
                            subnet_id=subnet_id, eni_id=None,
