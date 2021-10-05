@@ -242,6 +242,8 @@ class CloudformationMetadataParser:
             CloudformationResourceType.ELASTIC_IP: AliasesDict(*scanner_context.elastic_ips),
             CloudformationResourceType.DYNAMODB_TABLE: AliasesDict(*scanner_context.dynamodb_table_list),
             CloudformationResourceType.CONFIG_SERVICE_AGGREGATOR: AliasesDict(*scanner_context.aws_config_aggregators),
+            CloudformationResourceType.CLOUDWATCH_LOGS_DESTINATION: AliasesDict(*scanner_context.cloudwatch_logs_destinations),
+            CloudformationResourceType.CLOUDWATCH_LOGS_DESTINATION_POLICY: AliasesDict(*scanner_context.cloudwatch_logs_destination_policies),
         }
 
     def _cfn_template_crawler(self, current_node, parent_node, current_key: str = None):
