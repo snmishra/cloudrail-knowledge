@@ -29,4 +29,5 @@ class CloudformationResourceType(str, Enum):
     BATCH_COMPUTE_ENVIRONMENT = 'AWS::Batch::ComputeEnvironment'
     ELASTIC_LOAD_BALANCER_TARGET_GROUP = 'AWS::ElasticLoadBalancingV2::TargetGroup'
     ELASTIC_IP = 'AWS::EC2::EIP'
+    DYNAMODB_TABLE = 'AWS::DynamoDB::Table'
     CONFIG_SERVICE_AGGREGATOR = 'AWS::Config::ConfigurationAggregator'

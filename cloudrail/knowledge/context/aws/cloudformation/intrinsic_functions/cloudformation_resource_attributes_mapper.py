@@ -5,6 +5,7 @@ from cloudrail.knowledge.context.aws.resources.apigatewayv2.api_gateway_v2_vpc_l
 from cloudrail.knowledge.context.aws.resources.athena.athena_workgroup import AthenaWorkgroup
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.cloudtrail.cloudtrail import CloudTrail
+from cloudrail.knowledge.context.aws.resources.dynamodb.dynamodb_table import DynamoDbTable
 from cloudrail.knowledge.context.aws.resources.configservice.config_aggregator import ConfigAggregator
 from cloudrail.knowledge.context.aws.resources.ec2.internet_gateway import InternetGateway
 from cloudrail.knowledge.context.aws.resources.ec2.route import Route
@@ -133,6 +134,14 @@ class CloudformationAttributesCallableStore:
         return None
 
     @staticmethod
+    def get_dynamo_db_table_attribute(dynamodb_table: DynamoDbTable, attribute_name: str):
+        if attribute_name == "Arn":
+            return dynamodb_table.get_arn()
+        if attribute_name == 'StreamArn':
+            return None
+        return None
+
+    @staticmethod
     def get_config_service_aggregator_attribute(config_service_aggregator: ConfigAggregator, attribute_name: str):
         # Basically, this field is not yet supported by cloudformation:
         # https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-config-configurationaggregator.html
@@ -162,6 +171,7 @@ class CloudformationResourceAttributesMapper:
         CloudTrail: CloudformationAttributesCallableStore.get_cloudtrail_attribute,
         CodeBuildReportGroup: CloudformationAttributesCallableStore.get_codebuild_report_group_attribute,
         BatchComputeEnvironment: CloudformationAttributesCallableStore.get_none_attribute,
+        DynamoDbTable: CloudformationAttributesCallableStore.get_dynamo_db_table_attribute,
         ConfigAggregator: CloudformationAttributesCallableStore.get_config_service_aggregator_attribute,
     }
 

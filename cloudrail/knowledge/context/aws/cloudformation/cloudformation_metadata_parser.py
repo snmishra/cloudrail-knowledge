@@ -238,6 +238,7 @@ class CloudformationMetadataParser:
             CloudformationResourceType.CLOUDTRAIL: AliasesDict(*scanner_context.cloudtrail),
             CloudformationResourceType.CODEBUILD_REPORTGROUP: AliasesDict(*scanner_context.codebuild_report_groups),
             CloudformationResourceType.BATCH_COMPUTE_ENVIRONMENT: AliasesDict(*scanner_context.batch_compute_environments),
+            CloudformationResourceType.DYNAMODB_TABLE: AliasesDict(*scanner_context.dynamodb_table_list),
             CloudformationResourceType.CONFIG_SERVICE_AGGREGATOR: AliasesDict(*scanner_context.aws_config_aggregators),
         }
 
