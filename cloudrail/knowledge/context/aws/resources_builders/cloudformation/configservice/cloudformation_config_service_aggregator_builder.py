@@ -13,7 +13,7 @@ class CloudformationConfigServiceAggregatorBuilder(BaseCloudformationBuilder):
 
     def parse_resource(self, cfn_res_attr: dict) -> ConfigAggregator:
         properties: dict = cfn_res_attr['Properties']
-        aggregator_name = self.get_property(properties, 'ConfigurationAggregatorName', self.create_random_pseudo_identifier())
+        aggregator_name = self.get_property(properties, 'ConfigurationAggregatorName', self.get_resource_id(cfn_res_attr))
         account=cfn_res_attr['account_id']
         region=cfn_res_attr['region']
         arn = build_arn('config', region, account, 'config-aggregator/', 'config-aggregator-', self.create_random_pseudo_identifier())
