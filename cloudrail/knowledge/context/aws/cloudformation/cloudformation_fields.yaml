@@ -150,6 +150,16 @@ AWS::EC2::NatGateway:
             - AllocationId
             - SubnetId
 
+AWS::DynamoDB::Table:
+    known_fields:
+        pass:
+            - TableName
+            - BillingMode
+            - KeySchema
+            - SSESpecification
+            - ProvisionedThroughput
+            - AttributeDefinitions
+
 AWS::Config::ConfigurationAggregator:
     known_fields:
         pass:
