@@ -1547,8 +1547,6 @@ class AwsRelationsAssigner(DependencyInvocation):
                 self.pseudo_builder.create_eni(nat_gw, subnet, [], True, private_ip_address, nat_gw.public_ip, 'pseudo NAT Gateways eni')
                 if not nat_gw.private_ip:
                     nat_gw.private_ip = private_ip_address
-                if not nat_gw.public_ip:
-                    nat_gw.public_ip = nat_gw.network_resource.network_interfaces[0].public_ip_address
             else:
                 nat_gw.add_invalidation('Could not associate a network interface')
 
