@@ -65,3 +65,10 @@ class CloudHsmV2Cluster(NetworkEntity):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'hsm_type': self.hsm_type,
+                'subnet_ids': self.subnet_ids,
+                'vpc_id': self.vpc_id,
+                'security_group_id': self.security_group_id,
+                'vpc_config': self.vpc_config and self.vpc_config.to_dict()}

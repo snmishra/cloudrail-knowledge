@@ -11,6 +11,7 @@ class CloudWatchLogsDestination(AwsResource):
             arn: THe ARN of the destination.
             policy: The destination's policy, if configured (may be None).
     """
+
     def __init__(self,
                  account: str,
                  region: str,
@@ -42,3 +43,7 @@ class CloudWatchLogsDestination(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def to_drift_detection_object(self) -> dict:
+        return {'name': self.name,
+                'arn': self.arn}

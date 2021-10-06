@@ -18,6 +18,7 @@ class DirectoryService(NetworkEntity):
                 may be Cloudrail-generated in case only the rules are defined and
                 no specific SG is configured.
     """
+
     def __init__(self,
                  account: str,
                  region: str,
@@ -66,3 +67,10 @@ class DirectoryService(NetworkEntity):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'name': self.name,
+                'arn': self.arn,
+                'vpc_id': self.vpc_id,
+                'directory_type': self.directory_type,
+                'vpc_config': self.vpc_config.to_dict()}

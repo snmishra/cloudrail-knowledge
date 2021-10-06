@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from typing import List, Optional, Dict
 
+import dataclasses
 from cloudrail.knowledge.context.connection import ConnectionInstance
 from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
 from cloudrail.knowledge.context.aws.resources.cloudfront.origin_access_identity import OriginAccessIdentity
@@ -70,6 +71,7 @@ class CloudFrontDistribution(AwsResource, ConnectionInstance):
             web_acl_id: The ID of the AWS WAF web ACL, to associate with this distribution.
             logs_settings: The logs settings of the CloudFront Distribution, if configured.
     """
+
     def __init__(self,
                  arn: str,
                  name: str,
@@ -113,7 +115,7 @@ class CloudFrontDistribution(AwsResource, ConnectionInstance):
             return 'CloudFront Distributions'
 
     def get_cloud_resource_url(self) -> str:
-        return '{0}cloudfront/home?region={1}#distribution-settings:{2}'\
+        return '{0}cloudfront/home?region={1}#distribution-settings:{2}' \
             .format(self.AWS_CONSOLE_URL, 'us-east-1', self.distribution_id)
 
     @property
@@ -146,3 +148,13 @@ class CloudFrontDistribution(AwsResource, ConnectionInstance):
 
     def get_all_cache_behaviors(self):
         return list(self._cache_behavior_list)
+
+    def to_drift_detection_object(self) -> dict:
+        return {'arn': self.arn,
+                'name': self.name,
+                'distribution_id': self.distribution_id,
+                'viewer_cert': dataclasses.asdict(self.viewer_cert),
+                'cache_behavior_list': [dataclasses.asdict(cache_behavior) for cache_behavior in self.get_all_cache_behaviors()],
+                'origin_config_list': [dataclasses.asdict(original_config) for original_config in self.origin_config_list],
+                'web_acl_id': self.web_acl_id,
+                'tags': self.tags}

@@ -35,6 +35,8 @@ class NetworkAclRule(AwsResource):
             rule_type: The type of the rule - inbound or outbound.
             ip_protocol_type: The IP protocol the rule applies to.
     """
+
+
     def __init__(self,
                  region: str,
                  account: str,
@@ -88,3 +90,13 @@ class NetworkAclRule(AwsResource):
     @staticmethod
     def is_standalone() -> bool:
         return False
+
+    def to_drift_detection_object(self) -> dict:
+        return {'network_acl_id': self.network_acl_id,
+                'cidr_block': self.cidr_block,
+                'from_port': self.from_port,
+                'to_port': self.to_port,
+                'rule_action': self.rule_action,
+                'rule_number': self.rule_number,
+                'rule_type': self.rule_type,
+                'ip_protocol_type': self.ip_protocol_type.__repr__()}

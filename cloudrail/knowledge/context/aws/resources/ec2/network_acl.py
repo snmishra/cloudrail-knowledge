@@ -16,6 +16,16 @@ class NetworkAcl(AwsResource):
             inbound_rules: The inbound/ingress rules defined in the NACL.
             outbound_rules: The outbound/egress rules defined in the NACL.
     """
+
+    def to_drift_detection_object(self) -> dict:
+        return {'network_acl_id': self.network_acl_id,
+                'vpc_id': self.vpc_id,
+                'is_default': self.is_default,
+                'name': self.name,
+                'subnet_ids': self.subnet_ids,
+                'inbound_rules': [rule.to_drift_detection_object() for rule in self.inbound_rules],
+                'outbound_rules': [rule.to_drift_detection_object() for rule in self.outbound_rules]}
+
     def __init__(self,
                  network_acl_id: str,
                  vpc_id: str,

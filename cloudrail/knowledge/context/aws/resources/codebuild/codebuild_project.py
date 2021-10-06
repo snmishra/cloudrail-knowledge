@@ -13,6 +13,13 @@ class CodeBuildProject(NetworkEntity):
             arn: The ARN of the project.
             vpc_config: The network configuration of the project, if configured.
     """
+
+    def to_drift_detection_object(self) -> dict:
+        return {'project_name': self.project_name,
+                'encryption_key': self.encryption_key,
+                'arn': self.arn,
+                'vpc_config': self.vpc_config.to_dict()}
+
     def __init__(self,
                  project_name: str,
                  encryption_key: str,

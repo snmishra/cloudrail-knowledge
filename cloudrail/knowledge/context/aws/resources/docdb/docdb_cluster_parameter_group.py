@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import List, Optional
 from dataclasses import dataclass
 
+import dataclasses
 from cloudrail.knowledge.context.aws.resources.docdb.docdb_cluster_parameter import DocDbClusterParameter
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
@@ -22,6 +23,7 @@ class DocDbClusterParameterGroup(AwsResource):
             parameters: The parameters in the group.
             group_arn: The ARN of the group.
     """
+
     def __init__(self,
                  parameters: List[DocDbClusterParameter],
                  group_name: str,
@@ -59,3 +61,7 @@ class DocDbClusterParameterGroup(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'group_name': self.group_name,
+                'parameters': [dataclasses.asdict(parameter) for parameter in self.parameters]}

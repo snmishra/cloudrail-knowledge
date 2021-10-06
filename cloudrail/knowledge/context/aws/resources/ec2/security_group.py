@@ -22,6 +22,7 @@ class SecurityGroup(AwsResource):
                 one of the pre-canned ones (like "Managed by Terraform").
             _used_by: A set of resources that use this security group.
     """
+
     def __init__(self, security_group_id: str, region: str, account: str,
                  name: str, vpc_id: str, is_default: bool, has_description: bool):
         super().__init__(account, region, AwsServiceName.AWS_SECURITY_GROUP)

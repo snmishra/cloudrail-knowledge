@@ -53,3 +53,8 @@ class BatchComputeEnvironment(NetworkEntity):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'compute_name': self.compute_name,
+                'arn': self.arn,
+                'vpc_config': self.vpc_config.to_dict()}

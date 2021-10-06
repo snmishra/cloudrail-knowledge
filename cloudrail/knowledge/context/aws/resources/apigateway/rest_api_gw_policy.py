@@ -11,6 +11,7 @@ class RestApiGwPolicy(Policy):
             policy_statements: The statements of the resource policy attached to this gateway.
             raw_document: The raw JSON of the resource policy.
     """
+
     def __init__(self,
                  rest_api_gw_id: str,
                  policy_statements: List[PolicyStatement],
@@ -31,3 +32,7 @@ class RestApiGwPolicy(Policy):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def to_drift_detection_object(self) -> dict:
+        return {'rest_api_gw_id': self.rest_api_gw_id,
+                'policy_statements': [statement.to_dict() for statement in self.statements]}

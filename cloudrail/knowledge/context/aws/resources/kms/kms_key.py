@@ -16,6 +16,7 @@ class KmsKey(AwsResource):
             policy: The resource policy of the key, if any is defined.
             alias_data: The key's alias, if any.
     """
+
     def __init__(self,
                  key_id: str,
                  arn: str,
@@ -55,3 +56,8 @@ class KmsKey(AwsResource):
 
     def get_id(self) -> str:
         return self.key_id
+
+    def to_drift_detection_object(self) -> dict:
+        return {'key_id': self.key_id,
+                'arn': self.arn,
+                'key_manager': self.key_manager.value}
