@@ -6,7 +6,6 @@ from cloudrail.knowledge.context.aws.resources.athena.athena_workgroup import At
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.cloudtrail.cloudtrail import CloudTrail
 from cloudrail.knowledge.context.aws.resources.cloudwatch.cloudwatch_logs_destination import CloudWatchLogsDestination
-from cloudrail.knowledge.context.aws.resources.cloudwatch.cloudwatch_logs_destination_policy import CloudWatchLogsDestinationPolicy
 from cloudrail.knowledge.context.aws.resources.dynamodb.dynamodb_table import DynamoDbTable
 from cloudrail.knowledge.context.aws.resources.configservice.config_aggregator import ConfigAggregator
 from cloudrail.knowledge.context.aws.resources.ec2.internet_gateway import InternetGateway
