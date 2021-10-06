@@ -52,7 +52,10 @@ class LaunchConfiguration(AwsResource):
         self.monitoring_enabled: bool = monitoring_enabled
 
     def get_keys(self) -> List[str]:
-        return [self.arn]
+        return [self.account, self.region, self.name]
+
+    def get_name(self) -> str:
+        return self.name
 
     def get_type(self, is_plural: bool = False) -> str:
         if not is_plural:
@@ -128,7 +131,7 @@ class AutoScalingGroup(AwsResource):
         self.account: str = account
 
     def get_keys(self) -> List[str]:
-        return [self.arn]
+        return [self.account, self.region, self.name]
 
     def with_raw_data(self, launch_configuration_name: Optional[str] = None,
                       launch_template_id: Optional[str] = None,

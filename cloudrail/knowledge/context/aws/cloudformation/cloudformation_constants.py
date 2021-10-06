@@ -32,3 +32,6 @@ class CloudformationResourceType(str, Enum):
     ELASTIC_IP = 'AWS::EC2::EIP'
     DYNAMODB_TABLE = 'AWS::DynamoDB::Table'
     CONFIG_SERVICE_AGGREGATOR = 'AWS::Config::ConfigurationAggregator'
+    AUTO_SCALING_GROUP = 'AWS::AutoScaling::AutoScalingGroup'
+    LAUNCH_TEMPLATE = 'AWS::EC2::LaunchTemplate'
+    LAUNCH_CONFIGURATION = 'AWS::AutoScaling::LaunchConfiguration'
