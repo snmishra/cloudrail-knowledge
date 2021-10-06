@@ -24,7 +24,7 @@ class CloudformationCloudwatchLogsDestinationBuilder(BaseCloudformationBuilder):
 class CloudformationCloudwatchLogsDestinationPolicyBuilder(BaseCloudformationBuilder):
 
     def __init__(self, cfn_by_type_map: Dict[CloudformationResourceType, Dict[str, Dict]]) -> None:
-        super().__init__(CloudformationResourceType.CLOUDWATCH_LOGS_DESTINATION_POLICY, cfn_by_type_map)
+        super().__init__(CloudformationResourceType.CLOUDWATCH_LOGS_DESTINATION, cfn_by_type_map)
 
     def parse_resource(self, cfn_res_attr: dict) -> CloudWatchLogsDestinationPolicy:
         properties: dict = cfn_res_attr['Properties']

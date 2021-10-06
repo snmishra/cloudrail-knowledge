@@ -33,4 +33,3 @@ class CloudformationResourceType(str, Enum):
     DYNAMODB_TABLE = 'AWS::DynamoDB::Table'
     CONFIG_SERVICE_AGGREGATOR = 'AWS::Config::ConfigurationAggregator'
     CLOUDWATCH_LOGS_DESTINATION = 'AWS::Logs::Destination'
-    CLOUDWATCH_LOGS_DESTINATION_POLICY = 'AWS::Logs::Destination'
