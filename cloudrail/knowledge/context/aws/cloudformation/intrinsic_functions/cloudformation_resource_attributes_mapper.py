@@ -190,7 +190,6 @@ class CloudformationResourceAttributesMapper:
         ElasticIp: CloudformationAttributesCallableStore.get_eip_attribute,
         DynamoDbTable: CloudformationAttributesCallableStore.get_dynamo_db_table_attribute,
         ConfigAggregator: CloudformationAttributesCallableStore.get_config_service_aggregator_attribute,
-        CloudWatchLogsDestinationPolicy: CloudformationAttributesCallableStore.get_none_attribute,
         CloudWatchLogsDestination: CloudformationAttributesCallableStore.get_cloudwatch_logs_destination_attribute,
     }
 
