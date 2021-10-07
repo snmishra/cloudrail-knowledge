@@ -35,3 +35,4 @@ class CloudformationResourceType(str, Enum):
     AUTO_SCALING_GROUP = 'AWS::AutoScaling::AutoScalingGroup'
     LAUNCH_TEMPLATE = 'AWS::EC2::LaunchTemplate'
     LAUNCH_CONFIGURATION = 'AWS::AutoScaling::LaunchConfiguration'
+    CLOUDWATCH_LOGS_DESTINATION = 'AWS::Logs::Destination'

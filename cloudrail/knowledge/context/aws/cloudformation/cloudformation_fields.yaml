@@ -196,3 +196,9 @@ AWS::AutoScaling::LaunchConfiguration:
             - MetadataOptions
             - AssociatePublicIpAddress
             - EbsOptimized
+
+AWS::Logs::Destination:
+    known_fields:
+        pass:
+            - DestinationName
+            - DestinationPolicy
