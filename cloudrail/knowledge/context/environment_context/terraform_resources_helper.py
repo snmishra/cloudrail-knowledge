@@ -55,7 +55,9 @@ def get_after_raw_resources_by_type(raw_data,
         if after_att is not None:
             if resource['change']['after_unknown']:
                 for key in resource['change']['after_unknown']:
-                    after_att[key] = after_att.get(key, '{}.{}'.format(address, key))
+                    full_address = '{}.{}'.format(address, key)
+                    after_att[key] = after_att.get(key, full_address)
+                    assign_inner_addresses(full_address, after_att[key], resource['change']['after_unknown'][key])
             after_att['tf_address'] = address
 
         metadata = resources_metadata.get(address.split('[')[0])
@@ -80,6 +82,22 @@ def get_after_raw_resources_by_type(raw_data,
             resources[resource_type].append(after_att)
 
     return resources
+
+
+def assign_inner_addresses(full_address: str, after_attribute, unknowns_map):
+    if isinstance(after_attribute, list) and len(after_attribute) == 1 and \
+            isinstance(unknowns_map, list) and len(unknowns_map) == 1:
+        after_item = after_attribute[0]
+        unknown_item = unknowns_map[0]
+        for key, value in unknown_item.items():
+            new_path = f'{full_address}.{key}'
+            if isinstance(value, list) and len(value) == 1:
+                val_item = value[0]
+                if isinstance(val_item, dict):
+                    assign_inner_addresses(new_path, after_item[key], value)
+
+            if value is True:
+                after_item[key] = new_path
 
 
 def get_raw_resources_by_type(raw_data,
