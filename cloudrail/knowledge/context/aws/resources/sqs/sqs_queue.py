@@ -56,3 +56,8 @@ class SqsQueue(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'queue_name': self.queue_name,
+                'encrypted_at_rest': self.encrypted_at_rest,
+                'queue_url': self.queue_url}

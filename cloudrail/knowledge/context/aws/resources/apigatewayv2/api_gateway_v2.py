@@ -75,7 +75,5 @@ class ApiGateway(NetworkEntity):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'api_gw_id': self.api_gw_id,
-                'api_gw_name': self.api_gw_name,
-                'protocol_type': self.protocol_type,
-                'arn': self.arn}
+        return {'api_gw_name': self.api_gw_name,
+                'protocol_type': self.protocol_type}

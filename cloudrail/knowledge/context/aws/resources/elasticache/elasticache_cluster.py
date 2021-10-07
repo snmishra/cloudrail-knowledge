@@ -20,6 +20,7 @@ class ElastiCacheCluster(NetworkEntity):
             snapshot_retention_limit: Number of days for which ElastiCache will retain automatic cache cluster snapshots before deleting them.
             engine: Name of the cache engine to be used for the ElasticCache cluster
     """
+
     def __init__(self,
                  region: str,
                  account: str,
@@ -73,3 +74,12 @@ class ElastiCacheCluster(NetworkEntity):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'cluster_name': self.cluster_name,
+                'arn': self.arn,
+                'replication_group_id': self.replication_group_id,
+                'elasticache_security_group_ids': self.elasticache_security_group_ids,
+                'subnet_group_name': self.subnet_group_name,
+                'engine': self.engine,
+                'snapshot_retention_limit': self.snapshot_retention_limit}

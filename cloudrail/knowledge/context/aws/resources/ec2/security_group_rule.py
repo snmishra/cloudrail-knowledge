@@ -114,3 +114,13 @@ class SecurityGroupRule(AwsResource):
     @staticmethod
     def is_standalone() -> bool:
         return False
+
+    def to_drift_detection_object(self) -> dict:
+        return {'from_port': self.from_port,
+                'to_port': self.to_port,
+                'ip_protocol': self.ip_protocol.__repr__(),
+                'property_type': self.property_type.value,
+                'property_value': self.property_value,
+                'has_description': self.has_description,
+                'connection_type': self.connection_type,
+                'security_group_id': self.security_group_id}

@@ -73,4 +73,6 @@ class DirectoryService(NetworkEntity):
                 'arn': self.arn,
                 'vpc_id': self.vpc_id,
                 'directory_type': self.directory_type,
-                'vpc_config': self.vpc_config.to_dict()}
+                'assign_public_ip': self.vpc_config and self.vpc_config.assign_public_ip,
+                'security_groups_ids': self.vpc_config and self.vpc_config.security_groups_ids,
+                'subnet_list_ids': self.vpc_config and self.vpc_config.subnet_list_ids}

@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
+import dataclasses
 from cloudrail.knowledge.context.aws.resources.es.elastic_search_domain_policy import ElasticSearchDomainPolicy
 from cloudrail.knowledge.context.aws.resources.indirect_public_connection_data import IndirectPublicConnectionData
 from cloudrail.knowledge.context.aws.resources.networking_config.inetwork_configuration import INetworkConfiguration
@@ -45,6 +46,7 @@ class ElasticSearchDomain(NetworkEntity, INetworkConfiguration):
             es_domain_version: The ElasticSearch Domain version.
             es_domain_cluster_instance_type: The ElasticSearch Domain cluster instance type.
     """
+
     def __init__(self,
                  domain_id: str,
                  domain_name: str,
@@ -110,3 +112,13 @@ class ElasticSearchDomain(NetworkEntity, INetworkConfiguration):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'is_public': self.is_public,
+                'ports': self.ports,
+                'es_domain_version': self.es_domain_version,
+                'es_domain_cluster_instance_type': self.es_domain_cluster_instance_type,
+                'security_group_ids': self._network_configuration.security_groups_ids,
+                'assign_public_ip': self._network_configuration.assign_public_ip,
+                'subnet_ids': self._network_configuration.subnet_list_ids,
+                'log_publishing_options': self.log_publishing_options and [dataclasses.asdict(option) for option in self.log_publishing_options]}

@@ -36,7 +36,6 @@ class NetworkAclRule(AwsResource):
             ip_protocol_type: The IP protocol the rule applies to.
     """
 
-
     def __init__(self,
                  region: str,
                  account: str,
@@ -80,7 +79,7 @@ class NetworkAclRule(AwsResource):
             return "Network ACL rules"
 
     def get_cloud_resource_url(self) -> str:
-        return '{0}vpc/home?region={1}#NetworkAclDetails:networkAclId={2}'\
+        return '{0}vpc/home?region={1}#NetworkAclDetails:networkAclId={2}' \
             .format(self.AWS_CONSOLE_URL, self.region, self.network_acl_id)
 
     @property

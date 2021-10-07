@@ -58,6 +58,4 @@ class KmsKey(AwsResource):
         return self.key_id
 
     def to_drift_detection_object(self) -> dict:
-        return {'key_id': self.key_id,
-                'arn': self.arn,
-                'key_manager': self.key_manager.value}
+        return {'key_manager': self.key_manager.value}

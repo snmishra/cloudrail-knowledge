@@ -34,6 +34,7 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
             exposed_to_agw_methods: The ApiGateway methods that can acccess this bucket.
             is_logger: Indicates if this bucket is the target bucket for logging of another bucket.
     """
+
     def __init__(self, account: str, bucket_name: str, arn: str, region: str = None,
                  policy: S3Policy = None):
         ResourceBasedPolicy.__init__(self, account, region, AwsServiceName.AWS_S3_BUCKET,
@@ -77,7 +78,7 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
         return self.bucket_name
 
     def get_cloud_resource_url(self) -> str:
-        return 'https://s3.console.aws.amazon.com/s3/buckets/{0}?region={1}&tab=objects'\
+        return 'https://s3.console.aws.amazon.com/s3/buckets/{0}?region={1}&tab=objects' \
             .format(self.bucket_name, self.region)
 
     @property
@@ -87,3 +88,9 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
     @property
     def is_public(self):
         return len(self.publicly_allowing_resources) > 0
+
+    def to_drift_detection_object(self) -> dict:
+        return {'bucket_name': self.bucket_name,
+                'encryption_data': self.encryption_data and self.encryption_data.to_drift_detection_object(),
+                'versioning_data': self.versioning_data and self.versioning_data.to_drift_detection_object(),
+                'exposed_to_agw_methods': [method.to_drift_detection_object() for method in self.exposed_to_agw_methods]}

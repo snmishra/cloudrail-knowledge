@@ -66,5 +66,4 @@ class AthenaWorkgroup(AwsResource):
                 'encryption_config': self.encryption_config,
                 'enforce_workgroup_config': self.enforce_workgroup_config,
                 'encryption_option': self.encryption_option,
-                'kms_key_arn': self.kms_key_arn,
                 'kms_key_id': self.kms_key_id}

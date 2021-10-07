@@ -11,6 +11,7 @@ class SqsQueuePolicy(Policy):
             policy_statements: The statements of the policy.
             raw_document: The raw JSON of the policy.
     """
+
     def __init__(self,
                  queue_name: str,
                  policy_statements: Optional[List[PolicyStatement]],
@@ -30,3 +31,7 @@ class SqsQueuePolicy(Policy):
             return 'SQS queue resource policy'
         else:
             return 'SQS queue resource policies'
+
+    def to_drift_detection_object(self) -> dict:
+        return {'queue_name': self.queue_name,
+                'policy_statements': [statement.to_dict() for statement in self.statements]}

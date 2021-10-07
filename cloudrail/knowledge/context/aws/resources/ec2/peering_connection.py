@@ -2,6 +2,7 @@ from abc import abstractmethod
 from dataclasses import dataclass
 from typing import List
 
+import dataclasses
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 
@@ -65,3 +66,10 @@ class PeeringConnection(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'peering_id': self.peering_id,
+                'requester_vpc_info': dataclasses.asdict(self.requester_vpc_info),
+                'accepter_vpc_info': dataclasses.asdict(self.accepter_vpc_info),
+                'status': self.status}
+

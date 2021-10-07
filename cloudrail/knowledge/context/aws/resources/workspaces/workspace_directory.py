@@ -53,3 +53,8 @@ class WorkspaceDirectory(NetworkEntity):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'directory_id': self.directory_id,
+                'subnet_ids': self.subnet_ids,
+                'security_group_ids': self.security_group_ids}

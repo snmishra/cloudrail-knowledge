@@ -74,8 +74,7 @@ class LaunchConfiguration(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'arn': self.arn,
-                'image_id': self.image_id,
+        return {'image_id': self.image_id,
                 'instance_type': self.instance_type,
                 'key_name': self.key_name,
                 'name': self.name,
@@ -121,14 +120,6 @@ class AutoScalingGroup(AwsResource):
             launch_configuration: Points to the associated launch configuration, if there is one.
             launch_template: Points to the associated launch template, if there is one.
     """
-
-    def to_drift_detection_object(self) -> dict:
-        return {'arn': self.arn,
-                'target_group_arns': self.target_group_arns,
-                'name': self.name,
-                'availability_zones': self.availability_zones,
-                'subnet_ids': self.subnet_ids,
-                'raw_data': dataclasses.asdict(self.raw_data)}
 
     def __init__(self,
                  arn: str,
@@ -177,3 +168,12 @@ class AutoScalingGroup(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'arn': self.arn,
+                'target_group_arns': self.target_group_arns,
+                'name': self.name,
+                'availability_zones': self.availability_zones,
+                'subnet_ids': self.subnet_ids,
+                'launch_configuration_name': self.raw_data and self.raw_data.launch_configuration_name,
+                'launch_template_data': self.raw_data and dataclasses.asdict(self.raw_data.launch_template_data)}

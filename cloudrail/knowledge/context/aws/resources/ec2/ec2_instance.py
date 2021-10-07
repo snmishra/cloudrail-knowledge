@@ -158,4 +158,11 @@ class Ec2Instance(NetworkEntity, AwsClient):
                 'tags': self.tags,
                 'instance_type': self.instance_type,
                 'ebs_optimized': self.ebs_optimized,
-                'monitoring_enabled': self.monitoring_enabled}
+                'monitoring_enabled': self.monitoring_enabled,
+                'subnet_id': self.raw_data and self.raw_data.subnet_id,
+                'private_ip_address': self.raw_data and self.raw_data.private_ip_address,
+                'public_ip_address': self.raw_data and self.raw_data.public_ip_address,
+                'ipv6_addresses': self.raw_data and self.raw_data.ipv6_addresses,
+                'associate_public_ip_address': self.raw_data and self.raw_data.associate_public_ip_address
+                                               and self.raw_data.associate_public_ip_address.value,
+                'security_groups_ids': self.raw_data and self.raw_data.security_groups_ids}

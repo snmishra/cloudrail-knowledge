@@ -14,6 +14,7 @@ class ElasticFileSystem(AwsResource):
             encrypted: True if the EFS is encrypted.
             policy: The EFS's resource policy, may be None.
     """
+
     def __init__(self,
                  creation_token: str,
                  efs_id: str,
@@ -44,3 +45,7 @@ class ElasticFileSystem(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'creation_token': self.creation_token,
+                'encrypted': self.encrypted}

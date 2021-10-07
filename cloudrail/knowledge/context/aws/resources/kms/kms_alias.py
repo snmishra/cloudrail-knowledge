@@ -13,6 +13,7 @@ class KmsAlias(AwsResource):
             alias_arn: The ARN of the lias.
             key_manager: The Key Manager of this key (customer, or AWS).
     """
+
     def __init__(self,
                  alias_name: str,
                  target_key_id: str,
@@ -51,3 +52,7 @@ class KmsAlias(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def to_drift_detection_object(self) -> dict:
+        return {'alias_name': self.alias_name,
+                'target_key_id': self.target_key_id}

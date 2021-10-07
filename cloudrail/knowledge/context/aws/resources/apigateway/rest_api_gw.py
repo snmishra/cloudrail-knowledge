@@ -77,8 +77,7 @@ class RestApiGw(ResourceBasedPolicy):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'rest_api_gw_id': self.rest_api_gw_id,
-                'api_gw_name': self.api_gw_name,
+        return {'api_gw_name': self.api_gw_name,
                 'api_gateway_type': self.api_gateway_type,
                 'is_public': self.is_public,
                 'api_gateway_methods': [method.to_drift_detection_object() for method in self.api_gateway_methods],
