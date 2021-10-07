@@ -6,6 +6,7 @@ from cloudrail.knowledge.context.aws.resources.athena.athena_workgroup import At
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.cloudtrail.cloudtrail import CloudTrail
 from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
+from cloudrail.knowledge.context.aws.resources.cloudwatch.cloudwatch_logs_destination import CloudWatchLogsDestination
 from cloudrail.knowledge.context.aws.resources.dynamodb.dynamodb_table import DynamoDbTable
 from cloudrail.knowledge.context.aws.resources.configservice.config_aggregator import ConfigAggregator
 from cloudrail.knowledge.context.aws.resources.ec2.internet_gateway import InternetGateway
@@ -158,6 +159,11 @@ class CloudformationAttributesCallableStore:
             return config_service_aggregator.get_arn()
         return None
 
+    @staticmethod
+    def get_cloudwatch_logs_destination_attribute(cloudwatch_logs_destination: CloudWatchLogsDestination, attribute_name: str):
+        if attribute_name == "Arn":
+            return cloudwatch_logs_destination.get_arn()
+        return None
 class CloudformationResourceAttributesMapper:
 
     RESOURCE_ATTRIBUTES_MAP: Dict[Type[AwsResource], Callable] = {
@@ -185,6 +191,7 @@ class CloudformationResourceAttributesMapper:
         DynamoDbTable: CloudformationAttributesCallableStore.get_dynamo_db_table_attribute,
         ConfigAggregator: CloudformationAttributesCallableStore.get_config_service_aggregator_attribute,
         CloudfrontDistributionLogging: CloudformationAttributesCallableStore.get_none_attribute,
+        CloudWatchLogsDestination: CloudformationAttributesCallableStore.get_cloudwatch_logs_destination_attribute,
     }
 
     @classmethod
