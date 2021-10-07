@@ -166,3 +166,9 @@ AWS::Config::ConfigurationAggregator:
             - ConfigurationAggregatorName
             - AccountAggregationSources
             - OrganizationAggregationSource
+
+AWS::Logs::Destination:
+    known_fields:
+        pass:
+            - DestinationName
+            - DestinationPolicy

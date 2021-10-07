@@ -32,3 +32,4 @@ class CloudformationResourceType(str, Enum):
     ELASTIC_IP = 'AWS::EC2::EIP'
     DYNAMODB_TABLE = 'AWS::DynamoDB::Table'
     CONFIG_SERVICE_AGGREGATOR = 'AWS::Config::ConfigurationAggregator'
+    CLOUDWATCH_LOGS_DESTINATION = 'AWS::Logs::Destination'
