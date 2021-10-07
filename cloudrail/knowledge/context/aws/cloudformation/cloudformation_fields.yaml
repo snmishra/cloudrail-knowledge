@@ -197,6 +197,11 @@ AWS::AutoScaling::LaunchConfiguration:
             - AssociatePublicIpAddress
             - EbsOptimized
 
+AWS::CloudFront::Distribution:
+    known_fields:
+        pass:
+            - DistributionConfig
+
 AWS::Logs::Destination:
     known_fields:
         pass:

@@ -245,6 +245,7 @@ class CloudformationMetadataParser:
             CloudformationResourceType.LAUNCH_CONFIGURATION: AliasesDict(*scanner_context.launch_configurations),
             CloudformationResourceType.LAUNCH_TEMPLATE: AliasesDict(*scanner_context.launch_templates),
             CloudformationResourceType.AUTO_SCALING_GROUP: AliasesDict(*scanner_context.auto_scaling_groups),
+            CloudformationResourceType.CLOUDFRONT_DISTRIBUTION_LOGGING: AliasesDict(*scanner_context.cloudfront_log_settings),
             CloudformationResourceType.CLOUDWATCH_LOGS_DESTINATION: AliasesDict(*scanner_context.cloudwatch_logs_destinations),
         }
 
