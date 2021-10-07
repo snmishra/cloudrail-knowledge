@@ -170,4 +170,4 @@ AWS::Config::ConfigurationAggregator:
 AWS::CloudFront::Distribution:
     known_fields:
         pass:
-            - Logging
+            - DistributionConfig
