@@ -167,6 +167,11 @@ AWS::Config::ConfigurationAggregator:
             - AccountAggregationSources
             - OrganizationAggregationSource
 
+AWS::CloudFront::Distribution:
+    known_fields:
+        pass:
+            - DistributionConfig
+
 AWS::Logs::Destination:
     known_fields:
         pass:
