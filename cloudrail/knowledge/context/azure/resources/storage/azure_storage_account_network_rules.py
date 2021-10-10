@@ -16,7 +16,7 @@ class NetworkRuleDefaultAction(Enum):
 
 
 class BypassTrafficType(Enum):
-    NONE = 'none'
+    NONE = 'None'
     LOGGING = 'Logging'
     METRICS = 'Metrics'
     AZURESERVICES = 'AzureServices'
