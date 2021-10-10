@@ -28,9 +28,9 @@ class CloudformationLaunchTemplateBuilder(BaseCloudformationBuilder):
 
         network_configurations: List[NetworkConfiguration] = []
         for net_conf in self.get_property(lt_data, 'NetworkInterfaces', []):
-            assign_public_ip: Optional[bool] = self.get_property(net_conf, 'AssociatePublicIpAddress', None)
+            assign_public_ip: Optional[bool] = self.get_property(net_conf, 'AssociatePublicIpAddress')
             security_groups: List[str] = self.get_property(net_conf, 'Groups', [])
-            subnet_id: str = self.get_property(net_conf, 'SubnetId', None)
+            subnet_id: str = self.get_property(net_conf, 'SubnetId')
             network_configurations.append(NetworkConfiguration(assign_public_ip=assign_public_ip, security_groups_ids=security_groups,
                                                             subnet_list_ids=[subnet_id] if subnet_id else []))
         return LaunchTemplate(account=account, region=region, template_id=template_id, name=name, http_token=http_token,

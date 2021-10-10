@@ -2,7 +2,8 @@ from typing import Dict
 from cloudrail.knowledge.context.aws.resources.autoscaling.launch_configuration import LaunchConfiguration
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.base_cloudformation_builder import BaseCloudformationBuilder
-from cloudrail.knowledge.utils.arn_utils import build_arn
+from cloudrail.knowledge.utils.arn_utils import build_arn, is_valid_arn
+from arnparse import arnparse
 
 
 class CloudformationLaunchConfigurationBuilder(BaseCloudformationBuilder):
@@ -19,12 +20,9 @@ class CloudformationLaunchConfigurationBuilder(BaseCloudformationBuilder):
                         self.create_random_pseudo_identifier() + ':launchConfigurationName/', name)
         monitoring_enabled = self.get_property(properties, 'InstanceMonitoring', True)
 
-        iam_instance_profile = self.create_random_pseudo_identifier()
-        if 'IamInstanceProfile' in properties:
-            if 'arn:' in properties['IamInstanceProfile']:
-                iam_instance_profile = properties['IamInstanceProfile'].split(':')[-1]
-            else:
-                iam_instance_profile = properties['IamInstanceProfile']
+        iam_instance_profile = self.get_property(properties, 'IamInstanceProfile', self.create_random_pseudo_identifier()) 
+        if is_valid_arn(iam_instance_profile):
+            iam_instance_profile = arnparse(iam_instance_profile).resource
         image_id = properties['ImageId']
         instance_type = properties['InstanceType']
         key_name = self.get_property(properties, 'KeyName')
