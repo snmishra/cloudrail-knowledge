@@ -85,19 +85,22 @@ def get_after_raw_resources_by_type(raw_data,
 
 
 def assign_inner_addresses(full_address: str, after_attribute, unknowns_map):
-    if isinstance(after_attribute, list) and len(after_attribute) == 1 and \
-            isinstance(unknowns_map, list) and len(unknowns_map) == 1:
-        after_item = after_attribute[0]
-        unknown_item = unknowns_map[0]
-        for key, value in unknown_item.items():
-            new_path = f'{full_address}.{key}'
-            if isinstance(value, list) and len(value) == 1:
-                val_item = value[0]
-                if isinstance(val_item, dict):
-                    assign_inner_addresses(new_path, after_item[key], value)
+    if not (isinstance(after_attribute, list) and len(after_attribute) == 1 and \
+            isinstance(unknowns_map, list) and len(unknowns_map) == 1):
+        return
+    after_item = after_attribute[0]
+    unknown_item = unknowns_map[0]
+    if not isinstance(unknown_item, dict):
+        return
+    for key, value in unknown_item.items():
+        new_path = f'{full_address}.{key}'
+        if isinstance(value, list) and len(value) == 1:
+            val_item = value[0]
+            if isinstance(val_item, dict):
+                assign_inner_addresses(new_path, after_item[key], value)
 
-            if value is True:
-                after_item[key] = new_path
+        if value is True:
+            after_item[key] = new_path
 
 
 def get_raw_resources_by_type(raw_data,
