@@ -102,6 +102,8 @@ def assign_inner_addresses(full_address: str, after_attribute, unknowns_map):
         if value is True:
             after_item[key] = new_path
 
+    after_item['tf_address'] = full_address
+
 
 def get_raw_resources_by_type(raw_data,
                               resources_metadata: Dict[str, IacResourceMetadata],
