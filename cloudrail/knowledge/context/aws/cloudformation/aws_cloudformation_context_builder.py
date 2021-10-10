@@ -28,6 +28,8 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.batch.clo
     CloudformationBatchComputeEnvironmentBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.cloudtrail.cloudfromation_cloudtrail_builder import \
     CloudformationCloudtrailBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.cloudfront.cloudformation_cloudfront_distribution_logging_builder import \
+    CloudformationCloudfrontDistributionLoggingBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.cloudwatch.cloudformation_cloudwatch_logs_destination_builder import \
     CloudformationCloudwatchLogsDestinationBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.cloudwatch.cloudformation_cloudwatch_logs_destination_builder import \
@@ -153,6 +155,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             aws_config_aggregators=CloudformationConfigServiceAggregatorBuilder(cfn_by_type_map).build(),
             cloudwatch_logs_destinations=CloudformationCloudwatchLogsDestinationBuilder(cfn_by_type_map).build(),
             cloudwatch_logs_destination_policies=CloudformationCloudwatchLogsDestinationPolicyBuilder(cfn_by_type_map).build(),
+            cloudfront_log_settings=CloudformationCloudfrontDistributionLoggingBuilder(cfn_by_type_map).build(),
         )
 
     @staticmethod
