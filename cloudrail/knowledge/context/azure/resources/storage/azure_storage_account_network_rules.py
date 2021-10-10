@@ -3,6 +3,7 @@ from typing import Optional, List
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 
+
 class NetworkRuleDefaultAction(Enum):
     """
         Enum
@@ -20,6 +21,7 @@ class BypassTrafficType(Enum):
     METRICS = 'Metrics'
     AZURESERVICES = 'AzureServices'
 
+
 class AzureStorageAccountNetworkRules(AzureResource):
     """
         Attributes:
@@ -28,7 +30,6 @@ class AzureStorageAccountNetworkRules(AzureResource):
             ip_rules: List of IP addresses to allow access from the internet to the storage account.
             bypass_traffic: List of traffic services which will bypass the network rules, and will have access to the storage account.
     """
-
     def __init__(self, storage_name: str, default_action: str, ip_rules: list, bypass_traffic: list) -> None:
         super().__init__(AzureResourceType.AZURERM_STORAGE_ACCOUNT_NETWORK_RULES)
         self.storage_name: str = storage_name
@@ -59,3 +60,9 @@ class AzureStorageAccountNetworkRules(AzureResource):
     @staticmethod
     def is_standalone() -> bool:
         return False
+
+    def to_drift_detection_object(self) -> dict:
+        return {'storage_name': self.storage_name,
+                'default_action': self.default_action,
+                'ip_rules': self.ip_rules,
+                'bypass_traffic': self.bypass_traffic}

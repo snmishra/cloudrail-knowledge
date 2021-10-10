@@ -32,3 +32,8 @@ class AzureKeyVault(AzureResource):
 
     def get_type(self, is_plural: bool = False) -> str:
         return 'Key ' + 'Vault' if not is_plural else 'Vaults'
+
+    def to_drift_detection_object(self) -> dict:
+        return {'name': self.name,
+                'purge_protection_enabled': self.purge_protection_enabled,
+                'monitor_diagnostic_settings': self.monitor_diagnostic_settings.to_drift_detection_object()}
