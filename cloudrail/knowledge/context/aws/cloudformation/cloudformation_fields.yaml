@@ -144,6 +144,12 @@ AWS::Batch::ComputeEnvironment:
             - ComputeEnvironmentName
             - ComputeResources
 
+AWS::EC2::NatGateway:
+    known_fields:
+        pass:
+            - AllocationId
+            - SubnetId
+
 AWS::DynamoDB::Table:
     known_fields:
         pass:
@@ -160,3 +166,14 @@ AWS::Config::ConfigurationAggregator:
             - ConfigurationAggregatorName
             - AccountAggregationSources
             - OrganizationAggregationSource
+
+AWS::CloudFront::Distribution:
+    known_fields:
+        pass:
+            - DistributionConfig
+
+AWS::Logs::Destination:
+    known_fields:
+        pass:
+            - DestinationName
+            - DestinationPolicy

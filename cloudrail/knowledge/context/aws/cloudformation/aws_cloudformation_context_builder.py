@@ -6,6 +6,7 @@ from cloudrail.knowledge.context.aws.cloudformation.cloudformation_utils import 
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_info import CloudformationResourceInfo
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_status import CloudformationResourceStatus
 from cloudrail.knowledge.context.aws.resources.ec2.security_group import SecurityGroup
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.nat_gw.cloudformation_nat_gw_builder import CloudformationNatGatewayBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dynamodb.cloudformation_dynamodb_table_builder import CloudformationDynamoDbTableBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.configservice.cloudformation_config_service_aggregator_builder import CloudformationConfigServiceAggregatorBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_role_builder import CloudformationIamRoleBuilder
@@ -27,6 +28,10 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.batch.clo
     CloudformationBatchComputeEnvironmentBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.cloudtrail.cloudfromation_cloudtrail_builder import \
     CloudformationCloudtrailBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.cloudwatch.cloudformation_cloudwatch_logs_destination_builder import \
+    CloudformationCloudwatchLogsDestinationBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.cloudwatch.cloudformation_cloudwatch_logs_destination_builder import \
+    CloudformationCloudwatchLogsDestinationPolicyBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.codebuild.cloudformation_codebuild_report_group_builder import \
     CloudformationCodebuildReportGroupBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.ec2.cloudformation_ec2_builder import CloudformationEc2Builder
@@ -111,6 +116,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
                                 CloudformationSecurityGroupInlineRuleBuilder(cfn_by_type_map).build()
 
         return AwsEnvironmentContext(
+            nat_gateway_list=CloudformationNatGatewayBuilder(cfn_by_type_map).build(),
             vpcs=AliasesDict(*CloudformationVpcBuilder(cfn_by_type_map).build()),
             s3_buckets=AliasesDict(*CloudformationS3BucketBuilder(cfn_by_type_map).build()),
             s3_bucket_encryption=CloudformationS3BucketEncryptionBuilder(cfn_by_type_map).build(),
@@ -144,7 +150,9 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             role_inline_policies=CloudformationInlineRolePolicyBuilder(cfn_by_type_map).build(),
             s3_bucket_policies=CloudformationS3BucketPolicyBuilder(cfn_by_type_map).build(),
             dynamodb_table_list=CloudformationDynamoDbTableBuilder(cfn_by_type_map).build(),
-            aws_config_aggregators=CloudformationConfigServiceAggregatorBuilder(cfn_by_type_map).build()
+            aws_config_aggregators=CloudformationConfigServiceAggregatorBuilder(cfn_by_type_map).build(),
+            cloudwatch_logs_destinations=CloudformationCloudwatchLogsDestinationBuilder(cfn_by_type_map).build(),
+            cloudwatch_logs_destination_policies=CloudformationCloudwatchLogsDestinationPolicyBuilder(cfn_by_type_map).build(),
         )
 
     @staticmethod
