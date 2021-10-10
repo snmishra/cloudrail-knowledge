@@ -7,7 +7,10 @@ from cloudrail.knowledge.context.gcp.resources_builders.terraform.base_gcp_terra
 class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
 
     def do_build(self, attributes: dict) -> GcpSqlDatabaseInstance:
-        require_ssl = attributes.get('settings', [{}])[0].get('ip_configuration', [{}])[0].get('require_ssl', False)
+        settings = attributes.get('settings', [{}])[0]
+        ip_configuration = self._get_known_value(settings, 'ip_configuration', [{}])[0]
+        require_ssl = ip_configuration.get('require_ssl', False)
+
         return GcpSqlDatabaseInstance(attributes['name'],
                                       require_ssl)
 
