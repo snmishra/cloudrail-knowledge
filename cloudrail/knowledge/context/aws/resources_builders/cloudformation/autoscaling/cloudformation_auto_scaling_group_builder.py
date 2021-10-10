@@ -17,14 +17,17 @@ class CloudformationAutoScalingGroupBuilder(BaseCloudformationBuilder):
         name = self.get_property(properties, 'AutoScalingGroupName', self.get_resource_id(cfn_res_attr))
         arn = build_arn('autoscaling', region, account, 'autoScalingGroup:',
                         self.create_random_pseudo_identifier() + ':autoScalingGroupName/', name)
-        target_group_arns = self.get_property(properties, 'TargetGroupARNs', [])
-        subnet_ids = self.get_property(properties, 'VPCZoneIdentifier', [])
-        availability_zones = self.get_property(properties, 'AvailabilityZones', [])
-        launch_template_version = self.get_property(properties, 'LaunchTemplate', {}).get('Version')
-        if launch_template_version and not launch_template_version.isnumeric():
-            launch_template_version = '$Latest'
+        target_group_arns = self.get_property(properties, 'TargetGroupARNs', self.create_random_pseudo_identifier())
+        subnet_ids = self.get_property(properties, 'VPCZoneIdentifier', self.create_random_pseudo_identifier())
+        availability_zones = self.get_property(properties, 'AvailabilityZones', self.create_random_pseudo_identifier())
+        lt_data = self.get_property(properties, 'LaunchTemplate')
+        launch_template_version = None
+        launch_template_id = None
+        if lt_data:
+            launch_template_version = self.get_property(lt_data, 'Version')
+            launch_template_id=self.get_property(lt_data, 'LaunchTemplateId', self.create_random_pseudo_identifier())
         return AutoScalingGroup(account=account, region=region, arn=arn, name=name, target_group_arns=target_group_arns,
                                 subnet_ids=subnet_ids, availability_zones=availability_zones)\
                                     .with_raw_data(launch_configuration_name=properties.get('LaunchConfigurationName'),
-                                                   launch_template_id=self.get_property(properties, 'LaunchTemplate', {}).get('LaunchTemplateId'),
+                                                   launch_template_id=launch_template_id,
                                                    launch_template_version=launch_template_version)

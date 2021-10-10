@@ -19,7 +19,7 @@ class CloudformationLaunchTemplateBuilder(BaseCloudformationBuilder):
         name = self.get_property(properties, 'LaunchTemplateName', self.create_random_pseudo_identifier())
         http_token = self.get_property(lt_data, 'MetadataOptions', {}).get('HttpTokens', 'optional')
         image_id = self.get_property(lt_data, 'ImageId')
-        security_group_ids = self.get_property(lt_data, 'SecurityGroupIds', [])
+        security_group_ids = self.get_property(lt_data, 'SecurityGroupIds', self.create_random_pseudo_identifier())
         version_number = self.create_random_pseudo_identifier()
         iam_instance_profile = self.get_property(lt_data, 'IamInstanceProfile', {}).get('Name', self.create_random_pseudo_identifier())
         ebs_optimized = self.get_property(lt_data, 'EbsOptimized', False)
