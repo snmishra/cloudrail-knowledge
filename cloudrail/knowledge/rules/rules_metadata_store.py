@@ -2,6 +2,7 @@ import os
 from typing import Dict, Optional, List
 
 import yaml
+from cloudrail.knowledge.context.iac_type import IacType
 
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
 from cloudrail.knowledge.rules.rule_metadata import RuleMetadata, RuleSeverity, RuleType, SecurityLayer, ResourceType, BenchmarkType, RemediationSteps
@@ -149,7 +150,8 @@ class RulesMetadataStore:
             cloud_provider=CloudProvider(rule[CLOUD_PROVIDER]),
             is_deleted=rule.get('is_deleted', False),
             compliance=self._parse_compliance(rule.get(COMPLIANCE, {})),
-            supported_iac_types=rule[SUPPORTED_IAC_TYPES]) for rule in rules}
+            supported_iac_types={IacType(iac_type) for iac_type in rule[SUPPORTED_IAC_TYPES]}
+        ) for rule in rules}
 
 
 def read_metadata_file(file_path: str):

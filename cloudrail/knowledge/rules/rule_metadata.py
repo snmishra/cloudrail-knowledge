@@ -83,7 +83,7 @@ class RuleMetadata:
     rule_type: RuleType
     security_layer: SecurityLayer
     resource_types: Set[ResourceType]
-    supported_iac_types: Set[str]
+    supported_iac_types: Set[IacType]
     cloud_provider: CloudProvider = field(default=CloudProvider.AMAZON_WEB_SERVICES)
     is_deleted: bool = False
     compliance: Dict[BenchmarkType, Dict[str, str]] = field(default_factory=dict)
