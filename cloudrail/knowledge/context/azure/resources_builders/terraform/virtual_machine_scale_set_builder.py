@@ -41,7 +41,7 @@ def _build_vmss(attributes: dict, os_type: OperatingSystemType, vm_tf_type: str,
         os_disk_profile = attributes['storage_profile_os_disk']
         if data_disks_list_data := get_known_value_function(attributes, 'storage_profile_data_disk'):
             for data in data_disks_list_data:
-                data_disks_list.append(DataDisk(None, data.get('managed_disk_type') is None))
+                data_disks_list.append(DataDisk(None, bool(get_known_value_function(data, 'managed_disk_type'))))
 
         disk_settings=DiskSettings(OsDisk(get_known_value_function(os_disk_profile[0], 'name'),
                                           bool(get_known_value_function(os_disk_profile[0], 'managed_disk_type'))),
