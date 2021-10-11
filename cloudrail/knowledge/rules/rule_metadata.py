@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Optional, Set, Dict, List
+from typing import Optional, Set, Dict
 import yaml
 from cloudrail.knowledge.context.iac_type import IacType
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
