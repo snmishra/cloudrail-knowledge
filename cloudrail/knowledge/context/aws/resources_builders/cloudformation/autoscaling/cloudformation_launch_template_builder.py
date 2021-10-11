@@ -16,8 +16,9 @@ class CloudformationLaunchTemplateBuilder(BaseCloudformationBuilder):
         region = cfn_res_attr['region']
         account = cfn_res_attr['account_id']
         template_id = self.get_resource_id(cfn_res_attr)
-        name = self.get_property(properties, 'LaunchTemplateName', self.create_random_pseudo_identifier())
-        http_token = self.get_property(lt_data, 'MetadataOptions', {}).get('HttpTokens', 'optional')
+        name = self.get_property(properties, 'LaunchTemplateName')
+        token_data = self.get_property(lt_data, 'MetadataOptions', {})
+        http_token = self.get_property(token_data, 'HttpTokens', 'optional')
         image_id = self.get_property(lt_data, 'ImageId')
         security_group_ids = self.get_property(lt_data, 'SecurityGroupIds')
         version_number = self.create_random_pseudo_identifier()
