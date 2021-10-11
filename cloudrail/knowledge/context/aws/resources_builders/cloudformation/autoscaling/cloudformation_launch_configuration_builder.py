@@ -23,11 +23,12 @@ class CloudformationLaunchConfigurationBuilder(BaseCloudformationBuilder):
         iam_instance_profile = self.get_property(properties, 'IamInstanceProfile', self.create_random_pseudo_identifier())
         if is_valid_arn(iam_instance_profile):
             iam_instance_profile = arnparse(iam_instance_profile).resource
-        image_id = properties['ImageId']
-        instance_type = properties['InstanceType']
+        image_id = self.get_property(properties, 'ImageId')
+        instance_type = self.get_property(properties, 'InstanceType')
         key_name = self.get_property(properties, 'KeyName')
         security_group_ids = self.get_property(properties, 'SecurityGroups')
-        http_tokens = self.get_property(properties, 'MetadataOptions', {}).get('HttpTokens', 'optional')
+        metadata_options = self.get_property(properties, 'MetadataOptions', {})
+        http_tokens = self.get_property(metadata_options, 'HttpTokens', 'optional')
         associate_public_ip_address = self.get_property(properties, 'AssociatePublicIpAddress', False)
         ebs_optimized = self.get_property(properties, 'EbsOptimized', False)
         return LaunchConfiguration(account=account, region=region, arn=arn, monitoring_enabled=monitoring_enabled, iam_instance_profile=iam_instance_profile,

@@ -19,12 +19,14 @@ class CloudformationLaunchTemplateBuilder(BaseCloudformationBuilder):
         name = self.get_property(properties, 'LaunchTemplateName', self.create_random_pseudo_identifier())
         http_token = self.get_property(lt_data, 'MetadataOptions', {}).get('HttpTokens', 'optional')
         image_id = self.get_property(lt_data, 'ImageId')
-        security_group_ids = self.get_property(lt_data, 'SecurityGroupIds', self.create_random_pseudo_identifier())
+        security_group_ids = self.get_property(lt_data, 'SecurityGroupIds')
         version_number = self.create_random_pseudo_identifier()
-        iam_instance_profile = self.get_property(lt_data, 'IamInstanceProfile', {}).get('Name', self.create_random_pseudo_identifier())
+        iam_instance_profile_data = self.get_property(lt_data, 'IamInstanceProfile', {})
+        iam_instance_profile = self.get_property(iam_instance_profile_data, 'Name')
         ebs_optimized = self.get_property(lt_data, 'EbsOptimized', False)
-        monitoring_enabled = self.get_property(lt_data, 'Monitoring', {}).get('Enabled', False)
-        instance_type = self.get_property(lt_data, 'InstanceType', self.create_random_pseudo_identifier())
+        monitoring_data = self.get_property(lt_data, 'Monitoring', {})
+        monitoring_enabled = self.get_property(monitoring_data, 'Enabled', False)
+        instance_type = self.get_property(lt_data, 'InstanceType')
 
         network_configurations: List[NetworkConfiguration] = []
         for net_conf in self.get_property(lt_data, 'NetworkInterfaces', []):
