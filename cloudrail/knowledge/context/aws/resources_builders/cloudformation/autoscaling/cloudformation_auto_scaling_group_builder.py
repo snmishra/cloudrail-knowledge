@@ -17,9 +17,9 @@ class CloudformationAutoScalingGroupBuilder(BaseCloudformationBuilder):
         name = self.get_property(properties, 'AutoScalingGroupName', self.get_resource_id(cfn_res_attr))
         arn = build_arn('autoscaling', region, account, 'autoScalingGroup:',
                         self.create_random_pseudo_identifier() + ':autoScalingGroupName/', name)
-        target_group_arns = self.get_property(properties, 'TargetGroupARNs', self.create_random_pseudo_identifier())
-        subnet_ids = self.get_property(properties, 'VPCZoneIdentifier', self.create_random_pseudo_identifier())
-        availability_zones = self.get_property(properties, 'AvailabilityZones', self.create_random_pseudo_identifier())
+        target_group_arns = self.get_property(properties, 'TargetGroupARNs')
+        subnet_ids = self.get_property(properties, 'VPCZoneIdentifier')
+        availability_zones = self.get_property(properties, 'AvailabilityZones')
         lt_data = self.get_property(properties, 'LaunchTemplate')
         launch_template_version = None
         launch_template_id = None

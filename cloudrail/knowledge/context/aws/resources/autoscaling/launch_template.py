@@ -49,6 +49,7 @@ class LaunchTemplate(AwsResource):
         self.ebs_optimized: bool = ebs_optimized
         self.monitoring_enabled: bool = monitoring_enabled
         self.instance_type: str = instance_type
+        self.with_aliases(self.template_id)
 
     def get_keys(self) -> List[str]:
         return [self.template_id, self.account, self.region]

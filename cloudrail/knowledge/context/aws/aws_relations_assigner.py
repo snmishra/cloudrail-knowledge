@@ -1581,7 +1581,7 @@ class AwsRelationsAssigner(DependencyInvocation):
                 else:
                     # If we dont have cloudmapper data and the auto_scaling_group is using an older version and not the latest,
                     # then we wont actually know what is the launch_template is should use, so we do not assign any launch_template to it.
-                    return next((t for t in templates if str(t.version_number) == launch_template_data.version), None)
+                    return next((t for t in templates if str(t.version_number) == str(launch_template_data.version)), None)
             return None
 
         auto_scaling_group.launch_template = ResourceInvalidator.get_by_logic(get_launch_template, False)
