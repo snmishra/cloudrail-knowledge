@@ -9,7 +9,7 @@ from cloudrail.knowledge.utils.arn_utils import build_arn
 class CloudformationCloudfrontDistributionLoggingBuilder(BaseCloudformationBuilder):
 
     def __init__(self, cfn_by_type_map: Dict[CloudformationResourceType, Dict[str, Dict]]) -> None:
-        super().__init__(CloudformationResourceType.CLOUDFRONT_DISTRIBUTION_LOGGING, cfn_by_type_map)
+        super().__init__(CloudformationResourceType.CLOUDFRONT_DISTRIBUTION_LIST, cfn_by_type_map)
 
     def parse_resource(self, cfn_res_attr: dict) -> CloudfrontDistributionLogging:
         properties: dict = cfn_res_attr['Properties']
