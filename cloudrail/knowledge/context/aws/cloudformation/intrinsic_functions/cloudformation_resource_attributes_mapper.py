@@ -5,7 +5,7 @@ from cloudrail.knowledge.context.aws.resources.apigatewayv2.api_gateway_v2_vpc_l
 from cloudrail.knowledge.context.aws.resources.athena.athena_workgroup import AthenaWorkgroup
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.cloudtrail.cloudtrail import CloudTrail
-from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
+from cloudrail.knowledge.context.aws.resources.cloudfront.cloud_front_distribution_list import CloudFrontDistribution
 from cloudrail.knowledge.context.aws.resources.cloudwatch.cloudwatch_logs_destination import CloudWatchLogsDestination
 from cloudrail.knowledge.context.aws.resources.dynamodb.dynamodb_table import DynamoDbTable
 from cloudrail.knowledge.context.aws.resources.configservice.config_aggregator import ConfigAggregator
@@ -164,6 +164,15 @@ class CloudformationAttributesCallableStore:
         if attribute_name == "Arn":
             return cloudwatch_logs_destination.get_arn()
         return None
+
+    @staticmethod
+    def get_cloudfront_distribution_list_attribute(cloudfront_dist_list: CloudFrontDistribution, attribute_name: str):
+        if attribute_name == "DomainName":
+            return cloudfront_dist_list.get_name()
+        if attribute_name == "Id":
+            return cloudfront_dist_list.get_id()
+        return None
+
 class CloudformationResourceAttributesMapper:
 
     RESOURCE_ATTRIBUTES_MAP: Dict[Type[AwsResource], Callable] = {
@@ -190,8 +199,8 @@ class CloudformationResourceAttributesMapper:
         ElasticIp: CloudformationAttributesCallableStore.get_eip_attribute,
         DynamoDbTable: CloudformationAttributesCallableStore.get_dynamo_db_table_attribute,
         ConfigAggregator: CloudformationAttributesCallableStore.get_config_service_aggregator_attribute,
-        CloudfrontDistributionLogging: CloudformationAttributesCallableStore.get_none_attribute,
         CloudWatchLogsDestination: CloudformationAttributesCallableStore.get_cloudwatch_logs_destination_attribute,
+        CloudFrontDistribution: CloudformationAttributesCallableStore.get_cloudfront_distribution_list_attribute,
     }
 
     @classmethod
