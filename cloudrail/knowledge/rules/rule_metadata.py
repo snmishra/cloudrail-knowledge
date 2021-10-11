@@ -23,11 +23,13 @@ class RuleSeverity(str, Enum):
             return -1
 
 
+# Do not update this enum!!!
 class RuleType(str, Enum):
     NON_CONTEXT_AWARE = 'non_context_aware'
     CONTEXT_AWARE = 'context_aware'
 
 
+# Do not update this enum!!!
 class SecurityLayer(str, Enum):
     IAM = 'iam'
     ENCRYPTION = 'encryption'
@@ -39,6 +41,7 @@ class SecurityLayer(str, Enum):
     TAGGING = 'tagging'
 
 
+# Do not update this enum!!!
 class ResourceType(str, Enum):
     ALL = 'all'
     KUBERNETES = 'kubernetes'
@@ -59,6 +62,7 @@ class ResourceType(str, Enum):
     SECURITY_SERVICES = 'security_services'
 
 
+# Do not update this enum!!!
 class BenchmarkType(str, Enum):
     PCI_DSS = "PCI DSS"
     CIS = "CIS"
