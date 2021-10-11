@@ -37,7 +37,6 @@ class SecurityLayer(str, Enum):
     DISASTER_RECOVERY = 'disaster_recovery'
     STORAGE = 'storage'
     TAGGING = 'tagging'
-    RUNTIME = 'runtime'
 
 
 class ResourceType(str, Enum):
