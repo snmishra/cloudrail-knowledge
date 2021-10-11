@@ -27,25 +27,26 @@ class CloudformationCloudfrontDistributionListBuilder(BaseCloudformationBuilder)
 
         cache_behavior_list: List[CacheBehavior] = []
         order: int = 0
-        for cache_behavior_dict in [self.get_property(dist_config, 'DefaultCacheBehavior', '')] + self.get_property(dist_config, 'CacheBehaviors', []):
+        for cache_behavior_dict in self.get_property(dist_config, 'DefaultCacheBehavior', []) + self.get_property(dist_config, 'CacheBehaviors', []):
             cache_behavior: CacheBehavior = CacheBehavior(allowed_methods=self.get_property(cache_behavior_dict, 'AllowedMethods'),
                                                           cached_methods=self.get_property(cache_behavior_dict, 'CachedMethods'),
-                                                          target_origin_id=cache_behavior_dict['TargetOriginId'],
-                                                          viewer_protocol_policy=cache_behavior_dict['ViewerProtocolPolicy'],
+                                                          target_origin_id=self.get_property(cache_behavior_dict, 'TargetOriginId'),
+                                                          viewer_protocol_policy=self.get_property(cache_behavior_dict, 'ViewerProtocolPolicy'),
                                                           trusted_signers=self.get_property(cache_behavior_dict, 'TrustedSigners', []),
                                                           precedence=order,
                                                           field_level_encryption_id=self.get_property(cache_behavior_dict, 'FieldLevelEncryptionId'))
 
             if 'PathPattern' in cache_behavior_dict:
-                cache_behavior.path_pattern = cache_behavior_dict['PathPattern']
+                cache_behavior.path_pattern = self.get_property(cache_behavior_dict, 'PathPattern')
             cache_behavior_list.append(cache_behavior)
             order += 1
 
         origin_config_list: List[OriginConfig] = []
         for origin_dict in self.get_property(dist_config, 'Origins', []):
-            oai_path: str = origin_dict['S3OriginConfig'].get('OriginAccessIdentity') if 'S3OriginConfig' in origin_dict else None
-            origin_config: OriginConfig = OriginConfig(domain_name=origin_dict['DomainName'],
-                                                       origin_id=origin_dict['Id'],
+            s3_origin_config_data = self.get_property(dist_config, 'S3OriginConfig', {})
+            oai_path: str = self.get_property(s3_origin_config_data, 'OriginAccessIdentity')
+            origin_config: OriginConfig = OriginConfig(domain_name=self.get_property(origin_dict, 'DomainName'),
+                                                       origin_id=self.get_property(origin_dict, 'Id'),
                                                        oai_path=oai_path)
             origin_config_list.append(origin_config)
 
