@@ -31,7 +31,7 @@ class AzureTerraformBuilder(BaseTerraformBuilder):
         if not isinstance(resource, AzureResource):
             return
         resource.subscription_id = attributes['subscription_id']
-        resource.location = self._get_normalize_azure_location_for_tf(attributes.get('location'))
+        resource.location = self._get_normalized_azure_location(attributes.get('location'))
         resource.resource_group_name = attributes.get('resource_group_name')
         resource.tenant_id = attributes['tenant_id']
         if resource.is_tagable:
@@ -41,7 +41,8 @@ class AzureTerraformBuilder(BaseTerraformBuilder):
             resource.with_aliases(_id)
 
     @staticmethod
-    def _get_normalize_azure_location_for_tf(location: Optional[str]) -> Optional[str]:
+    def _get_normalized_azure_location(location: Optional[str]) -> Optional[str]:
+        # Following map based on https://github.com/claranet/terraform-azurerm-regions/blob/master/REGIONS.md
         location_dict_map = {
             'eastus': 'East US',
             'eastus2': 'East US 2',
