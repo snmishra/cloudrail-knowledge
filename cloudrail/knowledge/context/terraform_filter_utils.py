@@ -7,7 +7,7 @@ from cloudrail.knowledge.utils.hash_utils import to_hashcode
 from cloudrail.knowledge.utils.iac_fields_store import FieldAction, KnownFields, SupportedSection
 
 
-class TerraformShowOutputTransformingUtils:
+class TerraformShowOutputTransformer:
 
     @classmethod
     def transform(cls, show_output_path: str, base_dir: str, services_to_include: dict, salt: str):
