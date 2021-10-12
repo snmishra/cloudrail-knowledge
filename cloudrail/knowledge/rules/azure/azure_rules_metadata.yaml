@@ -1230,7 +1230,7 @@ rules_metadata:
   - compute
   rule_id: non_car_function_app_using_latest_python_version
   rule_type: non_context_aware
-  security_layer: code
+  security_layer: runtime
   severity: medium
   supported_iac_types:
   - terraform
