@@ -242,7 +242,7 @@ class CloudformationMetadataParser:
             CloudformationResourceType.ELASTIC_IP: AliasesDict(*scanner_context.elastic_ips),
             CloudformationResourceType.DYNAMODB_TABLE: AliasesDict(*scanner_context.dynamodb_table_list),
             CloudformationResourceType.CONFIG_SERVICE_AGGREGATOR: AliasesDict(*scanner_context.aws_config_aggregators),
-            CloudformationResourceType.CLOUDFRONT_DISTRIBUTION_LOGGING: AliasesDict(*scanner_context.cloudfront_log_settings),
+            CloudformationResourceType.CLOUDFRONT_DISTRIBUTION_LIST: AliasesDict(*scanner_context.cloudfront_distribution_list),
             CloudformationResourceType.CLOUDWATCH_LOGS_DESTINATION: AliasesDict(*scanner_context.cloudwatch_logs_destinations),
         }
 
