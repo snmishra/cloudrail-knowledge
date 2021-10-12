@@ -25,7 +25,7 @@ class CloudformationAutoScalingGroupBuilder(BaseCloudformationBuilder):
         launch_template_id = None
         if lt_data:
             launch_template_version = self.get_property(lt_data, 'Version')
-            launch_template_id=self.get_property(lt_data, 'LaunchTemplateId', self.create_random_pseudo_identifier())
+            launch_template_id=self.get_property(lt_data, 'LaunchTemplateId')
         return AutoScalingGroup(account=account, region=region, arn=arn, name=name, target_group_arns=target_group_arns,
                                 subnet_ids=subnet_ids, availability_zones=availability_zones)\
                                     .with_raw_data(launch_configuration_name=properties.get('LaunchConfigurationName'),

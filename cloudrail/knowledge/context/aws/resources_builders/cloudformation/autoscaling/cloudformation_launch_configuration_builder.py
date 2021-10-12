@@ -20,8 +20,8 @@ class CloudformationLaunchConfigurationBuilder(BaseCloudformationBuilder):
                         self.create_random_pseudo_identifier() + ':launchConfigurationName/', name)
         monitoring_enabled = self.get_property(properties, 'InstanceMonitoring', True)
 
-        iam_instance_profile = self.get_property(properties, 'IamInstanceProfile', self.create_random_pseudo_identifier())
-        if is_valid_arn(iam_instance_profile):
+        iam_instance_profile = self.get_property(properties, 'IamInstanceProfile')
+        if iam_instance_profile and is_valid_arn(iam_instance_profile):
             iam_instance_profile = arnparse(iam_instance_profile).resource
         image_id = self.get_property(properties, 'ImageId')
         instance_type = self.get_property(properties, 'InstanceType')
