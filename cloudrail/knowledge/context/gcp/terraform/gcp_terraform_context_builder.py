@@ -8,6 +8,7 @@ from cloudrail.knowledge.utils.terraform_output_validator import TerraformOutput
 from cloudrail.knowledge.context.environment_context.terraform_resources_helper import get_raw_resources_by_type
 from cloudrail.knowledge.context.environment_context.terraform_resources_metadata_parser import TerraformResourcesMetadataParser
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.sql_database_instance_builder import SqlDatabaseInstanceBuilder
+from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_instance_builder import GcpComputeInstanceBuilder
 from cloudrail.knowledge.context.environment_context.iac_context_builder import IacContextBuilder
 from cloudrail.knowledge.utils.checkov_utils import to_checkov_results
 
@@ -38,4 +39,5 @@ class GcpTerraformContextBuilder(IacContextBuilder):
             context.checkov_results = to_checkov_results(dic.get('checkov_results', {}))
 
             context.sql_database_instances = SqlDatabaseInstanceBuilder(resources).build()
+            context.compute_instances = GcpComputeInstanceBuilder(resources).build()
             return context

@@ -15,3 +15,34 @@ google_sql_database_instance:
                 known_fields:
                   pass:
                     - require_ssl
+
+google_compute_instance:
+  known_fields:
+    pass:
+    - name
+    - machine_type
+    - zone
+    - boot_disk
+    - network_interface
+    - attached_disk
+    - can_ip_forward
+    - description
+    - desired_status
+    - deletion_protection
+    - hostname
+    - guest_accelerator
+    - labels
+    - metadata
+    - metadata_startup_script
+    - min_cpu_platform
+    - project
+    - scheduling
+    - scratch_disk
+    - service_account
+    - shielded_instance_config
+    - enable_display
+    - resource_policies
+    - reservation_affinity
+    - confidential_instance_config
+    - advanced_machine_features
+    - network_performance_config
