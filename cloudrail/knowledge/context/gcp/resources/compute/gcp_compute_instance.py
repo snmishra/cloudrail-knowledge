@@ -8,8 +8,8 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_health_check 
 
 
 class GcpComputeInstanceBootDiskMode(Enum):
-    READ_WRITE = 'read_write'
-    READ_ONLY = 'read_only'
+    READ_WRITE = 'READ_WRITE'
+    READ_ONLY = 'READ_ONLY'
 
 class GcpComputeInstanceBootDiskInitPraramsType(Enum):
     PD_STANDARD = 'pd-standard'
@@ -17,8 +17,8 @@ class GcpComputeInstanceBootDiskInitPraramsType(Enum):
     PD_SSD = 'pd-ssd'
 
 class GcpComputeInstanceAttachDiskMode(Enum):
-    READ_WRITE = 'read_write'
-    READ_ONLY = 'read_only'
+    READ_WRITE = 'READ_WRITE'
+    READ_ONLY = 'READ_ONLY'
 
 class GcpComputeInstanceNetIntfNicType(Enum):
     GVNIC  = 'gvnic'
@@ -249,7 +249,7 @@ class GcpComputeInstance(GcpResource):
             machine_type: The machine type to create.
             name: A unique name for the compute instance.
             zone: (Optional) The zone that the machine should be created in.
-            network_interface: Networks to attach to the instance.
+            network_interfaces: Networks to attach to the instance.
             allow_stopping_for_update: ((Optional) If true, allows Terraform to stop the instance to update its properties.
             attached_disk: (Optional) (Optional) Additional disks to attach to the instance.
             can_ip_forward: (Optional) Whether to allow sending and receiving of packets with non-matching source or destination IPs.
@@ -276,69 +276,62 @@ class GcpComputeInstance(GcpResource):
             network_performance_config: (Optional, Beta Configures network performance settings for the instance.
     """
     def __init__(self,
-                 boot_disk: str,
+                 boot_disk: GcpComputeInstanceBootDisk,
                  machine_type: str,
                  name: str,
                  zone: str,
-                 network_interface: Optional[GcpComputeInstanceNetworkInterface],
-                 attached_disk: Optional[GcpComputeInstanceAttachedDisk],
+                 network_interfaces: Optional[List[GcpComputeInstanceNetworkInterface]],
+                 attached_disks: Optional[List[GcpComputeInstanceAttachedDisk]],
                  can_ip_forward: Optional[bool],
                  description: Optional[str],
                  desired_status: Optional[str],
                  deletion_protection: Optional[bool],
                  hostname: Optional[str],
-                 guest_accelerator: Optional[GcpComputeInstanceGuestAccelerator],
+                 guest_accelerator: Optional[List[GcpComputeInstanceGuestAccelerator]],
                  labels: Optional[List[str]],
                  metadata: Optional[List[str]],
                  metadata_startup_script: Optional[str],
-                 min_cpu_platform: Optional[int],
+                 min_cpu_platform: Optional[str],
                  project: Optional[str],
                  scheduling: Optional[GcpComputeInstanceScheduling],
-                 scratch_disk: Optional[List[GcpComputeInstanceScratchDisk]],
+                 scratch_disks: Optional[List[GcpComputeInstanceScratchDisk]],
                  service_account: Optional[GcpComputeInstanceServiceAcount],
                  shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg],
                  enable_display: Optional[bool],
-                 resource_policies: Optional[str],
+                 resource_policies: Optional[List[str]],
                  reservation_affinity: Optional[GcpComputeInstanceResvAffinity],
                  confidential_instance_config: Optional[GcpComputeInstanceConfInstCfg],
                  advanced_machine_features: Optional[GcpComputeInstanceAdvMachineFeatures],
                  network_performance_config: Optional[GcpComputeInstanceNetPerfCfg]):
 
         super().__init__(GcpResourceType.GOOGLE_COMPUTE_INSTANCE)
-        self.boot_disk: str = boot_disk
+        self.boot_disk: GcpComputeInstanceBootDisk = boot_disk
         self.machine_type: str = machine_type
         self.name: str = name
         self.zone: str = zone
-        self.network_interface: Optional[GcpComputeInstanceNetworkInterface] = network_interface
-        self.attached_disk: Optional[GcpComputeInstanceAttachedDisk] = attached_disk
+        self.network_interfaces: Optional[List[GcpComputeInstanceNetworkInterface]] = network_interfaces
+        self.attached_disks: Optional[List[GcpComputeInstanceAttachedDisk]] = attached_disks
         self.can_ip_forward: bool = can_ip_forward
         self.description: str = description
         self.desired_status: str = desired_status
         self.deletion_protection: bool = deletion_protection
         self.hostname: str = hostname
-        self.guest_accelerator: Optional[GcpComputeInstanceGuestAccelerator] = guest_accelerator
+        self.guest_accelerator: Optional[List[GcpComputeInstanceGuestAccelerator]] = guest_accelerator
         self.labels: List[str] = labels
         self.metadata: List[str] = metadata
         self.metadata_startup_script: str = metadata_startup_script
-        self.min_cpu_platform: int = min_cpu_platform
+        self.min_cpu_platform: Optional[str] = min_cpu_platform
         self.project: str = project
         self.scheduling: Optional[GcpComputeInstanceScheduling] = scheduling
-        self.scratch_disk: Optional[List[GcpComputeInstanceScratchDisk]] = scratch_disk
+        self.scratch_disks: Optional[List[GcpComputeInstanceScratchDisk]] = scratch_disks
         self.service_account: Optional[GcpComputeInstanceServiceAcount] = service_account
         self.shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg] = shielded_instance_config
         self.enable_display: bool = enable_display
-        self.resource_policies: str = resource_policies
+        self.resource_policies: Optional[List[str]] = resource_policies
         self.reservation_affinity: Optional[GcpComputeInstanceResvAffinity] = reservation_affinity
         self.confidential_instance_config: Optional[GcpComputeInstanceConfInstCfg] = confidential_instance_config
         self.advanced_machine_features: Optional[GcpComputeInstanceAdvMachineFeatures] = advanced_machine_features
         self.network_performance_config: Optional[GcpComputeInstanceNetPerfCfg] = network_performance_config
-
-        #References to other resources
-        self.service_account: Optional[GcpComputeInstanceServiceAcount] = service_account
-        self.project: str = project
-
-        # Resources part of the context
-        self.google_compute_health_check: List[GcpComputeHealthCheck] = []
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]
