@@ -7,19 +7,22 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance impo
                 GcpComputeInstanceScratchDisk, GcpComputeInstanceServiceAcount, GcpComputeInstanceShieldInstCfg, GcpComputeInstanceResvAffinity, \
                     GcpComputeInstanceSpecificResv, GcpComputeInstanceConfInstCfg, GcpComputeInstanceAdvMachineFeatures, GcpComputeInstanceNetPerfCfg
 
-from cloudrail.knowledge.context.gcp.resources_builders.terraform.base_gcp_terraform_builder import BaseGcpTerraformBuilder
+from cloudrail.knowledge.context.gcp.resources_builders.scanner.base_gcp_scanner_builder import BaseGcpScannerBuilder
 
 
-class ComputeInstanceBuilder(BaseGcpTerraformBuilder):
+class ComputeInstanceBuilder(BaseGcpScannerBuilder):
+
+    def get_file_name(self) -> str:
+        return 'compute-v1-instances-list.json'
 
     def do_build(self, attributes: dict) -> GcpComputeInstance:
         ## Boot disk params ##
         boot_disk_attr: dict = attributes['boot_disk'][0]
-
+        
         boot_disk_mode = GcpComputeInstanceBootDiskMode.READ_WRITE
         if mode := self._get_known_value(boot_disk_attr, 'mode'):
             boot_disk_mode = GcpComputeInstanceBootDiskMode(mode)
-
+        
         initialize_params = None
         if initialize_params := self._get_known_value(boot_disk_attr, 'initialize_params'):
             GcpComputeInstanceBootDiskInitPrarams(size=self._get_known_value(initialize_params[0], 'size'),
