@@ -68,7 +68,7 @@ class ElastiCacheCluster(NetworkEntity):
             return '{0}elasticache/home?region={1}#redis-group-nodes:id={2};clusters={3}' \
                 .format(self.AWS_CONSOLE_URL, self.region, self.replication_group_id, self.cluster_name)
         else:
-            return '{0}elasticache/home?region={1}#redis-nodes:id={2}'\
+            return '{0}elasticache/home?region={1}#redis-nodes:id={2}' \
                 .format(self.AWS_CONSOLE_URL, self.region, self.cluster_name)
 
     @property
@@ -79,7 +79,6 @@ class ElastiCacheCluster(NetworkEntity):
         return {'cluster_name': self.cluster_name,
                 'arn': self.arn,
                 'replication_group_id': self.replication_group_id,
-                'elasticache_security_group_ids': self.elasticache_security_group_ids,
                 'subnet_group_name': self.subnet_group_name,
                 'engine': self.engine,
                 'snapshot_retention_limit': self.snapshot_retention_limit}

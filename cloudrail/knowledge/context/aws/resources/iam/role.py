@@ -72,5 +72,4 @@ class Role(IamIdentity):
 
     def to_drift_detection_object(self) -> dict:
         return {'role_name': self.role_name,
-                'permission_boundary_arn': self.permission_boundary_arn,
-                'creation_date': self.creation_date}
+                'permission_boundary_arn': self.permission_boundary_arn}

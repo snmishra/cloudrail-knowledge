@@ -181,4 +181,4 @@ class AutoScalingGroup(AwsResource):
                 'availability_zones': self.availability_zones,
                 'subnet_ids': self.subnet_ids,
                 'launch_configuration_name': self.raw_data and self.raw_data.launch_configuration_name,
-                'launch_template_data': self.raw_data and dataclasses.asdict(self.raw_data.launch_template_data)}
+                'launch_template_data': self.raw_data and self.raw_data.launch_template_data and dataclasses.asdict(self.raw_data.launch_template_data)}

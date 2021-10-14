@@ -423,7 +423,8 @@ def build_load_balancer(raw_data: dict) -> LoadBalancer:
     load_balancer_type = LoadBalancerType(raw_data['Type'])
     load_balancer_arn = raw_data['LoadBalancerArn']
     return LoadBalancer(account, region, name, scheme_type, load_balancer_type, load_balancer_arn) \
-        .with_raw_data(subnets_ids=[az['SubnetId'] for az in raw_data['AvailabilityZones']]).with_aliases(load_balancer_arn)
+        .with_raw_data(subnets_ids=[az['SubnetId'] for az in raw_data['AvailabilityZones']],
+                       security_groups_ids=raw_data.get('SecurityGroups')).with_aliases(load_balancer_arn)
 
 
 def build_ec2_instance(raw_data: dict) -> Optional[Ec2Instance]:
@@ -460,7 +461,9 @@ def build_ec2_instance(raw_data: dict) -> Optional[Ec2Instance]:
                        {},
                        instance_type,
                        ebs_optimized,
-                       monitoring_enabled)
+                       monitoring_enabled).with_raw_data(subnet_id=raw_data.get('SubnetId'),
+                                                         security_groups_ids=[sg['GroupId'] for sg in raw_data.get('SecurityGroups', [])],
+                                                         private_ip_address=raw_data.get('PrivateIpAddress'))
 
 
 def _build_network_acl_rule(raw_data: dict, network_acl_id: str, region: str, account: str) -> NetworkAclRule:
@@ -1105,7 +1108,7 @@ def build_cloudfront_distribution_list(raw_data: dict) -> List[CloudFrontDistrib
         order: int = 0
         for cache_behavior_dict in [attributes['DefaultCacheBehavior']] + \
                                    get_dict_value(get_dict_value(attributes, 'CacheBehaviors', []), 'Items', []):
-            cache_behavior: CacheBehavior = CacheBehavior(allowed_methods=cache_behavior_dict['AllowedMethods'],
+            cache_behavior: CacheBehavior = CacheBehavior(allowed_methods=cache_behavior_dict['AllowedMethods']['Items'],
                                                           cached_methods=cache_behavior_dict['AllowedMethods']['CachedMethods']['Items'],
                                                           target_origin_id=cache_behavior_dict['TargetOriginId'],
                                                           viewer_protocol_policy=cache_behavior_dict['ViewerProtocolPolicy'],

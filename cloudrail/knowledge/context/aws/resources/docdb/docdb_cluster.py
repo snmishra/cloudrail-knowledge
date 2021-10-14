@@ -63,5 +63,4 @@ class DocumentDbCluster(AwsResource):
                 'storage_encrypted': self.storage_encrypted,
                 'parameter_group_name': self.parameter_group_name,
                 'kms_key_id': self.kms_key_id,
-                'cluster_arn': self.cluster_arn,
                 'enabled_cloudwatch_logs_exports': self.enabled_cloudwatch_logs_exports}

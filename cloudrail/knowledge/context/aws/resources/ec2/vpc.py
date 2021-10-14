@@ -137,10 +137,6 @@ class Vpc(AwsResource):
                 'cidr_block': self.cidr_block,
                 'ipv6_cidr_block': self.ipv6_cidr_block,
                 'name': self.name,
-                'friendly_name': self.friendly_name,
                 'is_default': self.is_default,
                 'enable_dns_support': self.enable_dns_support,
-                'enable_dns_hostnames': self.enable_dns_hostnames,
-                'main_route_table_id': self.raw_data and self.raw_data.main_route_table_id,
-                'default_route_table_id': self.raw_data and self.raw_data.default_route_table_id,
-                'default_security_group_id': self.raw_data and self.raw_data.default_security_group_id}
+                'enable_dns_hostnames': self.enable_dns_hostnames}

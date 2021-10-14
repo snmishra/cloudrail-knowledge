@@ -9,7 +9,6 @@ from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceNam
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 
 
-@dataclass
 class OriginConfig:
     """
         Attributes:
@@ -18,10 +17,16 @@ class OriginConfig:
             oai_path: An optional path that CloudFront appends to the origin domain name when CloudFront requests content from the origin.
             origin_access_identity_list: List of OriginAccessIdentity configurations.
     """
-    domain_name: str
-    origin_id: str
-    oai_path: str
-    origin_access_identity_list: List[OriginAccessIdentity] = field(default_factory=list)
+    def __init__(self, domain_name: str, origin_id: str, oai_path: str, origin_access_identity_list: Optional[List[OriginAccessIdentity]] = None):
+        self.domain_name = domain_name
+        self.origin_id = origin_id
+        self.oai_path = oai_path
+        self.origin_access_identity_list = origin_access_identity_list or []
+
+    def to_drift_detection_object(self):
+        return {'domain_name': self.domain_name,
+                'origin_id': self.origin_id,
+                'oai_path': self.oai_path}
 
 
 @dataclass
@@ -155,6 +160,6 @@ class CloudFrontDistribution(AwsResource, ConnectionInstance):
                 'distribution_id': self.distribution_id,
                 'viewer_cert': dataclasses.asdict(self.viewer_cert),
                 'cache_behavior_list': [dataclasses.asdict(cache_behavior) for cache_behavior in self.get_all_cache_behaviors()],
-                'origin_config_list': [dataclasses.asdict(original_config) for original_config in self.origin_config_list],
+                'origin_config_list': [original_config.to_drift_detection_object() for original_config in self.origin_config_list],
                 'web_acl_id': self.web_acl_id,
                 'tags': self.tags}
