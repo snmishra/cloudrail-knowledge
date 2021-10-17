@@ -1,6 +1,8 @@
+from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.base_gcp_terraform_builder import BaseGcpTerraformBuilder
-from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import *
-from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDBInstanceSettingsDBFlags
+from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDBInstanceVersion, GcpSqlDBInstanceSettingsDBFlags, GcpSqlDBInstanceSettingsBackupRetention, \
+    GcpSqlDBInstanceSettingsBackupConfig, GcpSqlDBInstanceIPConfigAuthNetworks, GcpSqlDBInstanceSettingsIPConfig, GcpSqlDBInstanceSettingsLocPref, GcpSqlDBInstanceSettingsMaintWindow, \
+    GcpSqlDBInstanceSettingsInsights, GcpSqlDBInstanceSettings, GcpSqlDBInstanceReplicaConfig, GcpSqlDBInstanceRestoreBackupContext, GcpSqlDBInstanceClone, GcpSqlDatabaseInstance
 
 from datetime import datetime
 
