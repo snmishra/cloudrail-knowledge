@@ -1,3 +1,5 @@
+from unittest import skip
+
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 
 from tests.knowledge.context.aws_context_test import AwsContextTest
@@ -9,6 +11,7 @@ class TestIamRole(AwsContextTest):
     def get_component(self):
         return "iam/iam_policy"
 
+    @skip('skipped until we have access in jenkins for boto access analyzer')
     @context(module_path="iam_multiple_issues", test_options=TestOptions(run_cloudmapper=False))
     def test_iam_access_analyzer_validation_multiple_issues(self, ctx: AwsEnvironmentContext):
         for policy in ctx.role_inline_policies:
@@ -24,6 +27,7 @@ class TestIamRole(AwsContextTest):
             else:
                 self.fail(f'unknown policy {policy.iac_state.address}')
 
+    @skip('skipped until we have access in jenkins for boto access analyzer')
     @context(module_path="iam_security_issues", test_options=TestOptions(run_cloudmapper=False))
     def test_iam_access_analyzer_validation_security_issues(self, ctx: AwsEnvironmentContext):
         for policy in ctx.role_inline_policies:

@@ -1,7 +1,6 @@
 import os
 import shutil
 import unittest
-from datetime import datetime
 from typing import List
 
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
@@ -10,20 +9,10 @@ from cloudrail.knowledge.context.environment_context.terraform_resource_finder i
 from cloudrail.knowledge.context.iac_type import IacType
 from cloudrail.knowledge.rules.aws_rules_loader import AwsRulesLoader
 from cloudrail.knowledge.utils.utils import get_account_id
-
-from cloudrail.cli.terraform_service.terraform_context_service import TerraformContextService
-from cloudrail.cli.terraform_service.terraform_plan_converter import TerraformPlanConverter
-from cloudrail.cli.terraform_service.terraform_raw_data_explorer import TerraformRawDataExplorer
-from common.all_rules_metadata_store import AllRulesMetadataStoreInstance
-from common.api.dtos.cloud_provider_dto import CloudProviderDTO
-from common.ip_encryption_utils import EncryptionMode, encode_ips_in_file
-from common.utils.customer_string_utils import CustomerStringUtils
-from core.api.aws_lambda.services.supported_services_service import SupportedServicesService
-from core.entities.rule_enforcement_mode import RuleEnforcementMode
-from core.entities.rule_result import RuleResultStatus
-from core.rules.rules_runner import RuleExecution, RulesRunner
-from test.helpers.cli_output_helper import print_cli_output
-from test.helpers.custom_terraform_helper import create_plan_json
+from knowledge.rules.base_rule import RuleResultType
+from knowledge.rules.rules_executor import RulesExecutor
+from knowledge.utils.iac_fields_store import IacFieldsStore
+from knowledge.utils.terraform_show_output_transformer import TerraformShowOutputTransformer
 
 
 class BaseTestScenarios(unittest.TestCase):
@@ -35,9 +24,11 @@ class BaseTestScenarios(unittest.TestCase):
 
     def setUp(self) -> None:
         self.test_files = []
-        self.rules_under_test = AwsRulesLoader().load().values()
-        self.supported_aws_service = SupportedServicesService.list_aws_supported_services(IacType.TERRAFORM)
-        self.checkov_checks = AllRulesMetadataStoreInstance.list_checkov_rule_ids()
+        self.rules_under_test = AwsRulesLoader().load().keys()
+        self.account_id = None
+        self.account_data = None
+        self.output_path = None
+        self.salt = None
 
     @staticmethod
     def _get_full_path(dir_path: str) -> str:
@@ -57,23 +48,13 @@ class BaseTestScenarios(unittest.TestCase):
         return dest_path
 
     def run_test_case(self, test_case_folder: str,
-                      failed_rule_ids: List[str] = None,
-                      show_cli_output=False,
-                      always_use_cache_on_jenkins: bool = False,
-                      use_cached_plan_data_ratio: int = int(os.getenv("TESTS_CACHED_PLAN_RATIO", "100")),
-                      use_state_file: bool = False):
-        # Arrange
+                      failed_rule_ids: List[str] = None):
+
+        local_account_data = None
         try:
-            local_account_data = None
-            test_case_folder_full_path = self._get_full_path(test_case_folder)
-            plan_json = create_plan_json(use_cached_plan_data_ratio,
-                                         test_case_folder_full_path,
-                                         test_case_folder_full_path,
-                                         always_use_cache_on_jenkins,
-                                         use_state_file)
-            self.test_files.append(plan_json)
+            # Arrange
             TerraformResourceFinder.initialize()
-            TerraformRawDataExplorer.update_working_dir(test_case_folder_full_path)
+            test_case_folder_full_path = self._get_full_path(test_case_folder)
 
             local_account_data = os.path.join(test_case_folder_full_path, 'account-data')
 
@@ -81,60 +62,55 @@ class BaseTestScenarios(unittest.TestCase):
 
             if os.path.isfile(account_data_zip):
                 shutil.unpack_archive(account_data_zip, extract_dir=local_account_data, format='zip')
-                account_data = local_account_data
+                self.account_data = local_account_data
             else:
-                current_path = os.path.dirname(os.path.abspath(__file__))
-                account_data = os.path.join(current_path, '..', 'testing-accounts-data', 'account-data-vpc-platform')
+                self.account_data = self.set_default_account_data()
 
-            account_id = get_account_id(account_data)
-            customer_id = '00000000-0000-0000-0000-000000000000'
-            CustomerStringUtils.set_hashcode_salt(customer_id)
-            context_service = TerraformContextService(TerraformPlanConverter())
-            checkov_results = context_service.run_checkov_checks(test_case_folder_full_path, self.checkov_checks)
-            terraform_result = context_service.process_json_result(plan_json,
-                                                                   self.supported_aws_service,
-                                                                   checkov_results.result,
-                                                                   customer_id,
-                                                                   '',
-                                                                   '',
-                                                                   CloudProviderDTO.AMAZON_WEB_SERVICES)
-
-            output_path = self._save_result_to_file(terraform_result.result, os.path.join(test_case_folder_full_path, 'output.json'))
-            encode_ips_in_file(output_path, customer_id, EncryptionMode.DECRYPT)
-            self.test_files.append(output_path)
-
-            context = EnvironmentContextBuilderFactory.get(CloudProvider.AMAZON_WEB_SERVICES, IacType.TERRAFORM).build(account_data,
-                                                                                                                       output_path,
-                                                                                                                       account_id,
-                                                                                                                       customer_id)
+            self.account_id = self.get_account_id(self.account_data)
+            self.salt = '00000000-0000-0000-0000-000000000000'
+            plan_json = os.path.join(test_case_folder_full_path, 'cached_plan.json')
+            result = TerraformShowOutputTransformer.transform(plan_json,
+                                                              '',
+                                                              self.get_supported_service(),
+                                                              self.salt)
+            self.output_path = self._save_result_to_file(result,
+                                                         os.path.join(test_case_folder_full_path, 'output.json'))
+            self.test_files.append(self.output_path)
+            context = self.build_environment_context()
 
             # Act
-            rules_results = []
-            for rule_under_test in self.rules_under_test:
-                rule_id = rule_under_test.get_id()
-                rule_start_time = datetime.now()
-                rule_result = RulesRunner.run_rules({rule_id: RuleExecution(rule_under_test,
-                                                                            None,
-                                                                            RuleEnforcementMode.MANDATE_ALL_RESOURCES,
-                                                                            None)},
-                                                    context,
-                                                    None,
-                                                    CloudProvider.AMAZON_WEB_SERVICES)[0]
-                rules_results.append(rule_result)
-                rule_end_time = datetime.now()
-                rule_runtime_seconds = (rule_end_time - rule_start_time).total_seconds()
-
-                # Assert
-                if failed_rule_ids and rule_id in failed_rule_ids:
-                    self.assertEqual(RuleResultStatus.FAILED, rule_result.status)
-                    failed_rule_ids.remove(rule_id)
-                self.assertLess(rule_runtime_seconds, 60, f'The test {rule_id} took {rule_runtime_seconds} seconds to run')
+            rules_results = RulesExecutor.execute(self.get_cloud_provider(), context, list(self.rules_under_test))
+            for rule_result in rules_results:
+                if failed_rule_ids and rule_result.rule_id in failed_rule_ids:
+                    self.assertEqual(RuleResultType.FAILED, rule_result.status)
+                    failed_rule_ids.remove(rule_result.rule_id)
 
             self.assertFalse(failed_rule_ids, 'not all requested rules ran: {}'.format(failed_rule_ids))
-
-            if show_cli_output:
-                print_cli_output(rules_results)
         finally:
             TerraformResourceFinder.destroy()
-            TerraformRawDataExplorer.reset_working_dir()
-            shutil.rmtree(local_account_data, ignore_errors=True)
+            if local_account_data:
+                shutil.rmtree(local_account_data, ignore_errors=True)
+
+    @staticmethod
+    def set_default_account_data():
+        current_path = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(current_path, '../', 'testing-accounts-data', 'account-data-vpc-platform')
+
+    @staticmethod
+    def get_account_id(account_data):
+        return get_account_id(account_data)
+
+    @staticmethod
+    def get_supported_service():
+        return IacFieldsStore.get_terraform_aws_supported_services()
+
+    def build_environment_context(self):
+        return EnvironmentContextBuilderFactory.get(CloudProvider.AMAZON_WEB_SERVICES,
+                                                    IacType.TERRAFORM).build(self.account_data,
+                                                                             self.output_path,
+                                                                             self.account_id,
+                                                                             self.salt)
+
+    @staticmethod
+    def get_cloud_provider():
+        return CloudProvider.AMAZON_WEB_SERVICES
