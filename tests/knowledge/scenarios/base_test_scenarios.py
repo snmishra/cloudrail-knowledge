@@ -8,11 +8,11 @@ from cloudrail.knowledge.context.environment_context.environment_context_builder
 from cloudrail.knowledge.context.environment_context.terraform_resource_finder import TerraformResourceFinder
 from cloudrail.knowledge.context.iac_type import IacType
 from cloudrail.knowledge.rules.aws_rules_loader import AwsRulesLoader
+from cloudrail.knowledge.rules.base_rule import RuleResultType
+from cloudrail.knowledge.rules.rules_executor import RulesExecutor
 from cloudrail.knowledge.utils.utils import get_account_id
-from knowledge.rules.base_rule import RuleResultType
-from knowledge.rules.rules_executor import RulesExecutor
-from knowledge.utils.iac_fields_store import IacFieldsStore
-from knowledge.utils.terraform_show_output_transformer import TerraformShowOutputTransformer
+from cloudrail.knowledge.utils.iac_fields_store import IacFieldsStore
+from cloudrail.knowledge.utils.terraform_show_output_transformer import TerraformShowOutputTransformer
 
 
 class BaseTestScenarios(unittest.TestCase):
