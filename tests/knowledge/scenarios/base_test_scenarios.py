@@ -1,3 +1,4 @@
+import json
 import os
 import shutil
 import unittest
@@ -44,7 +45,7 @@ class BaseTestScenarios(unittest.TestCase):
     @staticmethod
     def _save_result_to_file(result, dest_path):
         with open(dest_path, 'w+') as file:
-            file.write(result)
+            file.write(json.dumps(result))
         return dest_path
 
     def run_test_case(self, test_case_folder: str,
