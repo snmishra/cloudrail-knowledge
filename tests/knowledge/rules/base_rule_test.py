@@ -6,6 +6,7 @@ import unittest
 import uuid
 from abc import ABC, abstractmethod
 from datetime import datetime
+from typing import Callable
 
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
 from cloudrail.knowledge.context.environment_context.environment_context_builder_factory import EnvironmentContextBuilderFactory
@@ -16,6 +17,16 @@ from cloudrail.knowledge.rules.base_rule import RuleResponse, RuleResultType
 from cloudrail.knowledge.rules.rules_executor import RulesExecutor
 from cloudrail.knowledge.utils.iac_fields_store import IacFieldsStore
 from cloudrail.knowledge.utils.utils import get_account_id
+
+
+def rules_tests_wrapper(*args, **kwargs) -> Callable:
+    def _rules_tests_wrapper(test_case_func: Callable) -> Callable:
+        def test_case_wrapper(self) -> None:
+            # todo - support iac types executions
+            rule_response: RuleResponse = self.run_test_case(*args, **kwargs)
+            test_case_func(self, rule_response)
+        return test_case_wrapper
+    return _rules_tests_wrapper
 
 
 class BaseRuleTest(unittest.TestCase):
