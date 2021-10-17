@@ -27,7 +27,7 @@ class TestScenarios(BaseTestScenarios):
 
     def test_detectionlab(self):
         self.run_test_case('DetectionLab/AWS/Terraform',
-                           failed_rule_ids=['non_car_ensure_imdsv2'], always_use_cache_on_jenkins=True)
+                           failed_rule_ids=['non_car_ensure_imdsv2'])
 
     def test_terragoat(self):
         self.run_test_case('terragoat/terraform/aws',
@@ -35,14 +35,13 @@ class TestScenarios(BaseTestScenarios):
                                'public_access_elasticsearch_rule',
                                'non_car_iam_no_permissions_directly_to_user',
                                'non_car_ensure_imdsv2',
-                               'non_car_s3_bucket_policy_secure_transport'], always_use_cache_on_jenkins=True)
+                               'non_car_s3_bucket_policy_secure_transport'])
 
     # only support tf 12/13
     def test_consoleme(self):
         self.run_test_case('consoleme/terraform/central-account',
                            failed_rule_ids=['non_car_s3_bucket_policy_secure_transport',
-                                            'non_car_alb_target_group_no_http'],
-                           always_use_cache_on_jenkins=True)
+                                            'non_car_alb_target_group_no_http'])
 
     def test_terraform_aws_iam_examples_iam_account(self):
         self.run_test_case('terraform-aws-iam/examples/iam-account',
@@ -70,7 +69,7 @@ class TestScenarios(BaseTestScenarios):
 
     def test_terraform_aws_iam_examples_iam_user(self):
         self.run_test_case('terraform-aws-iam/examples/iam-user',
-                           failed_rule_ids=['non_car_iam_no_human_users'], always_use_cache_on_jenkins=True)
+                           failed_rule_ids=['non_car_iam_no_human_users'])
 
     def test_vault_on_aws(self):
         self.run_test_case('vault-on-aws',
@@ -79,26 +78,22 @@ class TestScenarios(BaseTestScenarios):
     # show failed on jenkins
     def test_terraform_aws_gitlab_runner_examples_runner_public(self):
         self.run_test_case('terraform-aws-gitlab-runner/examples/runner-public',
-                           failed_rule_ids=[],
-                           always_use_cache_on_jenkins=True)
+                           failed_rule_ids=[])
 
     # show failed on jenkins
     def test_terraform_aws_gitlab_runner_examples_runner_default(self):
         self.run_test_case('terraform-aws-gitlab-runner/examples/runner-default',
-                           failed_rule_ids=[],
-                           always_use_cache_on_jenkins=True)
+                           failed_rule_ids=[])
 
     # show failed on jenkins
     def test_terraform_aws_gitlab_runner_examples_runner_docker(self):
         self.run_test_case('terraform-aws-gitlab-runner/examples/runner-docker',
-                           failed_rule_ids=[],
-                           always_use_cache_on_jenkins=True)
+                           failed_rule_ids=[])
 
     # show failed on jenkins
     def test_terraform_aws_gitlab_runner_examples_runner_pre_registered(self):
         self.run_test_case('terraform-aws-gitlab-runner/examples/runner-pre-registered',
-                           failed_rule_ids=[],
-                           always_use_cache_on_jenkins=True)
+                           failed_rule_ids=[])
 
     @unittest.skip('Need the ability to run specific versions of TF (TF 0.12 not supported by this scenario)')
     def test_sadcloud(self):
@@ -119,7 +114,7 @@ class TestScenarios(BaseTestScenarios):
 
     # only support tf 14
     def test_performance_eni_100(self):
-        self.run_test_case('performance-eni-100', always_use_cache_on_jenkins=True)
+        self.run_test_case('performance-eni-100')
 
     def test_serverless_jenkins_on_aws_fargate(self):
         self.run_test_case('serverless-jenkins-on-aws-fargate/modules/jenkins_platform',
@@ -134,7 +129,7 @@ class TestScenarios(BaseTestScenarios):
 
     # only support tf 14
     def test_performance_eni_1000(self):
-        self.run_test_case('performance-eni-1000', always_use_cache_on_jenkins=True)
+        self.run_test_case('performance-eni-1000')
 
     def test_performance_eni_10000(self):
-        self.run_test_case('performance-eni-10000', always_use_cache_on_jenkins=True)
+        self.run_test_case('performance-eni-10000')
