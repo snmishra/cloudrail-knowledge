@@ -9,7 +9,7 @@ from cloudrail.knowledge.context.environment_context.environment_context_builder
 from cloudrail.knowledge.context.gcp.gcp_terraform_environment_context_builder import GcpTerraformEnvironmentContextBuilder
 from cloudrail.knowledge.utils.iac_fields_store import IacFieldsStore
 
-from test.knowledge.context.base_context_test import BaseContextTest
+from tests.knowledge.context.base_context_test import BaseContextTest
 
 
 class GcpContextTest(BaseContextTest):

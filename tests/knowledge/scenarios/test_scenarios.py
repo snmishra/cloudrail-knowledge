@@ -1,6 +1,6 @@
 import unittest
 
-from test.knowledge.scenarios.base_test_scenarios import BaseTestScenarios
+from tests.knowledge.scenarios.base_test_scenarios import BaseTestScenarios
 
 
 class TestScenarios(BaseTestScenarios):
