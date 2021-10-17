@@ -103,6 +103,4 @@ class S3ACL(AwsResource):
         return {'actions': self.actions,
                 'type': self.type.value,
                 'type_value': self.type_value,
-                'bucket_name': self.bucket_name,
-                'owner_id': self.owner_id,
-                'owner_name': self.owner_name}
+                'bucket_name': self.bucket_name}

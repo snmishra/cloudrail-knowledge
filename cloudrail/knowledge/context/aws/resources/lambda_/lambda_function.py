@@ -98,7 +98,6 @@ class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
 
     def to_drift_detection_object(self) -> dict:
         return {'function_name': self.function_name,
-                'lambda_func_version': self.lambda_func_version,
                 'role_arn': self.execution_role_arn,
                 'handler': self.handler,
                 'runtime': self.runtime,

@@ -4,7 +4,7 @@ from cloudrail.knowledge.context.azure.resources.azure_resource import AzureReso
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 
 
-class NetworkRuleDefaultAction(Enum):
+class NetworkRuleDefaultAction(str, Enum):
     """
         Enum
 
@@ -15,7 +15,7 @@ class NetworkRuleDefaultAction(Enum):
     DENY = 'deny'
 
 
-class BypassTrafficType(Enum):
+class BypassTrafficType(str, Enum):
     NONE = 'None'
     LOGGING = 'Logging'
     METRICS = 'Metrics'
@@ -63,6 +63,6 @@ class AzureStorageAccountNetworkRules(AzureResource):
 
     def to_drift_detection_object(self) -> dict:
         return {'storage_name': self.storage_name,
-                'default_action': self.default_action,
+                'default_action': self.default_action.value,
                 'ip_rules': self.ip_rules,
-                'bypass_traffic': self.bypass_traffic}
+                'bypass_traffic': [bypass.value for bypass in self.bypass_traffic]}

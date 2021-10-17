@@ -57,4 +57,4 @@ class SqsQueue(PoliciedResource):
     def to_drift_detection_object(self) -> dict:
         return {'queue_name': self.queue_name,
                 'encrypted_at_rest': self.encrypted_at_rest,
-                'queue_url': self.queue_url}
+                'resource_based_policy': self.resource_based_policy and self.resource_based_policy.to_drift_detection_object()}

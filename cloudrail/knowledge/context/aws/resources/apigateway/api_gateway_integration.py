@@ -6,7 +6,7 @@ from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method_set
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 
 
-class IntegrationType(Enum):
+class IntegrationType(str, Enum):
     """
         The type of integration.
     """

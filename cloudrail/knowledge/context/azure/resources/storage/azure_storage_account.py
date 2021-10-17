@@ -49,4 +49,5 @@ class AzureStorageAccount(AzureResource):
                 'account_tier': self.account_tier,
                 'account_replication_type': self.account_replication_type,
                 'enable_https_traffic_only': self.enable_https_traffic_only,
-                'allow_blob_public_access': self.allow_blob_public_access}
+                'allow_blob_public_access': self.allow_blob_public_access,
+                'network_rules': self.network_rules and self.network_rules.to_drift_detection_object()}

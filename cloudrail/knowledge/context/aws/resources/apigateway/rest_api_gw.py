@@ -11,7 +11,7 @@ from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceNam
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method_settings import ApiGatewayMethodSettings
 
 
-class ApiGatewayType(Enum):
+class ApiGatewayType(str, Enum):
     EDGE = 'EDGE'
     REGIONAL = 'REGIONAL'
     PRIVATE = 'PRIVATE'

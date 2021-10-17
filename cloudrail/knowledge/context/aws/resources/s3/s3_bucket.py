@@ -92,4 +92,5 @@ class S3Bucket(ConnectionInstance, PoliciedResource):
         return {'bucket_name': self.bucket_name,
                 'encryption_data': self.encryption_data and self.encryption_data.to_drift_detection_object(),
                 'versioning_data': self.versioning_data and self.versioning_data.to_drift_detection_object(),
-                'exposed_to_agw_methods': [method.to_drift_detection_object() for method in self.exposed_to_agw_methods]}
+                'exposed_to_agw_methods': [method.to_drift_detection_object() for method in self.exposed_to_agw_methods],
+                'tags': self.tags}

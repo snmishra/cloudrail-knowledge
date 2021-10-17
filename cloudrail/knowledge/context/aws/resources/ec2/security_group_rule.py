@@ -16,7 +16,7 @@ class SecurityGroupRulePropertyType(Enum):
     PREFIX_LIST_ID = ('PrefixListIds', 'PrefixListId')
 
 
-class ConnectionType(Enum):
+class ConnectionType(str, Enum):
     INBOUND = 'inbound'
     OUTBOUND = 'outbound'
 
