@@ -1,7 +1,7 @@
-from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import LambdaPolicy
 import json
 from typing import List, Dict, Optional
 
+from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import LambdaPolicy
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_integration import ApiGatewayIntegration
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method import ApiGatewayMethod
@@ -21,7 +21,6 @@ from cloudrail.knowledge.context.iac_type import IacType
 from cloudrail.knowledge.context.managed_resources_summary import ManagedResourcesSummary
 from cloudrail.knowledge.context.iac_action_type import IacActionType
 from cloudrail.knowledge.context.iac_state import IacState
-
 from cloudrail.knowledge.utils.terraform_output_validator import TerraformOutputValidator
 from cloudrail.knowledge.utils import file_utils
 from cloudrail.knowledge.context.aws.resources_builders.terraform.access_origin_identity_builder import OriginAccessIdentityBuilder
@@ -82,7 +81,8 @@ from cloudrail.knowledge.context.aws.resources_builders.terraform.fsx_windows_fi
 from cloudrail.knowledge.context.aws.resources_builders.terraform.glacier_vault_builder import GlacierVaultBuilder
 from cloudrail.knowledge.context.aws.resources_builders.terraform.glacier_vault_policy_builder import GlacierVaultPolicyBuilder
 from cloudrail.knowledge.context.aws.resources_builders.terraform.global_accelerator_builder import GlobalAcceleratorAttributeBuilder
-from cloudrail.knowledge.context.aws.resources_builders.terraform.global_accelerator_builder import GlobalAcceleratorBuilder, GlobalAcceleratorEndpointGroupBuilder, \
+from cloudrail.knowledge.context.aws.resources_builders.terraform.global_accelerator_builder import GlobalAcceleratorBuilder, \
+    GlobalAcceleratorEndpointGroupBuilder, \
     GlobalAcceleratorListenerBuilder
 from cloudrail.knowledge.context.aws.resources_builders.terraform.glue_connection_builder import GlueConnectionBuilder
 from cloudrail.knowledge.context.aws.resources_builders.terraform.glue_data_catalog_crawler_builder import GlueDataCatalogCrawlerBuilder
@@ -128,8 +128,10 @@ from cloudrail.knowledge.context.aws.resources_builders.terraform.rds_cluster_bu
 from cloudrail.knowledge.context.aws.resources_builders.terraform.rds_cluster_instance_builder import RdsClusterInstanceBuilder
 from cloudrail.knowledge.context.aws.resources_builders.terraform.rds_global_cluster_builder import RdsGlobalClusterBuilder
 from cloudrail.knowledge.context.aws.resources_builders.terraform.rds_instance_builder import RdsInstanceBuilder
-from cloudrail.knowledge.context.aws.resources_builders.terraform.redshift_builder import RedshiftBuilder, RedshiftLoggingBuilder, RedshiftSubnetGroupBuilder
-from cloudrail.knowledge.context.aws.resources_builders.terraform.rest_api_gw_builder import ApiGatewayStageBuilder, RestApiGwBuilder, RestApiGwDomainBuilder, \
+from cloudrail.knowledge.context.aws.resources_builders.terraform.redshift_builder import RedshiftBuilder, RedshiftLoggingBuilder, \
+    RedshiftSubnetGroupBuilder
+from cloudrail.knowledge.context.aws.resources_builders.terraform.rest_api_gw_builder import ApiGatewayStageBuilder, RestApiGwBuilder, \
+    RestApiGwDomainBuilder, \
     RestApiGwMappingBuilder, ApiGatewayMethodSettingsBuilder, RestApiGwPolicyBuilder, ApiGateWayIntegrationBuilder, ApiGateWayMethodBuilder
 from cloudrail.knowledge.context.aws.resources_builders.terraform.route_builder import RouteBuilder
 from cloudrail.knowledge.context.aws.resources_builders.terraform.route_table_associations_builder import \
