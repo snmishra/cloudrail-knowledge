@@ -579,7 +579,8 @@ def build_s3_acl(attributes: dict) -> List[S3ACL]:
         if canned_acl == 'public-read':
             return [S3ACL(S3Permission['READ'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region)]
         if canned_acl == 'public-read-write':
-            return [S3ACL(S3Permission['READ_WRITE'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region)]
+            return [S3ACL(S3Permission['READ'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region),
+                    S3ACL(S3Permission['WRITE'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region)]
         if canned_acl == 'authenticated-read':
             return [S3ACL(S3Permission['READ'], GranteeTypes.GROUP, S3PredefinedGroups.AUTHENTICATED_USERS.value, bucket_name, account, region)]
         if canned_acl == 'log-delivery-write':
