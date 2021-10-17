@@ -19,7 +19,7 @@ from cloudrail.knowledge.utils.iac_fields_store import IacFieldsStore
 from cloudrail.knowledge.utils.utils import get_account_id
 
 
-def rules_tests_wrapper(*args, **kwargs) -> Callable:
+def rule_test_wrapper(*args, **kwargs) -> Callable:
     def _rules_tests_wrapper(test_case_func: Callable) -> Callable:
         def test_case_wrapper(self) -> None:
             # todo - support iac types executions
