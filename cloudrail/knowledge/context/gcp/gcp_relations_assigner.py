@@ -17,4 +17,3 @@ class GcpRelationsAssigner(DependencyInvocation):
     @staticmethod
     def _assign_clone_sql_database_instance_context(sql_database_instances: List[GcpSqlDatabaseInstance]):
         pass  # TODO: complete sql clone assigner
-
