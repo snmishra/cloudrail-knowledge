@@ -1,8 +1,9 @@
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.base_gcp_scanner_builder import BaseGcpScannerBuilder
-from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDBInstanceType, GcpSqlDBInstanceVersion, GcpSqlDBInstanceSettingsDBFlags, GcpSqlDBInstanceSettingsBackupRetention, \
-    GcpSqlDBInstanceSettingsBackupConfig, GcpSqlDBInstanceIPConfigAuthNetworks, GcpSqlDBInstanceSettingsIPConfig, GcpSqlDBInstanceSettingsLocPref, GcpSqlDBInstanceSettingsMaintWindow, \
-    GcpSqlDBInstanceSettingsInsights, GcpSqlDBInstanceSettings, GcpSqlDBInstanceReplicaConfig, GcpSqlDBInstanceRestoreBackupContext, GcpSqlDBInstanceClone, GcpSqlDatabaseInstance
+from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDBInstanceType, GcpSqlDBInstanceVersion, GcpSqlDBInstanceSettingsDBFlags, \
+    GcpSqlDBInstanceSettingsBackupRetention, GcpSqlDBInstanceSettingsBackupConfig, GcpSqlDBInstanceIPConfigAuthNetworks, GcpSqlDBInstanceSettingsIPConfig, GcpSqlDBInstanceSettingsLocPref, \
+    GcpSqlDBInstanceSettingsMaintWindow, GcpSqlDBInstanceSettingsInsights, GcpSqlDBInstanceSettings, GcpSqlDBInstanceReplicaConfig, GcpSqlDBInstanceRestoreBackupContext, GcpSqlDBInstanceClone, \
+    GcpSqlDatabaseInstance
 
 from datetime import datetime
 
@@ -12,7 +13,7 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
     def get_file_name(self) -> str:
         return 'sqladmin-v1beta4-instances-list.json'
 
-    def do_build(self, attributes: dict) -> GcpSqlDatabaseInstance:
+    def do_build(self, attributes: dict):
         instance_type = attributes.get("instanceType")
         if instance_type == GcpSqlDBInstanceType.CLOUD_SQL_INSTANCE.value or \
                 instance_type == GcpSqlDBInstanceType.READ_REPLICA_INSTANCE.value:
@@ -32,6 +33,8 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
                                           master_instance_name=attributes.get("masterInstanceName"),
                                           project=attributes["project"],
                                           encryption_key_name=attributes.get("diskEncryptionConfiguration", {}).get("kmsKeyName"))
+
+        return None
 
     def get_service_name(self) -> GcpResourceType:
         return GcpResourceType.GOOGLE_SQL_DATABASE_INSTANCE
@@ -76,7 +79,8 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
 
         return None
 
-    def build_backup_configuration(self, settings: dict):
+    @staticmethod
+    def build_backup_configuration(settings: dict):
         if backup_configuration := settings.get("backupConfiguration"):
             binary_log_enabled = backup_configuration.get("binaryLogEnabled")
             enabled = backup_configuration.get("enabled")
@@ -106,7 +110,8 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
 
         return None
 
-    def build_authorized_network(self, authorized_network: dict) -> GcpSqlDBInstanceIPConfigAuthNetworks:
+    @staticmethod
+    def build_authorized_network(authorized_network: dict) -> GcpSqlDBInstanceIPConfigAuthNetworks:
         expiration_time = None
         if expiration_time_str := authorized_network.get("expirationTime"):
             expiration_time_str_list = expiration_time_str.split(".")
@@ -117,7 +122,8 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
                                                     authorized_network.get("name"),
                                                     authorized_network.get("value"))
 
-    def build_replica_configuration(self, attributes: dict):
+    @staticmethod
+    def build_replica_configuration(attributes: dict):
         if replica_configuration := attributes.get("replicaConfiguration"):
             if mysql_replica_configuration := replica_configuration.get("mysqlReplicaConfiguration"):
                 ca_certificate = mysql_replica_configuration.get("caCertificate")
@@ -128,16 +134,17 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
                 failover_target = replica_configuration.get("caCertificate")
                 master_heartbeat_period = mysql_replica_configuration.get("masterHeartbeatPeriod")
                 password = mysql_replica_configuration.get("password")
-                sslCipher = mysql_replica_configuration.get("sslCipher")
+                ssl_cipher = mysql_replica_configuration.get("sslCipher")
                 username = mysql_replica_configuration.get("username")
                 verify_server_certificate = mysql_replica_configuration.get("verifyServerCertificate")
 
                 return GcpSqlDBInstanceReplicaConfig(ca_certificate, client_certificate, client_key, connect_retry_interval, dump_file_path,
-                                                     failover_target, master_heartbeat_period, password, sslCipher, username, verify_server_certificate)
+                                                     failover_target, master_heartbeat_period, password, ssl_cipher, username, verify_server_certificate)
 
         return None
 
-    def build_restore_backup_context(self, attributes: dict):
+    @staticmethod
+    def build_restore_backup_context(attributes: dict):
         if restore_backup_context := attributes.get("restore_backup_context"):
             backup_run_id = restore_backup_context["backup_run_id"]
             instance_id = restore_backup_context.get("instance_id")
@@ -147,7 +154,8 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
 
         return None
 
-    def build_clone(self, attributes: dict):
+    @staticmethod
+    def build_clone(attributes: dict):
         if clone := attributes.get("cloneContext"):
             source_instance_name = clone["source_instance_name"]
             point_in_time = None
@@ -159,4 +167,3 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
             return GcpSqlDBInstanceClone(source_instance_name, point_in_time)
 
         return None
-

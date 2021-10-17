@@ -138,12 +138,12 @@ class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
             failover_target = self._get_known_value(replica_configuration, "failover_target")
             master_heartbeat_period = self._get_known_value(replica_configuration, "master_heartbeat_period")
             password = self._get_known_value(replica_configuration, "password")
-            sslCipher = self._get_known_value(replica_configuration, "sslCipher")
+            ssl_cipher = self._get_known_value(replica_configuration, "sslCipher")
             username = self._get_known_value(replica_configuration, "username")
             verify_server_certificate = self._get_known_value(replica_configuration, "verify_server_certificate")
 
             return GcpSqlDBInstanceReplicaConfig(ca_certificate, client_certificate, client_key, connect_retry_interval, dump_file_path,
-                                                 failover_target, master_heartbeat_period, password, sslCipher, username, verify_server_certificate)
+                                                 failover_target, master_heartbeat_period, password, ssl_cipher, username, verify_server_certificate)
 
         return None
 
