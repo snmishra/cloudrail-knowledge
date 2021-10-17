@@ -105,7 +105,7 @@ class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
         if ip_configuration:
             ipv4_enabled = self._get_known_value(ip_configuration, "ipv4_enabled", True)
             private_network = ip_configuration.get("private_network")
-            require_ssl = self._get_known_value(ip_configuration, "require_ssl")
+            require_ssl = self._get_known_value(ip_configuration, "require_ssl", False)
             authorized_networks_list = self._get_known_value(ip_configuration, "authorized_networks")
             authorized_networks = [self.build_authorized_network(authorized_network)
                                    for authorized_network in authorized_networks_list] if authorized_networks_list else None
