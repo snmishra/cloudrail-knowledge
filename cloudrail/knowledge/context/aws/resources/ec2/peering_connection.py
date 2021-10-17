@@ -72,4 +72,3 @@ class PeeringConnection(AwsResource):
                 'requester_vpc_info': dataclasses.asdict(self.requester_vpc_info),
                 'accepter_vpc_info': dataclasses.asdict(self.accepter_vpc_info),
                 'status': self.status}
-

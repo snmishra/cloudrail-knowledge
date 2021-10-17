@@ -1,6 +1,7 @@
 from typing import List
+
+from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CloudFrontDistribution
 from cloudrail.knowledge.context.connection import ConnectionDetail, ConnectionType
-from cloudrail.knowledge.context.aws.resources.cloudfront.cloud_front_distribution_list import CloudFrontDistribution
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket import S3Bucket
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.utils.policy_evaluator import is_any_action_allowed

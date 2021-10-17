@@ -65,4 +65,3 @@ class ElastiCacheReplicationGroup(NetworkEntity):
         return {'replication_group_id': self.replication_group_id,
                 'encrypted_at_rest': self.encrypted_at_rest,
                 'encrypted_in_transit': self.encrypted_in_transit}
-

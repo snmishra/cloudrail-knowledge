@@ -60,7 +60,7 @@ class S3ACL(AwsResource):
         self.owner_name: str = owner_name
 
     def get_keys(self) -> List[str]:
-        return [self.bucket_name, self.type_value]
+        return [self.bucket_name, self.type_value] + list(self.actions)
 
     def as_policy(self) -> S3Policy:
         if self.type == GranteeTypes.GROUP and self.type_value == S3PredefinedGroups.ALL_USERS.value:
@@ -97,6 +97,9 @@ class S3ACL(AwsResource):
 
     @property
     def is_tagable(self) -> bool:
+        return False
+
+    def is_standalone(self) -> bool:
         return False
 
     def to_drift_detection_object(self) -> dict:

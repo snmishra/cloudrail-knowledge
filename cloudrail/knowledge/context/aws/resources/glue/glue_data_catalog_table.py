@@ -45,4 +45,3 @@ class GlueDataCatalogTable(AwsResource):
     def to_drift_detection_object(self) -> dict:
         return {'table_name': self.table_name,
                 'database_name': self.database_name}
-
