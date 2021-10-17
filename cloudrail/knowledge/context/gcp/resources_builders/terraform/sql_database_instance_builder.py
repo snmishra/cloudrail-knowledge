@@ -38,7 +38,7 @@ class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
 
         if settings:
             tier = settings.get("tier", None)
-            activation_policy = self._get_known_value(settings, "activation_policy")
+            activation_policy = self._get_known_value(settings, "activation_policy", "ALWAYS")
             authorized_gae_applications = self._get_known_value(settings, "authorized_gae_applications")
             availability_type = self._get_known_value(settings, "availability_type")
             collation = self._get_known_value(settings, "collation")
@@ -46,8 +46,8 @@ class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
             disk_autoresize = self._get_known_value(settings, "disk_autoresize", True)
             disk_size = self._get_known_value(settings, "disk_size", 10)
             disk_type = self._get_known_value(settings, "disk_type", "PD_SSD")
-            pricing_plan = self._get_known_value(settings, "pricing_plan")
-            replication_type = self._get_known_value(settings, "replication_type")
+            pricing_plan = self._get_known_value(settings, "pricing_plan", "PER_USE")
+            replication_type = self._get_known_value(settings, "replication_type", "SYNCHRONOUS")
             user_labels = self._get_known_value(settings, "user_labels")
             database_flags_list = self._get_known_value(settings, "database_flags")
             database_flags = [GcpSqlDBInstanceSettingsDBFlags(database_flag["name"], database_flag["value"])
@@ -84,10 +84,10 @@ class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
 
         if backup_configuration:
             binary_log_enabled = self._get_known_value(backup_configuration, "binary_log_enabled")
-            enabled = self._get_known_value(backup_configuration, "enabled")
+            enabled = self._get_known_value(backup_configuration, "enabled", False)
             start_time_str = self._get_known_value(backup_configuration, "start_time")
             start_time = datetime.strptime(start_time_str, "%H:%M") if start_time_str else None
-            point_in_time_recovery_enabled = self._get_known_value(backup_configuration, "point_in_time_recovery_enabled")
+            point_in_time_recovery_enabled = self._get_known_value(backup_configuration, "point_in_time_recovery_enabled", False)
             location = self._get_known_value(backup_configuration, "location")
             transaction_log_retention_days = self._get_known_value(backup_configuration, "transaction_log_retention_days")
             backup_retention_settings_block = self._get_known_value(backup_configuration, "backup_retention_settings")
@@ -103,7 +103,7 @@ class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
         ip_configuration = ip_configuration_block[0] if ip_configuration_block else None
 
         if ip_configuration:
-            ipv4_enabled = self._get_known_value(ip_configuration, "ipv4_enabled")
+            ipv4_enabled = self._get_known_value(ip_configuration, "ipv4_enabled", True)
             private_network = ip_configuration.get("private_network")
             require_ssl = self._get_known_value(ip_configuration, "require_ssl")
             authorized_networks_list = self._get_known_value(ip_configuration, "authorized_networks")
