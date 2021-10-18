@@ -1,6 +1,6 @@
 import unittest
 
-from cloudrail.dev_tools.rule_test_utils import create_empty_entity, create_data_class_empty_entity
+from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
 from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDatabaseInstance, GcpSqlDBInstanceSettings, GcpSqlDBInstanceSettingsIPConfig
 from cloudrail.knowledge.rules.base_rule import RuleResultType
@@ -15,8 +15,8 @@ class TestSqlDatabaseSslRequired(unittest.TestCase):
         # Arrange
         sql = create_empty_entity(GcpSqlDatabaseInstance)
         sql.name = 'name'
-        sql.settings = create_data_class_empty_entity(GcpSqlDBInstanceSettings)
-        sql.settings.ip_configuration = create_data_class_empty_entity(GcpSqlDBInstanceSettingsIPConfig)
+        sql.settings = create_empty_entity(GcpSqlDBInstanceSettings)
+        sql.settings.ip_configuration = create_empty_entity(GcpSqlDBInstanceSettingsIPConfig)
         sql.settings.ip_configuration.require_ssl = True
         context = GcpEnvironmentContext(sql_database_instances=[sql])
         # Act
@@ -28,8 +28,8 @@ class TestSqlDatabaseSslRequired(unittest.TestCase):
         # Arrange
         sql = create_empty_entity(GcpSqlDatabaseInstance)
         sql.name = 'name'
-        sql.settings = create_data_class_empty_entity(GcpSqlDBInstanceSettings)
-        sql.settings.ip_configuration = create_data_class_empty_entity(GcpSqlDBInstanceSettingsIPConfig)
+        sql.settings = create_empty_entity(GcpSqlDBInstanceSettings)
+        sql.settings.ip_configuration = create_empty_entity(GcpSqlDBInstanceSettingsIPConfig)
         sql.settings.ip_configuration.require_ssl = False
         context = GcpEnvironmentContext(sql_database_instances=[sql])
         # Act

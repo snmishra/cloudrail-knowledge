@@ -14,7 +14,6 @@ google_sql_database_instance:
     - master_instance_name
     - project
     - encryption_key_name
-    - root_password
     - clone:
         known_fields:
           pass:
@@ -40,6 +39,8 @@ google_sql_database_instance:
             - sslCipher
             - username
             - verify_server_certificate
+          hash:
+            - password
     - settings:
         known_fields:
           pass:
@@ -105,3 +106,5 @@ google_sql_database_instance:
                             - expiration_time
                             - name
                             - value
+    hash:
+    - root_password
