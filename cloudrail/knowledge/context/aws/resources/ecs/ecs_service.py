@@ -87,7 +87,7 @@ class EcsService(NetworkEntity, INetworkConfiguration, IEcsInstance):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'name': self.name,
+        return {'tags': self.tags, 'name': self.name,
                 'launch_type': self.launch_type.value,
                 'network_conf_list': [conf.to_dict() for conf in self.network_conf_list],
                 'task_definition_arn': self.task_definition_arn,

@@ -97,7 +97,7 @@ class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
         return "".join(self.qualified_arn.split(":")[:-1]) if ':' in self.qualified_arn else self.qualified_arn
 
     def to_drift_detection_object(self) -> dict:
-        return {'function_name': self.function_name,
+        return {'tags': self.tags, 'function_name': self.function_name,
                 'role_arn': self.execution_role_arn,
                 'handler': self.handler,
                 'runtime': self.runtime,

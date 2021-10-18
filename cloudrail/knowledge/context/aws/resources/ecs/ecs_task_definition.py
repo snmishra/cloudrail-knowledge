@@ -101,7 +101,7 @@ class EcsTaskDefinition(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'task_arn': self.task_arn,
+        return {'tags': self.tags, 'task_arn': self.task_arn,
                 'family': self.family,
                 'revision': self.revision,
                 'efs_volume_data': [dataclasses.asdict(data) for data in self.efs_volume_data],
