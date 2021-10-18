@@ -38,7 +38,7 @@ class TestEnsureCloudWatchLogDestinationPolicyNotUseWildcard(AwsBaseRuleTest):
         self.assertEqual(rule_result.issues[0].violating.get_type(), 'CloudWatch Logs Destination policy')
 
     @rule_test('multiple_statements_scenario', True)
-    def test_multiple_statements_scenario(self):  # the rule evaluate 2 scenarios, but it's being filtered by base_rule.py
+    def test_multiple_statements_scenario(self, rule_result: RuleResponse):  # the rule evaluate 2 scenarios, but it's being filtered by base_rule.py
         self.assertIsNotNone(rule_result)
         self.assertTrue("the CloudWatch Logs Destination `aws_cloudwatch_log_destination.test_destination`"
                         " is using" in rule_result.issues[0].evidence)
@@ -76,3 +76,4 @@ class TestEnsureCloudWatchLogDestinationPolicyNotUseWildcard(AwsBaseRuleTest):
                         " is using principal `CanonicalUser: *`, without any condition" in rule_result.issues[0].evidence)
         self.assertEqual(rule_result.issues[0].exposed.get_type(), 'CloudWatch Logs Destination')
         self.assertEqual(rule_result.issues[0].violating.get_type(), 'CloudWatch Logs Destination policy')
+TestS3BucketPolicyVpcEndpoint
