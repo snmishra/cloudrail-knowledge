@@ -109,7 +109,8 @@ class EcsTaskDefinition(AwsResource):
                 'execution_role_arn': self.execution_role_arn,
                 'network_mode': self.network_mode.value,
                 'is_volume_efs': self.is_volume_efs,
-                'container_definitions': [dataclasses.asdict(definition) for definition in self.container_definitions]}
+                'container_definitions': [{k: v for k,v in dataclasses.asdict(definition).items() if k != 'image'}
+                                          for definition in self.container_definitions]}
 
 
 class IEcsInstance(AwsClient):
