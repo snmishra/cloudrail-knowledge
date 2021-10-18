@@ -157,4 +157,5 @@ class Ec2Instance(NetworkEntity, AwsClient):
                 'tags': self.tags,
                 'instance_type': self.instance_type,
                 'ebs_optimized': self.ebs_optimized,
-                'monitoring_enabled': self.monitoring_enabled}
+                'monitoring_enabled': self.monitoring_enabled,
+                'security_group_ids': self.raw_data.security_groups_ids}
