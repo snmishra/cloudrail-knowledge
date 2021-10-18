@@ -8,12 +8,10 @@ class DisallowEc2ClassicModeRuleTest(AwsBaseRuleTest):
     def get_rule(cls):
         return DisallowEc2ClassicModeRule()
 
-    def test_deploy_redshift_in_ec2_vpc_mode(self):
-    @rule_test(tf_use_case_folder_name, False)
-        tf_use_case_folder_name = 'deploy_redshift_in_ec2_vpc_mode'
+    @rule_test('deploy_redshift_in_ec2_vpc_mode', False)
+    def test_deploy_redshift_in_ec2_vpc_mode(self, rule_result: RuleResponse):
         pass
 
-    def test_deploy_redshift_in_ec2_classic_mode(self):
-    @rule_test(tf_use_case_folder_name)
-        tf_use_case_folder_name = 'deploy_redshift_in_ec2_classic_mode'
+    @rule_test('deploy_redshift_in_ec2_classic_mode')
+    def test_deploy_redshift_in_ec2_classic_mode(self, rule_result: RuleResponse):
         pass

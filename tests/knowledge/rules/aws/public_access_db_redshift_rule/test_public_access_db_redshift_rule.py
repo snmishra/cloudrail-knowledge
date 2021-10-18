@@ -8,12 +8,10 @@ class PublicAccessDbRedshiftRuleTest(AwsBaseRuleTest):
     def get_rule(cls):
         return PublicAccessDbRedshiftRule()
 
-    def test_redshift_with_public_access(self):
-    @rule_test(tf_use_case_folder_name, True)
-        tf_use_case_folder_name = 'redshift_with_public_access'
+    @rule_test('redshift_with_public_access', True)
+    def test_redshift_with_public_access(self, rule_result: RuleResponse):
         pass
 
-    def test_redshift_without_public_access(self):
-    @rule_test(tf_use_case_folder_name, False)
-        tf_use_case_folder_name = 'redshift_without_public_access'
+    @rule_test('redshift_without_public_access', False)
+    def test_redshift_without_public_access(self, rule_result: RuleResponse):
         pass

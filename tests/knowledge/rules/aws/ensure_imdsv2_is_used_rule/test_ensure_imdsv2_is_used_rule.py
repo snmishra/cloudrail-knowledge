@@ -8,9 +8,8 @@ class EnsureImdsv2IsUsedRuleTest(AwsBaseRuleTest):
     def get_rule(self):
         return EnsureImdsv2IsUsedRule()
 
-    def test_ec2_http_tokens_optional(self):
-    @rule_test(tf_use_case_folder_name, True)
-        tf_use_case_folder_name = 'ec2_http_tokens_optional'
+    @rule_test('ec2_http_tokens_optional', True)
+    def test_ec2_http_tokens_optional(self, rule_result: RuleResponse):
         self.assertIsNotNone(rule_result)
         self.assertTrue('The EC2 Instance `aws_instance.t2-instance` is allowing IMDSv1' in rule_result.issues[0].evidence)
         self.assertEqual(rule_result.issues[0].exposed.get_type(), 'EC2 Instance')
@@ -18,14 +17,12 @@ class EnsureImdsv2IsUsedRuleTest(AwsBaseRuleTest):
         self.assertEqual(rule_result.issues[0].violating.get_type(), 'EC2 Instance')
         self.assertEqual(rule_result.issues[0].violating.get_name(), 'aws_instance.t2-instance.id')
 
-    def test_ec2_http_tokens_required(self):
-    @rule_test(tf_use_case_folder_name, False)
-        tf_use_case_folder_name = 'ec2_http_tokens_required'
+    @rule_test('ec2_http_tokens_required', False)
+    def test_ec2_http_tokens_required(self, rule_result: RuleResponse):
         pass
 
-    def test_launch_configurations_optional(self):
-    @rule_test(tf_use_case_folder_name, True)
-        tf_use_case_folder_name = 'launch_configurations_optional'
+    @rule_test('launch_configurations_optional', True)
+    def test_launch_configurations_optional(self, rule_result: RuleResponse):
         self.assertIsNotNone(rule_result)
         self.assertEqual('The Launch configuration `aws_launch_configuration.as_conf` is allowing IMDSv1', rule_result.issues[0].evidence)
         self.assertEqual(rule_result.issues[0].exposed.get_type(), 'Launch configuration')
@@ -33,9 +30,8 @@ class EnsureImdsv2IsUsedRuleTest(AwsBaseRuleTest):
         self.assertEqual(rule_result.issues[0].violating.get_type(), 'Launch configuration')
         self.assertEqual(rule_result.issues[0].violating.iac_state.address, 'aws_launch_configuration.as_conf')
 
-    def test_launch_templates_http_token_optional(self):
-    @rule_test(tf_use_case_folder_name, True)
-        tf_use_case_folder_name = 'launch_templates_http_token_optional'
+    @rule_test('launch_templates_http_token_optional', True)
+    def test_launch_templates_http_token_optional(self, rule_result: RuleResponse):
         self.assertIsNotNone(rule_result)
         self.assertEqual('The Launch template `aws_launch_template.launch_template_test` is allowing IMDSv1', rule_result.issues[0].evidence)
         self.assertEqual(rule_result.issues[0].exposed.get_type(), 'Launch template')
@@ -43,7 +39,6 @@ class EnsureImdsv2IsUsedRuleTest(AwsBaseRuleTest):
         self.assertEqual(rule_result.issues[0].violating.get_type(), 'Launch template')
         self.assertEqual(rule_result.issues[0].violating.iac_state.address, 'aws_launch_template.launch_template_test')
 
-    def test_launch_templates_http_token_required(self):
-    @rule_test(tf_use_case_folder_name, False)
-        tf_use_case_folder_name = 'launch_templates_http_token_required'
+    @rule_test('launch_templates_http_token_required', False)
+    def test_launch_templates_http_token_required(self, rule_result: RuleResponse):
         pass

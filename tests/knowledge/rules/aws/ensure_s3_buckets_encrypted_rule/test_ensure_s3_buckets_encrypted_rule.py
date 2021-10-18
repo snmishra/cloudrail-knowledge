@@ -10,7 +10,7 @@ class TestEnsureS3BucketsEncryptedRule(AwsBaseRuleTest):
         return EnsureS3BucketsEncryptedRule()
 
     @rule_test('encrypted', False)
-    # def test_encrypted(self, rule_result: RuleResponse):
+    def test_encrypted(self, rule_result: RuleResponse):
         pass
 
     @rule_test('non_encrypted', True)

@@ -8,12 +8,10 @@ class PublicAccessEksApiRuleTest(AwsBaseRuleTest):
     def get_rule(cls):
         return PublicAccessEksApiRule()
 
-    def test_eks_with_private_api(self):
-    @rule_test(tf_use_case_folder_name, False)
-        tf_use_case_folder_name = 'eks_with_private_api'
+    @rule_test('eks_with_private_api', False)
+    def test_eks_with_private_api(self, rule_result: RuleResponse):
         pass
 
-    def test_eks_with_public_api(self):
-    @rule_test(tf_use_case_folder_name, True)
-        tf_use_case_folder_name = 'eks_with_public_api'
+    @rule_test('eks_with_public_api', True)
+    def test_eks_with_public_api(self, rule_result: RuleResponse):
         pass

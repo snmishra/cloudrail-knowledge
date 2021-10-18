@@ -8,22 +8,18 @@ class Ec2RoleShareRuleTest(AwsBaseRuleTest):
     def get_rule(cls):
         return Ec2RoleShareRule()
 
-    def test_public_and_private_ec2_same_role(self):
-    @rule_test(tf_use_case_folder_name, True)
-        tf_use_case_folder_name = 'public_and_private_ec2_same_role'
+    @rule_test('public_and_private_ec2_same_role', True)
+    def test_public_and_private_ec2_same_role(self, rule_result: RuleResponse):
         pass
 
-    def test_public_and_private_ec2_different_role(self):
-    @rule_test(tf_use_case_folder_name, False)
-        tf_use_case_folder_name = 'public_and_private_ec2_different_role'
+    @rule_test('public_and_private_ec2_different_role', False)
+    def test_public_and_private_ec2_different_role(self, rule_result: RuleResponse):
         pass
 
-    def test_public_and_public_ec2_same_role(self):
-    @rule_test(tf_use_case_folder_name, False)
-        tf_use_case_folder_name = 'public_and_public_ec2_same_role'
+    @rule_test('public_and_public_ec2_same_role', False)
+    def test_public_and_public_ec2_same_role(self, rule_result: RuleResponse):
         pass
 
-    def test_private_and_private_ec2_same_role(self):
-    @rule_test(tf_use_case_folder_name, False)
-        tf_use_case_folder_name = 'private_and_private_ec2_same_role'
+    @rule_test('private_and_private_ec2_same_role', False)
+    def test_private_and_private_ec2_same_role(self, rule_result: RuleResponse):
         pass
