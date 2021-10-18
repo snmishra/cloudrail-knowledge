@@ -116,7 +116,7 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
         expiration_time = None
         if expiration_time_str := authorized_network.get("expirationTime"):
             expiration_time_str_list = expiration_time_str.split(".")
-            expiration_time_str = expiration_time_str_list.split[0] if len(expiration_time_str_list) > 1 else expiration_time_str_list.split[0][:-1]
+            expiration_time_str = expiration_time_str_list[0] if len(expiration_time_str_list) > 1 else expiration_time_str_list[0][:-1]
             expiration_time = datetime.strptime(expiration_time_str, '%Y-%m-%dT%H:%M:%S')
 
         return GcpSqlDBInstanceIPConfigAuthNetworks(expiration_time,
@@ -162,7 +162,7 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
             point_in_time = None
             if point_in_time_str := clone.get("pointInTime"):
                 point_in_time_str_list = point_in_time_str.split(".")
-                point_in_time_str = point_in_time_str_list.split[0] if len(point_in_time_str_list) > 1 else point_in_time_str_list.split[0][:-1]
+                point_in_time_str = point_in_time_str_list[0] if len(point_in_time_str_list) > 1 else point_in_time_str_list[0][:-1]
                 point_in_time = datetime.strptime(point_in_time_str, '%Y-%m-%dT%H:%M:%S')
 
             return GcpSqlDBInstanceClone(source_instance_name, point_in_time)
