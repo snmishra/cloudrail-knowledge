@@ -7,7 +7,7 @@ import uuid
 from abc import ABC, abstractmethod
 from datetime import datetime
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Callable, Optional, List
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
 from cloudrail.knowledge.context.environment_context.environment_context_builder_factory import EnvironmentContextBuilderFactory
@@ -23,9 +23,9 @@ from cloudrail.knowledge.utils.utils import get_account_id
 def rule_test(*args, **kwargs) -> Callable:
     def _rules_tests_wrapper(test_case_func: Callable) -> Callable:
         def test_case_wrapper(self) -> None:
-            # todo - support iac types executions
-            rule_response: RuleResponse = self.run_test_case(*args, **kwargs)
-            test_case_func(self, rule_response)
+            rule_results: List[RuleResponse] = self.run_test_case(*args, **kwargs)
+            for rule_result in rule_results:
+                test_case_func(self, rule_result)
         return test_case_wrapper
     return _rules_tests_wrapper
 
@@ -86,7 +86,7 @@ class BaseRuleTest(unittest.TestCase):
 
     def run_test_case(self, test_case_folder: str,
                       should_alert: bool = True,
-                      number_of_issue_items: int = 1) -> RuleResponse:
+                      number_of_issue_items: int = 1) -> List[RuleResponse]:
 
         local_account_data = None
         try:
@@ -113,9 +113,9 @@ class BaseRuleTest(unittest.TestCase):
                                                          os.path.join(test_case_folder_full_path, 'output.json'))
             self.test_files.append(self.output_path)
             context = self.build_environment_context()
-            return self._execute_rule_and_assert(iac_type=IacType.TERRAFORM, env_context=context,
-                                                 should_alert=should_alert,
-                                                 number_of_issue_items=number_of_issue_items)
+            return [self._execute_rule_and_assert(iac_type=IacType.TERRAFORM, env_context=context,
+                                                  should_alert=should_alert,
+                                                  number_of_issue_items=number_of_issue_items)]
         finally:
             TerraformResourceFinder.destroy()
             if self.account_data and Path(self.account_data).parent.name == Path(local_account_data).parent.name:
@@ -207,6 +207,13 @@ class AwsBaseRuleTest(BaseRuleTest, ABC):
     def set_default_account_data(self):
         current_path = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(current_path, '../', 'testing-accounts-data', 'account-data-vpc-platform')
+
+    def run_test_case(self, test_case_folder: str, should_alert: bool = True, number_of_issue_items: int = 1) -> List[RuleResponse]:
+        rule_results: List[RuleResponse] = super().run_test_case(test_case_folder, should_alert, number_of_issue_items)
+        cfn_rule_result: RuleResponse = self._run_cloudformation_test_case(test_case_folder, should_alert, number_of_issue_items)
+        if cfn_rule_result:
+            rule_results.append(cfn_rule_result)
+        return rule_results
 
     def _run_cloudformation_test_case(self, test_case_folder: str,
                                       should_alert: bool = True,
