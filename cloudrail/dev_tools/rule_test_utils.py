@@ -12,7 +12,7 @@ _R = TypeVar('_R')
 
 def create_empty_entity(class_type: Type[_T], **kwargs) -> _T:
     """
-    A test auxiliary function that creates a new instance of type `class_type` and initializes it with the values of kwargs or None
+    A test auxiliary function that creates a new instance of type `class_type` inherent from Mergeable and initializes it with the values of kwargs or None
     Args:
         class_type: The instance's `class_type` to create.
         **kwargs: The parameters that will be passed to the instance's __init__ method.
@@ -48,7 +48,7 @@ def create_data_class_empty_entity(class_type: Type[_R], **kwargs) -> _R:
     params.update(kwargs)
     resource = class_type(**params)
     if isinstance(resource, Mergeable):
-        add_terraform_state(resource, resource.__class__.__name__, True)
+        raise "'create_data_class_empty_entity' should be used only for data class, please use 'create_empty_entity'."
     return resource
 
 
