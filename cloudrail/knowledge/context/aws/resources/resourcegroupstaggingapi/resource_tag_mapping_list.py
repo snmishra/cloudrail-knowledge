@@ -40,4 +40,4 @@ class ResourceTagMappingList(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'resource_arn': self.resource_arn}
+        return {}

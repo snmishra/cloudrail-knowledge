@@ -71,5 +71,4 @@ class CodeBuildReportGroup(AwsResource):
                 'export_config_type': self.export_config_type,
                 'export_config_s3_destination_bucket': self.export_config_s3_destination_bucket,
                 'export_config_s3_destination_encryption_key': self.export_config_s3_destination_encryption_key,
-                'export_config_s3_destination_encryption_disabled': self.export_config_s3_destination_encryption_disabled,
-                'arn': self.arn}
+                'export_config_s3_destination_encryption_disabled': self.export_config_s3_destination_encryption_disabled}

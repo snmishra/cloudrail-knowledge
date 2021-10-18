@@ -88,7 +88,6 @@ class RouteTable(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'route_table_id': self.route_table_id,
-                'vpc_id': self.vpc_id,
+        return {'vpc_id': self.vpc_id,
                 'name': self.name,
                 'is_main_route_table': self.is_main_route_table}

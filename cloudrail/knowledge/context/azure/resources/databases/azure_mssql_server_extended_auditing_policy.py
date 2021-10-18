@@ -44,6 +44,5 @@ class AzureSqlServerExtendedAuditingPolicy(AzureResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'server_id': self.server_id,
-                'retention_in_days': self.retention_in_days,
+        return {'retention_in_days': self.retention_in_days,
                 'log_monitoring_enabled': self.log_monitoring_enabled}

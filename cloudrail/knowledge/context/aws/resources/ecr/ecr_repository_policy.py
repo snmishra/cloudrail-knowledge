@@ -38,5 +38,4 @@ class EcrRepositoryPolicy(ResourceBasedPolicy):
 
     def to_drift_detection_object(self) -> dict:
         return {'repo_name': self.repo_name,
-                'policy_statements': [statement.to_dict() for statement in self.statements],
-                'raw_document': self.raw_document}
+                'policy_statements': [statement.to_dict() for statement in self.statements]}

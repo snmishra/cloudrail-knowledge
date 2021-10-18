@@ -94,7 +94,5 @@ class EcsCluster(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'cluster_arn': self.cluster_arn,
-                'cluster_id': self.cluster_id,
-                'cluster_name': self.cluster_name,
+        return {'cluster_name': self.cluster_name,
                 'is_container_insights_enabled': self.is_container_insights_enabled}

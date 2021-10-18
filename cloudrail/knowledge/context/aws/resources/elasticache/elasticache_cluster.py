@@ -77,7 +77,6 @@ class ElastiCacheCluster(NetworkEntity):
 
     def to_drift_detection_object(self) -> dict:
         return {'cluster_name': self.cluster_name,
-                'arn': self.arn,
                 'replication_group_id': self.replication_group_id,
                 'subnet_group_name': self.subnet_group_name,
                 'engine': self.engine,

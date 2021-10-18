@@ -39,5 +39,4 @@ class AzureMySqlServer(AzureResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'server_name': self.server_name,
-                'ssl_enforcement_enabled': self.ssl_enforcement_enabled}
+        return {'ssl_enforcement_enabled': self.ssl_enforcement_enabled}

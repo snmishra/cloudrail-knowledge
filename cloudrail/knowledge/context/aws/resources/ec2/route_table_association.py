@@ -54,5 +54,4 @@ class RouteTableAssociation(AwsResource):
 
     def to_drift_detection_object(self) -> dict:
         return {'subnet_id': self.subnet_id,
-                'association_id': self.association_id,
                 'route_table_id': self.route_table_id}

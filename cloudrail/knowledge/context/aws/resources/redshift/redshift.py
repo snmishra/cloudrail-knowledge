@@ -82,7 +82,6 @@ class RedshiftCluster(NetworkEntity, INetworkConfiguration):
 
     def to_drift_detection_object(self) -> dict:
         return {'db_name': self.db_name,
-                'cluster_identifier': self.name,
                 'port': self.port,
                 'subnet_group_name': self.subnet_group_name,
                 'security_group_ids': self.network_configuration.security_groups,

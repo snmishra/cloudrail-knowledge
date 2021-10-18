@@ -23,11 +23,6 @@ class BaseEnvironmentContextDriftDetector:
 
     @classmethod
     @abstractmethod
-    def get_excluded_attributes(cls):
-        pass
-
-    @classmethod
-    @abstractmethod
     def supported_drift_resource(cls, mergeable: Mergeable):
         pass
 

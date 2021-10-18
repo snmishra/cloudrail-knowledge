@@ -44,5 +44,4 @@ class RestApiGwMapping(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'api_id': self.api_id,
-                'domain_name': self.domain_name}
+        return {'domain_name': self.domain_name}

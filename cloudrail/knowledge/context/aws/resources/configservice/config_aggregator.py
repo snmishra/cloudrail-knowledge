@@ -57,7 +57,6 @@ class ConfigAggregator(AwsResource):
 
     def to_drift_detection_object(self) -> dict:
         return {'aggregator_name': self.aggregator_name,
-                'arn': self.arn,
                 'account_aggregation_used': self.account_aggregation_used,
                 'organization_aggregation_used': self.organization_aggregation_used,
                 'account_aggregation_all_regions_enabled': self.account_aggregation_all_regions_enabled,

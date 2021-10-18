@@ -43,5 +43,4 @@ class TransitGateway(AwsResource):
 
     def to_drift_detection_object(self) -> dict:
         return {'name': self.name,
-                'tgw_id': self.tgw_id,
                 'state': self.state}

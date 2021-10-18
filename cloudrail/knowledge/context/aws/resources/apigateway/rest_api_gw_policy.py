@@ -34,5 +34,4 @@ class RestApiGwPolicy(ResourceBasedPolicy):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'rest_api_gw_id': self.rest_api_gw_id,
-                'policy_statements': [statement.to_dict() for statement in self.statements]}
+        return {'policy_statements': [statement.to_dict() for statement in self.statements]}

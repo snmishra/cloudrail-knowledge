@@ -46,5 +46,4 @@ class GlueCrawler(AwsResource):
 
     def to_drift_detection_object(self) -> dict:
         return {'crawler_name': self.crawler_name,
-                'database_name': self.database_name,
-                'arn': self.arn}
+                'database_name': self.database_name}

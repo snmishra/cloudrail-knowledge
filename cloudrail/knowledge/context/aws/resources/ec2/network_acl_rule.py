@@ -91,8 +91,7 @@ class NetworkAclRule(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'network_acl_id': self.network_acl_id,
-                'cidr_block': self.cidr_block,
+        return {'cidr_block': self.cidr_block,
                 'from_port': self.from_port,
                 'to_port': self.to_port,
                 'rule_action': self.rule_action,

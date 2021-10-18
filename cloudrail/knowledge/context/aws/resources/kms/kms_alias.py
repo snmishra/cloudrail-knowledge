@@ -10,7 +10,7 @@ class KmsAlias(AwsResource):
         Attributes:
             alias_name: The alias itself.
             target_key_id: The ID of the KMS key the alias is for.
-            alias_arn: The ARN of the lias.
+            alias_arn: The ARN of the alias.
             key_manager: The Key Manager of this key (customer, or AWS).
     """
 

@@ -98,7 +98,7 @@ class PortSet:
         return ', '.join([f'{low}-{high}' for low, high in self.port_ranges])
 
     def __str__(self):
-        return ', '.join([f'{low}-{high}' for low, high in self.port_ranges])
+        return self.__repr__()
 
     def __contains__(self, item: int):
         """

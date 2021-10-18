@@ -68,5 +68,4 @@ class NeptuneInstance(NetworkEntity, INetworkConfiguration):
         return {'name': self.name,
                 'port': self.port,
                 'cluster_identifier': self.cluster_identifier,
-                'publicly_accessible': self.network_configuration.assign_public_ip,
-                'instance_identifier': self.instance_identifier}
+                'publicly_accessible': self.network_configuration.assign_public_ip}

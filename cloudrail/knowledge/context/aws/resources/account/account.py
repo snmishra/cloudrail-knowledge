@@ -44,6 +44,4 @@ class Account(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'account': self.account,
-                'account_name': self.account_name,
-                'supports_ec2_classic_mode': self.supports_ec2_classic_mode}
+        return {}

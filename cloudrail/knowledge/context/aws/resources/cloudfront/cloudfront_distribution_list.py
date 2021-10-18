@@ -25,7 +25,6 @@ class OriginConfig:
 
     def to_drift_detection_object(self):
         return {'domain_name': self.domain_name,
-                'origin_id': self.origin_id,
                 'oai_path': self.oai_path}
 
 
@@ -155,9 +154,7 @@ class CloudFrontDistribution(AwsResource, ConnectionInstance):
         return list(self._cache_behavior_list)
 
     def to_drift_detection_object(self) -> dict:
-        return {'arn': self.arn,
-                'name': self.name,
-                'distribution_id': self.distribution_id,
+        return {'name': self.name,
                 'viewer_cert': dataclasses.asdict(self.viewer_cert),
                 'cache_behavior_list': [dataclasses.asdict(cache_behavior) for cache_behavior in self.get_all_cache_behaviors()],
                 'origin_config_list': [original_config.to_drift_detection_object() for original_config in self.origin_config_list],

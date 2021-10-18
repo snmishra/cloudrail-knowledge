@@ -3,10 +3,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, Optional
 
-import dataclasses
-from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template import LaunchTemplate
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 
 
 class LaunchConfiguration(AwsResource):
@@ -88,6 +87,7 @@ class LaunchConfiguration(AwsResource):
                 'ebs_optimized': self.ebs_optimized,
                 'monitoring_enabled': self.monitoring_enabled}
 
+
 @dataclass
 class LaunchTemplateData:
     """
@@ -99,6 +99,7 @@ class LaunchTemplateData:
     template_id: str
     version: str
     template_name: str
+
 
 @dataclass
 class AutoScalingGroupRawData:
@@ -175,10 +176,7 @@ class AutoScalingGroup(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'arn': self.arn,
-                'target_group_arns': self.target_group_arns,
+        return {'target_group_arns': self.target_group_arns,
                 'name': self.name,
                 'availability_zones': self.availability_zones,
-                'subnet_ids': self.subnet_ids,
-                'launch_configuration_name': self.raw_data and self.raw_data.launch_configuration_name,
-                'launch_template_data': self.raw_data and self.raw_data.launch_template_data and dataclasses.asdict(self.raw_data.launch_template_data)}
+                'subnet_ids': self.subnet_ids}

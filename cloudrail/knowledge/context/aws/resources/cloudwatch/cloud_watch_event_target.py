@@ -19,7 +19,6 @@ class CloudWatchEventTarget(AwsResource):
     def to_drift_detection_object(self) -> dict:
         return {'name': self.name,
                 'rule_name': self.rule_name,
-                'target_id': self.target_id,
                 'role_arn': self.role_arn,
                 'cluster_arn': self.cluster_arn}
 

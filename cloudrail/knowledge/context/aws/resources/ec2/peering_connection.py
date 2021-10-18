@@ -68,7 +68,6 @@ class PeeringConnection(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'peering_id': self.peering_id,
-                'requester_vpc_info': dataclasses.asdict(self.requester_vpc_info),
+        return {'requester_vpc_info': dataclasses.asdict(self.requester_vpc_info),
                 'accepter_vpc_info': dataclasses.asdict(self.accepter_vpc_info),
                 'status': self.status}

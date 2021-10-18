@@ -60,7 +60,6 @@ class EcrRepository(PoliciedResource):
 
     def to_drift_detection_object(self) -> dict:
         return {'repo_name': self.repo_name,
-                'arn': self.arn,
                 'image_tag_mutability': self.image_tag_mutability,
                 'is_image_scan_on_push': self.is_image_scan_on_push,
                 'encryption_type': self.encryption_type,

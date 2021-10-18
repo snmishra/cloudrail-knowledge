@@ -55,7 +55,6 @@ class CloudHsmV2Hsm(AwsResource):
 
     def to_drift_detection_object(self) -> dict:
         return {'cluster_id': self.cluster_id,
-                'hsm_id': self.hsm_id,
                 'subnet_id': self.subnet_id,
                 'availability_zone': self.availability_zone,
                 'hsm_state': self.hsm_state}

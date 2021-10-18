@@ -72,8 +72,7 @@ class Subnet(AwsResource):
         return self.name
 
     def to_drift_detection_object(self) -> dict:
-        return {'subnet_id': self.subnet_id,
-                'vpc_id': self.vpc_id,
+        return {'vpc_id': self.vpc_id,
                 'cidr_block': self.cidr_block,
                 'name': self.name,
                 'availability_zone': self.availability_zone,

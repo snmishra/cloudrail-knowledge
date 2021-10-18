@@ -13,6 +13,7 @@ class AzureNetworkSecurityGroup(AzureResource):
             network_interfaces: List of actual network interfaces which the network security group is connected to.
             network_security_rules: The rules that are assigned to this network security group.
     """
+
     def __init__(self,
                  name: str,
                  network_security_rules: List[AzureNetworkSecurityRule]):
@@ -44,4 +45,6 @@ class AzureNetworkSecurityGroup(AzureResource):
         return [self.subnets, self.network_interfaces]
 
     def to_drift_detection_object(self) -> dict:
-        return {'name': self.name}
+        return {'name': self.name,
+                'network_security_rules': self.network_security_rules and
+                                          [rules.to_drift_detection_object() for rules in self.network_security_rules]}

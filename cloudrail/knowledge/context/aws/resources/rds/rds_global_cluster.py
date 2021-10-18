@@ -55,5 +55,4 @@ class RdsGlobalCluster(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'cluster_id': self.cluster_id,
-                'encrypted_at_rest': self.encrypted_at_rest}
+        return {'encrypted_at_rest': self.encrypted_at_rest}

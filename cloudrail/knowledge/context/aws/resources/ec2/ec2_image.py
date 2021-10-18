@@ -50,5 +50,4 @@ class Ec2Image(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'image_id': self.image_id,
-                'is_public': self.is_public}
+        return {}

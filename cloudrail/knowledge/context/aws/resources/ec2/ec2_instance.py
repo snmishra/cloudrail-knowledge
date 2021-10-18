@@ -147,8 +147,7 @@ class Ec2Instance(NetworkEntity, AwsClient):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'instance_id': self.instance_id,
-                'name': self.name,
+        return {'name': self.name,
                 'network_interfaces_ids': self.network_interfaces_ids,
                 'state': self.state,
                 'image_id': self.image_id,
@@ -158,6 +157,4 @@ class Ec2Instance(NetworkEntity, AwsClient):
                 'tags': self.tags,
                 'instance_type': self.instance_type,
                 'ebs_optimized': self.ebs_optimized,
-                'monitoring_enabled': self.monitoring_enabled,
-                'subnet_id': self.raw_data and self.raw_data.subnet_id,
-                'security_groups_ids': self.raw_data and self.raw_data.security_groups_ids}
+                'monitoring_enabled': self.monitoring_enabled}

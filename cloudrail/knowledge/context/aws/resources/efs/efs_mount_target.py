@@ -65,7 +65,6 @@ class EfsMountTarget(NetworkEntity):
 
     def to_drift_detection_object(self) -> dict:
         return {'efs_id': self.efs_id,
-                'mount_target_id': self.mount_target_id,
                 'eni_id': self.eni_id,
                 'subnet_id': self.subnet_id,
                 'security_groups_ids': self.security_groups_ids}

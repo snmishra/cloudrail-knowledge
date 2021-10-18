@@ -70,7 +70,6 @@ class DirectoryService(NetworkEntity):
 
     def to_drift_detection_object(self) -> dict:
         return {'name': self.name,
-                'arn': self.arn,
                 'vpc_id': self.vpc_id,
                 'directory_type': self.directory_type,
                 'assign_public_ip': self.vpc_config and self.vpc_config.assign_public_ip,

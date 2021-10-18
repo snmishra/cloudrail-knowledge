@@ -68,8 +68,7 @@ class ApiGatewayMethodSettings(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'api_gw_id': self.api_gw_id,
-                'stage_name': self.stage_name,
+        return {'stage_name': self.stage_name,
                 'method_path': self.method_path,
                 'http_method': self.http_method.value,
                 'caching_enabled': self.caching_enabled,
