@@ -7,12 +7,14 @@ import uuid
 from abc import ABC, abstractmethod
 from datetime import datetime
 from pathlib import Path
-from typing import Callable, Optional, List
+from typing import Callable
+from cloudrail.knowledge.rules.rule_metadata import RuleMetadata
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
 from cloudrail.knowledge.context.environment_context.environment_context_builder_factory import EnvironmentContextBuilderFactory
 from cloudrail.knowledge.context.environment_context.terraform_resource_finder import TerraformResourceFinder
 from cloudrail.knowledge.context.iac_type import IacType
+from cloudrail.knowledge.rules.rules_metadata_store import CloudrailRulesMetadataStore
 from cloudrail.knowledge.utils.terraform_show_output_transformer import TerraformShowOutputTransformer
 from cloudrail.knowledge.rules.base_rule import RuleResponse, RuleResultType
 from cloudrail.knowledge.rules.rules_executor import RulesExecutor
@@ -23,9 +25,7 @@ from cloudrail.knowledge.utils.utils import get_account_id
 def rule_test(*args, **kwargs) -> Callable:
     def _rules_tests_wrapper(test_case_func: Callable) -> Callable:
         def test_case_wrapper(self) -> None:
-            rule_results: List[RuleResponse] = self._run_test_case(*args, **kwargs)
-            for rule_result in rule_results:
-                test_case_func(self, rule_result)
+            self._run_test_case(test_case_func, *args, **kwargs)
         return test_case_wrapper
     return _rules_tests_wrapper
 
@@ -33,6 +33,7 @@ def rule_test(*args, **kwargs) -> Callable:
 class BaseRuleTest(unittest.TestCase):
 
     DUMMY_CUSTOMER_ID: str = '00000000-0000-0000-0000-000000000000'
+    RULES_METADATA: CloudrailRulesMetadataStore = CloudrailRulesMetadataStore()
 
     def __init__(self, *args, **kwargs):
         # pylint: disable=super-with-arguments
@@ -74,10 +75,18 @@ class BaseRuleTest(unittest.TestCase):
             file.write(json.dumps(result))
         return dest_path
 
-    def _run_test_case(self, test_case_folder: str,
+    def _run_test_case(self, test_function: Callable,
+                       test_case_folder: str,
                        should_alert: bool = True,
-                       number_of_issue_items: int = 1) -> List[RuleResponse]:
+                       number_of_issue_items: int = 1) -> None:
+        self._run_terraform_test_case(test_function, test_case_folder, should_alert, number_of_issue_items)
+        self._run_cloudformation_test_case(test_function, test_case_folder, should_alert, number_of_issue_items)
 
+    def _run_terraform_test_case(self, test_function: Callable,
+                                 test_case_folder: str,
+                                 should_alert: bool = True,
+                                 number_of_issue_items: int = 1) -> None:
+        print(f'about to execute Terraform \'{test_function.__name__}\' scenario')
         local_account_data = None
         try:
             # Arrange
@@ -95,6 +104,7 @@ class BaseRuleTest(unittest.TestCase):
             self.account_id = self.get_account_id(self.account_data)
             self.salt = self.DUMMY_CUSTOMER_ID
             plan_json = os.path.join(test_case_folder_full_path, 'cached_plan.json')
+            self._validate_supported_iac_type(IacType.TERRAFORM, plan_json)
             result = TerraformShowOutputTransformer.transform(plan_json,
                                                                     '',
                                                                     self.get_supported_service(),
@@ -103,13 +113,54 @@ class BaseRuleTest(unittest.TestCase):
                                                          os.path.join(test_case_folder_full_path, 'output.json'))
             self.test_files.append(self.output_path)
             context = self.build_environment_context()
-            return [self._execute_rule_and_assert(iac_type=IacType.TERRAFORM, env_context=context,
-                                                  should_alert=should_alert,
-                                                  number_of_issue_items=number_of_issue_items)]
+            self._execute_rule_and_assert(iac_type=IacType.TERRAFORM,
+                                          env_context=context,
+                                          should_alert=should_alert,
+                                          number_of_issue_items=number_of_issue_items,
+                                          test_function=test_function)
         finally:
             TerraformResourceFinder.destroy()
             if self.account_data and Path(self.account_data).parent.name == Path(local_account_data).parent.name:
                 shutil.rmtree(local_account_data, ignore_errors=True)
+
+    def _run_cloudformation_test_case(self, test_function: Callable,
+                                      test_case_folder: str,
+                                      should_alert: bool = True,
+                                      number_of_issue_items: int = 1) -> None:
+        print(f'about to execute CloudFormation \'{test_function.__name__}\' scenario')
+        test_case_folder_full_path = self._get_full_path(test_case_folder)
+        local_account_data = os.path.join(test_case_folder_full_path, 'cfn-account-data')
+        cfn_template_yaml_file: str = os.path.join(test_case_folder_full_path, 'cloudformation.yaml')
+        account_data_zip = f'{local_account_data}.zip'
+        if os.path.exists(cfn_template_yaml_file):
+            self._validate_supported_iac_type(IacType.CLOUDFORMATION, cfn_template_yaml_file)
+            if os.path.isfile(account_data_zip):
+                shutil.unpack_archive(account_data_zip, extract_dir=local_account_data, format='zip')
+                self.account_data = local_account_data
+            else:
+                self.account_data = self.set_default_account_data()
+
+            self.account_id = self.get_account_id(self.account_data)
+            self.customer_id = self.DUMMY_CUSTOMER_ID
+
+            context = EnvironmentContextBuilderFactory.get(CloudProvider.AMAZON_WEB_SERVICES,
+                                                           IacType.CLOUDFORMATION) \
+                .build(account_data_dir_path=self.account_data,
+                       iac_file_path=cfn_template_yaml_file, account_id=self.account_id,
+                       salt=self.customer_id, **{'region': 'us-east-1'})
+
+            self._execute_rule_and_assert(iac_type=IacType.CLOUDFORMATION, env_context=context,
+                                          should_alert=should_alert,
+                                          number_of_issue_items=number_of_issue_items,
+                                          test_function=test_function)
+
+    def _validate_supported_iac_type(self, iac_type: IacType, iac_file_path: str) -> None:
+        metadata: RuleMetadata = self.RULES_METADATA.get_by_rule_id(self.get_rule().get_id())
+        supported: bool = iac_type in metadata.supported_iac_types
+        if supported and not os.path.exists(iac_file_path):
+            raise AssertionError(f'rule={self.get_rule().get_id()} missing IaC file')
+        elif not supported and os.path.exists(iac_file_path):
+            raise AssertionError(f'rule={self.get_rule().get_id()} is disabled for IaC={iac_type.value}')
 
     @abstractmethod
     def build_environment_context(self):
@@ -132,16 +183,18 @@ class BaseRuleTest(unittest.TestCase):
         pass
 
     def _execute_rule_and_assert(self, iac_type: IacType, env_context: BaseEnvironmentContext, should_alert: bool,
-                                 number_of_issue_items: int) -> RuleResponse:
+                                 number_of_issue_items: int,
+                                 test_function: Callable,) -> None:
         rule_start_time: datetime = datetime.now()
         rule_result: RuleResponse = RulesExecutor.execute(self.get_cloud_provider(), env_context, [self.rule_under_test.get_id()])[0]
         rule_result.iac_type = iac_type
         self._assert_rule(rule_result=rule_result, should_alert=should_alert,
-                          number_of_issue_items=number_of_issue_items, rule_start_time=rule_start_time)
-        return rule_result
+                          number_of_issue_items=number_of_issue_items, rule_start_time=rule_start_time,
+                          test_function=test_function)
 
     def _assert_rule(self, rule_result: RuleResponse, should_alert: bool,
-                     number_of_issue_items: int, rule_start_time: datetime) -> None:
+                     number_of_issue_items: int, rule_start_time: datetime,
+                     test_function: Callable) -> None:
         rule_end_time = datetime.now()
         rule_runtime_seconds = (rule_end_time - rule_start_time).total_seconds()
         if should_alert:
@@ -153,6 +206,7 @@ class BaseRuleTest(unittest.TestCase):
 
         self.assertLess(rule_runtime_seconds, 20,
                         f'The test {self.rule_under_test.get_id()} took {rule_runtime_seconds} seconds to run')
+        test_function(self, rule_result)
 
 
 class AzureBaseRuleTest(BaseRuleTest, ABC):
@@ -197,44 +251,6 @@ class AwsBaseRuleTest(BaseRuleTest, ABC):
     def set_default_account_data(self):
         current_path = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(current_path, '../', 'testing-accounts-data', 'account-data-vpc-platform')
-
-    def _run_test_case(self, test_case_folder: str, should_alert: bool = True, number_of_issue_items: int = 1) -> List[RuleResponse]:
-        rule_results: List[RuleResponse] = super()._run_test_case(test_case_folder, should_alert, number_of_issue_items)
-        cfn_rule_result: RuleResponse = self._run_cloudformation_test_case(test_case_folder, should_alert, number_of_issue_items)
-        if cfn_rule_result:
-            rule_results.append(cfn_rule_result)
-        return rule_results
-
-    def _run_cloudformation_test_case(self, test_case_folder: str,
-                                      should_alert: bool = True,
-                                      number_of_issue_items: int = 1) -> RuleResponse:
-
-        test_case_folder_full_path = self._get_full_path(test_case_folder)
-        local_account_data = os.path.join(test_case_folder_full_path, 'cfn-account-data')
-        cfn_template_yaml_file: str = os.path.join(test_case_folder_full_path, 'cloudformation.yaml')
-        account_data_zip = f'{local_account_data}.zip'
-        rule_result: Optional[RuleResponse] = None
-
-        if os.path.exists(cfn_template_yaml_file):
-            if os.path.isfile(account_data_zip):
-                shutil.unpack_archive(account_data_zip, extract_dir=local_account_data, format='zip')
-                self.account_data = local_account_data
-            else:
-                self.account_data = self.set_default_account_data()
-
-            self.account_id = self.get_account_id(self.account_data)
-            self.customer_id = self.DUMMY_CUSTOMER_ID
-
-            context = EnvironmentContextBuilderFactory.get(CloudProvider.AMAZON_WEB_SERVICES,
-                                                           IacType.CLOUDFORMATION) \
-                .build(account_data_dir_path=self.account_data,
-                       iac_file_path=cfn_template_yaml_file, account_id=self.account_id,
-                       salt=self.customer_id, **{'region': 'us-east-1'})
-
-            rule_result = self._execute_rule_and_assert(iac_type=IacType.CLOUDFORMATION, env_context=context,
-                                                        should_alert=should_alert,
-                                                        number_of_issue_items=number_of_issue_items)
-        return rule_result
 
 
 class GcpBaseRuleTest(BaseRuleTest, ABC):
