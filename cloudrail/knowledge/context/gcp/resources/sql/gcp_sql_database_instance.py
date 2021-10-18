@@ -6,6 +6,8 @@ from datetime import datetime
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
 
+import dataclasses
+
 
 class GcpSqlDBInstanceType(Enum):
     SQL_INSTANCE_TYPE_UNSPECIFIED = 'SQL_INSTANCE_TYPE_UNSPECIFIED'
@@ -306,3 +308,7 @@ class GcpSqlDatabaseInstance(GcpResource):
             return 'SQL Database Instance'
         else:
             return 'SQL Database Instances'
+
+    def to_drift_detection_object(self) -> dict:
+        return {'name': self.name,
+                'settings': self.settings and dataclasses.asdict(self.settings)}  # TODO: check drift detection on this resource
