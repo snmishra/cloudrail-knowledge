@@ -935,7 +935,7 @@ def build_ecs_task_definition(attributes: dict) -> EcsTaskDefinition:
                                             task_role_arn=attributes.get('taskRoleArn', None),
                                             execution_role_arn=attributes.get('executionRoleArn', None),network_mode=network_mode,
                                             container_definitions=container_definitions, efs_volume_data=efs_volume_data)
-    ecs_task_definition.status = TaskDefinitionStatus(attributes['status'])
+    ecs_task_definition.status = TaskDefinitionStatus(attributes.get('status', 'ACTIVE'))
     return ecs_task_definition
 
 
