@@ -6,6 +6,7 @@ import unittest
 import uuid
 from abc import ABC, abstractmethod
 from datetime import datetime
+from pathlib import Path
 from typing import Callable, Optional
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
@@ -19,7 +20,7 @@ from cloudrail.knowledge.utils.iac_fields_store import IacFieldsStore
 from cloudrail.knowledge.utils.utils import get_account_id
 
 
-def rule_test_wrapper(*args, **kwargs) -> Callable:
+def rule_test(*args, **kwargs) -> Callable:
     def _rules_tests_wrapper(test_case_func: Callable) -> Callable:
         def test_case_wrapper(self) -> None:
             # todo - support iac types executions
@@ -117,7 +118,7 @@ class BaseRuleTest(unittest.TestCase):
                                                  number_of_issue_items=number_of_issue_items)
         finally:
             TerraformResourceFinder.destroy()
-            if local_account_data:
+            if self.account_data and Path(self.account_data).parent.name == Path(local_account_data).parent.name:
                 shutil.rmtree(local_account_data, ignore_errors=True)
 
     @abstractmethod
