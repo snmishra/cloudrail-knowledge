@@ -12,6 +12,6 @@ class DisallowEc2ClassicModeRuleTest(AwsBaseRuleTest):
     def test_deploy_redshift_in_ec2_vpc_mode(self, rule_result: RuleResponse):
         pass
 
-    @rule_test('deploy_redshift_in_ec2_classic_mode')
+    @rule_test('deploy_redshift_in_ec2_classic_mode', True)
     def test_deploy_redshift_in_ec2_classic_mode(self, rule_result: RuleResponse):
         pass

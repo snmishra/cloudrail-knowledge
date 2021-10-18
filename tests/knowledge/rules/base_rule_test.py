@@ -23,7 +23,7 @@ from cloudrail.knowledge.utils.utils import get_account_id
 def rule_test(*args, **kwargs) -> Callable:
     def _rules_tests_wrapper(test_case_func: Callable) -> Callable:
         def test_case_wrapper(self) -> None:
-            rule_results: List[RuleResponse] = self.run_test_case(*args, **kwargs)
+            rule_results: List[RuleResponse] = self._run_test_case(*args, **kwargs)
             for rule_result in rule_results:
                 test_case_func(self, rule_result)
         return test_case_wrapper
@@ -62,7 +62,7 @@ class BaseRuleTest(unittest.TestCase):
         abs_path = os.path.abspath(dir_path)
         if os.path.isdir(abs_path):
             return abs_path
-        dir_path = os.path.join(self._find_caller_path(), dir_path)
+        dir_path = os.path.join(Path(inspect.getfile(self.__class__)).parent.absolute(), dir_path)
         if os.path.isdir(dir_path):
             return dir_path
         else:
@@ -74,19 +74,9 @@ class BaseRuleTest(unittest.TestCase):
             file.write(json.dumps(result))
         return dest_path
 
-    @staticmethod
-    def _find_caller_path() -> str:
-        current_file = os.path.abspath(__file__)
-        stack = inspect.stack()
-        for info in stack:
-            # search for the first file which is not the current one.
-            if os.path.abspath(info.filename) != os.path.abspath(current_file):
-                return os.path.dirname(info.filename)
-        return ''
-
-    def run_test_case(self, test_case_folder: str,
-                      should_alert: bool = True,
-                      number_of_issue_items: int = 1) -> List[RuleResponse]:
+    def _run_test_case(self, test_case_folder: str,
+                       should_alert: bool = True,
+                       number_of_issue_items: int = 1) -> List[RuleResponse]:
 
         local_account_data = None
         try:
@@ -208,8 +198,8 @@ class AwsBaseRuleTest(BaseRuleTest, ABC):
         current_path = os.path.dirname(os.path.abspath(__file__))
         return os.path.join(current_path, '../', 'testing-accounts-data', 'account-data-vpc-platform')
 
-    def run_test_case(self, test_case_folder: str, should_alert: bool = True, number_of_issue_items: int = 1) -> List[RuleResponse]:
-        rule_results: List[RuleResponse] = super().run_test_case(test_case_folder, should_alert, number_of_issue_items)
+    def _run_test_case(self, test_case_folder: str, should_alert: bool = True, number_of_issue_items: int = 1) -> List[RuleResponse]:
+        rule_results: List[RuleResponse] = super()._run_test_case(test_case_folder, should_alert, number_of_issue_items)
         cfn_rule_result: RuleResponse = self._run_cloudformation_test_case(test_case_folder, should_alert, number_of_issue_items)
         if cfn_rule_result:
             rule_results.append(cfn_rule_result)

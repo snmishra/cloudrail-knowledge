@@ -9,25 +9,25 @@ class TestDynamodbVpceGatewayRouteTableExposure(AwsBaseRuleTest):
         return DynamoDbVpcEndpointRouteTableExposureRule()
 
     @rule_test('invalid-dynamodb-vpce-association', True)
-    def test_invalid_dynamodb_vpce_association(self):  # table + eni + vpce + mismatch vpce
+    def test_invalid_dynamodb_vpce_association(self, rule_result: RuleResponse):  # table + eni + vpce + mismatch vpce
         pass
 
     @rule_test('no-tables-in-region', False)
-    def test_no_tables_in_region(self):  # eni + vpce + vpce route
+    def test_no_tables_in_region(self, rule_result: RuleResponse):  # eni + vpce + vpce route
         pass
 
     @rule_test('vpc-do-not-contains-any-eni', False)
-    def test_vpc_do_not_contains_any_eni(self):  # table + vpce + vpce route
+    def test_vpc_do_not_contains_any_eni(self, rule_result: RuleResponse):  # table + vpce + vpce route
         pass
 
     @rule_test('dynamodb-vpce-exist-with-route-table-association', False)
-    def test_dynamodb_vpce_exist_with_route_table_association(self):  # table + eni + vpce
+    def test_dynamodb_vpce_exist_with_route_table_association(self, rule_result: RuleResponse):  # table + eni + vpce
         pass
 
     @rule_test('vpc-has-dynamodb-vpce-gw-valid-route', False)
-    def test_vpc_has_dynamodb_vpce_gw_valid_route(self):  # table + eni + vpce + vpce route
+    def test_vpc_has_dynamodb_vpce_gw_valid_route(self, rule_result: RuleResponse):  # table + eni + vpce + vpce route
         pass
 
     @rule_test('dynamodb-vpce-gw-not-exist-with-route', False)
-    def test_dynamodb_vpce_gw_not_exist_with_route(self):  # table + eni + vpce route
+    def test_dynamodb_vpce_gw_not_exist_with_route(self, rule_result: RuleResponse):  # table + eni + vpce route
         pass
