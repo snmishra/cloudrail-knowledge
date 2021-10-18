@@ -112,7 +112,7 @@ class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
 
             return GcpSqlDBInstanceSettingsIPConfig(ipv4_enabled, private_network, require_ssl, authorized_networks)
 
-        return None
+        return GcpSqlDBInstanceSettingsIPConfig(True, None, None, [])
 
     def build_authorized_network(self, authorized_network: dict) -> GcpSqlDBInstanceIPConfigAuthNetworks:
         expiration_time = None
