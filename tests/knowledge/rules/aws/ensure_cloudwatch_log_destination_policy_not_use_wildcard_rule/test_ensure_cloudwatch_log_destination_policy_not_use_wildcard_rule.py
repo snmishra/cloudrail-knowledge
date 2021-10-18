@@ -76,4 +76,3 @@ class TestEnsureCloudWatchLogDestinationPolicyNotUseWildcard(AwsBaseRuleTest):
                         " is using principal `CanonicalUser: *`, without any condition" in rule_result.issues[0].evidence)
         self.assertEqual(rule_result.issues[0].exposed.get_type(), 'CloudWatch Logs Destination')
         self.assertEqual(rule_result.issues[0].violating.get_type(), 'CloudWatch Logs Destination policy')
-TestS3BucketPolicyVpcEndpoint
