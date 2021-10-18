@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Optional
 
+import dataclasses
 from cloudrail.knowledge.context.aws.resources.aws_client import AwsClient
 from cloudrail.knowledge.context.aws.resources.ecs.ecs_constants import NetworkMode
 from cloudrail.knowledge.context.aws.resources.iam.role import Role
@@ -52,6 +53,7 @@ class EcsTaskDefinition(AwsResource):
             efs_volume_data: The EFS configuration in the task, if one is configured.
             is_volume_efs: True if there is EFS configured.
     """
+
     def __init__(self, task_arn: str, family: str, revision: str, account: str, region: str, efs_volume_data: List[EfsVolume] = None,
                  task_role_arn: str = None, execution_role_arn: str = None, network_mode: NetworkMode = None, is_volume_efs: bool = False,
                  container_definitions: List[ContainerDefinition] = None) -> None:
@@ -97,6 +99,17 @@ class EcsTaskDefinition(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'task_arn': self.task_arn,
+                'family': self.family,
+                'revision': self.revision,
+                'efs_volume_data': [dataclasses.asdict(data) for data in self.efs_volume_data],
+                'task_role_arn': self.task_role_arn,
+                'execution_role_arn': self.execution_role_arn,
+                'network_mode': self.network_mode.value,
+                'is_volume_efs': self.is_volume_efs,
+                'container_definitions': [dataclasses.asdict(definition) for definition in self.container_definitions]}
 
 
 class IEcsInstance(AwsClient):
