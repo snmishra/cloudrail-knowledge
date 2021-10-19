@@ -27,7 +27,7 @@ from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import Lamb
 from cloudrail.knowledge.context.connection import PolicyEvaluation
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.batch.batch_compute_environment import BatchComputeEnvironment
-from cloudrail.knowledge.context.aws.resources.cloudfront.cloud_front_distribution_list import CloudFrontDistribution, OriginConfig
+from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CloudFrontDistribution, OriginConfig
 from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
 from cloudrail.knowledge.context.aws.resources.cloudfront.origin_access_identity import OriginAccessIdentity
 from cloudrail.knowledge.context.aws.resources.cloudhsmv2.cloudhsm_v2_cluster import CloudHsmV2Cluster
@@ -108,7 +108,7 @@ from cloudrail.knowledge.context.aws.resources.iam.iam_instance_profile import I
 from cloudrail.knowledge.context.aws.resources.iam.iam_policy_attachment import IamPolicyAttachment
 from cloudrail.knowledge.context.aws.resources.iam.iam_user import IamUser
 from cloudrail.knowledge.context.aws.resources.iam.iam_user_group_membership import IamUserGroupMembership
-from cloudrail.knowledge.context.aws.resources.iam.policy import AssumeRolePolicy, InlinePolicy, ManagedPolicy, S3AccessPointPolicy, S3Policy
+from cloudrail.knowledge.context.aws.resources.iam.policy import AssumeRolePolicy, InlinePolicy, ManagedPolicy
 from cloudrail.knowledge.context.aws.resources.iam.policy_group_attachment import PolicyGroupAttachment
 from cloudrail.knowledge.context.aws.resources.iam.policy_role_attachment import PolicyRoleAttachment
 from cloudrail.knowledge.context.aws.resources.iam.policy_user_attachment import PolicyUserAttachment
@@ -143,6 +143,8 @@ from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_encryption import S3
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_logging import S3BucketLogging
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_object import S3BucketObject
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_versioning import S3BucketVersioning
+from cloudrail.knowledge.context.aws.resources.s3.s3_access_point_policy import S3AccessPointPolicy
+from cloudrail.knowledge.context.aws.resources.s3.s3_policy import S3Policy
 from cloudrail.knowledge.context.aws.resources.s3outposts.s3outpost_endpoint import S3OutpostEndpoint
 from cloudrail.knowledge.context.aws.resources.sagemaker.sagemaker_notebook_instance import SageMakerNotebookInstance
 from cloudrail.knowledge.context.aws.resources.secretsmanager.secrets_manager_secret import SecretsManagerSecret
@@ -153,7 +155,7 @@ from cloudrail.knowledge.context.aws.resources.sqs.sqs_queue_policy import SqsQu
 from cloudrail.knowledge.context.aws.resources.ssm.ssm_parameter import SsmParameter
 from cloudrail.knowledge.context.aws.resources.worklink.worklink_fleet import WorkLinkFleet
 from cloudrail.knowledge.context.aws.resources.workspaces.workspace_directory import WorkspaceDirectory
-from cloudrail.knowledge.context.aws.resources.workspaces.workspaces import Workspace
+from cloudrail.knowledge.context.aws.resources.workspaces.workspace import Workspace
 from cloudrail.knowledge.context.aws.resources.xray.xray_encryption import XrayEncryption
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
@@ -792,7 +794,7 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     @staticmethod
     def _assign_s3_access_point_policy(access_point: S3BucketAccessPoint, policies: List[S3AccessPointPolicy]):
-        access_point.policy = ResourceInvalidator.get_by_logic(
+        access_point.resource_based_policy = ResourceInvalidator.get_by_logic(
             lambda: next((policy for policy in policies if policy.access_point_name == access_point.name), None),
             False
         )
@@ -1556,6 +1558,8 @@ class AwsRelationsAssigner(DependencyInvocation):
             if subnet and nat_gw.is_managed_by_iac:
                 private_ip_address = nat_gw.private_ip or ResourcesAssignerUtil.get_random_ip_in_subnet(subnet.cidr_block)
                 self.pseudo_builder.create_eni(nat_gw, subnet, [], True, private_ip_address, nat_gw.public_ip, 'pseudo NAT Gateways eni')
+                if not nat_gw.private_ip:
+                    nat_gw.private_ip = private_ip_address
             else:
                 nat_gw.add_invalidation('Could not associate a network interface')
 
@@ -1582,13 +1586,15 @@ class AwsRelationsAssigner(DependencyInvocation):
         def get_launch_template():
             launch_template_data = auto_scaling_group.raw_data.launch_template_data
             if launch_template_data:
-                templates = [lt for lt in launch_templates if lt.template_id == launch_template_data.template_id]
+                templates = [lt for lt in launch_templates
+                             if launch_template_data.template_id == lt.template_id
+                             or launch_template_data.template_name == lt.name]
                 if launch_template_data.version == '$Latest':
                     return max(templates, key=lambda x: x.version_number)
                 else:
                     # If we dont have cloudmapper data and the auto_scaling_group is using an older version and not the latest,
                     # then we wont actually know what is the launch_template is should use, so we do not assign any launch_template to it.
-                    return next((t for t in templates if str(t.version_number) == launch_template_data.version), None)
+                    return next((t for t in templates if str(t.version_number) == str(launch_template_data.version)), None)
             return None
 
         auto_scaling_group.launch_template = ResourceInvalidator.get_by_logic(get_launch_template, False)
@@ -1758,26 +1764,21 @@ class AwsRelationsAssigner(DependencyInvocation):
     @staticmethod
     def _assign_policy_data_to_sqs_queue(queue: SqsQueue, sqs_queues_policies: List[SqsQueuePolicy]):
         def get_policy():
-            if queue.policy:
-                return queue.policy
+            if queue.resource_based_policy:
+                return queue.resource_based_policy
 
             for policy in sqs_queues_policies:
                 if not policy.statements:
                     continue
-                # First check - Live-env scenario, both names equal
-                # Second check - TF scenario, check the reference equal the id
-                # Third check - TF scenario, if the queue URL is used for existing queue
-                if policy.queue_name == queue.queue_name \
-                        or queue.queue_url == policy.queue_name \
-                        or any(q_attribute in policy.queue_name for q_attribute in (queue.account, queue.region, queue.queue_name)):
+                if policy.queue_name in (queue.queue_name, queue.queue_url):
                     return policy
             return None
 
-        queue.policy = ResourceInvalidator.get_by_logic(get_policy, False)  ### TODO: Should invalidate queue?
+        queue.resource_based_policy = ResourceInvalidator.get_by_logic(get_policy, False)  ### TODO: Should invalidate queue?
 
     @staticmethod
     def _assign_policy_data_to_ecr_repository(repo: EcrRepository, repo_policies: List[EcrRepositoryPolicy]):
-        repo.policy = ResourceInvalidator.get_by_logic(
+        repo.resource_based_policy = ResourceInvalidator.get_by_logic(
             lambda: next((repo_policy for repo_policy in repo_policies if repo_policy.statements
                           and repo.repo_name == repo_policy.repo_name), None),
             False
@@ -1797,7 +1798,7 @@ class AwsRelationsAssigner(DependencyInvocation):
     @staticmethod
     def _assign_policy_data_to_cloudwatch_logs_destination(cloudwatch_dest: CloudWatchLogsDestination,
                                                            cloudwatch_dest_policies: List[CloudWatchLogsDestinationPolicy]):
-        cloudwatch_dest.policy = ResourceInvalidator.get_by_logic(
+        cloudwatch_dest.resource_based_policy = ResourceInvalidator.get_by_logic(
             lambda: next((cloudwatch_dest_policy for cloudwatch_dest_policy in cloudwatch_dest_policies
                           if cloudwatch_dest_policy.statements and
                           cloudwatch_dest.name == cloudwatch_dest_policy.destination_name), None),
@@ -1814,7 +1815,7 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     @staticmethod
     def _assign_policy_data_to_kms_keys(kms_key: KmsKey, kms_policies: List[KmsKeyPolicy]):
-        kms_key.policy = ResourceInvalidator.get_by_logic(
+        kms_key.resource_based_policy = ResourceInvalidator.get_by_logic(
             lambda: next((kms_policy for kms_policy in kms_policies
                           if kms_policy.statements and kms_policy.key_id == kms_key.key_id), None),
             False
@@ -1822,8 +1823,8 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     @staticmethod
     def _assign_policy_data_to_elastic_search_domain(es_domain: ElasticSearchDomain, es_policies: List[ElasticSearchDomainPolicy]):
-        if not es_domain.policy:
-            es_domain.policy = ResourceInvalidator.get_by_logic(
+        if not es_domain.resource_based_policy:
+            es_domain.resource_based_policy = ResourceInvalidator.get_by_logic(
                 lambda: next((es_policy for es_policy in es_policies
                               if es_policy.statements and es_policy.domain_name == es_domain.name), None),
                 False
@@ -1901,7 +1902,7 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     @staticmethod
     def _assign_glacier_vault_policies(glacier_vault: GlacierVault, gv_policies: List[GlacierVaultPolicy]):
-        glacier_vault.policy = ResourceInvalidator.get_by_logic(
+        glacier_vault.resource_based_policy = ResourceInvalidator.get_by_logic(
             lambda: next((gv_policy for gv_policy in gv_policies if gv_policy.statements
                           and gv_policy.vault_arn == glacier_vault.arn), None),
             False
@@ -1909,7 +1910,7 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     @staticmethod
     def _assign_file_system_policies(efs_fs: ElasticFileSystem, efs_policies: List[EfsPolicy]):
-        efs_fs.policy = ResourceInvalidator.get_by_logic(
+        efs_fs.resource_based_policy = ResourceInvalidator.get_by_logic(
             lambda: next((efs_policy for efs_policy in efs_policies
                           if efs_policy.statements and efs_policy.efs_id == efs_fs.efs_id), None),
             False
@@ -1917,8 +1918,8 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     @staticmethod
     def _assign_secrets_manager_secrets_policies(sm_secret: SecretsManagerSecret, sm_secret_policies: List[SecretsManagerSecretPolicy]):
-        if not sm_secret.policy:
-            sm_secret.policy = ResourceInvalidator.get_by_logic(
+        if not sm_secret.resource_based_policy:
+            sm_secret.resource_based_policy = ResourceInvalidator.get_by_logic(
                 lambda: next((sm_secret_policy for sm_secret_policy in sm_secret_policies if sm_secret_policy.secret_arn == sm_secret.arn), None),
                 False
             )

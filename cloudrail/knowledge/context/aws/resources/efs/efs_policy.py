@@ -1,17 +1,22 @@
 from typing import List
 
-from cloudrail.knowledge.context.aws.resources.iam.policy import Policy
+from cloudrail.knowledge.context.aws.resources.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 
 
-class EfsPolicy(Policy):
+class EfsPolicy(ResourceBasedPolicy):
     """
         Attributes:
             efs_id: The ID of the EFS the policy is a part of.
             policy_statements: The statements included in the policy.
             raw_document: The JSON content of the policy.
     """
+
+    def to_drift_detection_object(self) -> dict:
+        return {'efs_id': self.efs_id,
+                'policy_statements': [statement.to_dict() for statement in self.statements]}
+
     def __init__(self,
                  efs_id: str,
                  policy_statements: List[PolicyStatement],

@@ -13,6 +13,7 @@ class ConfigAggregator(AwsResource):
             account_aggregation_all_regions_enabled: An indication if the account to aggregate data is enabled on all regions.
             organization_aggregation_all_regions_enabled: An indication if the organization to aggregate data is enabled on all regions.
     """
+
     def __init__(self,
                  account: str,
                  region: str,
@@ -31,7 +32,7 @@ class ConfigAggregator(AwsResource):
         self.organization_aggregation_all_regions_enabled: Optional[bool] = organization_aggregation_all_regions_enabled
 
     def get_keys(self) -> List[str]:
-        return [self.arn]
+        return [self.account, self.region, self.aggregator_name]
 
     def get_name(self) -> str:
         return self.aggregator_name
@@ -53,3 +54,10 @@ class ConfigAggregator(AwsResource):
             return self.account_aggregation_all_regions_enabled
         else:
             return self.organization_aggregation_all_regions_enabled
+
+    def to_drift_detection_object(self) -> dict:
+        return {'aggregator_name': self.aggregator_name,
+                'account_aggregation_used': self.account_aggregation_used,
+                'organization_aggregation_used': self.organization_aggregation_used,
+                'account_aggregation_all_regions_enabled': self.account_aggregation_all_regions_enabled,
+                'organization_aggregation_all_regions_enabled': self.organization_aggregation_all_regions_enabled}

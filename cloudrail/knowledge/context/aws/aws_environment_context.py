@@ -25,7 +25,7 @@ from cloudrail.knowledge.context.aws.resources.aws_client import AwsClient
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.batch.batch_compute_environment import BatchComputeEnvironment
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_info import CloudformationResourceInfo
-from cloudrail.knowledge.context.aws.resources.cloudfront.cloud_front_distribution_list import CloudFrontDistribution
+from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CloudFrontDistribution
 from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
 from cloudrail.knowledge.context.aws.resources.cloudfront.origin_access_identity import OriginAccessIdentity
 from cloudrail.knowledge.context.aws.resources.cloudhsmv2.cloudhsm_v2_cluster import CloudHsmV2Cluster
@@ -114,7 +114,7 @@ from cloudrail.knowledge.context.aws.resources.iam.iam_policy_attachment import 
 from cloudrail.knowledge.context.aws.resources.iam.iam_user import IamUser
 from cloudrail.knowledge.context.aws.resources.iam.iam_user_group_membership import IamUserGroupMembership
 from cloudrail.knowledge.context.aws.resources.iam.iam_users_login_profile import IamUsersLoginProfile
-from cloudrail.knowledge.context.aws.resources.iam.policy import AssumeRolePolicy, InlinePolicy, ManagedPolicy, S3Policy, S3AccessPointPolicy, Policy
+from cloudrail.knowledge.context.aws.resources.iam.policy import AssumeRolePolicy, InlinePolicy, ManagedPolicy, Policy
 from cloudrail.knowledge.context.aws.resources.iam.policy_group_attachment import PolicyGroupAttachment
 from cloudrail.knowledge.context.aws.resources.iam.policy_role_attachment import PolicyRoleAttachment
 from cloudrail.knowledge.context.aws.resources.iam.policy_user_attachment import PolicyUserAttachment
@@ -150,6 +150,8 @@ from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_logging import S3Buc
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_object import S3BucketObject
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_regions import S3BucketRegions
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_versioning import S3BucketVersioning
+from cloudrail.knowledge.context.aws.resources.s3.s3_access_point_policy import S3AccessPointPolicy
+from cloudrail.knowledge.context.aws.resources.s3.s3_policy import S3Policy
 from cloudrail.knowledge.context.aws.resources.s3outposts.s3outpost_endpoint import S3OutpostEndpoint
 from cloudrail.knowledge.context.aws.resources.sagemaker.sagemaker_endpoint_config import SageMakerEndpointConfig
 from cloudrail.knowledge.context.aws.resources.sagemaker.sagemaker_notebook_instance import SageMakerNotebookInstance
@@ -161,7 +163,7 @@ from cloudrail.knowledge.context.aws.resources.sqs.sqs_queue_policy import SqsQu
 from cloudrail.knowledge.context.aws.resources.ssm.ssm_parameter import SsmParameter
 from cloudrail.knowledge.context.aws.resources.worklink.worklink_fleet import WorkLinkFleet
 from cloudrail.knowledge.context.aws.resources.workspaces.workspace_directory import WorkspaceDirectory
-from cloudrail.knowledge.context.aws.resources.workspaces.workspaces import Workspace
+from cloudrail.knowledge.context.aws.resources.workspaces.workspace import Workspace
 from cloudrail.knowledge.context.aws.resources.xray.xray_encryption import XrayEncryption
 from cloudrail.knowledge.context.managed_resources_summary import ManagedResourcesSummary
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult, _TMergeAble

@@ -1,23 +1,22 @@
 from typing import List, Optional
 
+from cloudrail.knowledge.context.aws.resources.aws_policied_resource import PoliciedResource
 from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
-from cloudrail.knowledge.context.aws.resources.ecr.ecr_repository_policy import EcrRepositoryPolicy
-from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 
 
-class EcrRepository(AwsResource):
+class EcrRepository(PoliciedResource):
     """
         Attributes:
             repo_name: The name of the ECR repository.
             arn: The ARN of the repository.
-            policy: The resource policy of the ECR.
             encryption_type: The type of encryption used by the ECR repository.
             kms_key_id: The KMS key ID used to encrypt the ECR repository, if the encryption type is KMS.
             kms_data: The actual KmsKey object referenced by the KMS ID.
             image_tag_mutability: Image tag mutability setting for the ECR repository.
             is_image_scan_on_push: An indication whether images are scanned after being pushed to the ECR repository.
     """
+
     def __init__(self,
                  repo_name: str,
                  arn: str,
@@ -30,7 +29,6 @@ class EcrRepository(AwsResource):
         super().__init__(account, region, AwsServiceName.AWS_ECR_REPOSITORY)
         self.repo_name: str = repo_name
         self.arn: str = arn
-        self.policy: EcrRepositoryPolicy = None
         self.encryption_type: str = encryption_type
         self.kms_key_id: str = kms_key_id
         self.kms_data: Optional[KmsKey] = None
@@ -59,3 +57,10 @@ class EcrRepository(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'repo_name': self.repo_name,
+                'image_tag_mutability': self.image_tag_mutability,
+                'is_image_scan_on_push': self.is_image_scan_on_push,
+                'encryption_type': self.encryption_type,
+                'kms_key_id': self.kms_key_id}

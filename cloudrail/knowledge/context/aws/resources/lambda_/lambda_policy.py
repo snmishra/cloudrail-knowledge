@@ -3,12 +3,12 @@ from typing import List, Optional
 
 from cloudrail.knowledge.context.aws.resources.lambda_.lambda_alias import create_lambda_function_arn
 from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement
-from cloudrail.knowledge.context.aws.resources.iam.policy import Policy
+from cloudrail.knowledge.context.aws.resources.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.utils.utils import hash_list
 
 
-class LambdaPolicy(Policy):
+class LambdaPolicy(ResourceBasedPolicy):
     """
         Attributes:
             function_name: The name of the Lambda Function the policy statements are for.
@@ -50,3 +50,8 @@ class LambdaPolicy(Policy):
     @property
     def lambda_func_arn(self) -> str:
         return create_lambda_function_arn(self.account, self.region, self.function_name, self.qualifier)
+
+    def to_drift_detection_object(self) -> dict:
+        return {'function_name': self.function_name,
+                'qualifier': self.qualifier,
+                'policy_statements': [statement.to_dict() for statement in self.statements]}

@@ -2,9 +2,10 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import List
 
+import dataclasses
+from cloudrail.knowledge.context.aws.resources.aws_policied_resource import PoliciedResource
+from cloudrail.knowledge.context.aws.resources.s3.s3_access_point_policy import S3AccessPointPolicy
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
-from cloudrail.knowledge.context.aws.resources.iam.policy import S3AccessPointPolicy
-from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 
 
 class S3BucketAccessPointNetworkOriginType(str, Enum):
@@ -18,7 +19,7 @@ class S3BucketAccessPointNetworkOrigin:
     vpc_id: str
 
 
-class S3BucketAccessPoint(AwsResource):
+class S3BucketAccessPoint(PoliciedResource):
     """
         Attributes:
             bucket_name: The name of the bucket this access point applies to.
@@ -27,14 +28,14 @@ class S3BucketAccessPoint(AwsResource):
             arn: The ARN of the access point.
             policy: The policy applied to the access point.
     """
+
     def __init__(self, bucket_name: str, name: str, network_origin: S3BucketAccessPointNetworkOrigin,
                  arn: str, region: str, account: str, policy: S3AccessPointPolicy = None):
-        super().__init__(account, region, AwsServiceName.AWS_S3_ACCESS_POINT)
+        super().__init__(account, region, AwsServiceName.AWS_S3_ACCESS_POINT, policy)
         self.bucket_name = bucket_name
         self.name = name
         self.network_origin = network_origin
         self.arn = arn
-        self.policy: S3AccessPointPolicy = policy
 
     def get_keys(self) -> List[str]:
         return [self.arn]
@@ -51,7 +52,7 @@ class S3BucketAccessPoint(AwsResource):
             return 'S3 Access Points'
 
     def get_cloud_resource_url(self) -> str:
-        return 'https://s3.console.aws.amazon.com/s3/ap/{0}/{1}?region={2}'\
+        return 'https://s3.console.aws.amazon.com/s3/ap/{0}/{1}?region={2}' \
             .format(self.account, self.name, self.region)
 
     def get_arn(self) -> str:
@@ -60,3 +61,8 @@ class S3BucketAccessPoint(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def to_drift_detection_object(self) -> dict:
+        return {'bucket_name': self.bucket_name,
+                'name': self.name,
+                'network_origin': dataclasses.asdict(self.network_origin)}

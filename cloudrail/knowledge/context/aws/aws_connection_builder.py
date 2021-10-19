@@ -3,11 +3,12 @@ from typing import Callable, Dict, List, Optional, Set, Tuple, Union
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.aws.resources.aws_client import AwsClient
+from cloudrail.knowledge.context.aws.resources.aws_policied_resource import PoliciedResource
 from cloudrail.knowledge.context.connection import ConnectionProperty, ConnectionType, PolicyConnectionProperty, PortConnectionProperty, \
     PrivateConnectionDetail
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
-from cloudrail.knowledge.context.aws.resources.cloudfront.cloud_front_distribution_list import CloudFrontDistribution, OriginConfig
+from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CloudFrontDistribution, OriginConfig
 from cloudrail.knowledge.context.aws.resources.ec2.ec2_instance import Ec2Instance
 from cloudrail.knowledge.context.aws.resources.ec2.internet_gateway import InternetGateway
 from cloudrail.knowledge.context.aws.resources.ec2.nat_gateways import NatGateways
@@ -38,7 +39,6 @@ from cloudrail.knowledge.context.aws.resources.networking_config.network_entity 
 from cloudrail.knowledge.context.aws.resources.prefix_lists import PrefixList
 from cloudrail.knowledge.context.aws.resources.rds.rds_instance import RdsInstance
 from cloudrail.knowledge.context.aws.resources.redshift.redshift import RedshiftCluster
-from cloudrail.knowledge.context.aws.resources.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket import S3Bucket
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_access_point import S3BucketAccessPointNetworkOriginType
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
@@ -624,7 +624,7 @@ class AwsConnectionBuilder(DependencyInvocation):
             evaluation_result = PolicyEvaluator.with_additional_policies(None,
                                                                          bucket,
                                                                          evaluation_result,
-                                                                         [access_point.policy])
+                                                                         [access_point.resource_based_policy])
             if is_any_action_allowed(evaluation_result):
                 evaluation_results.append(evaluation_result)
         return PublicConnectionData(bucket.bucket_name, PolicyConnectionProperty(evaluation_results))
@@ -678,7 +678,7 @@ class AwsConnectionBuilder(DependencyInvocation):
                     ap_evaluation_result = PolicyEvaluator.with_additional_policies(role,
                                                                                     bucket,
                                                                                     vpce_evaluation_result,
-                                                                                    [access_point.policy])
+                                                                                    [access_point.resource_based_policy])
                     if is_any_action_allowed(ap_evaluation_result):
                         vpce_evaluation_results.append(ap_evaluation_result)
 
@@ -705,7 +705,7 @@ class AwsConnectionBuilder(DependencyInvocation):
                     ap_evaluation_result = PolicyEvaluator.with_additional_policies(role,
                                                                                     bucket,
                                                                                     identity_evaluation_result,
-                                                                                    [access_point.policy])
+                                                                                    [access_point.resource_based_policy])
                     if is_any_action_allowed(ap_evaluation_result):
                         policy_evaluation_results.append(ap_evaluation_result)
 
@@ -783,7 +783,7 @@ class AwsConnectionBuilder(DependencyInvocation):
                     policy_evaluation_result = role.policy_evaluation_result_map[target_resource.get_arn()]
                 else:
                     resource_based_policies: List[Policy] = [target_resource.resource_based_policy] \
-                        if isinstance(target_resource, ResourceBasedPolicy) and target_resource.resource_based_policy \
+                        if isinstance(target_resource, PoliciedResource) and target_resource.resource_based_policy \
                         else []
                     policy_evaluation_result = PolicyEvaluator.evaluate_actions(role,
                                                                                 target_resource,

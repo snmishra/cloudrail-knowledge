@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_integration import ApiGatewayIntegration, IntegrationType
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method import ApiGatewayMethod
-from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method_settings import ApiGatewayMethodSettings, RestApiMethods
+from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method_settings import ApiGatewayMethodSettings, RestApiMethod
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_stage import AccessLogsSettings, ApiGatewayStage
 from cloudrail.knowledge.context.aws.resources.apigateway.rest_api_gw import ApiGatewayType, RestApiGw
 from cloudrail.knowledge.context.aws.resources.apigateway.rest_api_gw_domain import RestApiGwDomain
@@ -18,7 +18,7 @@ from cloudrail.knowledge.context.aws.resources.athena.athena_workgroup import At
 from cloudrail.knowledge.context.aws.resources.autoscaling.launch_configuration import AutoScalingGroup, LaunchConfiguration
 from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template import LaunchTemplate
 from cloudrail.knowledge.context.aws.resources.batch.batch_compute_environment import BatchComputeEnvironment
-from cloudrail.knowledge.context.aws.resources.cloudfront.cloud_front_distribution_list import CacheBehavior, CloudFrontDistribution, OriginConfig, \
+from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CacheBehavior, CloudFrontDistribution, OriginConfig, \
     ViewerCertificate
 from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
 from cloudrail.knowledge.context.aws.resources.cloudfront.origin_access_identity import OriginAccessIdentity
@@ -110,7 +110,7 @@ from cloudrail.knowledge.context.aws.resources.iam.iam_policy_attachment import 
 from cloudrail.knowledge.context.aws.resources.iam.iam_user import IamUser
 from cloudrail.knowledge.context.aws.resources.iam.iam_user_group_membership import IamUserGroupMembership
 from cloudrail.knowledge.context.aws.resources.iam.iam_users_login_profile import IamUsersLoginProfile
-from cloudrail.knowledge.context.aws.resources.iam.policy import AssumeRolePolicy, InlinePolicy, ManagedPolicy, Policy, S3AccessPointPolicy, S3Policy
+from cloudrail.knowledge.context.aws.resources.iam.policy import AssumeRolePolicy, InlinePolicy, ManagedPolicy, Policy
 from cloudrail.knowledge.context.aws.resources.iam.policy_group_attachment import PolicyGroupAttachment
 from cloudrail.knowledge.context.aws.resources.iam.policy_role_attachment import PolicyRoleAttachment
 from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement, StatementCondition, StatementEffect
@@ -140,6 +140,8 @@ from cloudrail.knowledge.context.aws.resources.redshift.redshift_subnet_group im
 from cloudrail.knowledge.context.aws.resources.s3.public_access_block_settings import PublicAccessBlockLevel, PublicAccessBlockSettings
 from cloudrail.knowledge.context.aws.resources.s3.s3_acl import GranteeTypes, S3ACL, S3Permission, S3PredefinedGroups
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket import S3Bucket
+from cloudrail.knowledge.context.aws.resources.s3.s3_policy import S3Policy
+from cloudrail.knowledge.context.aws.resources.s3.s3_access_point_policy import S3AccessPointPolicy
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_access_point import S3BucketAccessPoint, S3BucketAccessPointNetworkOrigin, \
     S3BucketAccessPointNetworkOriginType
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_encryption import S3BucketEncryption
@@ -158,7 +160,7 @@ from cloudrail.knowledge.context.aws.resources.sqs.sqs_queue_policy import SqsQu
 from cloudrail.knowledge.context.aws.resources.ssm.ssm_parameter import SsmParameter
 from cloudrail.knowledge.context.aws.resources.worklink.worklink_fleet import WorkLinkFleet
 from cloudrail.knowledge.context.aws.resources.workspaces.workspace_directory import WorkspaceDirectory
-from cloudrail.knowledge.context.aws.resources.workspaces.workspaces import Workspace
+from cloudrail.knowledge.context.aws.resources.workspaces.workspace import Workspace
 from cloudrail.knowledge.context.aws.resources.xray.xray_encryption import XrayEncryption
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
 from cloudrail.knowledge.utils import hash_utils
@@ -577,7 +579,8 @@ def build_s3_acl(attributes: dict) -> List[S3ACL]:
         if canned_acl == 'public-read':
             return [S3ACL(S3Permission['READ'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region)]
         if canned_acl == 'public-read-write':
-            return [S3ACL(S3Permission['READ_WRITE'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region)]
+            return [S3ACL(S3Permission['READ'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region),
+                    S3ACL(S3Permission['WRITE'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region)]
         if canned_acl == 'authenticated-read':
             return [S3ACL(S3Permission['READ'], GranteeTypes.GROUP, S3PredefinedGroups.AUTHENTICATED_USERS.value, bucket_name, account, region)]
         if canned_acl == 'log-delivery-write':
@@ -898,7 +901,8 @@ def build_auto_scaling_group(attributes: dict) -> AutoScalingGroup:
                             account=attributes['account_id']) \
         .with_raw_data(launch_configuration_name=attributes['launch_configuration'],
                        launch_template_id=launch_template.get('id'),
-                       launch_template_version=launch_template.get('version'))
+                       launch_template_version=launch_template.get('version'),
+                       launch_template_name=launch_template.get('name'))
 
 
 def build_redshift_cluster(attributes: dict) -> RedshiftCluster:
@@ -1252,10 +1256,10 @@ def build_elastic_search_domain(attributes: dict) -> ElasticSearchDomain:
     else:
         policy = _build_policy_statements_from_str(attributes, 'access_policies')
         _add_resource_for_es_domain_policy_statements(policy, attributes['account_id'], attributes['region'], attributes['domain_name'])
-        return_statement.policy = ElasticSearchDomainPolicy(attributes['domain_name'],
-                                                            policy,
-                                                            _get_known_value(attributes, 'access_policies'),
-                                                            attributes['account_id'])
+        return_statement.resource_based_policy = ElasticSearchDomainPolicy(attributes['domain_name'],
+                                                                           policy,
+                                                                           _get_known_value(attributes, 'access_policies'),
+                                                                           attributes['account_id'])
         return return_statement
 
 
@@ -1443,7 +1447,7 @@ def build_api_gateway_method_settings(attributes: dict) -> ApiGatewayMethodSetti
     caching_encrypted = get_dict_value(attributes['settings'][0], 'cache_data_encrypted', False)
     method_path = attributes['method_path']
     http_method = method_path.split('/')[-1]
-    http_method = RestApiMethods.ANY if http_method == '*' else RestApiMethods(http_method)
+    http_method = RestApiMethod.ANY if http_method == '*' else RestApiMethod(http_method)
     return ApiGatewayMethodSettings(attributes['rest_api_id'],
                                     attributes['stage_name'],
                                     method_path,
@@ -1457,7 +1461,7 @@ def build_api_gateway_method_settings(attributes: dict) -> ApiGatewayMethodSetti
 def build_api_gateway_method(attributes: dict) -> ApiGatewayMethod:
     return ApiGatewayMethod(account=attributes['account_id'], region=attributes['region'],
                             rest_api_id=attributes['rest_api_id'], resource_id=attributes['resource_id'],
-                            http_method=RestApiMethods(attributes['http_method']),
+                            http_method=RestApiMethod(attributes['http_method']),
                             authorization=attributes['authorization'])
 
 
@@ -1474,8 +1478,8 @@ def build_api_gateway_integration(attributes: dict) -> ApiGatewayIntegration:
         uri = build_lambda_function_integration_endpoint_uri(region, lambda_func_arn)
     return ApiGatewayIntegration(account=account_id, region=region,
                                  rest_api_id=attributes['rest_api_id'], resource_id=attributes['resource_id'],
-                                 request_http_method=RestApiMethods(attributes['http_method']),
-                                 integration_http_method=RestApiMethods(integration_http_method),
+                                 request_http_method=RestApiMethod(attributes['http_method']),
+                                 integration_http_method=RestApiMethod(integration_http_method),
                                  integration_type=IntegrationType(attributes['type']),
                                  uri=uri)
 
@@ -1667,10 +1671,10 @@ def build_sqs_queue(attributes: dict) -> SqsQueue:
                                 attributes['region'],
                                 attributes['id'])
     if _get_known_value(attributes, 'policy'):
-        return_statement.policy = SqsQueuePolicy(attributes.get('name'),
-                                                 _build_policy_statements_from_str(attributes, 'policy'),
-                                                 _get_known_value(attributes, 'policy'),
-                                                 attributes['account_id'])
+        return_statement.resource_based_policy = SqsQueuePolicy(attributes.get('name'),
+                                                                _build_policy_statements_from_str(attributes, 'policy'),
+                                                                _get_known_value(attributes, 'policy'),
+                                                                attributes['account_id'])
     if return_statement.encrypted_at_rest:
         return_statement.kms_key = attributes.get('kms_master_key_id')
     return return_statement
@@ -1932,10 +1936,10 @@ def build_glue_data_catalog_policy(attributes: dict) -> GlueDataCatalogPolicy:
 def build_secrets_manager_secret(attributes: dict) -> SecretsManagerSecret:
     secrets_manager_secret_resource = SecretsManagerSecret(attributes['name'], attributes['arn'], attributes['region'], attributes['account_id'])
     if _get_known_value(attributes, 'policy'):
-        secrets_manager_secret_resource.policy = SecretsManagerSecretPolicy(attributes['arn'],
-                                                                            build_policy_statements_from_str(attributes['policy']),
-                                                                            _get_known_value(attributes, 'policy'),
-                                                                            attributes['account_id'])
+        secrets_manager_secret_resource.resource_based_policy = SecretsManagerSecretPolicy(attributes['arn'],
+                                                                                           build_policy_statements_from_str(attributes['policy']),
+                                                                                           _get_known_value(attributes, 'policy'),
+                                                                                           attributes['account_id'])
     if attributes.get('kms_key_id'):
         secrets_manager_secret_resource.kms_key = attributes.get('kms_key_id')
     return secrets_manager_secret_resource
@@ -2218,7 +2222,7 @@ def build_api_gateway_v2_integration(attributes: dict) -> ApiGatewayV2Integratio
                                    attributes['api_id'],
                                    attributes['connection_id'],
                                    attributes['id'],
-                                   RestApiMethods(attributes.get('integration_method')),
+                                   RestApiMethod(attributes.get('integration_method')),
                                    IntegrationType(attributes['integration_type']),
                                    attributes.get('integration_uri'))
 

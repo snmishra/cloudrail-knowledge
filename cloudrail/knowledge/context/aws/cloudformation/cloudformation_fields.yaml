@@ -145,6 +145,71 @@ AWS::Batch::ComputeEnvironment:
             - ComputeEnvironmentName
             - ComputeResources
 
+AWS::EC2::NatGateway:
+    known_fields:
+        pass:
+            - AllocationId
+            - SubnetId
+
+AWS::DynamoDB::Table:
+    known_fields:
+        pass:
+            - TableName
+            - BillingMode
+            - KeySchema
+            - SSESpecification
+            - ProvisionedThroughput
+            - AttributeDefinitions
+
+AWS::Config::ConfigurationAggregator:
+    known_fields:
+        pass:
+            - ConfigurationAggregatorName
+            - AccountAggregationSources
+            - OrganizationAggregationSource
+
+AWS::AutoScaling::AutoScalingGroup:
+    known_fields:
+        pass:
+            - AutoScalingGroupName
+            - TargetGroupARNs
+            - VPCZoneIdentifier
+            - AvailabilityZones
+            - LaunchTemplate
+            - LaunchConfigurationName
+
+AWS::EC2::LaunchTemplate:
+    known_fields:
+        pass:
+            - LaunchTemplateData
+            - LaunchTemplateName
+
+AWS::AutoScaling::LaunchConfiguration:
+    known_fields:
+        pass:
+            - LaunchConfigurationName
+            - InstanceMonitoring
+            - IamInstanceProfile
+            - ImageId
+            - InstanceType
+            - KeyName
+            - SecurityGroups
+            - MetadataOptions
+            - AssociatePublicIpAddress
+            - EbsOptimized
+
+AWS::CloudFront::Distribution:
+    known_fields:
+        pass:
+            - DistributionConfig
+
+AWS::Logs::Destination:
+    known_fields:
+        pass:
+            - DestinationName
+            - DestinationPolicy
+
+
 AWS::EC2::VPCEndpoint:
     known_fields:
         pass:

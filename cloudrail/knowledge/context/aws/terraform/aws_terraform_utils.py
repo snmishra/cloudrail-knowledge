@@ -42,35 +42,42 @@ class AwsTerraformUtils:
         provider_config_keys.insert(0, provider_config_keys.pop(provider_config_keys.index('aws')))
 
         for provider_config_key in provider_config_keys:
-            value = self.configuration['provider_config'][provider_config_key]
-            region = value.get('expressions', {}).get('region', {}).get('constant_value')
-            if not region:
-                # When region is defined by a variable
-                region_ref = value.get('expressions', {}).get('region', {}).get('references')
-                if region_ref:
-                    region_ref = region_ref[0].replace('var.', '')
-                    if module_address := value.get('module_address'):
-                        # If its a part of a module, then the variable will be in the 'expressions' field of the module section
-                        try:
-                            module_section = self._get_module_section(module_address, self.configuration['root_module'])
-                            region = module_section.get('expressions', {}).get(region_ref, {}).get('constant_value')
-                        except Exception as ex:
-                            logging.exception(f'An error occurred while trying to get the region of provider {provider_config_key}. '
-                                              f'Will set "{self.default_region}" Instead.\n{str(ex)}')
-                            region = self.default_region
-                    else:
-                        # If its not a part of a module, then the variable should be on the top-level 'variables' field
-                        region = self.variables.get(region_ref, {}).get('value')
-
-            if not region:
-                logging.warning(f'Couldnt conclude the region for provider {provider_config_key}. will assign "{self.default_region}" instead.')
-                region = self.default_region
+            region = self.get_provider_region(provider_config_key)
 
             if provider_config_key == 'aws':
                 self.default_region = region
             provider_region_map[provider_config_key] = region
 
         return provider_region_map
+
+    def get_provider_region(self, provider: str):
+        if provider not in self.configuration['provider_config']:
+            return None
+        value = self.configuration['provider_config'][provider]
+        region = value.get('expressions', {}).get('region', {}).get('constant_value')
+        if not region:
+            # When region is defined by a variable
+            region_ref = value.get('expressions', {}).get('region', {}).get('references')
+            if region_ref:
+                region_ref = region_ref[0].replace('var.', '')
+                if module_address := value.get('module_address'):
+                    # If its a part of a module, then the variable will be in the 'expressions' field of the module section
+                    try:
+                        module_section = self._get_module_section(module_address, self.configuration['root_module'])
+                        region = module_section.get('expressions', {}).get(region_ref, {}).get('constant_value')
+                    except Exception as ex:
+                        logging.exception(f'An error occurred while trying to get the region of provider {provider}. '
+                                          f'Will set "{self.default_region}" Instead.\n{str(ex)}')
+                        region = self.default_region
+                else:
+                    # If its not a part of a module, then the variable should be on the top-level 'variables' field
+                    region = self.variables.get(region_ref, {}).get('value')
+
+        if not region:
+            logging.warning(f'Couldnt conclude the region for provider {provider}. will assign "{self.default_region}" instead.')
+            region = self.default_region
+
+        return region
 
     @staticmethod
     def _remove_square_brackets_with_content(text: str) -> str:

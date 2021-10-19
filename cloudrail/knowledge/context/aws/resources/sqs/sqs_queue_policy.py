@@ -1,16 +1,17 @@
 from typing import List, Optional
-from cloudrail.knowledge.context.aws.resources.iam.policy import Policy
+from cloudrail.knowledge.context.aws.resources.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 
 
-class SqsQueuePolicy(Policy):
+class SqsQueuePolicy(ResourceBasedPolicy):
     """
         Attributes:
             queue_name: The name of the queue.
             policy_statements: The statements of the policy.
             raw_document: The raw JSON of the policy.
     """
+
     def __init__(self,
                  queue_name: str,
                  policy_statements: Optional[List[PolicyStatement]],
@@ -30,3 +31,11 @@ class SqsQueuePolicy(Policy):
             return 'SQS queue resource policy'
         else:
             return 'SQS queue resource policies'
+
+    @staticmethod
+    def is_standalone() -> bool:
+        return False
+
+    def to_drift_detection_object(self) -> dict:
+        return {'queue_name': self.queue_name,
+                'policy_statements': [statement.to_dict() for statement in self.statements]}

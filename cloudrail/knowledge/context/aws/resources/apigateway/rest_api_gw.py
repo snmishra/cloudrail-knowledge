@@ -3,21 +3,21 @@ from typing import List, Optional
 
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method import ApiGatewayMethod
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_stage import ApiGatewayStage
+from cloudrail.knowledge.context.aws.resources.aws_policied_resource import PoliciedResource
 from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement
-from cloudrail.knowledge.context.aws.resources.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.resources.apigateway.rest_api_gw_domain import RestApiGwDomain
 from cloudrail.knowledge.context.aws.resources.apigateway.rest_api_gw_policy import RestApiGwPolicy
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName, AwsServiceType, AwsServiceAttributes
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method_settings import ApiGatewayMethodSettings
 
 
-class ApiGatewayType(Enum):
+class ApiGatewayType(str, Enum):
     EDGE = 'EDGE'
     REGIONAL = 'REGIONAL'
     PRIVATE = 'PRIVATE'
 
 
-class RestApiGw(ResourceBasedPolicy):
+class RestApiGw(PoliciedResource):
     """
     Attributes:
         rest_api_gw_id: The ID of the REST API Gateway.
@@ -28,6 +28,7 @@ class RestApiGw(ResourceBasedPolicy):
         api_gw_stages: The stages associated with this REST API Gateway.
         agw_methods_with_valid_integrations_and_allowed_lambda_access: The ApiGatewayMethods associated with this gateway, with valid integrations, and are allowed to access a lambda function.
     """
+
     def __init__(self,
                  rest_api_gw_id: str,
                  api_gw_name: str,
@@ -74,3 +75,11 @@ class RestApiGw(ResourceBasedPolicy):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'api_gw_name': self.api_gw_name,
+                'api_gateway_type': self.api_gateway_type,
+                'is_public': self.is_public,
+                'api_gateway_methods': [method.to_drift_detection_object() for method in self.api_gateway_methods],
+                'agw_methods_with_valid_integrations_and_allowed_lambda_access':
+                    [method.to_drift_detection_object() for method in self.agw_methods_with_valid_integrations_and_allowed_lambda_access]}

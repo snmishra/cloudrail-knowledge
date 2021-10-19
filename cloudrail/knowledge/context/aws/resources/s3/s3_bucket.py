@@ -1,21 +1,21 @@
 from typing import List, Optional
 
+from cloudrail.knowledge.context.aws.resources.aws_policied_resource import PoliciedResource
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_logging import S3BucketLogging
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method import ApiGatewayMethod
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
-from cloudrail.knowledge.context.aws.resources.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_object import S3BucketObject
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_versioning import S3BucketVersioning
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName, AwsServiceType, AwsServiceAttributes
 from cloudrail.knowledge.context.connection import ConnectionInstance
-from cloudrail.knowledge.context.aws.resources.iam.policy import S3Policy
+from cloudrail.knowledge.context.aws.resources.s3.s3_policy import S3Policy
 from cloudrail.knowledge.context.aws.resources.s3.public_access_block_settings import PublicAccessBlockSettings
-from cloudrail.knowledge.context.aws.resources.s3.s3_acl import S3ACL
+from cloudrail.knowledge.context.aws.resources.s3.s3_acl import GranteeTypes, S3ACL
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_access_point import S3BucketAccessPoint, S3BucketAccessPointNetworkOriginType
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_encryption import S3BucketEncryption
 
 
-class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
+class S3Bucket(ConnectionInstance, PoliciedResource):
     """
         Attributes:
             bucket_name: The name of the bucket.
@@ -34,12 +34,12 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
             exposed_to_agw_methods: The ApiGateway methods that can acccess this bucket.
             is_logger: Indicates if this bucket is the target bucket for logging of another bucket.
     """
+
     def __init__(self, account: str, bucket_name: str, arn: str, region: str = None,
                  policy: S3Policy = None):
-        ResourceBasedPolicy.__init__(self, account, region, AwsServiceName.AWS_S3_BUCKET,
-                                     AwsServiceAttributes(aws_service_type=AwsServiceType.S3.value, region=region))
+        PoliciedResource.__init__(self, account, region, AwsServiceName.AWS_S3_BUCKET,
+                                  AwsServiceAttributes(aws_service_type=AwsServiceType.S3.value, region=region), policy)
         ConnectionInstance.__init__(self)
-        self.resource_based_policy = policy
         self.bucket_name = bucket_name
         self.arn = arn
         self.bucket_domain_name = bucket_name + ".s3.amazonaws.com"
@@ -77,7 +77,7 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
         return self.bucket_name
 
     def get_cloud_resource_url(self) -> str:
-        return 'https://s3.console.aws.amazon.com/s3/buckets/{0}?region={1}&tab=objects'\
+        return 'https://s3.console.aws.amazon.com/s3/buckets/{0}?region={1}&tab=objects' \
             .format(self.bucket_name, self.region)
 
     @property
@@ -87,3 +87,11 @@ class S3Bucket(ConnectionInstance, ResourceBasedPolicy):
     @property
     def is_public(self):
         return len(self.publicly_allowing_resources) > 0
+
+    def to_drift_detection_object(self) -> dict:
+        return {'bucket_name': self.bucket_name,
+                'encryption_data': self.encryption_data and self.encryption_data.to_drift_detection_object(),
+                'versioning_data': self.versioning_data and self.versioning_data.to_drift_detection_object(),
+                'exposed_to_agw_methods': [method.to_drift_detection_object() for method in self.exposed_to_agw_methods],
+                'tags': self.tags,
+                'acls': [acl.to_drift_detection_object() for acl in self.acls if acl.type != GranteeTypes.CANONICAL_USER]}

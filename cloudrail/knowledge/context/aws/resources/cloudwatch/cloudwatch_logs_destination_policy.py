@@ -1,10 +1,10 @@
 from typing import List
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
-from cloudrail.knowledge.context.aws.resources.iam.policy import Policy
+from cloudrail.knowledge.context.aws.resources.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement
 
 
-class CloudWatchLogsDestinationPolicy(Policy):
+class CloudWatchLogsDestinationPolicy(ResourceBasedPolicy):
     """
         Attributes:
             destination_name: The name of the destination the policy applies to.
@@ -40,3 +40,7 @@ class CloudWatchLogsDestinationPolicy(Policy):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def to_drift_detection_object(self) -> dict:
+        return {'destination_name': self.destination_name,
+                'statements': [statement.to_dict() for statement in self.statements]}

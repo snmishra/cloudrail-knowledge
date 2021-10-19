@@ -7,7 +7,7 @@ from typing import List, Optional, Tuple
 
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_integration import ApiGatewayIntegration, IntegrationType
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method import ApiGatewayMethod
-from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method_settings import ApiGatewayMethodSettings, RestApiMethods
+from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method_settings import ApiGatewayMethodSettings, RestApiMethod
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_stage import AccessLogsSettings, ApiGatewayStage
 from cloudrail.knowledge.context.aws.resources.apigateway.rest_api_gw import ApiGatewayType, RestApiGw
 from cloudrail.knowledge.context.aws.resources.apigateway.rest_api_gw_domain import RestApiGwDomain
@@ -22,7 +22,7 @@ from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template impor
 from cloudrail.knowledge.context.aws.resources.batch.batch_compute_environment import BatchComputeEnvironment
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_info import CloudformationResourceInfo
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_status import CloudformationResourceStatus
-from cloudrail.knowledge.context.aws.resources.cloudfront.cloud_front_distribution_list import CacheBehavior, CloudFrontDistribution, OriginConfig, \
+from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CacheBehavior, CloudFrontDistribution, OriginConfig, \
     ViewerCertificate
 from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
 from cloudrail.knowledge.context.aws.resources.cloudfront.origin_access_identity import OriginAccessIdentity
@@ -110,7 +110,7 @@ from cloudrail.knowledge.context.aws.resources.iam.iam_password_policy import Ia
 from cloudrail.knowledge.context.aws.resources.iam.iam_user import IamUser
 from cloudrail.knowledge.context.aws.resources.iam.iam_user_group_membership import IamUserGroupMembership
 from cloudrail.knowledge.context.aws.resources.iam.iam_users_login_profile import IamUsersLoginProfile
-from cloudrail.knowledge.context.aws.resources.iam.policy import AssumeRolePolicy, InlinePolicy, ManagedPolicy, Policy, S3AccessPointPolicy, S3Policy
+from cloudrail.knowledge.context.aws.resources.iam.policy import AssumeRolePolicy, InlinePolicy, ManagedPolicy, Policy
 from cloudrail.knowledge.context.aws.resources.iam.policy_group_attachment import PolicyGroupAttachment
 from cloudrail.knowledge.context.aws.resources.iam.policy_role_attachment import PolicyRoleAttachment
 from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement
@@ -145,6 +145,8 @@ from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_access_point import 
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_encryption import S3BucketEncryption
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_logging import S3BucketLogging
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_versioning import S3BucketVersioning
+from cloudrail.knowledge.context.aws.resources.s3.s3_access_point_policy import S3AccessPointPolicy
+from cloudrail.knowledge.context.aws.resources.s3.s3_policy import S3Policy
 from cloudrail.knowledge.context.aws.resources.sagemaker.sagemaker_endpoint_config import SageMakerEndpointConfig
 from cloudrail.knowledge.context.aws.resources.sagemaker.sagemaker_notebook_instance import SageMakerNotebookInstance
 from cloudrail.knowledge.context.aws.resources.secretsmanager.secrets_manager_secret import SecretsManagerSecret
@@ -154,7 +156,7 @@ from cloudrail.knowledge.context.aws.resources.sqs.sqs_queue import SqsQueue
 from cloudrail.knowledge.context.aws.resources.sqs.sqs_queue_policy import SqsQueuePolicy
 from cloudrail.knowledge.context.aws.resources.ssm.ssm_parameter import SsmParameter
 from cloudrail.knowledge.context.aws.resources.workspaces.workspace_directory import WorkspaceDirectory
-from cloudrail.knowledge.context.aws.resources.workspaces.workspaces import Workspace
+from cloudrail.knowledge.context.aws.resources.workspaces.workspace import Workspace
 from cloudrail.knowledge.context.aws.resources.xray.xray_encryption import XrayEncryption
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
 from cloudrail.knowledge.utils.port_utils import get_port_by_engine
@@ -421,7 +423,8 @@ def build_load_balancer(raw_data: dict) -> LoadBalancer:
     load_balancer_type = LoadBalancerType(raw_data['Type'])
     load_balancer_arn = raw_data['LoadBalancerArn']
     return LoadBalancer(account, region, name, scheme_type, load_balancer_type, load_balancer_arn) \
-        .with_raw_data(subnets_ids=[az['SubnetId'] for az in raw_data['AvailabilityZones']]).with_aliases(load_balancer_arn)
+        .with_raw_data(subnets_ids=[az['SubnetId'] for az in raw_data['AvailabilityZones']],
+                       security_groups_ids=raw_data.get('SecurityGroups')).with_aliases(load_balancer_arn)
 
 
 def build_ec2_instance(raw_data: dict) -> Optional[Ec2Instance]:
@@ -458,7 +461,9 @@ def build_ec2_instance(raw_data: dict) -> Optional[Ec2Instance]:
                        {},
                        instance_type,
                        ebs_optimized,
-                       monitoring_enabled)
+                       monitoring_enabled).with_raw_data(subnet_id=raw_data.get('SubnetId'),
+                                                         security_groups_ids=[sg['GroupId'] for sg in raw_data.get('SecurityGroups', [])],
+                                                         private_ip_address=raw_data.get('PrivateIpAddress'))
 
 
 def _build_network_acl_rule(raw_data: dict, network_acl_id: str, region: str, account: str) -> NetworkAclRule:
@@ -773,7 +778,8 @@ def build_auto_scaling_group(raw_data: dict) -> AutoScalingGroup:
         account=raw_data['Account']) \
         .with_raw_data(launch_configuration_name=raw_data.get('LaunchConfigurationName'),
                        launch_template_id=launch_template.get('LaunchTemplateId'),
-                       launch_template_version=launch_template.get('Version'))
+                       launch_template_version=launch_template.get('Version'),
+                       launch_template_name=launch_template.get('LaunchTemplateName'))
 
 
 def build_launch_configuration(raw_data: dict) -> LaunchConfiguration:
@@ -1102,7 +1108,7 @@ def build_cloudfront_distribution_list(raw_data: dict) -> List[CloudFrontDistrib
         order: int = 0
         for cache_behavior_dict in [attributes['DefaultCacheBehavior']] + \
                                    get_dict_value(get_dict_value(attributes, 'CacheBehaviors', []), 'Items', []):
-            cache_behavior: CacheBehavior = CacheBehavior(allowed_methods=cache_behavior_dict['AllowedMethods'],
+            cache_behavior: CacheBehavior = CacheBehavior(allowed_methods=cache_behavior_dict['AllowedMethods']['Items'],
                                                           cached_methods=cache_behavior_dict['AllowedMethods']['CachedMethods']['Items'],
                                                           target_origin_id=cache_behavior_dict['TargetOriginId'],
                                                           viewer_protocol_policy=cache_behavior_dict['ViewerProtocolPolicy'],
@@ -1228,7 +1234,7 @@ def build_api_gateway_method_settings(raw_data: dict) -> Optional[List[ApiGatewa
     for method_path in raw_data.get('methodSettings', {}):
         method_settings = raw_data['methodSettings'][method_path]
         http_method = method_path.split('/')[-1]
-        http_method = RestApiMethods.ANY if http_method == '*' else RestApiMethods(http_method)
+        http_method = RestApiMethod.ANY if http_method == '*' else RestApiMethod(http_method)
         caching_enabled = method_settings['cachingEnabled']
         caching_encrypted = method_settings['cacheDataEncrypted']
         rest_api_gw_method_settings.append(ApiGatewayMethodSettings(api_gw_id,
@@ -1262,7 +1268,7 @@ def build_api_gateway_method(attributes: dict) -> ApiGatewayMethod:
     attributes = attributes['Value']
     return ApiGatewayMethod(account=account_id, region=region,
                             rest_api_id=rest_api_id, resource_id=resource_id,
-                            http_method=RestApiMethods(attributes['httpMethod']),
+                            http_method=RestApiMethod(attributes['httpMethod']),
                             authorization=attributes['authorizationType'])
 
 
@@ -1278,8 +1284,8 @@ def build_api_gateway_integration(attributes: dict) -> ApiGatewayIntegration:
     integration_http_method = integration_http_method if integration_http_method else None
     return ApiGatewayIntegration(account=account_id, region=region,
                                  rest_api_id=rest_api_id, resource_id=resource_id,
-                                 request_http_method=RestApiMethods(request_http_method),
-                                 integration_http_method=RestApiMethods(integration_http_method),
+                                 request_http_method=RestApiMethod(request_http_method),
+                                 integration_http_method=RestApiMethod(integration_http_method),
                                  integration_type=integration_type,
                                  uri=uri)
 
@@ -1625,7 +1631,7 @@ def build_lambda_policy(attributes: dict) -> LambdaPolicy:
     lambda_function_name: str = extract_attribute_from_file_path(attributes['FilePath'], ['FunctionName-']).split('_Qualifier')[0]
     statements: List[PolicyStatement] = build_policy_statements_from_str(attributes['Value'])
     # each statement should contains exactly 1 one resource (lambda arn itself)
-    qualifier: str = LambdaFunction.parse_qualifier_from_arn(statements[0].resources[0])
+    qualifier: Optional[str] = LambdaFunction.parse_qualifier_from_arn(statements[0].resources[0])
     return LambdaPolicy(account=attributes['Account'],
                                   region=attributes['Region'],
                                   function_name=lambda_function_name,
@@ -1971,7 +1977,7 @@ def build_api_gateway_v2_integration(attributes: dict) -> ApiGatewayV2Integratio
                                    rest_api_id,
                                    attributes.get('ConnectionId'),
                                    attributes['IntegrationId'],
-                                   RestApiMethods(attributes.get('IntegrationMethod')),
+                                   RestApiMethod(attributes.get('IntegrationMethod')),
                                    IntegrationType(attributes['IntegrationType']),
                                    attributes.get('IntegrationUri'))
 
@@ -2104,7 +2110,7 @@ def build_cfn_resources_info(attributes: dict) -> CloudformationResourceInfo:
                                       stack_id=attributes['StackId'],
                                       stack_name=attributes['StackName'],
                                       logical_resource_id=attributes['LogicalResourceId'],
-                                      physical_resource_id=attributes['PhysicalResourceId'],
+                                      physical_resource_id=attributes.get('PhysicalResourceId', None),  # Deleted resources not have 'PhysicalResourceId'
                                       resource_type=attributes['ResourceType'],
                                       resource_status=CloudformationResourceStatus(attributes['ResourceStatus']))
 
