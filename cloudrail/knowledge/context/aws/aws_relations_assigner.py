@@ -266,12 +266,12 @@ class AwsRelationsAssigner(DependencyInvocation):
                              [self._assign_vpc_default_and_main_route_tables, self._assign_subnet_vpc]),
             IterFunctionData(self._assign_subnet_network_acl, ctx.subnets, (ctx.network_acls,), [self._assign_subnet_vpc,
                                                                                                  self._assign_vpc_default_nacl,
-                                                                                                 self._assign_subnet_to_nacl]),
+                                                                                                 self._assign_subnet_id_to_nacl]),
             ### NACL ###
             IterFunctionData(self._assign_network_acl_rules, ctx.network_acls, (ctx.network_acl_rules,), [self._assign_subnet_network_acl]),
             IterFunctionData(self._assign_default_network_acl_rules_for_tf, [nacl for nacl in ctx.network_acls if nacl.is_managed_by_iac],
                              (ctx.vpcs,)),
-            IterFunctionData(self._assign_subnet_to_nacl, ctx.network_acl_associations, (ctx.network_acls,)),
+            IterFunctionData(self._assign_subnet_id_to_nacl, ctx.network_acl_associations, (ctx.network_acls,)),
             ### EC2 ###
             IterFunctionData(self._assign_ec2_role_permissions, ctx.ec2s, (ctx.roles, ctx.iam_instance_profiles),
                              [self._add_auto_scale_ec2s]),
@@ -981,11 +981,11 @@ class AwsRelationsAssigner(DependencyInvocation):
         subnet.route_table = ResourceInvalidator.get_by_logic(get_route_table, True, subnet, 'Could not associate a route table')
 
     @classmethod
-    def _assign_subnet_to_nacl(cls, nacl_assoc: NetworkAclAssociation, nacls: AliasesDict[NetworkAcl]):
+    def _assign_subnet_id_to_nacl(cls, nacl_assoc: NetworkAclAssociation, nacls: AliasesDict[NetworkAcl]):
         nacl = ResourceInvalidator.get_by_id(nacls, nacl_assoc.network_acl_id, False)
         if nacl.subnet_ids is None:
             nacl.subnet_ids = [nacl_assoc.subnet_id]
-        else:
+        elif nacl_assoc.subnet_id not in nacl.subnet_ids:
             nacl.subnet_ids.append(nacl_assoc.subnet_id)
 
     @classmethod
