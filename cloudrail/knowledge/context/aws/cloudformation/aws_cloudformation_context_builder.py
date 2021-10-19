@@ -170,7 +170,6 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             cloudwatch_logs_destination_policies=CloudformationCloudwatchLogsDestinationPolicyBuilder(cfn_by_type_map).build(),
             cloudfront_log_settings=CloudformationCloudfrontDistributionLoggingBuilder(cfn_by_type_map).build(),
             cloudfront_distribution_list=CloudformationCloudfrontDistributionListBuilder(cfn_by_type_map).build(),
-            s3_bucket_policies=CloudformationS3BucketPolicyBuilder(cfn_by_type_map).build(),
             vpc_endpoints=CloudformationVpcEndpointBuilder(cfn_by_type_map).build(),
             lambda_function_list=CloudformationLambdaFunctionBuilder(cfn_by_type_map).build(),
             network_acls=AliasesDict(*CloudformationNetworkAclBuilder(cfn_by_type_map).build()),

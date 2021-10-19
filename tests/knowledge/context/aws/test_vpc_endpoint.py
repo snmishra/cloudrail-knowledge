@@ -3,7 +3,7 @@ from cloudrail.knowledge.context.aws.resources.ec2.network_interface import Netw
 from cloudrail.knowledge.context.aws.resources.ec2.vpc_endpoint import VpcEndpointGateway, VpcEndpointInterface
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from tests.knowledge.context.aws_context_test import AwsContextTest
-from tests.knowledge.context.test_context_annotation import context
+from tests.knowledge.context.test_context_annotation import context, TestOptions
 
 
 class TestVpcEndpoint(AwsContextTest):
@@ -41,7 +41,8 @@ class TestVpcEndpoint(AwsContextTest):
         self.assertEqual(conn_details.connection_type, ConnectionType.PRIVATE)
         self.assertEqual(conn_details.target_instance.owner, ctx.ec2s[0])
 
-    @context(module_path="vpc-endpoint-eni")
+    @context(module_path="vpc-endpoint-eni",
+             test_options=TestOptions(run_terraform=False, run_cloudmapper=False, run_drift_detection=False))
     def test_vpc_endpoint_eni(self, ctx: AwsEnvironmentContext):
         vpce: VpcEndpointInterface = self._assert_vpc_endpoint_eni(ctx)
         eni: NetworkInterface = vpce.network_resource.network_interfaces[0]

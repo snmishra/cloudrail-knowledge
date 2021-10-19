@@ -207,8 +207,6 @@ class CloudformationResourceAttributesMapper:
         Subnet: CloudformationAttributesCallableStore.get_subnet_attribute,
         CloudTrail: CloudformationAttributesCallableStore.get_cloudtrail_attribute,
         CodeBuildReportGroup: CloudformationAttributesCallableStore.get_codebuild_report_group_attribute,
-        BatchComputeEnvironment: CloudformationAttributesCallableStore.get_none_attribute,
-        NatGateways: CloudformationAttributesCallableStore.get_none_attribute,
         ElasticIp: CloudformationAttributesCallableStore.get_eip_attribute,
         DynamoDbTable: CloudformationAttributesCallableStore.get_dynamo_db_table_attribute,
         ConfigAggregator: CloudformationAttributesCallableStore.get_config_service_aggregator_attribute,
