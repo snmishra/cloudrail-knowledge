@@ -11,7 +11,7 @@ _T = TypeVar('_T')
 
 def create_empty_entity(class_type: Type[_T], **kwargs) -> _T:
     """
-    A test auxiliary function that creates a new instance of type `class_type` inherent from Mergeable and initializes it with the values of kwargs or None
+    A test auxiliary function that creates a new instance of type `class_type` and initializes it with the values of kwargs or None
     Args:
         class_type: The instance's `class_type` to create.
         **kwargs: The parameters that will be passed to the instance's __init__ method.
