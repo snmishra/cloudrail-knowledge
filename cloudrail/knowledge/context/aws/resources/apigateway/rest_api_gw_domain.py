@@ -42,5 +42,5 @@ class RestApiGwDomain(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'domain_name': self.domain_name,
+        return {'domain_name': self.domain_name,
                 'security_policy': self.security_policy}

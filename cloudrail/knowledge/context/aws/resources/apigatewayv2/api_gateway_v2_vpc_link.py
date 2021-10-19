@@ -62,6 +62,6 @@ class ApiGatewayVpcLink(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'name': self.name,
                 'security_group_ids': self.security_group_ids,
                 'subnet_ids': self.subnet_ids}

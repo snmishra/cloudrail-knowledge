@@ -65,7 +65,7 @@ class NeptuneInstance(NetworkEntity, INetworkConfiguration):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'name': self.name,
                 'port': self.port,
                 'cluster_identifier': self.cluster_identifier,
                 'publicly_accessible': self.network_configuration.assign_public_ip}

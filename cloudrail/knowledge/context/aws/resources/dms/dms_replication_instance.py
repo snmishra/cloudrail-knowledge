@@ -22,7 +22,7 @@ class DmsReplicationInstance(NetworkEntity, INetworkConfiguration):
     """
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'name': self.name,
                 'publicly_accessible': self.publicly_accessible,
                 'rep_instance_subnet_group_id': self.rep_instance_subnet_group_id,
                 'security_group_ids': self.security_group_ids}

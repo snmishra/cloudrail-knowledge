@@ -79,7 +79,7 @@ class LaunchTemplate(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'name': self.name,
                 'http_token': self.http_token,
                 'image_id': self.image_id,
                 'security_group_ids': self.security_group_ids,

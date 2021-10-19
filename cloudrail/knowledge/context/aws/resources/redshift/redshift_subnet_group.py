@@ -43,5 +43,5 @@ class RedshiftSubnetGroup(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'name': self.name,
                 'subnet_ids': self.subnet_ids}

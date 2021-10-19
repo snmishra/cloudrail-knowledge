@@ -24,3 +24,7 @@ class AwsEnvironmentContextDriftDetector(BaseEnvironmentContextDriftDetector):
                                            S3BucketObject, TransitGatewayRouteTablePropagation, IamGroupMembership,
                                            VpcEndpointRouteTableAssociation, IamPolicyAttachment, RestApiGwDomain,
                                            RestApiGwMapping)))
+
+    @classmethod
+    def entity_drift_fields(cls, mergeable: Mergeable):
+        return mergeable.to_drift_detection_object().update({'tags': mergeable.tags})

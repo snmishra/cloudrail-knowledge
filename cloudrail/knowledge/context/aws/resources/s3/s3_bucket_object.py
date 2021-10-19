@@ -52,6 +52,6 @@ class S3BucketObject(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'bucket_name': self.bucket_name,
+        return {'bucket_name': self.bucket_name,
                 'key': self.key,
                 'encrypted': self.encrypted}
