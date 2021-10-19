@@ -2202,6 +2202,8 @@ class AwsRelationsAssigner(DependencyInvocation):
         else:
             return tags_arn == resource.get_arn()
 
+    ## IaC might include tags for INACTIVE task definitions, while scanner won't.
+    ## To avoid drifts, assigning tags for such INACTIVE task definitions.
     @staticmethod
     def _ecs_task_arn_check(resource: EcsTaskDefinition, tags_arn: str) -> bool:
         if 'task-definition/' in tags_arn and resource.status == TaskDefinitionStatus.INACTIVE \
