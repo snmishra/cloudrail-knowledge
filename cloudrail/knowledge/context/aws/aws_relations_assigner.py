@@ -26,7 +26,7 @@ from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import Lamb
 from cloudrail.knowledge.context.connection import PolicyEvaluation
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.batch.batch_compute_environment import BatchComputeEnvironment
-from cloudrail.knowledge.context.aws.resources.cloudfront.cloud_front_distribution_list import CloudFrontDistribution, OriginConfig
+from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CloudFrontDistribution, OriginConfig
 from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
 from cloudrail.knowledge.context.aws.resources.cloudfront.origin_access_identity import OriginAccessIdentity
 from cloudrail.knowledge.context.aws.resources.cloudhsmv2.cloudhsm_v2_cluster import CloudHsmV2Cluster
@@ -154,7 +154,7 @@ from cloudrail.knowledge.context.aws.resources.sqs.sqs_queue_policy import SqsQu
 from cloudrail.knowledge.context.aws.resources.ssm.ssm_parameter import SsmParameter
 from cloudrail.knowledge.context.aws.resources.worklink.worklink_fleet import WorkLinkFleet
 from cloudrail.knowledge.context.aws.resources.workspaces.workspace_directory import WorkspaceDirectory
-from cloudrail.knowledge.context.aws.resources.workspaces.workspaces import Workspace
+from cloudrail.knowledge.context.aws.resources.workspaces.workspace import Workspace
 from cloudrail.knowledge.context.aws.resources.xray.xray_encryption import XrayEncryption
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
@@ -1575,13 +1575,15 @@ class AwsRelationsAssigner(DependencyInvocation):
         def get_launch_template():
             launch_template_data = auto_scaling_group.raw_data.launch_template_data
             if launch_template_data:
-                templates = [lt for lt in launch_templates if lt.template_id == launch_template_data.template_id]
+                templates = [lt for lt in launch_templates
+                             if launch_template_data.template_id == lt.template_id
+                             or launch_template_data.template_name == lt.name]
                 if launch_template_data.version == '$Latest':
                     return max(templates, key=lambda x: x.version_number)
                 else:
                     # If we dont have cloudmapper data and the auto_scaling_group is using an older version and not the latest,
                     # then we wont actually know what is the launch_template is should use, so we do not assign any launch_template to it.
-                    return next((t for t in templates if str(t.version_number) == launch_template_data.version), None)
+                    return next((t for t in templates if str(t.version_number) == str(launch_template_data.version)), None)
             return None
 
         auto_scaling_group.launch_template = ResourceInvalidator.get_by_logic(get_launch_template, False)

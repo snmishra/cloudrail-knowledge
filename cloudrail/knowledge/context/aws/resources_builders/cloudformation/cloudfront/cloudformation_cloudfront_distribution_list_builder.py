@@ -2,7 +2,7 @@ from typing import Dict, List
 
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.base_cloudformation_builder import BaseCloudformationBuilder
-from cloudrail.knowledge.context.aws.resources.cloudfront.cloud_front_distribution_list import CloudFrontDistribution, ViewerCertificate, CacheBehavior, OriginConfig
+from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CloudFrontDistribution, ViewerCertificate, CacheBehavior, OriginConfig
 from cloudrail.knowledge.utils.arn_utils import build_arn
 
 
@@ -27,7 +27,8 @@ class CloudformationCloudfrontDistributionListBuilder(BaseCloudformationBuilder)
 
         cache_behavior_list: List[CacheBehavior] = []
         order: int = 0
-        for cache_behavior_dict in self.get_property(dist_config, 'DefaultCacheBehavior', []) + self.get_property(dist_config, 'CacheBehaviors', []):
+        default_cache_behavior_list = [self.get_property(dist_config, 'DefaultCacheBehavior')] if self.get_property(dist_config, 'DefaultCacheBehavior') else []
+        for cache_behavior_dict in default_cache_behavior_list + self.get_property(dist_config, 'CacheBehaviors', []):
             cache_behavior: CacheBehavior = CacheBehavior(allowed_methods=self.get_property(cache_behavior_dict, 'AllowedMethods'),
                                                           cached_methods=self.get_property(cache_behavior_dict, 'CachedMethods'),
                                                           target_origin_id=self.get_property(cache_behavior_dict, 'TargetOriginId'),

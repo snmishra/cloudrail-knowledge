@@ -10,7 +10,6 @@ class GcpSqlDatabaseInstance(GcpResource):
             name: The name of this SQL database instance
             require_ssl: An indication on if this instance requires SSL
     """
-
     def __init__(self, name: str, require_ssl: bool):
         super().__init__(GcpResourceType.GOOGLE_SQL_DATABASE_INSTANCE)
         self.name: str = name
@@ -34,3 +33,7 @@ class GcpSqlDatabaseInstance(GcpResource):
             return 'SQL Database Instance'
         else:
             return 'SQL Database Instances'
+
+    def to_drift_detection_object(self) -> dict:
+        return {'name': self.name,
+                'required_ssl': self.require_ssl}
