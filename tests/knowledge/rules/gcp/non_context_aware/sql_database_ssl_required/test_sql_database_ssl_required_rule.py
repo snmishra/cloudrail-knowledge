@@ -14,3 +14,6 @@ class TestSqlDatabaseSslRequiredRule(GcpBaseRuleTest):
 
     def test_ssl_required_true(self):
         self.run_test_case('ssl_required_true', should_alert=False)
+
+    def test_ssl_required_not_specified(self):
+        self.run_test_case('ssl_required_not_specified', should_alert=True)

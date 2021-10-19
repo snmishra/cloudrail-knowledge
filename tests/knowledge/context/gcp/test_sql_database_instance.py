@@ -30,6 +30,7 @@ class TestSqlDatabaseInstance(GcpContextTest):
         self.assertIsNotNone(sql.settings.ip_configuration)
         self.assertIsNone(sql.settings.ip_configuration.require_ssl)
 
+
     def _get_sql(self, ctx: GcpEnvironmentContext) -> GcpSqlDatabaseInstance:
         sql = next((sql for sql in ctx.sql_database_instances if sql.name == 'my-sql-instance'), None)
         self.assertIsNotNone(sql)
