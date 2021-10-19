@@ -23,7 +23,7 @@ class TestEcs(AwsContextTest):
     def get_component(self):
         return "ecs"
 
-    @context(module_path="fargate/ecs-service-network-configuration_valid")
+    @context(module_path="fargate/ecs-service-network-configuration.1")
     def test_ecs_service_network_configuration(self, ctx: AwsEnvironmentContext):
         cluster = next(cluster for cluster in ctx.ecs_cluster_list if cluster.cluster_name == 'ecs-cluster')
         self.assertTrue(cluster.is_container_insights_enabled)
