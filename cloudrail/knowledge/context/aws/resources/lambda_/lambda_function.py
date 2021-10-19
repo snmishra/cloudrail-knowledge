@@ -10,7 +10,6 @@ from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceAtt
 from cloudrail.knowledge.utils.arn_utils import are_arns_intersected, is_valid_arn
 
 
-
 class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
     """
         Attributes:
@@ -49,7 +48,7 @@ class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
         self.xray_tracing_enabled: bool = xray_tracing_enabled
 
     def get_keys(self) -> List[str]:
-        return [self.qualified_arn]
+        return [self._get_simplified_arn()]
 
     def get_name(self) -> str:
         return self.function_name
