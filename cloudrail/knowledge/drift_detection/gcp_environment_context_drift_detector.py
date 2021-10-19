@@ -9,5 +9,5 @@ class GcpEnvironmentContextDriftDetector(BaseEnvironmentContextDriftDetector):
         pass
 
     @classmethod
-    def entity_drift_fields(cls, mergeable: Mergeable):
+    def convert_to_drift_detection_object(cls, mergeable: Mergeable):
         return mergeable.to_drift_detection_object()

@@ -28,7 +28,7 @@ class BaseEnvironmentContextDriftDetector:
 
     @classmethod
     @abstractmethod
-    def entity_drift_fields(cls, mergeable: Mergeable):
+    def convert_to_drift_detection_object(cls, mergeable: Mergeable):
         pass
 
     @classmethod
@@ -102,8 +102,8 @@ class BaseEnvironmentContextDriftDetector:
 
     @classmethod
     def _compare_entity(cls, tf_entity: Mergeable, cm_entity: Mergeable) -> Optional[Drift]:
-        tf_dict = cls.entity_drift_fields(tf_entity)
-        cm_dict = cls.entity_drift_fields(cm_entity)
+        tf_dict = cls.convert_to_drift_detection_object(tf_entity)
+        cm_dict = cls.convert_to_drift_detection_object(cm_entity)
         cls._filter_fields(tf_dict, cm_dict)
         diff = DeepDiff(tf_dict, cm_dict, ignore_order=True)
         if diff:
