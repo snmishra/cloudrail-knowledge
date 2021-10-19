@@ -150,6 +150,8 @@ class Ec2Instance(NetworkEntity, AwsClient):
         return True
 
     def to_drift_detection_object(self) -> dict:
+        full_security_groups_ids = flat_list([eni.security_groups_ids for eni in self.network_resource.network_interfaces])
+        security_groups_ids_no_pseudo = [sg_id for sg_id in full_security_groups_ids if 'pseudo' not in sg_id]
         return {'name': self.name,
                 'network_interfaces_ids': self.network_interfaces_ids,
                 'state': self.state,
@@ -161,4 +163,4 @@ class Ec2Instance(NetworkEntity, AwsClient):
                 'instance_type': self.instance_type,
                 'ebs_optimized': self.ebs_optimized,
                 'monitoring_enabled': self.monitoring_enabled,
-                'security_group_ids': flat_list([eni.security_groups_ids for eni in self.network_resource.network_interfaces])}
+                'security_group_ids': security_groups_ids_no_pseudo}
