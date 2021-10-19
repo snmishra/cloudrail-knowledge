@@ -27,3 +27,10 @@ class TestSqsQueuePolicy(BaseAwsDriftTest):
         sqs_policy = next(res for res in results if res.resource_id == 'aws_sqs_queue.test')
         self.assertTrue(sqs_policy.resource_live.get('resource_based_policy'))
         self.assertFalse(sqs_policy.resource_iac.get('resource_based_policy'))
+
+    @drift_test(module_path="sqs_tags_change")
+    def test_sqs_tags_change(self, results: List[Drift]):
+        sqs_policy = next(res for res in results if res.resource_id == 'aws_sqs_queue.cloudrail')
+        self.assertEqual(1, len(results))
+        self.assertEqual(sqs_policy.resource_iac['tags']['Name'], 'Sqs Cloudrail Test')
+        self.assertEqual(sqs_policy.resource_live['tags']['Name'], 'Testing drift')

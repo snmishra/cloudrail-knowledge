@@ -1087,7 +1087,7 @@ def _get_known_value(attributes: dict, key: str, default=None):
 
 
 def build_ecs_cluster(attributes: dict) -> EcsCluster:
-    is_container_insights_enabled = False
+    is_container_insights_enabled = True
     if _is_known_value(attributes, 'setting'):
         is_container_insights_enabled = bool(attributes['setting'][0]['value'] == 'enabled')
     cluster: EcsCluster = EcsCluster(account=attributes['account_id'],
