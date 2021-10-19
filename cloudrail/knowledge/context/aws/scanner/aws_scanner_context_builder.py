@@ -182,7 +182,7 @@ class AwsScannerContextBuilder(ScannerContextBuilder):
             logging.warning('cloud mapper working dir does not exists: {}'.format(account_data_dir))
             return AwsEnvironmentContext()
 
-        if extra_args.get('merge_only_defaults_for_drift'):
+        if extra_args.get('default_resources_only'):
             return AwsEnvironmentContext(
                 vpcs=AliasesDict(*[vpc for vpc in VpcBuilder(account_data_dir, salt).build() if vpc.is_default]),
                 vpcs_attributes=VpcAttributeBuilder(account_data_dir, salt).build(),

@@ -90,7 +90,7 @@ class BaseDriftTest(unittest.TestCase):
                                                                    ignore_exceptions=True, run_enrichment_requiring_aws=False,
                                                                    use_after_data=False, iac_url_template=iac_url_template,
                                                                    salt=customer_id,
-                                                                   merge_only_defaults_for_drift=True)
+                                                                   default_resources_only=True)
             iac_context_after = environment_context_builder.build(account_data_for_drift_path,
                                                                   output_path,
                                                                   account_id,
@@ -98,7 +98,7 @@ class BaseDriftTest(unittest.TestCase):
                                                                   use_after_data=True, keep_deleted_entities=False,
                                                                   iac_url_template=iac_url_template,
                                                                   salt=customer_id,
-                                                                  merge_only_defaults_for_drift=True)
+                                                                  default_resources_only=True)
             result = EnvironmentContextDriftDetectorFactory.get(self.get_provider()).find_drifts(scanner_context, iac_context_before,
                                                                                                  iac_context_after, 'workspace')
             json.dumps([dataclasses.asdict(r) for r in result.drifts])
