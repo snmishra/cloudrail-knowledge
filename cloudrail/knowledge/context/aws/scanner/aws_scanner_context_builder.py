@@ -182,6 +182,18 @@ class AwsScannerContextBuilder(ScannerContextBuilder):
             logging.warning('cloud mapper working dir does not exists: {}'.format(account_data_dir))
             return AwsEnvironmentContext()
 
+        if extra_args.get('merge_only_defaults_for_drift'):
+            return AwsEnvironmentContext(
+                vpcs=AliasesDict(*[vpc for vpc in VpcBuilder(account_data_dir, salt).build() if vpc.is_default]),
+                vpcs_attributes=VpcAttributeBuilder(account_data_dir, salt).build(),
+                subnets=AliasesDict(*[subnet for subnet in SubnetBuilder(account_data_dir, salt).build() if subnet.is_default]),
+                security_groups=AliasesDict(*[sg for sg in SecurityGroupBuilder(account_data_dir, salt).build() if sg.is_default]),
+                route_tables=AliasesDict(*RouteTableBuilder(account_data_dir, salt).build()),
+                network_acls=AliasesDict(*[nacl for nacl in NetworkAclBuilder(account_data_dir, salt).build() if nacl.is_default]),
+                route_table_associations=RouteTableAssociationBuilder(account_data_dir, salt).build(),
+                main_route_table_associations=MainRouteTableAssociationBuilder(account_data_dir, salt).build(),
+            )
+
         accounts = AccountBuilder(account_data_dir, salt).build()
         s3_buckets = S3BucketBuilder(account_data_dir, salt).build()
         s3_bucket_access_points = S3BucketAccessPointBuilder(account_data_dir, salt).build()

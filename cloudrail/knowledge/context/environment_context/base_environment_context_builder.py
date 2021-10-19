@@ -25,7 +25,7 @@ class BaseEnvironmentContextBuilder:
         scanner_context = cls.get_scanner_builder_type().build(account_data_dir_path, account_id, salt, **extra_args)
         iac_context = cls.get_iac_builder_type().build(iac_file_path, account_id, scanner_context, salt, **extra_args)
         defaults_merger = cls.get_defaults_merger_type()
-        if defaults_merger and account_data_dir_path:
+        if defaults_merger and account_data_dir_path and not extra_args.get('merge_only_defaults_for_drift'):
             defaults_merger.merge_defaults(scanner_context, iac_context)
         merged_context = EnvironmentContextMerger.merge(scanner_context, iac_context)
         cls.get_context_enrichment_type().enrich(merged_context, **extra_args)

@@ -10,5 +10,8 @@ class TestEc2Drifts(BaseAwsDriftTest):
         return 'ec2'
 
     @drift_test(module_path="ec2_instance/changing_default_sg")
-    def test_tracing_drift(self, results: List[Drift]):
+    def test_changing_default_sg(self, results: List[Drift]):
         self.assertEqual(len(results), 1)
+        ec2 = next(ec2 for ec2 in results if ec2.resource_id == 'aws_instance.web')
+        self.assertEqual(ec2.resource_iac['security_group_ids'], ['default'])
+        self.assertEqual(ec2.resource_live['security_group_ids'], ['sg-00aa995205a07db73'])
