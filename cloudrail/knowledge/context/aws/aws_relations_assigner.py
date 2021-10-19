@@ -76,7 +76,7 @@ from cloudrail.knowledge.context.aws.resources.ecr.ecr_repository_policy import 
 from cloudrail.knowledge.context.aws.resources.ecs.ecs_cluster import EcsCluster
 from cloudrail.knowledge.context.aws.resources.ecs.ecs_service import EcsService
 from cloudrail.knowledge.context.aws.resources.ecs.ecs_target import EcsTarget
-from cloudrail.knowledge.context.aws.resources.ecs.ecs_task_definition import EcsTaskDefinition
+from cloudrail.knowledge.context.aws.resources.ecs.ecs_task_definition import EcsTaskDefinition, TaskDefinitionStatus
 from cloudrail.knowledge.context.aws.resources.efs.efs_file_system import ElasticFileSystem
 from cloudrail.knowledge.context.aws.resources.efs.efs_mount_target import EfsMountTarget
 from cloudrail.knowledge.context.aws.resources.efs.efs_policy import EfsPolicy
@@ -2190,13 +2190,28 @@ class AwsRelationsAssigner(DependencyInvocation):
 
         resource.tags = ResourceInvalidator.get_by_logic(get_tags_data, False)
 
-    @staticmethod
-    def _are_arns_equal(tags_arn: str, resource: AwsResource) -> bool:
+    def _are_arns_equal(self, tags_arn: str, resource: AwsResource) -> bool:
         if isinstance(resource, LambdaFunction):
             lambda_arn = re.sub(r":[^:]+$", "", resource.arn)
             return tags_arn == lambda_arn
+        elif isinstance(resource, EcsTaskDefinition):
+            if tags_arn == resource.task_arn:
+                return True
+            else:
+                return self._ecs_task_arn_check(resource, tags_arn)
         else:
             return tags_arn == resource.get_arn()
+
+    ## IaC might include tags for INACTIVE task definitions, while scanner won't.
+    ## To avoid drifts, assigning tags for such INACTIVE task definitions.
+    @staticmethod
+    def _ecs_task_arn_check(resource: EcsTaskDefinition, tags_arn: str) -> bool:
+        if 'task-definition/' in tags_arn and resource.status == TaskDefinitionStatus.INACTIVE \
+                and resource.task_arn.split(':')[-1].isnumeric() and tags_arn.split(':')[-1].isnumeric():
+            resource_num = int(resource.task_arn.split(':')[-1])
+            tags_num_to_check = int(tags_arn.split(':')[-1]) - 1
+            return resource_num == tags_num_to_check
+        return False
 
     @staticmethod
     def _assign_s3_bucket_objects(bucket_object: S3BucketObject, buckets: AliasesDict[S3Bucket]):
