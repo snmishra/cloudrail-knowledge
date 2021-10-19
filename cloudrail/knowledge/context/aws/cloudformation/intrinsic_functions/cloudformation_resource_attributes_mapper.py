@@ -1,12 +1,15 @@
 from typing import Dict, Callable, Optional, Type
+
 from cloudrail.knowledge.context.aws.resources.apigatewayv2.api_gateway_v2 import ApiGateway
+from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template import LaunchTemplate
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
-from cloudrail.knowledge.context.aws.resources.cloudtrail.cloudtrail import CloudTrail
 from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CloudFrontDistribution
+from cloudrail.knowledge.context.aws.resources.cloudtrail.cloudtrail import CloudTrail
 from cloudrail.knowledge.context.aws.resources.cloudwatch.cloudwatch_logs_destination import CloudWatchLogsDestination
-from cloudrail.knowledge.context.aws.resources.dynamodb.dynamodb_table import DynamoDbTable
-from cloudrail.knowledge.context.aws.resources.configservice.config_aggregator import ConfigAggregator
 from cloudrail.knowledge.context.aws.resources.codebuild.codebuild_report_group import CodeBuildReportGroup
+from cloudrail.knowledge.context.aws.resources.configservice.config_aggregator import ConfigAggregator
+from cloudrail.knowledge.context.aws.resources.dynamodb.dynamodb_table import DynamoDbTable
+from cloudrail.knowledge.context.aws.resources.ec2.elastic_ip import ElasticIp
 from cloudrail.knowledge.context.aws.resources.ec2.internet_gateway import InternetGateway
 from cloudrail.knowledge.context.aws.resources.ec2.security_group import SecurityGroup
 from cloudrail.knowledge.context.aws.resources.ec2.subnet import Subnet
@@ -18,10 +21,6 @@ from cloudrail.knowledge.context.aws.resources.iam.role import Role
 from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.resources.lambda_.lambda_function import LambdaFunction
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket import S3Bucket
-from cloudrail.knowledge.context.aws.resources.batch.batch_compute_environment import BatchComputeEnvironment
-from cloudrail.knowledge.context.aws.resources.ec2.nat_gateways import NatGateways
-from cloudrail.knowledge.context.aws.resources.ec2.elastic_ip import ElasticIp
-from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template import LaunchTemplate
 
 
 class CloudformationAttributesCallableStore:
