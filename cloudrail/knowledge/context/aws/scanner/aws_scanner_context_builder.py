@@ -183,14 +183,16 @@ class AwsScannerContextBuilder(ScannerContextBuilder):
             return AwsEnvironmentContext()
 
         if extra_args.get('default_resources_only'):
+            vpcs = AliasesDict(*[vpc for vpc in VpcBuilder(account_data_dir, salt).build() if vpc.is_default])
+            default_vpcs_ids = [vpc.vpc_id for vpc in vpcs]
             return AwsEnvironmentContext(
-                vpcs=AliasesDict(*[vpc for vpc in VpcBuilder(account_data_dir, salt).build() if vpc.is_default]),
-                vpcs_attributes=VpcAttributeBuilder(account_data_dir, salt).build(),
+                vpcs=vpcs,
+                vpcs_attributes=[vpc_attribute for vpc_attribute in VpcAttributeBuilder(account_data_dir, salt).build()
+                                 if vpc_attribute.vpc_id in default_vpcs_ids],
                 subnets=AliasesDict(*[subnet for subnet in SubnetBuilder(account_data_dir, salt).build() if subnet.is_default]),
                 security_groups=AliasesDict(*[sg for sg in SecurityGroupBuilder(account_data_dir, salt).build() if sg.is_default]),
-                route_tables=AliasesDict(*RouteTableBuilder(account_data_dir, salt).build()),
+                route_tables=AliasesDict(*[rt for rt in RouteTableBuilder(account_data_dir, salt).build() if rt.is_main_route_table]),
                 network_acls=AliasesDict(*[nacl for nacl in NetworkAclBuilder(account_data_dir, salt).build() if nacl.is_default]),
-                route_table_associations=RouteTableAssociationBuilder(account_data_dir, salt).build(),
                 main_route_table_associations=MainRouteTableAssociationBuilder(account_data_dir, salt).build(),
             )
 

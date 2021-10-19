@@ -9,6 +9,7 @@ from cloudrail.knowledge.context.aws.resources.ec2.ec2_image import Ec2Image
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.networking_config.network_resource import NetworkResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName, AwsServiceAttributes, AwsServiceType
+from cloudrail.knowledge.utils.utils import flat_list
 
 
 class AssociatePublicIpAddress(str, Enum):
@@ -94,7 +95,8 @@ class Ec2Instance(NetworkEntity, AwsClient):
     def __str__(self):
         name_or_id_msg = 'Instance Name: {}'.format(
             self.name) if self.name else 'Instance Id: {}'.format(self.instance_id)
-        private_ips_msg = 'Private IP(s): {}'.format(', '.join(self.network_resource.private_ip_addresses))
+        private_ips_msg = 'Private IP(s): {}'.format(
+            ', '.join(self.network_resource.private_ip_addresses))
         public_ips_msg = 'Public IP(s): {}'.format(
             self.network_resource.public_ip_addresses) \
             if self.network_resource.public_ip_addresses \
@@ -120,7 +122,8 @@ class Ec2Instance(NetworkEntity, AwsClient):
 
     def with_raw_data(self,
                       subnet_id: Optional[str] = None,
-                      private_ip_address: Optional[str] = None,  # Why is this singular?
+                      # Why is this singular?
+                      private_ip_address: Optional[str] = None,
                       public_ip_address: Optional[str] = None,
                       ipv6_addresses: List[str] = None,
                       associate_public_ip_address: AssociatePublicIpAddress = None,
@@ -158,4 +161,4 @@ class Ec2Instance(NetworkEntity, AwsClient):
                 'instance_type': self.instance_type,
                 'ebs_optimized': self.ebs_optimized,
                 'monitoring_enabled': self.monitoring_enabled,
-                'security_group_ids': self.raw_data.security_groups_ids}
+                'security_group_ids': flat_list([eni.security_groups_ids for eni in self.network_resource.network_interfaces])}
