@@ -1,0 +1,119 @@
+{
+    "Images": [
+        {
+            "Architecture": "x86_64",
+            "BlockDeviceMappings": [
+                {
+                    "DeviceName": "/dev/sda1",
+                    "Ebs": {
+                        "DeleteOnTermination": true,
+                        "Encrypted": false,
+                        "SnapshotId": "snap-06a8f06adb9f0f3a4",
+                        "VolumeSize": 8,
+                        "VolumeType": "standard"
+                    }
+                }
+            ],
+            "CreationDate": "2019-09-30T14:00:10.000Z",
+            "Description": "http://www.openvpn.net/",
+            "EnaSupport": true,
+            "Hypervisor": "xen",
+            "ImageId": "ami-04688b57b62602227",
+            "ImageLocation": "aws-marketplace/OpenVPN Access Server 2.7.5-3b5882c4-551b-43fa-acfe-7f5cdb896ff1-ami-0c56f53c16ad84dcd.4",
+            "ImageOwnerAlias": "aws-marketplace",
+            "ImageType": "machine",
+            "Name": "OpenVPN Access Server 2.7.5-3b5882c4-551b-43fa-acfe-7f5cdb896ff1-ami-0c56f53c16ad84dcd.4",
+            "OwnerId": "679593333241",
+            "PlatformDetails": "Linux/UNIX",
+            "ProductCodes": [
+                {
+                    "ProductCodeId": "3ihdqli79gl9v2jnlzs6nq60h",
+                    "ProductCodeType": "marketplace"
+                }
+            ],
+            "Public": false,
+            "RootDeviceName": "/dev/sda1",
+            "RootDeviceType": "ebs",
+            "SriovNetSupport": "simple",
+            "State": "available",
+            "UsageOperation": "RunInstances",
+            "VirtualizationType": "hvm"
+        },
+        {
+            "Architecture": "x86_64",
+            "BlockDeviceMappings": [
+                {
+                    "DeviceName": "/dev/sda1",
+                    "Ebs": {
+                        "DeleteOnTermination": true,
+                        "Encrypted": false,
+                        "SnapshotId": "snap-0bcc4957f26c35f59",
+                        "VolumeSize": 8,
+                        "VolumeType": "standard"
+                    }
+                }
+            ],
+            "CreationDate": "2019-08-12T18:02:05.000Z",
+            "Description": "http://www.openvpn.net/",
+            "EnaSupport": true,
+            "Hypervisor": "xen",
+            "ImageId": "ami-0b87ac3677c3e16c0",
+            "ImageLocation": "aws-marketplace/OpenVPN Access Server 2.7.4-3b5882c4-551b-43fa-acfe-7f5cdb896ff1-ami-0ba54d2ef9317075a.4",
+            "ImageOwnerAlias": "aws-marketplace",
+            "ImageType": "machine",
+            "Name": "OpenVPN Access Server 2.7.4-3b5882c4-551b-43fa-acfe-7f5cdb896ff1-ami-0ba54d2ef9317075a.4",
+            "OwnerId": "679593333241",
+            "PlatformDetails": "Linux/UNIX",
+            "ProductCodes": [
+                {
+                    "ProductCodeId": "3ihdqli79gl9v2jnlzs6nq60h",
+                    "ProductCodeType": "marketplace"
+                }
+            ],
+            "Public": false,
+            "RootDeviceName": "/dev/sda1",
+            "RootDeviceType": "ebs",
+            "State": "available",
+            "UsageOperation": "RunInstances",
+            "VirtualizationType": "hvm"
+        },
+        {
+            "Architecture": "x86_64",
+            "BlockDeviceMappings": [
+                {
+                    "DeviceName": "/dev/sda1",
+                    "Ebs": {
+                        "DeleteOnTermination": true,
+                        "Encrypted": false,
+                        "SnapshotId": "snap-0b6f5ea586c2437fb",
+                        "VolumeSize": 8,
+                        "VolumeType": "standard"
+                    }
+                }
+            ],
+            "CreationDate": "2018-12-17T17:35:41.000Z",
+            "Description": "http://www.openvpn.net/",
+            "EnaSupport": false,
+            "Hypervisor": "xen",
+            "ImageId": "ami-0c49ea39a0cd58a93",
+            "ImageLocation": "aws-marketplace/OpenVPN Access Server 2.5.2-3b5882c4-551b-43fa-acfe-7f5cdb896ff1-ami-045bed224b08637c0.4",
+            "ImageOwnerAlias": "aws-marketplace",
+            "ImageType": "machine",
+            "Name": "OpenVPN Access Server 2.5.2-3b5882c4-551b-43fa-acfe-7f5cdb896ff1-ami-045bed224b08637c0.4",
+            "OwnerId": "679593333241",
+            "PlatformDetails": "Linux/UNIX",
+            "ProductCodes": [
+                {
+                    "ProductCodeId": "3ihdqli79gl9v2jnlzs6nq60h",
+                    "ProductCodeType": "marketplace"
+                }
+            ],
+            "Public": false,
+            "RootDeviceName": "/dev/sda1",
+            "RootDeviceType": "ebs",
+            "State": "available",
+            "UsageOperation": "RunInstances",
+            "VirtualizationType": "hvm"
+        }
+    ]
+}

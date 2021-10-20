@@ -1,0 +1,52 @@
+{
+    "Subnets": [
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "sa-east-1b",
+            "AvailabilityZoneId": "sae1-az2",
+            "AvailableIpAddressCount": 4091,
+            "CidrBlock": "179.83.132.214/20",
+            "DefaultForAz": true,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": true,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:sa-east-1:167389268608:subnet/subnet-df5cef96",
+            "SubnetId": "subnet-df5cef96",
+            "VpcId": "vpc-de5152b9"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "sa-east-1a",
+            "AvailabilityZoneId": "sae1-az1",
+            "AvailableIpAddressCount": 4091,
+            "CidrBlock": "6.168.104.159/20",
+            "DefaultForAz": true,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": true,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:sa-east-1:167389268608:subnet/subnet-115de077",
+            "SubnetId": "subnet-115de077",
+            "VpcId": "vpc-de5152b9"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "sa-east-1c",
+            "AvailabilityZoneId": "sae1-az3",
+            "AvailableIpAddressCount": 4091,
+            "CidrBlock": "170.14.161.1/20",
+            "DefaultForAz": true,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": true,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:sa-east-1:167389268608:subnet/subnet-f1d56eaa",
+            "SubnetId": "subnet-f1d56eaa",
+            "VpcId": "vpc-de5152b9"
+        }
+    ]
+}

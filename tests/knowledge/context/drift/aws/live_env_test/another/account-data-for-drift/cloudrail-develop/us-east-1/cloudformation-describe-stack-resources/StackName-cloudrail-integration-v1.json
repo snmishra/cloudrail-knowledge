@@ -1,0 +1,16 @@
+{
+    "StackResources": [
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "Role",
+            "PhysicalResourceId": "cloudrail-viewonly-lrgyebltgpbv-role",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::IAM::Role",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/cloudrail-integration-v1/48685f10-66dc-11eb-95b8-0e6b672d4ae7",
+            "StackName": "cloudrail-integration-v1",
+            "Timestamp": "2021-02-04T11:35:53.257000+00:00"
+        }
+    ]
+}

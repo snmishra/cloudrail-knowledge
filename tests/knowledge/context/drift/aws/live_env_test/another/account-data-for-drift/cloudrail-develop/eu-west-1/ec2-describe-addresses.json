@@ -1,0 +1,18 @@
+{
+    "Addresses": [
+        {
+            "AllocationId": "eipalloc-04f0c28796bbba31c",
+            "Domain": "vpc",
+            "NetworkBorderGroup": "eu-west-1",
+            "PublicIp": "132.131.56.105",
+            "PublicIpv4Pool": "amazon"
+        },
+        {
+            "AllocationId": "eipalloc-0d20589ad1443d019",
+            "Domain": "vpc",
+            "NetworkBorderGroup": "eu-west-1",
+            "PublicIp": "57.17.9.170",
+            "PublicIpv4Pool": "amazon"
+        }
+    ]
+}

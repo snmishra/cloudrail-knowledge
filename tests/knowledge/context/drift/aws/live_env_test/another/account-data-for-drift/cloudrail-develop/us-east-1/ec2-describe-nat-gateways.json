@@ -1,0 +1,42 @@
+{
+    "NatGateways": [
+        {
+            "ConnectivityType": "public",
+            "CreateTime": "2020-09-10T15:28:50+00:00",
+            "NatGatewayAddresses": [
+                {
+                    "AllocationId": "eipalloc-034793491b30426b2",
+                    "NetworkInterfaceId": "eni-04f69f7d4ecab3369",
+                    "PrivateIp": "121.62.5.59",
+                    "PublicIp": "168.140.1.218"
+                }
+            ],
+            "NatGatewayId": "nat-081471f2bb427f9ae",
+            "State": "available",
+            "SubnetId": "subnet-0d5b79f695930bb50",
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Tier",
+                    "Value": "Private"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-Private-NATGW"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        }
+    ]
+}

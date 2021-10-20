@@ -1,0 +1,16 @@
+{
+    "Attributes": {
+        "ApproximateNumberOfMessages": "0",
+        "ApproximateNumberOfMessagesDelayed": "0",
+        "ApproximateNumberOfMessagesNotVisible": "0",
+        "CreatedTimestamp": "1596706663",
+        "DelaySeconds": "0",
+        "LastModifiedTimestamp": "1596706663",
+        "MaximumMessageSize": "262144",
+        "MessageRetentionPeriod": "345600",
+        "QueueArn": "arn:aws:sqs:us-east-1:167389268608:StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f-SQSQueue-S19MOTD4F4M0",
+        "ReceiveMessageWaitTimeSeconds": "0",
+        "RedrivePolicy": "{\"deadLetterTargetArn\":\"arn:aws:sqs:us-east-1:167389268608:StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-SQSQueueDLQ-OO5CD1PQXLKP\",\"maxReceiveCount\":1}",
+        "VisibilityTimeout": "30"
+    }
+}

@@ -1,0 +1,154 @@
+{
+    "DistributionList": {
+        "IsTruncated": false,
+        "Items": [
+            {
+                "ARN": "arn:aws:cloudfront::167389268608:distribution/E15JOPV02ZFNUR",
+                "AliasICPRecordals": [
+                    {
+                        "CNAME": "web.develop.internal.cloudrail.app",
+                        "ICPRecordalStatus": "APPROVED"
+                    }
+                ],
+                "Aliases": {
+                    "Items": [
+                        "web.develop.internal.cloudrail.app"
+                    ],
+                    "Quantity": 1
+                },
+                "CacheBehaviors": {
+                    "Quantity": 0
+                },
+                "Comment": "develop environment",
+                "CustomErrorResponses": {
+                    "Items": [
+                        {
+                            "ErrorCachingMinTTL": 0,
+                            "ErrorCode": 403,
+                            "ResponseCode": "200",
+                            "ResponsePagePath": "/index.html"
+                        },
+                        {
+                            "ErrorCachingMinTTL": 0,
+                            "ErrorCode": 404,
+                            "ResponseCode": "200",
+                            "ResponsePagePath": "/index.html"
+                        }
+                    ],
+                    "Quantity": 2
+                },
+                "DefaultCacheBehavior": {
+                    "AllowedMethods": {
+                        "CachedMethods": {
+                            "Items": [
+                                "HEAD",
+                                "GET"
+                            ],
+                            "Quantity": 2
+                        },
+                        "Items": [
+                            "HEAD",
+                            "DELETE",
+                            "POST",
+                            "GET",
+                            "OPTIONS",
+                            "PUT",
+                            "PATCH"
+                        ],
+                        "Quantity": 7
+                    },
+                    "Compress": false,
+                    "DefaultTTL": 3600,
+                    "FieldLevelEncryptionId": "",
+                    "ForwardedValues": {
+                        "Cookies": {
+                            "Forward": "none"
+                        },
+                        "Headers": {
+                            "Quantity": 0
+                        },
+                        "QueryString": false,
+                        "QueryStringCacheKeys": {
+                            "Quantity": 0
+                        }
+                    },
+                    "FunctionAssociations": {
+                        "Quantity": 0
+                    },
+                    "LambdaFunctionAssociations": {
+                        "Items": [
+                            {
+                                "EventType": "origin-response",
+                                "IncludeBody": false,
+                                "LambdaFunctionARN": "arn:aws:lambda:us-east-1:167389268608:function:cf-edge-security-headers-develop:7"
+                            }
+                        ],
+                        "Quantity": 1
+                    },
+                    "MaxTTL": 86400,
+                    "MinTTL": 0,
+                    "SmoothStreaming": false,
+                    "TargetOriginId": "Cloudrail-develop-cf-S3",
+                    "TrustedKeyGroups": {
+                        "Enabled": false,
+                        "Quantity": 0
+                    },
+                    "TrustedSigners": {
+                        "Enabled": false,
+                        "Quantity": 0
+                    },
+                    "ViewerProtocolPolicy": "redirect-to-https"
+                },
+                "DomainName": "d30ljhy05kssxj.cloudfront.net",
+                "Enabled": true,
+                "HttpVersion": "HTTP2",
+                "Id": "E15JOPV02ZFNUR",
+                "IsIPV6Enabled": false,
+                "LastModifiedTime": "2021-09-02T11:37:00.389000+00:00",
+                "OriginGroups": {
+                    "Quantity": 0
+                },
+                "Origins": {
+                    "Items": [
+                        {
+                            "ConnectionAttempts": 3,
+                            "ConnectionTimeout": 10,
+                            "CustomHeaders": {
+                                "Quantity": 0
+                            },
+                            "DomainName": "cloudrail-develop-web-app-s3.s3.amazonaws.com",
+                            "Id": "Cloudrail-develop-cf-S3",
+                            "OriginPath": "",
+                            "OriginShield": {
+                                "Enabled": false
+                            },
+                            "S3OriginConfig": {
+                                "OriginAccessIdentity": "origin-access-identity/cloudfront/E22OZU5WR8Z36Z"
+                            }
+                        }
+                    ],
+                    "Quantity": 1
+                },
+                "PriceClass": "PriceClass_All",
+                "Restrictions": {
+                    "GeoRestriction": {
+                        "Quantity": 0,
+                        "RestrictionType": "none"
+                    }
+                },
+                "Status": "Deployed",
+                "ViewerCertificate": {
+                    "ACMCertificateArn": "arn:aws:acm:us-east-1:167389268608:certificate/ff10b9e6-02fd-494a-b01f-3a608f16a52f",
+                    "Certificate": "arn:aws:acm:us-east-1:167389268608:certificate/ff10b9e6-02fd-494a-b01f-3a608f16a52f",
+                    "CertificateSource": "acm",
+                    "MinimumProtocolVersion": "TLSv1.2_2019",
+                    "SSLSupportMethod": "sni-only"
+                },
+                "WebACLId": ""
+            }
+        ],
+        "Marker": "",
+        "MaxItems": 100,
+        "Quantity": 1
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "DBSubnetGroups": [
+        {
+            "DBSubnetGroupArn": "arn:aws:rds:eu-west-3:167389268608:subgrp:nondefault",
+            "DBSubnetGroupDescription": "Managed by Terraform",
+            "DBSubnetGroupName": "nondefault",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "eu-west-3a"
+                    },
+                    "SubnetIdentifier": "subnet-043602c602177816e",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "eu-west-3b"
+                    },
+                    "SubnetIdentifier": "subnet-007a7f44b2d177d02",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                }
+            ],
+            "VpcId": "vpc-0a093b19aeb45ddef"
+        }
+    ]
+}

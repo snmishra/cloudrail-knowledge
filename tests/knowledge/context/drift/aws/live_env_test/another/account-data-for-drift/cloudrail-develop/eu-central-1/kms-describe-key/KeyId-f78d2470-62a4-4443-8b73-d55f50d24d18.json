@@ -1,0 +1,20 @@
+{
+    "KeyMetadata": {
+        "AWSAccountId": "167389268608",
+        "Arn": "arn:aws:kms:eu-central-1:167389268608:key/f78d2470-62a4-4443-8b73-d55f50d24d18",
+        "CreationDate": "2020-08-19T12:59:03.983000+00:00",
+        "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+        "Description": "Default master key that protects my Redshift clusters when no other key is defined",
+        "Enabled": true,
+        "EncryptionAlgorithms": [
+            "SYMMETRIC_DEFAULT"
+        ],
+        "KeyId": "f78d2470-62a4-4443-8b73-d55f50d24d18",
+        "KeyManager": "AWS",
+        "KeySpec": "SYMMETRIC_DEFAULT",
+        "KeyState": "Enabled",
+        "KeyUsage": "ENCRYPT_DECRYPT",
+        "MultiRegion": false,
+        "Origin": "AWS_KMS"
+    }
+}

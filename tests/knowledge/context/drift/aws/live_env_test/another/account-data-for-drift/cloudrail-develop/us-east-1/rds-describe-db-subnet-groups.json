@@ -1,0 +1,332 @@
+{
+    "DBSubnetGroups": [
+        {
+            "DBSubnetGroupArn": "arn:aws:rds:us-east-1:167389268608:subgrp:cloud-rail-db-subnet",
+            "DBSubnetGroupDescription": "db subnet",
+            "DBSubnetGroupName": "cloud-rail-db-subnet",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1c"
+                    },
+                    "SubnetIdentifier": "subnet-04b6fce43464525b5",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1b"
+                    },
+                    "SubnetIdentifier": "subnet-08aed17ca79bddcc0",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1a"
+                    },
+                    "SubnetIdentifier": "subnet-009f63e064d7d78e7",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                }
+            ],
+            "VpcId": "vpc-0d967d2206f02a02a"
+        },
+        {
+            "DBSubnetGroupArn": "arn:aws:rds:us-east-1:167389268608:subgrp:cloudrail-develop-dbsubnetgrp",
+            "DBSubnetGroupDescription": "Managed by Terraform",
+            "DBSubnetGroupName": "cloudrail-develop-dbsubnetgrp",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1b"
+                    },
+                    "SubnetIdentifier": "subnet-00cdc2582ba0547d3",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1d"
+                    },
+                    "SubnetIdentifier": "subnet-0e10a30c478bff9ca",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1c"
+                    },
+                    "SubnetIdentifier": "subnet-0e93b1032f200f270",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "DBSubnetGroupArn": "arn:aws:rds:us-east-1:167389268608:subgrp:default",
+            "DBSubnetGroupDescription": "default",
+            "DBSubnetGroupName": "default",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1a"
+                    },
+                    "SubnetIdentifier": "subnet-508f6b36",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1c"
+                    },
+                    "SubnetIdentifier": "subnet-8e893dc3",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1d"
+                    },
+                    "SubnetIdentifier": "subnet-3ce40563",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1f"
+                    },
+                    "SubnetIdentifier": "subnet-bed907b0",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1e"
+                    },
+                    "SubnetIdentifier": "subnet-eed8f0d0",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1b"
+                    },
+                    "SubnetIdentifier": "subnet-300fec11",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                }
+            ],
+            "VpcId": "vpc-8ebd8cf4"
+        },
+        {
+            "DBSubnetGroupArn": "arn:aws:rds:us-east-1:167389268608:subgrp:default-vpc-00a171e2c82427b76",
+            "DBSubnetGroupDescription": "Created from the RDS Management Console",
+            "DBSubnetGroupName": "default-vpc-00a171e2c82427b76",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1f"
+                    },
+                    "SubnetIdentifier": "subnet-0c398ddf67a777ea4",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1a"
+                    },
+                    "SubnetIdentifier": "subnet-0b30916a308b3c2ab",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1c"
+                    },
+                    "SubnetIdentifier": "subnet-087514cf45221bd45",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1e"
+                    },
+                    "SubnetIdentifier": "subnet-068c7ce79f9419798",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1d"
+                    },
+                    "SubnetIdentifier": "subnet-02fd2342a2e78d5bd",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1b"
+                    },
+                    "SubnetIdentifier": "subnet-0c947613f9afe5fca",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                }
+            ],
+            "VpcId": "vpc-00a171e2c82427b76"
+        },
+        {
+            "DBSubnetGroupArn": "arn:aws:rds:us-east-1:167389268608:subgrp:default-vpc-0be1ce6fbdd333722",
+            "DBSubnetGroupDescription": "Created from the RDS Management Console",
+            "DBSubnetGroupName": "default-vpc-0be1ce6fbdd333722",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1b"
+                    },
+                    "SubnetIdentifier": "subnet-0876160838a476ede",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1f"
+                    },
+                    "SubnetIdentifier": "subnet-08955015cff4b1f35",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1c"
+                    },
+                    "SubnetIdentifier": "subnet-09a9b3a31ea49e3a6",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1d"
+                    },
+                    "SubnetIdentifier": "subnet-0d9b3219b06bf12ed",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1a"
+                    },
+                    "SubnetIdentifier": "subnet-018e7da6874c4e117",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1e"
+                    },
+                    "SubnetIdentifier": "subnet-04c825b10e8361663",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                }
+            ],
+            "VpcId": "vpc-0be1ce6fbdd333722"
+        },
+        {
+            "DBSubnetGroupArn": "arn:aws:rds:us-east-1:167389268608:subgrp:default-vpc-0d967d2206f02a02a",
+            "DBSubnetGroupDescription": "Created from the RDS Management Console",
+            "DBSubnetGroupName": "default-vpc-0d967d2206f02a02a",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1b"
+                    },
+                    "SubnetIdentifier": "subnet-08aed17ca79bddcc0",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1a"
+                    },
+                    "SubnetIdentifier": "subnet-009f63e064d7d78e7",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                }
+            ],
+            "VpcId": "vpc-0d967d2206f02a02a"
+        },
+        {
+            "DBSubnetGroupArn": "arn:aws:rds:us-east-1:167389268608:subgrp:default-vpc-0f71f9efac837d53e",
+            "DBSubnetGroupDescription": "Created from the RDS Management Console",
+            "DBSubnetGroupName": "default-vpc-0f71f9efac837d53e",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1e"
+                    },
+                    "SubnetIdentifier": "subnet-060312721a9741a59",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1d"
+                    },
+                    "SubnetIdentifier": "subnet-07f2ba6b21d301518",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1e"
+                    },
+                    "SubnetIdentifier": "subnet-0a860d88253def1b4",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1e"
+                    },
+                    "SubnetIdentifier": "subnet-0a664566eedde1f24",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                }
+            ],
+            "VpcId": "vpc-0f71f9efac837d53e"
+        },
+        {
+            "DBSubnetGroupArn": "arn:aws:rds:us-east-1:167389268608:subgrp:rds-sg",
+            "DBSubnetGroupDescription": "rds subnet groups (public)",
+            "DBSubnetGroupName": "rds-sg",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1a"
+                    },
+                    "SubnetIdentifier": "subnet-009f63e064d7d78e7",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "us-east-1c"
+                    },
+                    "SubnetIdentifier": "subnet-04b6fce43464525b5",
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                }
+            ],
+            "VpcId": "vpc-0d967d2206f02a02a"
+        }
+    ]
+}

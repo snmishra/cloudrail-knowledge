@@ -1,0 +1,99 @@
+{
+    "Versions": [
+        {
+            "CodeSha256": "XG3fyKy17N0NQNoDtzBiNkIyU+j0X5/Ze9jK0HFNago=",
+            "CodeSize": 617,
+            "Description": "",
+            "FunctionArn": "arn:aws:lambda:us-east-1:167389268608:function:cf-edge-security-headers-develop:$LATEST",
+            "FunctionName": "cf-edge-security-headers-develop",
+            "Handler": "security_headers.lambda_handler",
+            "LastModified": "2021-09-02T11:36:59.620+0000",
+            "MemorySize": 128,
+            "PackageType": "Zip",
+            "RevisionId": "e6e3ce26-d364-4bd5-860e-eec984df0be0",
+            "Role": "arn:aws:iam::167389268608:role/Cloudrail-develop-cf-cf-edge-lambda-Role",
+            "Runtime": "python3.8",
+            "Timeout": 30,
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "Version": "$LATEST"
+        },
+        {
+            "CodeSha256": "tsB2oa9ihMHiJPz5S2cefWelQXAIYr4TiftOW10SIKk=",
+            "CodeSize": 567,
+            "Description": "",
+            "FunctionArn": "arn:aws:lambda:us-east-1:167389268608:function:cf-edge-security-headers-develop:4",
+            "FunctionName": "cf-edge-security-headers-develop",
+            "Handler": "security_headers.lambda_handler",
+            "LastModified": "2021-05-04T14:54:29.148+0000",
+            "MemorySize": 128,
+            "PackageType": "Zip",
+            "RevisionId": "092e0c09-d34a-43ea-826f-c837f8a2ca4f",
+            "Role": "arn:aws:iam::167389268608:role/Cloudrail-develop-cf-cf-edge-lambda-Role",
+            "Runtime": "python3.8",
+            "Timeout": 30,
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "Version": "4"
+        },
+        {
+            "CodeSha256": "tsB2oa9ihMHiJPz5S2cefWelQXAIYr4TiftOW10SIKk=",
+            "CodeSize": 567,
+            "Description": "",
+            "FunctionArn": "arn:aws:lambda:us-east-1:167389268608:function:cf-edge-security-headers-develop:5",
+            "FunctionName": "cf-edge-security-headers-develop",
+            "Handler": "security_headers.lambda_handler",
+            "LastModified": "2021-06-09T09:32:24.573+0000",
+            "MemorySize": 128,
+            "PackageType": "Zip",
+            "RevisionId": "2bd49edd-b78d-4b1a-b7fc-c72cbf62e1f5",
+            "Role": "arn:aws:iam::167389268608:role/Cloudrail-develop-cf-cf-edge-lambda-Role",
+            "Runtime": "python3.8",
+            "Timeout": 30,
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "Version": "5"
+        },
+        {
+            "CodeSha256": "XUaS+qe4JscYxNmo9dgauvO1XSMWyvBARLO+PJHsg+Q=",
+            "CodeSize": 570,
+            "Description": "",
+            "FunctionArn": "arn:aws:lambda:us-east-1:167389268608:function:cf-edge-security-headers-develop:6",
+            "FunctionName": "cf-edge-security-headers-develop",
+            "Handler": "security_headers.lambda_handler",
+            "LastModified": "2021-09-02T11:53:27.628+0000",
+            "MemorySize": 128,
+            "PackageType": "Zip",
+            "RevisionId": "b1e5a513-dac2-4380-b25f-f56a773cd1ec",
+            "Role": "arn:aws:iam::167389268608:role/Cloudrail-develop-cf-cf-edge-lambda-Role",
+            "Runtime": "python3.8",
+            "Timeout": 30,
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "Version": "6"
+        },
+        {
+            "CodeSha256": "XG3fyKy17N0NQNoDtzBiNkIyU+j0X5/Ze9jK0HFNago=",
+            "CodeSize": 617,
+            "Description": "",
+            "FunctionArn": "arn:aws:lambda:us-east-1:167389268608:function:cf-edge-security-headers-develop:7",
+            "FunctionName": "cf-edge-security-headers-develop",
+            "Handler": "security_headers.lambda_handler",
+            "LastModified": "2021-09-02T11:37:00.564+0000",
+            "MemorySize": 128,
+            "PackageType": "Zip",
+            "RevisionId": "6c04dc88-8fea-4e82-8343-b497d0d968ea",
+            "Role": "arn:aws:iam::167389268608:role/Cloudrail-develop-cf-cf-edge-lambda-Role",
+            "Runtime": "python3.8",
+            "Timeout": 30,
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "Version": "7"
+        }
+    ]
+}

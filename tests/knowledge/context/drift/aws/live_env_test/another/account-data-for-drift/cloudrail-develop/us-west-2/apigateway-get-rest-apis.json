@@ -1,0 +1,16 @@
+{
+    "items": [
+        {
+            "apiKeySource": "HEADER",
+            "createdDate": "2020-07-07T15:09:32+00:00",
+            "disableExecuteApiEndpoint": false,
+            "endpointConfiguration": {
+                "types": [
+                    "REGIONAL"
+                ]
+            },
+            "id": "ucr0fzaxk3",
+            "name": "ivan-manual-test"
+        }
+    ]
+}

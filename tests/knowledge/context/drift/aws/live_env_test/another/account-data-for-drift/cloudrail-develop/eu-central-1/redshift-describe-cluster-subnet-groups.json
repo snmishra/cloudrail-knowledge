@@ -1,0 +1,57 @@
+{
+    "ClusterSubnetGroups": [
+        {
+            "ClusterSubnetGroupName": "default",
+            "Description": "default",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "eu-central-1a"
+                    },
+                    "SubnetIdentifier": "subnet-cb8236a1",
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "eu-central-1c"
+                    },
+                    "SubnetIdentifier": "subnet-e87781a4",
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "eu-central-1b"
+                    },
+                    "SubnetIdentifier": "subnet-5272912e",
+                    "SubnetStatus": "Active"
+                }
+            ],
+            "Tags": [],
+            "VpcId": "vpc-5fad6135"
+        },
+        {
+            "ClusterSubnetGroupName": "nondefault",
+            "Description": "Managed by Terraform",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "eu-central-1a"
+                    },
+                    "SubnetIdentifier": "subnet-02e1e045ce3bbf2dd",
+                    "SubnetStatus": "Active"
+                },
+                {
+                    "SubnetAvailabilityZone": {
+                        "Name": "eu-central-1b"
+                    },
+                    "SubnetIdentifier": "subnet-003254ff5a5629822",
+                    "SubnetStatus": "Active"
+                }
+            ],
+            "Tags": [],
+            "VpcId": "vpc-0cce4b551a9550aa4"
+        }
+    ]
+}

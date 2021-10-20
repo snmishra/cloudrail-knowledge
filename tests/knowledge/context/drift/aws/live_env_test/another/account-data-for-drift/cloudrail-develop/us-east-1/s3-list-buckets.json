@@ -1,0 +1,132 @@
+{
+    "Buckets": [
+        {
+            "CreationDate": "2020-10-22T08:08:34+00:00",
+            "Name": "acls-test-bucket"
+        },
+        {
+            "CreationDate": "2020-11-13T17:17:35+00:00",
+            "Name": "aws-athena-query-results-167389268608-us-east-1"
+        },
+        {
+            "CreationDate": "2020-12-24T08:00:03+00:00",
+            "Name": "cf-templates-16mgkrgjh0vc8-us-east-1"
+        },
+        {
+            "CreationDate": "2021-05-03T14:36:11+00:00",
+            "Name": "cloudrail-cli"
+        },
+        {
+            "CreationDate": "2020-09-10T15:28:35+00:00",
+            "Name": "cloudrail-develop-apikeys-s3"
+        },
+        {
+            "CreationDate": "2020-12-22T15:45:27+00:00",
+            "Name": "cloudrail-develop-backup-s3"
+        },
+        {
+            "CreationDate": "2020-09-10T15:28:35+00:00",
+            "Name": "cloudrail-develop-collect-s3"
+        },
+        {
+            "CreationDate": "2021-06-17T11:55:00+00:00",
+            "Name": "cloudrail-develop-drift-detection-results-s3"
+        },
+        {
+            "CreationDate": "2021-01-03T12:00:43+00:00",
+            "Name": "cloudrail-develop-iac-template-s3"
+        },
+        {
+            "CreationDate": "2021-03-30T06:42:52+00:00",
+            "Name": "cloudrail-develop-logs-s3"
+        },
+        {
+            "CreationDate": "2020-09-10T15:28:36+00:00",
+            "Name": "cloudrail-develop-process-s3"
+        },
+        {
+            "CreationDate": "2021-05-30T12:59:38+00:00",
+            "Name": "cloudrail-develop-terraform-drift-s3"
+        },
+        {
+            "CreationDate": "2020-09-10T15:28:35+00:00",
+            "Name": "cloudrail-develop-terraform-s3"
+        },
+        {
+            "CreationDate": "2020-11-03T16:42:27+00:00",
+            "Name": "cloudrail-develop-web-app-s3"
+        },
+        {
+            "CreationDate": "2021-09-05T04:49:49+00:00",
+            "Name": "cloudrail-knowledge-tests-data"
+        },
+        {
+            "CreationDate": "2020-05-19T10:55:57+00:00",
+            "Name": "cloudrail-terraform"
+        },
+        {
+            "CreationDate": "2020-09-10T15:28:36+00:00",
+            "Name": "cloudtrail.167389268608.us-east-1.cloudrail.develop"
+        },
+        {
+            "CreationDate": "2021-09-25T18:47:17+00:00",
+            "Name": "datadog-forwarderstack-6unjuvfrg8-forwarderbucket-13pf7yw9hr4ur"
+        },
+        {
+            "CreationDate": "2020-05-18T10:09:06+00:00",
+            "Name": "ecs"
+        },
+        {
+            "CreationDate": "2020-09-10T15:28:34+00:00",
+            "Name": "guardduty.167389268608.us-east-1.cloudrail.develop"
+        },
+        {
+            "CreationDate": "2020-07-22T10:00:33+00:00",
+            "Name": "ido-lambda"
+        },
+        {
+            "CreationDate": "2020-05-18T06:17:06+00:00",
+            "Name": "indeni-cloud-rail-collect"
+        },
+        {
+            "CreationDate": "2020-08-09T10:35:59+00:00",
+            "Name": "indeni-cloud-rail-custom-terraform"
+        },
+        {
+            "CreationDate": "2020-06-16T07:03:39+00:00",
+            "Name": "indeni-cloud-rail-dev-collect"
+        },
+        {
+            "CreationDate": "2020-05-19T06:57:20+00:00",
+            "Name": "indeni-cloud-rail-process"
+        },
+        {
+            "CreationDate": "2020-07-23T05:56:12+00:00",
+            "Name": "indeni-cloud-rail-terraform"
+        },
+        {
+            "CreationDate": "2020-07-01T05:48:23+00:00",
+            "Name": "indeni-cloud-trail"
+        },
+        {
+            "CreationDate": "2020-03-11T11:21:31+00:00",
+            "Name": "indeni-dev-cr-private"
+        },
+        {
+            "CreationDate": "2020-03-11T12:18:04+00:00",
+            "Name": "indeni-dev-cr-public"
+        },
+        {
+            "CreationDate": "2020-07-08T16:05:24+00:00",
+            "Name": "indeni-example"
+        },
+        {
+            "CreationDate": "2020-09-10T14:38:13+00:00",
+            "Name": "tfstate.us-east-1.cloudrail.develop"
+        }
+    ],
+    "Owner": {
+        "DisplayName": "aws.cloudrail.develop",
+        "ID": "357e32005b8094eebc957ac8870840aa6891b8a25d57691d811155e0977ef765"
+    }
+}

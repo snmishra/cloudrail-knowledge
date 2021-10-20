@@ -1,0 +1,40 @@
+{
+    "StackResources": [
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "DatadogPolicyMacro",
+            "PhysicalResourceId": "DatadogPolicy",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::CloudFormation::Macro",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog-DatadogPolicyMacroStack-MXIXYI0A86WC/ed5ad820-1e30-11ec-a033-0e2d7a31746d",
+            "StackName": "datadog-DatadogPolicyMacroStack-MXIXYI0A86WC",
+            "Timestamp": "2021-09-25T18:47:13.671000+00:00"
+        },
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "DatadogPolicyMacroMacroFunction",
+            "PhysicalResourceId": "datadog-DatadogPolicyMacr-DatadogPolicyMacroMacroF-MzDRW5A9l28l",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::Lambda::Function",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog-DatadogPolicyMacroStack-MXIXYI0A86WC/ed5ad820-1e30-11ec-a033-0e2d7a31746d",
+            "StackName": "datadog-DatadogPolicyMacroStack-MXIXYI0A86WC",
+            "Timestamp": "2021-09-25T18:47:10.807000+00:00"
+        },
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "DatadogPolicyMacroMacroFunctionRole",
+            "PhysicalResourceId": "datadog-DatadogPolicyMacr-DatadogPolicyMacroMacroF-I9GKKEEC6UQT",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::IAM::Role",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog-DatadogPolicyMacroStack-MXIXYI0A86WC/ed5ad820-1e30-11ec-a033-0e2d7a31746d",
+            "StackName": "datadog-DatadogPolicyMacroStack-MXIXYI0A86WC",
+            "Timestamp": "2021-09-25T18:47:04.812000+00:00"
+        }
+    ]
+}

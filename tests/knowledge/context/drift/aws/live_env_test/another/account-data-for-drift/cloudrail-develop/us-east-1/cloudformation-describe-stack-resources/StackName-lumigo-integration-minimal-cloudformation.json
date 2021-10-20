@@ -1,0 +1,28 @@
+{
+    "StackResources": [
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "LumigoIntegrationPolicies",
+            "PhysicalResourceId": "lumig-Lumi-1BPKPA5PN3TQI",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::IAM::Policy",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/lumigo-integration-minimal-cloudformation/1e99a2a0-45be-11eb-a062-127c6c2d7f71",
+            "StackName": "lumigo-integration-minimal-cloudformation",
+            "Timestamp": "2020-12-24T08:01:13.684000+00:00"
+        },
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "LumigoIntegrationRole",
+            "PhysicalResourceId": "lumigo-integration-minimal-c-LumigoIntegrationRole-I3I9REFYRM4B",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::IAM::Role",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/lumigo-integration-minimal-cloudformation/1e99a2a0-45be-11eb-a062-127c6c2d7f71",
+            "StackName": "lumigo-integration-minimal-cloudformation",
+            "Timestamp": "2020-12-24T08:00:58.328000+00:00"
+        }
+    ]
+}

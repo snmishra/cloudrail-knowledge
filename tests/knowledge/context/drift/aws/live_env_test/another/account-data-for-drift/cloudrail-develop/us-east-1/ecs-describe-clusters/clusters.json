@@ -1,0 +1,22 @@
+{
+    "clusters": [
+        {
+            "activeServicesCount": 0,
+            "capacityProviders": [
+                "FARGATE_SPOT",
+                "FARGATE"
+            ],
+            "clusterArn": "arn:aws:ecs:us-east-1:167389268608:cluster/Cloudrail-develop-ecs",
+            "clusterName": "Cloudrail-develop-ecs",
+            "defaultCapacityProviderStrategy": [],
+            "pendingTasksCount": 0,
+            "registeredContainerInstancesCount": 0,
+            "runningTasksCount": 2,
+            "settings": [],
+            "statistics": [],
+            "status": "ACTIVE",
+            "tags": []
+        }
+    ],
+    "failures": []
+}

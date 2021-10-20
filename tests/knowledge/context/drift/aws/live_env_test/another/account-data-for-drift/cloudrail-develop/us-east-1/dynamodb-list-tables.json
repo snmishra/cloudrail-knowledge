@@ -1,0 +1,7 @@
+{
+    "TableNames": [
+        "api_keys",
+        "tfstate-locks.us-east-1.cloudrail.develop",
+        "tfstate-locks.us-east-1.indeni"
+    ]
+}

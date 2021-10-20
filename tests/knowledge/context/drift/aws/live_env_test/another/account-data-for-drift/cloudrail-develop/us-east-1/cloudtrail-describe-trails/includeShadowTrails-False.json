@@ -1,0 +1,28 @@
+{
+    "trailList": [
+        {
+            "HasCustomEventSelectors": false,
+            "HasInsightSelectors": false,
+            "HomeRegion": "us-east-1",
+            "IncludeGlobalServiceEvents": true,
+            "IsMultiRegionTrail": true,
+            "IsOrganizationTrail": false,
+            "LogFileValidationEnabled": true,
+            "Name": "Cloudrail-develop-CloudTrail",
+            "S3BucketName": "cloudtrail.167389268608.us-east-1.cloudrail.develop",
+            "TrailARN": "arn:aws:cloudtrail:us-east-1:167389268608:trail/Cloudrail-develop-CloudTrail"
+        },
+        {
+            "HasCustomEventSelectors": false,
+            "HasInsightSelectors": false,
+            "HomeRegion": "us-east-1",
+            "IncludeGlobalServiceEvents": true,
+            "IsMultiRegionTrail": true,
+            "IsOrganizationTrail": false,
+            "LogFileValidationEnabled": true,
+            "Name": "Cloudrail-develop-CloudTrail-external",
+            "S3BucketName": "cloudtrail.889671396680.us-east-1.cloudrail.security",
+            "TrailARN": "arn:aws:cloudtrail:us-east-1:167389268608:trail/Cloudrail-develop-CloudTrail-external"
+        }
+    ]
+}

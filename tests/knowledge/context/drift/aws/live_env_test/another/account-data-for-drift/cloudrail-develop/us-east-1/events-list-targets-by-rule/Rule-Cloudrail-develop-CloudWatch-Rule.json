@@ -1,0 +1,8 @@
+{
+    "Targets": [
+        {
+            "Arn": "arn:aws:lambda:us-east-1:167389268608:function:collect_job_executor-develop:stable",
+            "Id": "lambda"
+        }
+    ]
+}

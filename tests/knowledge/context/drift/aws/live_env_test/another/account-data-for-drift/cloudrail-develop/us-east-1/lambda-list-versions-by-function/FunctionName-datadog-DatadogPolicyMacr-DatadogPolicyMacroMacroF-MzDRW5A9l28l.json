@@ -1,0 +1,23 @@
+{
+    "Versions": [
+        {
+            "CodeSha256": "zEfQJVp2nBPHMFWBmljndYNxsn5TX8+LE838k7NNwSA=",
+            "CodeSize": 825,
+            "Description": "",
+            "FunctionArn": "arn:aws:lambda:us-east-1:167389268608:function:datadog-DatadogPolicyMacr-DatadogPolicyMacroMacroF-MzDRW5A9l28l:$LATEST",
+            "FunctionName": "datadog-DatadogPolicyMacr-DatadogPolicyMacroMacroF-MzDRW5A9l28l",
+            "Handler": "index.handler",
+            "LastModified": "2021-09-25T18:47:08.980+0000",
+            "MemorySize": 128,
+            "PackageType": "Zip",
+            "RevisionId": "a822a708-a7cf-40d3-892f-5e64d7f8e145",
+            "Role": "arn:aws:iam::167389268608:role/datadog-DatadogPolicyMacr-DatadogPolicyMacroMacroF-I9GKKEEC6UQT",
+            "Runtime": "python3.7",
+            "Timeout": 3,
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "Version": "$LATEST"
+        }
+    ]
+}

@@ -1,0 +1,172 @@
+{
+    "Subnets": [
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-west-2b",
+            "AvailabilityZoneId": "usw2-az2",
+            "AvailableIpAddressCount": 27,
+            "CidrBlock": "37.38.54.89/27",
+            "DefaultForAz": false,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": true,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-west-2:167389268608:subnet/subnet-06510375cd674289f",
+            "SubnetId": "subnet-06510375cd674289f",
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "devops-vpc-public-us-west-2b"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "devops"
+                }
+            ],
+            "VpcId": "vpc-079dc494b1d72178f"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-west-2b",
+            "AvailabilityZoneId": "usw2-az2",
+            "AvailableIpAddressCount": 4091,
+            "CidrBlock": "71.20.107.247/20",
+            "DefaultForAz": true,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": true,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-west-2:167389268608:subnet/subnet-56a1b61d",
+            "SubnetId": "subnet-56a1b61d",
+            "VpcId": "vpc-0150c879"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-west-2d",
+            "AvailabilityZoneId": "usw2-az4",
+            "AvailableIpAddressCount": 4091,
+            "CidrBlock": "170.14.161.1/20",
+            "DefaultForAz": true,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": true,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-west-2:167389268608:subnet/subnet-4dd2ae66",
+            "SubnetId": "subnet-4dd2ae66",
+            "VpcId": "vpc-0150c879"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-west-2b",
+            "AvailabilityZoneId": "usw2-az2",
+            "AvailableIpAddressCount": 27,
+            "CidrBlock": "100.41.237.247/27",
+            "DefaultForAz": false,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": false,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-west-2:167389268608:subnet/subnet-02cdeef1c52041c9d",
+            "SubnetId": "subnet-02cdeef1c52041c9d",
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "devops-vpc-private-us-west-2b"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "devops"
+                }
+            ],
+            "VpcId": "vpc-079dc494b1d72178f"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-west-2a",
+            "AvailabilityZoneId": "usw2-az1",
+            "AvailableIpAddressCount": 4091,
+            "CidrBlock": "179.83.132.214/20",
+            "DefaultForAz": true,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": true,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-west-2:167389268608:subnet/subnet-3af20742",
+            "SubnetId": "subnet-3af20742",
+            "VpcId": "vpc-0150c879"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-west-2c",
+            "AvailabilityZoneId": "usw2-az3",
+            "AvailableIpAddressCount": 4091,
+            "CidrBlock": "6.168.104.159/20",
+            "DefaultForAz": true,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": true,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-west-2:167389268608:subnet/subnet-f123e7ac",
+            "SubnetId": "subnet-f123e7ac",
+            "VpcId": "vpc-0150c879"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-west-2a",
+            "AvailabilityZoneId": "usw2-az1",
+            "AvailableIpAddressCount": 27,
+            "CidrBlock": "46.24.118.80/27",
+            "DefaultForAz": false,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": false,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-west-2:167389268608:subnet/subnet-0cfa0456526e2068d",
+            "SubnetId": "subnet-0cfa0456526e2068d",
+            "Tags": [
+                {
+                    "Key": "Environment",
+                    "Value": "devops"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "devops-vpc-private-us-west-2a"
+                }
+            ],
+            "VpcId": "vpc-079dc494b1d72178f"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-west-2a",
+            "AvailabilityZoneId": "usw2-az1",
+            "AvailableIpAddressCount": 27,
+            "CidrBlock": "227.105.25.239/27",
+            "DefaultForAz": false,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": true,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-west-2:167389268608:subnet/subnet-0ee397a8335816b9b",
+            "SubnetId": "subnet-0ee397a8335816b9b",
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "devops-vpc-public-us-west-2a"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "devops"
+                }
+            ],
+            "VpcId": "vpc-079dc494b1d72178f"
+        }
+    ]
+}

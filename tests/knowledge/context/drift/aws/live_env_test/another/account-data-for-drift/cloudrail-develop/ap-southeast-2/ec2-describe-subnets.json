@@ -1,0 +1,52 @@
+{
+    "Subnets": [
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "ap-southeast-2a",
+            "AvailabilityZoneId": "apse2-az3",
+            "AvailableIpAddressCount": 4091,
+            "CidrBlock": "170.14.161.1/20",
+            "DefaultForAz": true,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": true,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:ap-southeast-2:167389268608:subnet/subnet-94a4bbdd",
+            "SubnetId": "subnet-94a4bbdd",
+            "VpcId": "vpc-c9787dae"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "ap-southeast-2c",
+            "AvailabilityZoneId": "apse2-az2",
+            "AvailableIpAddressCount": 4091,
+            "CidrBlock": "179.83.132.214/20",
+            "DefaultForAz": true,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": true,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:ap-southeast-2:167389268608:subnet/subnet-4676ea1e",
+            "SubnetId": "subnet-4676ea1e",
+            "VpcId": "vpc-c9787dae"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "ap-southeast-2b",
+            "AvailabilityZoneId": "apse2-az1",
+            "AvailableIpAddressCount": 4091,
+            "CidrBlock": "6.168.104.159/20",
+            "DefaultForAz": true,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": true,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:ap-southeast-2:167389268608:subnet/subnet-f3e00d95",
+            "SubnetId": "subnet-f3e00d95",
+            "VpcId": "vpc-c9787dae"
+        }
+    ]
+}

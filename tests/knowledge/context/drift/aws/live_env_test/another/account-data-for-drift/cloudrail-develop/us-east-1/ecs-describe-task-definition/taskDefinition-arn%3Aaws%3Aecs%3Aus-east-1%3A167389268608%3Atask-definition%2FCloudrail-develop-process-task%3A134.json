@@ -1,0 +1,117 @@
+{
+    "taskDefinition": {
+        "compatibilities": [
+            "EC2",
+            "FARGATE"
+        ],
+        "containerDefinitions": [
+            {
+                "command": [],
+                "cpu": 0,
+                "environment": [
+                    {
+                        "name": "PSQL_HOST",
+                        "value": "cloudrail-develop-rds.cwz8ng8rczcc.us-east-1.rds.amazonaws.com"
+                    },
+                    {
+                        "name": "STEP_FUNCTION_NAME",
+                        "value": "Cloudrail-develop-Step-Functions"
+                    },
+                    {
+                        "name": "S3_PROCESS_BUCKET",
+                        "value": "cloudrail-develop-process-s3"
+                    },
+                    {
+                        "name": "PSQL_DB_NAME",
+                        "value": "cloudrail"
+                    },
+                    {
+                        "name": "S3_API_BUCKET",
+                        "value": "cloudrail-develop-apikeys-s3"
+                    },
+                    {
+                        "name": "COGNITO_CLIENT_ID",
+                        "value": "46jvnn9dad2klml6qasurtp5mo"
+                    },
+                    {
+                        "name": "COGNITO_USER_POOL_ID",
+                        "value": "us-east-1_ulg5Yf2uD"
+                    },
+                    {
+                        "name": "PSQL_USERNAME",
+                        "value": "ecs_process_task"
+                    },
+                    {
+                        "name": "S3_COLLECT_BUCKET",
+                        "value": "cloudrail-develop-collect-s3"
+                    },
+                    {
+                        "name": "REGION",
+                        "value": "us-east-1"
+                    },
+                    {
+                        "name": "S3_TERRAFORM_BUCKET",
+                        "value": "cloudrail-develop-terraform-s3"
+                    }
+                ],
+                "essential": true,
+                "image": "indeni-cloudrail.jfrog.io/cloudrail-process:0.1.287",
+                "logConfiguration": {
+                    "logDriver": "awslogs",
+                    "options": {
+                        "awslogs-group": "/develop/process-task",
+                        "awslogs-region": "us-east-1",
+                        "awslogs-stream-prefix": "develop"
+                    }
+                },
+                "mountPoints": [],
+                "name": "process-task",
+                "portMappings": [],
+                "repositoryCredentials": {
+                    "credentialsParameter": "arn:aws:secretsmanager:us-east-1:167389268608:secret:Cloudrail-develop-jfrog-DXEMfG"
+                },
+                "volumesFrom": []
+            }
+        ],
+        "cpu": "256",
+        "deregisteredAt": "2020-10-25T10:08:05.611000+00:00",
+        "executionRoleArn": "arn:aws:iam::167389268608:role/Cloudrail-develop-process-task-Execution-Role",
+        "family": "Cloudrail-develop-process-task",
+        "memory": "512",
+        "networkMode": "awsvpc",
+        "placementConstraints": [],
+        "registeredAt": "2020-10-25T09:45:24.301000+00:00",
+        "registeredBy": "arn:aws:sts::167389268608:assumed-role/For-Jenkins-Terraform/JenkinsDeploySession",
+        "requiresAttributes": [
+            {
+                "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+            },
+            {
+                "name": "ecs.capability.execution-role-awslogs"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+            },
+            {
+                "name": "ecs.capability.private-registry-authentication.secretsmanager"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.task-iam-role"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+                "name": "ecs.capability.task-eni"
+            }
+        ],
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "revision": 134,
+        "status": "INACTIVE",
+        "taskDefinitionArn": "arn:aws:ecs:us-east-1:167389268608:task-definition/Cloudrail-develop-process-task:134",
+        "taskRoleArn": "arn:aws:iam::167389268608:role/Cloudrail-develop-process-task-Task-Role",
+        "volumes": []
+    }
+}

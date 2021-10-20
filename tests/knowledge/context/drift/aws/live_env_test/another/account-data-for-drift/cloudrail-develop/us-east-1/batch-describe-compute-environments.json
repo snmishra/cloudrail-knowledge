@@ -1,0 +1,44 @@
+{
+    "computeEnvironments": [
+        {
+            "computeEnvironmentArn": "arn:aws:batch:us-east-1:167389268608:compute-environment/collect-compute-environment",
+            "computeEnvironmentName": "collect-compute-environment",
+            "computeResources": {
+                "desiredvCpus": 0,
+                "ec2Configuration": [
+                    {
+                        "imageType": "ECS_AL1"
+                    }
+                ],
+                "instanceRole": "arn:aws:iam::167389268608:instance-profile/ecsInstanceRole",
+                "instanceTypes": [
+                    "optimal"
+                ],
+                "maxvCpus": 256,
+                "minvCpus": 0,
+                "securityGroupIds": [
+                    "sg-85cef3ae"
+                ],
+                "subnets": [
+                    "subnet-300fec11",
+                    "subnet-eed8f0d0",
+                    "subnet-bed907b0",
+                    "subnet-3ce40563",
+                    "subnet-8e893dc3",
+                    "subnet-508f6b36"
+                ],
+                "tags": {
+                    "Name": "collect-compute-environment"
+                },
+                "type": "EC2"
+            },
+            "ecsClusterArn": "arn:aws:ecs:us-east-1:167389268608:cluster/collect-compute-environment_Batch_820c8155-8232-3e42-8b17-a2e3191260f1",
+            "serviceRole": "arn:aws:iam::167389268608:role/service-role/AWSBatchServiceRole",
+            "state": "ENABLED",
+            "status": "VALID",
+            "statusReason": "ComputeEnvironment Healthy",
+            "tags": {},
+            "type": "MANAGED"
+        }
+    ]
+}

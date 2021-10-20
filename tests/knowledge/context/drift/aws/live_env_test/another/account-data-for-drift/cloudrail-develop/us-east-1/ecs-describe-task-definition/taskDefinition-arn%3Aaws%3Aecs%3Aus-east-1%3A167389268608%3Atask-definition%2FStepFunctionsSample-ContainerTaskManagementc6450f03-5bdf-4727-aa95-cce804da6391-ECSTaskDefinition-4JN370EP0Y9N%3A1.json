@@ -1,0 +1,66 @@
+{
+    "taskDefinition": {
+        "compatibilities": [
+            "EC2",
+            "FARGATE"
+        ],
+        "containerDefinitions": [
+            {
+                "command": [
+                    "/bin/sh -c \"echo 'Hello from AWS Step Functions!'\""
+                ],
+                "cpu": 0,
+                "dnsSearchDomains": [],
+                "dnsServers": [],
+                "dockerLabels": {},
+                "dockerSecurityOptions": [],
+                "entryPoint": [
+                    "sh",
+                    "-c"
+                ],
+                "environment": [],
+                "essential": true,
+                "extraHosts": [],
+                "image": "amazon/amazon-ecs-sample",
+                "links": [],
+                "mountPoints": [],
+                "name": "fargate-app",
+                "portMappings": [
+                    {
+                        "containerPort": 80,
+                        "hostPort": 80,
+                        "protocol": "tcp"
+                    }
+                ],
+                "secrets": [],
+                "systemControls": [],
+                "ulimits": [],
+                "volumesFrom": []
+            }
+        ],
+        "cpu": "256",
+        "deregisteredAt": "2020-10-20T11:42:30.427000+00:00",
+        "family": "StepFunctionsSample-ContainerTaskManagementc6450f03-5bdf-4727-aa95-cce804da6391-ECSTaskDefinition-4JN370EP0Y9N",
+        "memory": "512",
+        "networkMode": "awsvpc",
+        "placementConstraints": [],
+        "requiresAttributes": [
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.17"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+                "name": "ecs.capability.task-eni"
+            }
+        ],
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "revision": 1,
+        "status": "INACTIVE",
+        "taskDefinitionArn": "arn:aws:ecs:us-east-1:167389268608:task-definition/StepFunctionsSample-ContainerTaskManagementc6450f03-5bdf-4727-aa95-cce804da6391-ECSTaskDefinition-4JN370EP0Y9N:1",
+        "volumes": []
+    }
+}

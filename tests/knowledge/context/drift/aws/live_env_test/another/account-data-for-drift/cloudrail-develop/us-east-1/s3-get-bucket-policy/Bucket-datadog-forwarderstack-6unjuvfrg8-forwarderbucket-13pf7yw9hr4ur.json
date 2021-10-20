@@ -1,0 +1,3 @@
+{
+    "Policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"AllowSSLRequestsOnly\",\"Effect\":\"Deny\",\"Principal\":\"*\",\"Action\":\"s3:*\",\"Resource\":[\"arn:aws:s3:::datadog-forwarderstack-6unjuvfrg8-forwarderbucket-13pf7yw9hr4ur\",\"arn:aws:s3:::datadog-forwarderstack-6unjuvfrg8-forwarderbucket-13pf7yw9hr4ur/*\"],\"Condition\":{\"Bool\":{\"aws:SecureTransport\":\"false\"}}}]}"
+}

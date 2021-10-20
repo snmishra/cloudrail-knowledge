@@ -1,0 +1,206 @@
+{
+    "RouteTables": [
+        {
+            "Associations": [
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-08802a1bb9a224b8b",
+                    "RouteTableId": "rtb-01c4b55e998fd0b40",
+                    "SubnetId": "subnet-0e93b1032f200f270"
+                },
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-0e60355237da3426c",
+                    "RouteTableId": "rtb-01c4b55e998fd0b40",
+                    "SubnetId": "subnet-0e10a30c478bff9ca"
+                },
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-0a8a1f65be82032e4",
+                    "RouteTableId": "rtb-01c4b55e998fd0b40",
+                    "SubnetId": "subnet-00cdc2582ba0547d3"
+                }
+            ],
+            "OwnerId": "167389268608",
+            "PropagatingVgws": [],
+            "RouteTableId": "rtb-01c4b55e998fd0b40",
+            "Routes": [
+                {
+                    "DestinationCidrBlock": "204.189.205.245/20",
+                    "GatewayId": "local",
+                    "Origin": "CreateRouteTable",
+                    "State": "active"
+                },
+                {
+                    "DestinationCidrBlock": "37.34.13.115/16",
+                    "Origin": "CreateRoute",
+                    "State": "active",
+                    "TransitGatewayId": "tgw-0bb1396f4b2cc782c"
+                },
+                {
+                    "DestinationCidrBlock": "172.227.123.61/0",
+                    "NatGatewayId": "nat-081471f2bb427f9ae",
+                    "Origin": "CreateRoute",
+                    "State": "active"
+                },
+                {
+                    "DestinationPrefixListId": "pl-63a5400a",
+                    "GatewayId": "vpce-07ab40dd1d6b8fa76",
+                    "Origin": "CreateRoute",
+                    "State": "active"
+                }
+            ],
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Tier",
+                    "Value": "Private"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-Private-RT"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Associations": [
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-03749b230681a9e50",
+                    "RouteTableId": "rtb-0689d3a3656d42970",
+                    "SubnetId": "subnet-0f8c7f1e468d23511"
+                },
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-014d726855bdb9e75",
+                    "RouteTableId": "rtb-0689d3a3656d42970",
+                    "SubnetId": "subnet-0d5b79f695930bb50"
+                },
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-041fb095a2aa47ca0",
+                    "RouteTableId": "rtb-0689d3a3656d42970",
+                    "SubnetId": "subnet-00d9b06f82aa39ff2"
+                }
+            ],
+            "OwnerId": "167389268608",
+            "PropagatingVgws": [],
+            "RouteTableId": "rtb-0689d3a3656d42970",
+            "Routes": [
+                {
+                    "DestinationCidrBlock": "204.189.205.245/20",
+                    "GatewayId": "local",
+                    "Origin": "CreateRouteTable",
+                    "State": "active"
+                },
+                {
+                    "DestinationCidrBlock": "172.227.123.61/0",
+                    "GatewayId": "igw-0082ea7ef9fc55ff8",
+                    "Origin": "CreateRoute",
+                    "State": "active"
+                },
+                {
+                    "DestinationPrefixListId": "pl-63a5400a",
+                    "GatewayId": "vpce-07ab40dd1d6b8fa76",
+                    "Origin": "CreateRoute",
+                    "State": "active"
+                }
+            ],
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-Public-RT"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Tier",
+                    "Value": "Public"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Associations": [
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": true,
+                    "RouteTableAssociationId": "rtbassoc-02be9254220dd3b95",
+                    "RouteTableId": "rtb-03d777c1fb65f020d"
+                }
+            ],
+            "OwnerId": "167389268608",
+            "PropagatingVgws": [],
+            "RouteTableId": "rtb-03d777c1fb65f020d",
+            "Routes": [
+                {
+                    "DestinationCidrBlock": "204.189.205.245/20",
+                    "GatewayId": "local",
+                    "Origin": "CreateRouteTable",
+                    "State": "active"
+                }
+            ],
+            "Tags": [
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-Default-RT"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        }
+    ]
+}

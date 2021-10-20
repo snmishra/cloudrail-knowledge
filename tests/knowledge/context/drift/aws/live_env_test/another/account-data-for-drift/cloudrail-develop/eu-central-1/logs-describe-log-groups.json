@@ -1,0 +1,18 @@
+{
+    "logGroups": [
+        {
+            "arn": "arn:aws:logs:eu-central-1:167389268608:log-group:/aws/lambda/signature_test:*",
+            "creationTime": 1595773132506,
+            "logGroupName": "/aws/lambda/signature_test",
+            "metricFilterCount": 0,
+            "storedBytes": 2294
+        },
+        {
+            "arn": "arn:aws:logs:eu-central-1:167389268608:log-group:/aws/lambda/us-east-1.cf-edge-security-headers-develop:*",
+            "creationTime": 1615206298457,
+            "logGroupName": "/aws/lambda/us-east-1.cf-edge-security-headers-develop",
+            "metricFilterCount": 0,
+            "storedBytes": 938650
+        }
+    ]
+}

@@ -1,0 +1,89 @@
+{
+    "Rules": [
+        {
+            "Arn": "arn:aws:events:us-east-1:167389268608:rule/Cloudrail-develop-CloudWatch-Rule",
+            "Description": "exec every minute",
+            "EventBusName": "default",
+            "Name": "Cloudrail-develop-CloudWatch-Rule",
+            "ScheduleExpression": "cron(*/1 * * * ? *)",
+            "State": "ENABLED"
+        },
+        {
+            "Arn": "arn:aws:events:us-east-1:167389268608:rule/Cloudrail-develop-app-monitoring-CloudWatch-Rule",
+            "Description": "collect metric and alert id there is an issue on Lumigo, run exec every 5 minutes",
+            "EventBusName": "default",
+            "Name": "Cloudrail-develop-app-monitoring-CloudWatch-Rule",
+            "ScheduleExpression": "cron(*/5 * * * ? *)",
+            "State": "ENABLED"
+        },
+        {
+            "Arn": "arn:aws:events:us-east-1:167389268608:rule/GuardDuty-Findings-us-east-1",
+            "Description": "Capture GuardDuty Detector findings",
+            "EventBusName": "default",
+            "EventPattern": "{\"detail-type\":[\"GuardDuty Finding\"],\"source\":[\"aws.guardduty\"]}",
+            "Name": "GuardDuty-Findings-us-east-1",
+            "State": "ENABLED"
+        },
+        {
+            "Arn": "arn:aws:events:us-east-1:167389268608:rule/StepFunctionsGetEventsForECSTaskRule",
+            "Description": "This rule is used to notify Step Functions regarding AWS ECS Tasks",
+            "EventBusName": "default",
+            "EventPattern": "{\n  \"source\": [\n    \"aws.ecs\"\n  ],\n  \"detail-type\": [\n    \"ECS Task State Change\"\n  ],\n  \"detail\": {\n    \"lastStatus\": [\n      \"STOPPED\"\n    ],\n    \"desiredStatus\": [\n      \"STOPPED\"\n    ],\n    \"startedBy\": [\n      \"AWS Step Functions\"\n    ]\n  }\n}",
+            "ManagedBy": "states.amazonaws.com",
+            "Name": "StepFunctionsGetEventsForECSTaskRule",
+            "State": "ENABLED"
+        },
+        {
+            "Arn": "arn:aws:events:us-east-1:167389268608:rule/StepFunctionsGetEventsForStepFunctionsExecutionRule",
+            "Description": "This rule is used to notify Step Functions regarding integrated workflow executions",
+            "EventBusName": "default",
+            "EventPattern": "{\n  \"source\": [\n    \"aws.states\"\n  ],\n  \"detail-type\": [\n    \"Step Functions Execution Status Change\"\n  ],\n  \"detail\": {\n    \"status\": [\n      \"FAILED\",\n      \"SUCCEEDED\",\n      \"TIMED_OUT\",\n      \"ABORTED\"\n    ]\n  }\n}",
+            "ManagedBy": "states.amazonaws.com",
+            "Name": "StepFunctionsGetEventsForStepFunctionsExecutionRule",
+            "State": "ENABLED"
+        },
+        {
+            "Arn": "arn:aws:events:us-east-1:167389268608:rule/access-analyzer-event",
+            "Description": "Capture each AWS Access Analyzer findings event",
+            "EventBusName": "default",
+            "EventPattern": "{\"detail-type\":[\"Access Analyzer Finding\"],\"source\":[\"aws.access-analyzer\"]}",
+            "Name": "access-analyzer-event",
+            "State": "ENABLED"
+        },
+        {
+            "Arn": "arn:aws:events:us-east-1:167389268608:rule/apache-web-server-cluster-schedule-every-1d",
+            "EventBusName": "default",
+            "Name": "apache-web-server-cluster-schedule-every-1d",
+            "ScheduleExpression": "rate(24 days)",
+            "State": "ENABLED"
+        },
+        {
+            "Arn": "arn:aws:events:us-east-1:167389268608:rule/every-5-minutes",
+            "EventBusName": "default",
+            "Name": "every-5-minutes",
+            "ScheduleExpression": "rate(5 minutes)",
+            "State": "ENABLED"
+        },
+        {
+            "Arn": "arn:aws:events:us-east-1:167389268608:rule/every_1_hour",
+            "EventBusName": "default",
+            "Name": "every_1_hour",
+            "ScheduleExpression": "rate(1 hour)",
+            "State": "ENABLED"
+        },
+        {
+            "Arn": "arn:aws:events:us-east-1:167389268608:rule/every_minute",
+            "EventBusName": "default",
+            "Name": "every_minute",
+            "ScheduleExpression": "rate(1 minute)",
+            "State": "ENABLED"
+        },
+        {
+            "Arn": "arn:aws:events:us-east-1:167389268608:rule/web-server-schedule-every-1d-rule",
+            "EventBusName": "default",
+            "Name": "web-server-schedule-every-1d-rule",
+            "ScheduleExpression": "rate(24 hours)",
+            "State": "ENABLED"
+        }
+    ]
+}

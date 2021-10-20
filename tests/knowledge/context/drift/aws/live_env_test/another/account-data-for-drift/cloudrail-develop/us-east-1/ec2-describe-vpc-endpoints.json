@@ -1,0 +1,42 @@
+{
+    "VpcEndpoints": [
+        {
+            "CreationTimestamp": "2020-10-29T21:16:32+00:00",
+            "DnsEntries": [],
+            "Groups": [],
+            "NetworkInterfaceIds": [],
+            "OwnerId": "167389268608",
+            "PolicyDocument": "{\"Version\":\"2008-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":\"*\",\"Action\":\"*\",\"Resource\":\"*\"}]}",
+            "PrivateDnsEnabled": false,
+            "RequesterManaged": false,
+            "RouteTableIds": [
+                "rtb-01c4b55e998fd0b40",
+                "rtb-0689d3a3656d42970"
+            ],
+            "ServiceName": "com.amazonaws.us-east-1.s3",
+            "State": "available",
+            "SubnetIds": [],
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-S3-Endpoint"
+                }
+            ],
+            "VpcEndpointId": "vpce-07ab40dd1d6b8fa76",
+            "VpcEndpointType": "Gateway",
+            "VpcId": "vpc-0e39b445bad43bfed"
+        }
+    ]
+}

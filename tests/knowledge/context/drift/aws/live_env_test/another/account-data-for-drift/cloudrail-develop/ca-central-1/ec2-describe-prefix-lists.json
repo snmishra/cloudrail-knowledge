@@ -1,0 +1,21 @@
+{
+    "PrefixLists": [
+        {
+            "Cidrs": [
+                "139.154.180.197/24"
+            ],
+            "PrefixListId": "pl-4ea54027",
+            "PrefixListName": "com.amazonaws.ca-central-1.dynamodb"
+        },
+        {
+            "Cidrs": [
+                "242.12.13.225/22",
+                "113.171.191.212/24",
+                "86.214.129.21/23",
+                "75.102.160.37/24"
+            ],
+            "PrefixListId": "pl-7da54014",
+            "PrefixListName": "com.amazonaws.ca-central-1.s3"
+        }
+    ]
+}

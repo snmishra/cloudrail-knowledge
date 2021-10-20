@@ -1,0 +1,28 @@
+{
+    "AccessPointList": [
+        {
+            "AccessPointArn": "arn:aws:s3:us-east-1:167389268608:accesspoint/block-public-acls-ap",
+            "Alias": "block-public-acls-ap-geeqjuc6c9xci5xb39t6wsf9kbw8cuse1a-s3alias",
+            "Bucket": "acls-test-bucket",
+            "Name": "block-public-acls-ap",
+            "NetworkOrigin": "Internet"
+        },
+        {
+            "AccessPointArn": "arn:aws:s3:us-east-1:167389268608:accesspoint/test-ap",
+            "Alias": "test-ap-jonu9k9jswa75ix3mke9rw96p9fanuse1a-s3alias",
+            "Bucket": "acls-test-bucket",
+            "Name": "test-ap",
+            "NetworkOrigin": "Internet"
+        },
+        {
+            "AccessPointArn": "arn:aws:s3:us-east-1:167389268608:accesspoint/vpc-0ecdf3db08c98edf9-ap",
+            "Alias": "vpc-0ecdf3db08c98edf-yyg9f6pnibqeoubxgymf7min5eaeeuse1b-s3alias",
+            "Bucket": "acls-test-bucket",
+            "Name": "vpc-0ecdf3db08c98edf9-ap",
+            "NetworkOrigin": "VPC",
+            "VpcConfiguration": {
+                "VpcId": "vpc-0ecdf3db08c98edf9"
+            }
+        }
+    ]
+}

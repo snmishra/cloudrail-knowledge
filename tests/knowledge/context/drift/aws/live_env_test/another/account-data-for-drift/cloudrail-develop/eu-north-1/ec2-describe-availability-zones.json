@@ -1,0 +1,37 @@
+{
+    "AvailabilityZones": [
+        {
+            "GroupName": "eu-north-1",
+            "Messages": [],
+            "NetworkBorderGroup": "eu-north-1",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "eu-north-1",
+            "State": "available",
+            "ZoneId": "eun1-az1",
+            "ZoneName": "eu-north-1a",
+            "ZoneType": "availability-zone"
+        },
+        {
+            "GroupName": "eu-north-1",
+            "Messages": [],
+            "NetworkBorderGroup": "eu-north-1",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "eu-north-1",
+            "State": "available",
+            "ZoneId": "eun1-az2",
+            "ZoneName": "eu-north-1b",
+            "ZoneType": "availability-zone"
+        },
+        {
+            "GroupName": "eu-north-1",
+            "Messages": [],
+            "NetworkBorderGroup": "eu-north-1",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "eu-north-1",
+            "State": "available",
+            "ZoneId": "eun1-az3",
+            "ZoneName": "eu-north-1c",
+            "ZoneType": "availability-zone"
+        }
+    ]
+}

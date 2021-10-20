@@ -1,0 +1,48 @@
+{
+    "AvailabilityZones": [
+        {
+            "GroupName": "ap-northeast-2",
+            "Messages": [],
+            "NetworkBorderGroup": "ap-northeast-2",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "ap-northeast-2",
+            "State": "available",
+            "ZoneId": "apne2-az1",
+            "ZoneName": "ap-northeast-2a",
+            "ZoneType": "availability-zone"
+        },
+        {
+            "GroupName": "ap-northeast-2",
+            "Messages": [],
+            "NetworkBorderGroup": "ap-northeast-2",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "ap-northeast-2",
+            "State": "available",
+            "ZoneId": "apne2-az2",
+            "ZoneName": "ap-northeast-2b",
+            "ZoneType": "availability-zone"
+        },
+        {
+            "GroupName": "ap-northeast-2",
+            "Messages": [],
+            "NetworkBorderGroup": "ap-northeast-2",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "ap-northeast-2",
+            "State": "available",
+            "ZoneId": "apne2-az3",
+            "ZoneName": "ap-northeast-2c",
+            "ZoneType": "availability-zone"
+        },
+        {
+            "GroupName": "ap-northeast-2",
+            "Messages": [],
+            "NetworkBorderGroup": "ap-northeast-2",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "ap-northeast-2",
+            "State": "available",
+            "ZoneId": "apne2-az4",
+            "ZoneName": "ap-northeast-2d",
+            "ZoneType": "availability-zone"
+        }
+    ]
+}

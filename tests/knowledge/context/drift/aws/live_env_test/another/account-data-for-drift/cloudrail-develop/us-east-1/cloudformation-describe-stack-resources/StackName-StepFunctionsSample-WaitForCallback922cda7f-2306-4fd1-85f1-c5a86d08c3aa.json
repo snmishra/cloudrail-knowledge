@@ -1,0 +1,100 @@
+{
+    "StackResources": [
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "CallbackWithTaskToken",
+            "PhysicalResourceId": "StepFunctionsSample-WaitForC-CallbackWithTaskToken-1M6O16LQSO5VP",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::Lambda::Function",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa/75128340-d7c8-11ea-9d72-12717722e021",
+            "StackName": "StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa",
+            "Timestamp": "2020-08-06T09:38:32.715000+00:00"
+        },
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "LambdaExecutionRole",
+            "PhysicalResourceId": "StepFunctionsSample-WaitForCal-LambdaExecutionRole-MK3DA3KQ5F8L",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::IAM::Role",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa/75128340-d7c8-11ea-9d72-12717722e021",
+            "StackName": "StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa",
+            "Timestamp": "2020-08-06T09:38:29.305000+00:00"
+        },
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "LambdaFunctionEventSourceMapping",
+            "PhysicalResourceId": "03472301-ab8b-4eb8-807a-47fd1cca9509",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::Lambda::EventSourceMapping",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa/75128340-d7c8-11ea-9d72-12717722e021",
+            "StackName": "StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa",
+            "Timestamp": "2020-08-06T09:39:22.596000+00:00"
+        },
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "SNSTopic",
+            "PhysicalResourceId": "arn:aws:sns:us-east-1:167389268608:StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa-SNSTopic-5YNXPPR68J7P",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::SNS::Topic",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa/75128340-d7c8-11ea-9d72-12717722e021",
+            "StackName": "StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa",
+            "Timestamp": "2020-08-06T09:37:49.953000+00:00"
+        },
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "SQSQueue",
+            "PhysicalResourceId": "https://sqs.us-east-1.amazonaws.com/167389268608/StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f-SQSQueue-S19MOTD4F4M0",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::SQS::Queue",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa/75128340-d7c8-11ea-9d72-12717722e021",
+            "StackName": "StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa",
+            "Timestamp": "2020-08-06T09:37:45.185000+00:00"
+        },
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "SQSQueueDLQ",
+            "PhysicalResourceId": "https://sqs.us-east-1.amazonaws.com/167389268608/StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-SQSQueueDLQ-OO5CD1PQXLKP",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::SQS::Queue",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa/75128340-d7c8-11ea-9d72-12717722e021",
+            "StackName": "StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa",
+            "Timestamp": "2020-08-06T09:37:40.854000+00:00"
+        },
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "StatesExecutionRole",
+            "PhysicalResourceId": "StepFunctionsSample-WaitForCal-StatesExecutionRole-192RBO2J2WO6G",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::IAM::Role",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa/75128340-d7c8-11ea-9d72-12717722e021",
+            "StackName": "StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa",
+            "Timestamp": "2020-08-06T09:38:06.362000+00:00"
+        },
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
+            "LogicalResourceId": "WaitForCallbackStateMachine",
+            "PhysicalResourceId": "arn:aws:states:us-east-1:167389268608:stateMachine:WaitForCallbackStateMachine-9cGZVOV7cI8h",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::StepFunctions::StateMachine",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa/75128340-d7c8-11ea-9d72-12717722e021",
+            "StackName": "StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa",
+            "Timestamp": "2020-08-06T09:38:11.427000+00:00"
+        }
+    ]
+}

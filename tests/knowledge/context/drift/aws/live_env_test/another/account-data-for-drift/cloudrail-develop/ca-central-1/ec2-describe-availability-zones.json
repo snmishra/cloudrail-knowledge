@@ -1,0 +1,37 @@
+{
+    "AvailabilityZones": [
+        {
+            "GroupName": "ca-central-1",
+            "Messages": [],
+            "NetworkBorderGroup": "ca-central-1",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "ca-central-1",
+            "State": "available",
+            "ZoneId": "cac1-az1",
+            "ZoneName": "ca-central-1a",
+            "ZoneType": "availability-zone"
+        },
+        {
+            "GroupName": "ca-central-1",
+            "Messages": [],
+            "NetworkBorderGroup": "ca-central-1",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "ca-central-1",
+            "State": "available",
+            "ZoneId": "cac1-az2",
+            "ZoneName": "ca-central-1b",
+            "ZoneType": "availability-zone"
+        },
+        {
+            "GroupName": "ca-central-1",
+            "Messages": [],
+            "NetworkBorderGroup": "ca-central-1",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "ca-central-1",
+            "State": "available",
+            "ZoneId": "cac1-az4",
+            "ZoneName": "ca-central-1d",
+            "ZoneType": "availability-zone"
+        }
+    ]
+}

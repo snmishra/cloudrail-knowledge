@@ -1,0 +1,48 @@
+{
+    "AvailabilityZones": [
+        {
+            "GroupName": "us-west-2",
+            "Messages": [],
+            "NetworkBorderGroup": "us-west-2",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "us-west-2",
+            "State": "available",
+            "ZoneId": "usw2-az1",
+            "ZoneName": "us-west-2a",
+            "ZoneType": "availability-zone"
+        },
+        {
+            "GroupName": "us-west-2",
+            "Messages": [],
+            "NetworkBorderGroup": "us-west-2",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "us-west-2",
+            "State": "available",
+            "ZoneId": "usw2-az2",
+            "ZoneName": "us-west-2b",
+            "ZoneType": "availability-zone"
+        },
+        {
+            "GroupName": "us-west-2",
+            "Messages": [],
+            "NetworkBorderGroup": "us-west-2",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "us-west-2",
+            "State": "available",
+            "ZoneId": "usw2-az3",
+            "ZoneName": "us-west-2c",
+            "ZoneType": "availability-zone"
+        },
+        {
+            "GroupName": "us-west-2",
+            "Messages": [],
+            "NetworkBorderGroup": "us-west-2",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "us-west-2",
+            "State": "available",
+            "ZoneId": "usw2-az4",
+            "ZoneName": "us-west-2d",
+            "ZoneType": "availability-zone"
+        }
+    ]
+}

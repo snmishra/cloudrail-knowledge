@@ -1,0 +1,17 @@
+{
+    "WorkGroup": {
+        "Configuration": {
+            "EnforceWorkGroupConfiguration": false,
+            "EngineVersion": {
+                "EffectiveEngineVersion": "Athena engine version 2",
+                "SelectedEngineVersion": "AUTO"
+            },
+            "PublishCloudWatchMetricsEnabled": false,
+            "RequesterPaysEnabled": false,
+            "ResultConfiguration": {}
+        },
+        "CreationTime": "2020-11-04T13:13:26.191000+00:00",
+        "Name": "primary",
+        "State": "ENABLED"
+    }
+}

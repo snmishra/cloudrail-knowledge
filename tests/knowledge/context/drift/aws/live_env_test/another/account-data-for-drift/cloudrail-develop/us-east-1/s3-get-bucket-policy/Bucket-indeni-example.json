@@ -1,0 +1,3 @@
+{
+    "Policy": "{\"Version\":\"2012-10-17\",\"Id\":\"MYBUCKETPOLICY\",\"Statement\":[{\"Sid\":\"IPAllow\",\"Effect\":\"Deny\",\"Principal\":\"*\",\"Action\":\"s3:*\",\"Resource\":\"arn:aws:s3:::indeni-example/*\",\"Condition\":{\"IpAddress\":{\"aws:SourceIp\":\"163.135.127.85/32\"}}}]}"
+}

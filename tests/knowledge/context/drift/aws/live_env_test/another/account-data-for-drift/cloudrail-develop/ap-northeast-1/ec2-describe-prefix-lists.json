@@ -1,0 +1,26 @@
+{
+    "PrefixLists": [
+        {
+            "Cidrs": [
+                "63.231.92.79/24",
+                "245.34.97.71/24",
+                "48.185.248.24/24"
+            ],
+            "PrefixListId": "pl-78a54011",
+            "PrefixListName": "com.amazonaws.ap-northeast-1.dynamodb"
+        },
+        {
+            "Cidrs": [
+                "254.17.252.172/21",
+                "136.138.4.217/20",
+                "255.51.69.110/22",
+                "129.235.110.56/22",
+                "148.109.65.34/22",
+                "30.159.24.91/22",
+                "38.253.166.198/22"
+            ],
+            "PrefixListId": "pl-61a54008",
+            "PrefixListName": "com.amazonaws.ap-northeast-1.s3"
+        }
+    ]
+}

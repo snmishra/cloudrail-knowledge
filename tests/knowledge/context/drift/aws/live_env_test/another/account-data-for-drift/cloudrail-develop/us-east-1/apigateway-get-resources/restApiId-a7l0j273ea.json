@@ -1,0 +1,666 @@
+{
+    "items": [
+        {
+            "id": "01cxc8",
+            "parentId": "h38eum",
+            "path": "/v1/settings/sso",
+            "pathPart": "sso",
+            "resourceMethods": {
+                "DELETE": {},
+                "GET": {},
+                "PATCH": {},
+                "POST": {}
+            }
+        },
+        {
+            "id": "0428py",
+            "parentId": "6ehso3",
+            "path": "/v1/accounts/connectivity/{cloud_account_id}",
+            "pathPart": "{cloud_account_id}",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "0ps0ls",
+            "parentId": "1j0a0h",
+            "path": "/v1/users/me",
+            "pathPart": "me",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "17kwiq",
+            "parentId": "u3epak",
+            "path": "/v1/assessments/{id}/filtered_plan",
+            "pathPart": "filtered_plan",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "1ie03z",
+            "parentId": "itacb3",
+            "path": "/v1/policies",
+            "pathPart": "policies",
+            "resourceMethods": {
+                "GET": {},
+                "POST": {}
+            }
+        },
+        {
+            "id": "1j0a0h",
+            "parentId": "itacb3",
+            "path": "/v1/users",
+            "pathPart": "users",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "1kva55",
+            "parentId": "1j0a0h",
+            "path": "/v1/users/login",
+            "pathPart": "login",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "1tnqyc",
+            "parentId": "itacb3",
+            "path": "/v1/customers",
+            "pathPart": "customers"
+        },
+        {
+            "id": "20t4nr",
+            "parentId": "g10zcaze47",
+            "path": "/ui",
+            "pathPart": "ui"
+        },
+        {
+            "id": "3fx1x6",
+            "parentId": "u3epak",
+            "path": "/v1/assessments/{id}/results",
+            "pathPart": "results",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "3io8y6",
+            "parentId": "1j0a0h",
+            "path": "/v1/users/register",
+            "pathPart": "register",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "3vl51t",
+            "parentId": "qyrhh3",
+            "path": "/v1/supported_services/checkov",
+            "pathPart": "checkov",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "4uej00",
+            "parentId": "1j0a0h",
+            "path": "/v1/users/password",
+            "pathPart": "password"
+        },
+        {
+            "id": "5uk2yh",
+            "parentId": "qhfd5j",
+            "path": "/v1/policies/{id}/accounts",
+            "pathPart": "accounts",
+            "resourceMethods": {
+                "PATCH": {}
+            }
+        },
+        {
+            "id": "65j6pc",
+            "parentId": "itacb3",
+            "path": "/v1/drift_detection",
+            "pathPart": "drift_detection"
+        },
+        {
+            "id": "6ehso3",
+            "parentId": "hqyvxl",
+            "path": "/v1/accounts/connectivity",
+            "pathPart": "connectivity"
+        },
+        {
+            "id": "6ex83n",
+            "parentId": "p7aj9f",
+            "path": "/v1/assessments/filters",
+            "pathPart": "filters",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "6vspe0",
+            "parentId": "tmngqi",
+            "path": "/v1/users/{id}/password",
+            "pathPart": "password"
+        },
+        {
+            "id": "6ycr43",
+            "parentId": "1j0a0h",
+            "path": "/v1/users/logout",
+            "pathPart": "logout",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "79o2yi",
+            "parentId": "1j0a0h",
+            "path": "/v1/users/invite",
+            "pathPart": "invite",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "8f0sjs",
+            "parentId": "h38eum",
+            "path": "/v1/settings/integrations",
+            "pathPart": "integrations",
+            "resourceMethods": {
+                "GET": {},
+                "POST": {}
+            }
+        },
+        {
+            "id": "93nszy",
+            "parentId": "1j0a0h",
+            "path": "/v1/users/confirmation",
+            "pathPart": "confirmation",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "97f5qh",
+            "parentId": "rak3nr",
+            "path": "/v1/policies/{id}/rules/{rule_id}",
+            "pathPart": "{rule_id}",
+            "resourceMethods": {
+                "DELETE": {},
+                "PATCH": {}
+            }
+        },
+        {
+            "id": "a280o7",
+            "parentId": "itacb3",
+            "path": "/v1/rules",
+            "pathPart": "rules",
+            "resourceMethods": {
+                "GET": {},
+                "PATCH": {}
+            }
+        },
+        {
+            "id": "assytd",
+            "parentId": "a280o7",
+            "path": "/v1/rules/filters",
+            "pathPart": "filters",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "c2ltzy",
+            "parentId": "1j0a0h",
+            "path": "/v1/users/unregister",
+            "pathPart": "unregister",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "csgqee",
+            "parentId": "1j0a0h",
+            "path": "/v1/users/complete_registration",
+            "pathPart": "complete_registration",
+            "resourceMethods": {
+                "PATCH": {}
+            }
+        },
+        {
+            "id": "csipdu",
+            "parentId": "1kva55",
+            "path": "/v1/users/login/sso",
+            "pathPart": "sso",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "dtpwdz",
+            "parentId": "6ehso3",
+            "path": "/v1/accounts/connectivity/test",
+            "pathPart": "test",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "en1uts",
+            "parentId": "g10zcaze47",
+            "path": "/cli",
+            "pathPart": "cli"
+        },
+        {
+            "id": "f5r7pt",
+            "parentId": "hfndy6",
+            "path": "/v1/users/password/reset/confirm",
+            "pathPart": "confirm",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "f6yniv",
+            "parentId": "fvl8nc",
+            "path": "/v1/customers/{id}/terraform_template",
+            "pathPart": "terraform_template",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "fhyo8r",
+            "parentId": "sagdnk",
+            "path": "/ui/task_center/rules/tasks",
+            "pathPart": "tasks",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "fvl8nc",
+            "parentId": "1tnqyc",
+            "path": "/v1/customers/{id}",
+            "pathPart": "{id}",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "g10zcaze47",
+            "path": "/"
+        },
+        {
+            "id": "g6yeuq",
+            "parentId": "jr7a2h",
+            "path": "/v1/logs/cli",
+            "pathPart": "cli",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "gz6o1v",
+            "parentId": "1tnqyc",
+            "path": "/v1/customers/me",
+            "pathPart": "me",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "h38eum",
+            "parentId": "itacb3",
+            "path": "/v1/settings",
+            "pathPart": "settings"
+        },
+        {
+            "id": "hfndy6",
+            "parentId": "4uej00",
+            "path": "/v1/users/password/reset",
+            "pathPart": "reset"
+        },
+        {
+            "id": "hqyvxl",
+            "parentId": "itacb3",
+            "path": "/v1/accounts",
+            "pathPart": "accounts",
+            "resourceMethods": {
+                "GET": {},
+                "POST": {}
+            }
+        },
+        {
+            "id": "itacb3",
+            "parentId": "g10zcaze47",
+            "path": "/v1",
+            "pathPart": "v1"
+        },
+        {
+            "id": "iyaihf",
+            "parentId": "6vspe0",
+            "path": "/v1/users/{id}/password/change",
+            "pathPart": "change",
+            "resourceMethods": {
+                "PATCH": {}
+            }
+        },
+        {
+            "id": "j89dfv",
+            "parentId": "65j6pc",
+            "path": "/v1/drift_detection/latest",
+            "pathPart": "latest",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "jjazxq",
+            "parentId": "itacb3",
+            "path": "/v1/version",
+            "pathPart": "version",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "jr7a2h",
+            "parentId": "itacb3",
+            "path": "/v1/logs",
+            "pathPart": "logs"
+        },
+        {
+            "id": "jrejhn",
+            "parentId": "20t4nr",
+            "path": "/ui/metrics",
+            "pathPart": "metrics",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "kn731e",
+            "parentId": "8f0sjs",
+            "path": "/v1/settings/integrations/{id}",
+            "pathPart": "{id}",
+            "resourceMethods": {
+                "DELETE": {},
+                "GET": {},
+                "PATCH": {}
+            }
+        },
+        {
+            "id": "ko96f0",
+            "parentId": "1ie03z",
+            "path": "/v1/policies/catalog",
+            "pathPart": "catalog"
+        },
+        {
+            "id": "kpqanw",
+            "parentId": "3fx1x6",
+            "path": "/v1/assessments/{id}/results/filters",
+            "pathPart": "filters",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "l1yau2",
+            "parentId": "5uk2yh",
+            "path": "/v1/policies/{id}/accounts/{account_config_id}",
+            "pathPart": "{account_config_id}",
+            "resourceMethods": {
+                "DELETE": {}
+            }
+        },
+        {
+            "id": "n1gkzt",
+            "parentId": "sagdnk",
+            "path": "/ui/task_center/rules/{id}",
+            "pathPart": "{id}"
+        },
+        {
+            "id": "o95z6f",
+            "parentId": "sq2xe4",
+            "path": "/v1/drift_detection/{id}/results",
+            "pathPart": "results",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "obswze",
+            "parentId": "a280o7",
+            "path": "/v1/rules/{id}",
+            "pathPart": "{id}",
+            "resourceMethods": {
+                "GET": {},
+                "PATCH": {}
+            }
+        },
+        {
+            "id": "oxsjfq",
+            "parentId": "1ie03z",
+            "path": "/v1/policies/rules",
+            "pathPart": "rules",
+            "resourceMethods": {
+                "PATCH": {}
+            }
+        },
+        {
+            "id": "p7aj9f",
+            "parentId": "itacb3",
+            "path": "/v1/assessments",
+            "pathPart": "assessments",
+            "resourceMethods": {
+                "GET": {},
+                "POST": {}
+            }
+        },
+        {
+            "id": "qhfd5j",
+            "parentId": "1ie03z",
+            "path": "/v1/policies/{id}",
+            "pathPart": "{id}",
+            "resourceMethods": {
+                "DELETE": {},
+                "GET": {},
+                "PATCH": {}
+            }
+        },
+        {
+            "id": "qmd0oh",
+            "parentId": "u3epak",
+            "path": "/v1/assessments/{id}/status",
+            "pathPart": "status",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "qyrhh3",
+            "parentId": "itacb3",
+            "path": "/v1/supported_services",
+            "pathPart": "supported_services"
+        },
+        {
+            "id": "rak3nr",
+            "parentId": "qhfd5j",
+            "path": "/v1/policies/{id}/rules",
+            "pathPart": "rules",
+            "resourceMethods": {
+                "DELETE": {},
+                "PATCH": {}
+            }
+        },
+        {
+            "id": "rcjkll",
+            "parentId": "en1uts",
+            "path": "/cli/logs",
+            "pathPart": "logs",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "rd9imq",
+            "parentId": "01cxc8",
+            "path": "/v1/settings/sso/metadata",
+            "pathPart": "metadata",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "rrooeq",
+            "parentId": "tmngqi",
+            "path": "/v1/users/{id}/apikey",
+            "pathPart": "apikey",
+            "resourceMethods": {
+                "GET": {},
+                "POST": {}
+            }
+        },
+        {
+            "id": "rvozr5",
+            "parentId": "qyrhh3",
+            "path": "/v1/supported_services/aws",
+            "pathPart": "aws",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "s2q9vb",
+            "parentId": "g10zcaze47",
+            "path": "/{cors+}",
+            "pathPart": "{cors+}",
+            "resourceMethods": {
+                "OPTIONS": {}
+            }
+        },
+        {
+            "id": "sagdnk",
+            "parentId": "ubdq5f",
+            "path": "/ui/task_center/rules",
+            "pathPart": "rules"
+        },
+        {
+            "id": "sq2xe4",
+            "parentId": "65j6pc",
+            "path": "/v1/drift_detection/{id}",
+            "pathPart": "{id}",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "tmngqi",
+            "parentId": "1j0a0h",
+            "path": "/v1/users/{id}",
+            "pathPart": "{id}",
+            "resourceMethods": {
+                "DELETE": {},
+                "GET": {},
+                "PATCH": {}
+            }
+        },
+        {
+            "id": "u3epak",
+            "parentId": "p7aj9f",
+            "path": "/v1/assessments/{id}",
+            "pathPart": "{id}",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "u9i5hj",
+            "parentId": "itacb3",
+            "path": "/v1/feature_flags",
+            "pathPart": "feature_flags",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "ubdq5f",
+            "parentId": "20t4nr",
+            "path": "/ui/task_center",
+            "pathPart": "task_center"
+        },
+        {
+            "id": "ujfjt8",
+            "parentId": "en1uts",
+            "path": "/cli/reports",
+            "pathPart": "reports",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "vb0nag",
+            "parentId": "hfndy6",
+            "path": "/v1/users/password/reset/request",
+            "pathPart": "request",
+            "resourceMethods": {
+                "POST": {}
+            }
+        },
+        {
+            "id": "vg24b9",
+            "parentId": "gz6o1v",
+            "path": "/v1/customers/me/apikey",
+            "pathPart": "apikey",
+            "resourceMethods": {
+                "GET": {},
+                "POST": {}
+            }
+        },
+        {
+            "id": "vkzw2i",
+            "parentId": "qyrhh3",
+            "path": "/v1/supported_services/gcp",
+            "pathPart": "gcp",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "y7bqmr",
+            "parentId": "qyrhh3",
+            "path": "/v1/supported_services/azure",
+            "pathPart": "azure",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "zb7lfw",
+            "parentId": "hqyvxl",
+            "path": "/v1/accounts/{id}",
+            "pathPart": "{id}",
+            "resourceMethods": {
+                "DELETE": {},
+                "GET": {},
+                "PATCH": {}
+            }
+        },
+        {
+            "id": "zc2xbp",
+            "parentId": "n1gkzt",
+            "path": "/ui/task_center/rules/{id}/results",
+            "pathPart": "results",
+            "resourceMethods": {
+                "GET": {}
+            }
+        }
+    ],
+    "position": "aWQ9U2Fzc3l0ZA%3D%3D"
+}

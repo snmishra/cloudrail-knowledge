@@ -1,0 +1,18 @@
+{
+    "PaginationToken": "",
+    "ResourceTagMappingList": [
+        {
+            "ResourceARN": "arn:aws:s3:::indeni-example",
+            "Tags": [
+                {
+                    "Key": "Environment",
+                    "Value": "Dev"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "My bucket"
+                }
+            ]
+        }
+    ]
+}

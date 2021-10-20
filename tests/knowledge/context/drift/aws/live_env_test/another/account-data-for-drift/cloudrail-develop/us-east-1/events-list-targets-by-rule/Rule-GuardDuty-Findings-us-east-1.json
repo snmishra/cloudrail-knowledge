@@ -1,0 +1,8 @@
+{
+    "Targets": [
+        {
+            "Arn": "arn:aws:sns:us-east-1:167389268608:GuardDuty-us-east-1",
+            "Id": "terraform-20200910152845460700000001"
+        }
+    ]
+}

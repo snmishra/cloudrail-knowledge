@@ -1,0 +1,7 @@
+{
+    "taskDefinitionArns": [
+        "arn:aws:ecs:us-east-1:167389268608:task-definition/Cloudrail-develop-collect-task:510",
+        "arn:aws:ecs:us-east-1:167389268608:task-definition/Cloudrail-develop-collect-task:1565",
+        "arn:aws:ecs:us-east-1:167389268608:task-definition/Cloudrail-develop-process-task:441"
+    ]
+}

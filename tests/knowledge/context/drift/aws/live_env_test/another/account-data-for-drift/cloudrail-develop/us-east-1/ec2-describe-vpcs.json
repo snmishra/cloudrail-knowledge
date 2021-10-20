@@ -1,0 +1,40 @@
+{
+    "Vpcs": [
+        {
+            "CidrBlock": "204.189.205.245/20",
+            "CidrBlockAssociationSet": [
+                {
+                    "AssociationId": "vpc-cidr-assoc-08dfc78aadad24666",
+                    "CidrBlock": "204.189.205.245/20",
+                    "CidrBlockState": {
+                        "State": "associated"
+                    }
+                }
+            ],
+            "DhcpOptionsId": "dopt-882cfef2",
+            "InstanceTenancy": "default",
+            "IsDefault": false,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "Tags": [
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-VPC"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        }
+    ]
+}

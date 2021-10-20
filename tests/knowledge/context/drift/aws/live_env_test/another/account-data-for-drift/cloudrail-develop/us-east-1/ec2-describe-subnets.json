@@ -1,0 +1,232 @@
+{
+    "Subnets": [
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-east-1c",
+            "AvailabilityZoneId": "use1-az4",
+            "AvailableIpAddressCount": 507,
+            "CidrBlock": "138.249.27.5/23",
+            "DefaultForAz": false,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": false,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-east-1:167389268608:subnet/subnet-00d9b06f82aa39ff2",
+            "SubnetId": "subnet-00d9b06f82aa39ff2",
+            "Tags": [
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-Public-Subnet-c"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Tier",
+                    "Value": "Public"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-east-1c",
+            "AvailabilityZoneId": "use1-az4",
+            "AvailableIpAddressCount": 503,
+            "CidrBlock": "24.228.44.213/23",
+            "DefaultForAz": false,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": false,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-east-1:167389268608:subnet/subnet-0e93b1032f200f270",
+            "SubnetId": "subnet-0e93b1032f200f270",
+            "Tags": [
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Tier",
+                    "Value": "Private"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-Private-Subnet-c"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-east-1d",
+            "AvailabilityZoneId": "use1-az6",
+            "AvailableIpAddressCount": 507,
+            "CidrBlock": "75.51.210.176/23",
+            "DefaultForAz": false,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": false,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-east-1:167389268608:subnet/subnet-0f8c7f1e468d23511",
+            "SubnetId": "subnet-0f8c7f1e468d23511",
+            "Tags": [
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-Public-Subnet-d"
+                },
+                {
+                    "Key": "Tier",
+                    "Value": "Public"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-east-1d",
+            "AvailabilityZoneId": "use1-az6",
+            "AvailableIpAddressCount": 504,
+            "CidrBlock": "18.231.248.222/23",
+            "DefaultForAz": false,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": false,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-east-1:167389268608:subnet/subnet-0e10a30c478bff9ca",
+            "SubnetId": "subnet-0e10a30c478bff9ca",
+            "Tags": [
+                {
+                    "Key": "Tier",
+                    "Value": "Private"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-Private-Subnet-d"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-east-1b",
+            "AvailabilityZoneId": "use1-az2",
+            "AvailableIpAddressCount": 502,
+            "CidrBlock": "60.182.240.167/23",
+            "DefaultForAz": false,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": false,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-east-1:167389268608:subnet/subnet-00cdc2582ba0547d3",
+            "SubnetId": "subnet-00cdc2582ba0547d3",
+            "Tags": [
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Tier",
+                    "Value": "Private"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-Private-Subnet-b"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "AssignIpv6AddressOnCreation": false,
+            "AvailabilityZone": "us-east-1b",
+            "AvailabilityZoneId": "use1-az2",
+            "AvailableIpAddressCount": 506,
+            "CidrBlock": "204.189.205.245/23",
+            "DefaultForAz": false,
+            "Ipv6CidrBlockAssociationSet": [],
+            "MapCustomerOwnedIpOnLaunch": false,
+            "MapPublicIpOnLaunch": false,
+            "OwnerId": "167389268608",
+            "State": "available",
+            "SubnetArn": "arn:aws:ec2:us-east-1:167389268608:subnet/subnet-0d5b79f695930bb50",
+            "SubnetId": "subnet-0d5b79f695930bb50",
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-Public-Subnet-b"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Tier",
+                    "Value": "Public"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        }
+    ]
+}

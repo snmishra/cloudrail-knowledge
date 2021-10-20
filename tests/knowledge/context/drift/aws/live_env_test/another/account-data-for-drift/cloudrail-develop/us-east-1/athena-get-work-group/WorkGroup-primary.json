@@ -1,0 +1,20 @@
+{
+    "WorkGroup": {
+        "Configuration": {
+            "EnforceWorkGroupConfiguration": false,
+            "EngineVersion": {
+                "EffectiveEngineVersion": "Athena engine version 2",
+                "SelectedEngineVersion": "AUTO"
+            },
+            "PublishCloudWatchMetricsEnabled": false,
+            "RequesterPaysEnabled": false,
+            "ResultConfiguration": {
+                "OutputLocation": "s3://aws-athena-query-results-167389268608-us-east-1/cloudtrail.167389268608.us-east-1.cloudrail.develop/"
+            }
+        },
+        "CreationTime": "2020-11-04T13:13:31.026000+00:00",
+        "Description": "",
+        "Name": "primary",
+        "State": "ENABLED"
+    }
+}

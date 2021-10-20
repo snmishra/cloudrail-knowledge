@@ -1,0 +1,69 @@
+{
+    "taskDefinition": {
+        "compatibilities": [
+            "EC2",
+            "FARGATE"
+        ],
+        "containerDefinitions": [
+            {
+                "cpu": 0,
+                "environment": [],
+                "essential": true,
+                "image": "https://indeni.jfrog.io/artifactory/docker/cloud-rail-collect:latest",
+                "logConfiguration": {
+                    "logDriver": "awslogs",
+                    "options": {
+                        "awslogs-group": "/ecs/collect-task",
+                        "awslogs-region": "us-east-1",
+                        "awslogs-stream-prefix": "ecs"
+                    }
+                },
+                "mountPoints": [],
+                "name": "cloud-rail-collect",
+                "portMappings": [],
+                "repositoryCredentials": {
+                    "credentialsParameter": "arn:aws:secretsmanager:us-east-1:167389268608:secret:dev/jfrogCred-UAyVKx"
+                },
+                "volumesFrom": []
+            }
+        ],
+        "cpu": "256",
+        "deregisteredAt": "2020-10-20T11:41:09.388000+00:00",
+        "executionRoleArn": "arn:aws:iam::167389268608:role/ecsTaskExecutionRole",
+        "family": "collect-task",
+        "memory": "1024",
+        "networkMode": "awsvpc",
+        "placementConstraints": [],
+        "requiresAttributes": [
+            {
+                "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+            },
+            {
+                "name": "ecs.capability.execution-role-awslogs"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+            },
+            {
+                "name": "ecs.capability.private-registry-authentication.secretsmanager"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.task-iam-role"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+                "name": "ecs.capability.task-eni"
+            }
+        ],
+        "requiresCompatibilities": [
+            "FARGATE"
+        ],
+        "revision": 3,
+        "status": "INACTIVE",
+        "taskDefinitionArn": "arn:aws:ecs:us-east-1:167389268608:task-definition/collect-task:3",
+        "taskRoleArn": "arn:aws:iam::167389268608:role/ecsTaskExecutionRole",
+        "volumes": []
+    }
+}

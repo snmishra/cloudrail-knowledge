@@ -1,0 +1,28 @@
+{
+    "Table": {
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "key",
+                "AttributeType": "S"
+            }
+        ],
+        "CreationDateTime": "2020-07-21T08:42:06.211000+00:00",
+        "ItemCount": 0,
+        "KeySchema": [
+            {
+                "AttributeName": "key",
+                "KeyType": "HASH"
+            }
+        ],
+        "ProvisionedThroughput": {
+            "NumberOfDecreasesToday": 0,
+            "ReadCapacityUnits": 5,
+            "WriteCapacityUnits": 5
+        },
+        "TableArn": "arn:aws:dynamodb:us-east-1:167389268608:table/api_keys",
+        "TableId": "6434cca0-8899-4001-a758-7b9a2ddc5d9b",
+        "TableName": "api_keys",
+        "TableSizeBytes": 0,
+        "TableStatus": "ACTIVE"
+    }
+}

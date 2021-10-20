@@ -1,0 +1,189 @@
+{
+    "SecurityGroups": [
+        {
+            "Description": "SG for Step Functions",
+            "GroupId": "sg-0528f545354fa9cb0",
+            "GroupName": "Cloudrail-develop-Step-Functions-SG",
+            "IpPermissions": [
+                {
+                    "FromPort": 80,
+                    "IpProtocol": "tcp",
+                    "IpRanges": [
+                        {
+                            "CidrIp": "172.227.123.61/0",
+                            "Description": "Allow incoming TCP port 80 - step function SG"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": [],
+                    "ToPort": 80,
+                    "UserIdGroupPairs": []
+                }
+            ],
+            "IpPermissionsEgress": [
+                {
+                    "IpProtocol": "-1",
+                    "IpRanges": [
+                        {
+                            "CidrIp": "172.227.123.61/0",
+                            "Description": "Allow all outgoing traffic - step function SG"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": [],
+                    "UserIdGroupPairs": []
+                }
+            ],
+            "OwnerId": "167389268608",
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-Step-Functions-SG"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Description": "default VPC security group",
+            "GroupId": "sg-0659797daebf28b00",
+            "GroupName": "default",
+            "IpPermissions": [],
+            "IpPermissionsEgress": [],
+            "OwnerId": "167389268608",
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Description": "Security Group for Lambda",
+            "GroupId": "sg-068cabcda3224fedd",
+            "GroupName": "Cloudrail-develop-Lambda-Security-Group",
+            "IpPermissions": [],
+            "IpPermissionsEgress": [
+                {
+                    "IpProtocol": "-1",
+                    "IpRanges": [
+                        {
+                            "CidrIp": "172.227.123.61/0",
+                            "Description": "Egress default rule"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": [],
+                    "UserIdGroupPairs": []
+                }
+            ],
+            "OwnerId": "167389268608",
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-develop-Lambda-SG"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Description": "Security Group for cloudrail-develop RDS Instance",
+            "GroupId": "sg-085cc55f0e614c80c",
+            "GroupName": "cloudrail-develop-DB-SG",
+            "IpPermissions": [
+                {
+                    "FromPort": 5432,
+                    "IpProtocol": "tcp",
+                    "IpRanges": [
+                        {
+                            "CidrIp": "111.80.154.126/20",
+                            "Description": "Access from 111.80.154.126/20"
+                        },
+                        {
+                            "CidrIp": "37.34.13.115/16",
+                            "Description": "access from Jenkins (added manually)"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": [],
+                    "ToPort": 5432,
+                    "UserIdGroupPairs": [
+                        {
+                            "Description": "Access from Step_Functions",
+                            "GroupId": "sg-0528f545354fa9cb0",
+                            "UserId": "167389268608"
+                        },
+                        {
+                            "Description": "Access from Lambdas",
+                            "GroupId": "sg-068cabcda3224fedd",
+                            "UserId": "167389268608"
+                        }
+                    ]
+                },
+                {
+                    "IpProtocol": "-1",
+                    "IpRanges": [
+                        {
+                            "CidrIp": "196.140.216.138/32",
+                            "Description": "Drift test"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": [],
+                    "UserIdGroupPairs": []
+                }
+            ],
+            "IpPermissionsEgress": [
+                {
+                    "IpProtocol": "-1",
+                    "IpRanges": [
+                        {
+                            "CidrIp": "172.227.123.61/0"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": [],
+                    "UserIdGroupPairs": []
+                }
+            ],
+            "OwnerId": "167389268608",
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "cloudrail-develop-DBSG"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "develop"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                }
+            ],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        }
+    ]
+}

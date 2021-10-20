@@ -1,0 +1,4 @@
+{
+    "Policy": "{\"Version\":\"2012-10-17\",\"Id\":\"default\",\"Statement\":[{\"Sid\":\"AllowExecutionFromEventsBridge\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"events.amazonaws.com\"},\"Action\":\"lambda:InvokeFunction\",\"Resource\":\"arn:aws:lambda:us-east-1:167389268608:function:email_notifications-develop\"},{\"Sid\":\"AllowExecutionFromCloudWatchRDS\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"logs.us-east-1.amazonaws.com\"},\"Action\":\"lambda:InvokeFunction\",\"Resource\":\"arn:aws:lambda:us-east-1:167389268608:function:email_notifications-develop\",\"Condition\":{\"ArnLike\":{\"AWS:SourceArn\":\"arn:aws:logs:us-east-1:167389268608:log-group:/aws/rds/instance/cloudrail-develop-rds/postgresql:*\"}}}]}",
+    "RevisionId": "87448ac0-6665-4de8-a3b2-c8c8bdebb274"
+}

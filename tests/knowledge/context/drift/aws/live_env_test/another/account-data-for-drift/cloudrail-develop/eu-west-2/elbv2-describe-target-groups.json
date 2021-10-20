@@ -1,0 +1,61 @@
+{
+    "TargetGroups": [
+        {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPath": "/",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "LoadBalancerArns": [],
+            "Matcher": {
+                "HttpCode": "200"
+            },
+            "Port": 80,
+            "Protocol": "HTTP",
+            "ProtocolVersion": "HTTP1",
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:eu-west-2:167389268608:targetgroup/ido-public-tg/799a15c2d53f62f9",
+            "TargetGroupName": "ido-public-tg",
+            "TargetType": "ip",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "vpc-0ea217e8640d3a395"
+        },
+        {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckPath": "/",
+            "HealthCheckPort": "traffic-port",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 5,
+            "LoadBalancerArns": [],
+            "Matcher": {
+                "HttpCode": "200"
+            },
+            "Port": 80,
+            "Protocol": "HTTP",
+            "ProtocolVersion": "HTTP1",
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:eu-west-2:167389268608:targetgroup/ido-public-tg-instances/97c90badc3454c8c",
+            "TargetGroupName": "ido-public-tg-instances",
+            "TargetType": "instance",
+            "UnhealthyThresholdCount": 2,
+            "VpcId": "vpc-0ea217e8640d3a395"
+        },
+        {
+            "HealthCheckEnabled": false,
+            "HealthCheckIntervalSeconds": 35,
+            "HealthCheckPath": "/",
+            "HealthCheckTimeoutSeconds": 30,
+            "HealthyThresholdCount": 5,
+            "LoadBalancerArns": [],
+            "Matcher": {
+                "HttpCode": "200"
+            },
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:eu-west-2:167389268608:targetgroup/ido-public-tg-lambda/cc563712cb5f634e",
+            "TargetGroupName": "ido-public-tg-lambda",
+            "TargetType": "lambda",
+            "UnhealthyThresholdCount": 2
+        }
+    ]
+}

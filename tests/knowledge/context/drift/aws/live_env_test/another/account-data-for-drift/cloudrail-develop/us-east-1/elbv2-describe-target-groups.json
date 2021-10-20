@@ -1,0 +1,20 @@
+{
+    "TargetGroups": [
+        {
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 10,
+            "HealthCheckPort": "80",
+            "HealthCheckProtocol": "TCP",
+            "HealthCheckTimeoutSeconds": 10,
+            "HealthyThresholdCount": 3,
+            "LoadBalancerArns": [],
+            "Port": 80,
+            "Protocol": "TCP",
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:167389268608:targetgroup/public-subnet-elb-tg/38e656eca0d8a005",
+            "TargetGroupName": "public-subnet-elb-tg",
+            "TargetType": "ip",
+            "UnhealthyThresholdCount": 3,
+            "VpcId": "vpc-00b4f374416cd31cb"
+        }
+    ]
+}

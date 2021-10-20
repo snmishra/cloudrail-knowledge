@@ -1,0 +1,11 @@
+{
+    "logGroups": [
+        {
+            "arn": "arn:aws:logs:eu-west-1:167389268608:log-group:/aws/lambda/us-east-1.cf-edge-security-headers-develop:*",
+            "creationTime": 1615106771294,
+            "logGroupName": "/aws/lambda/us-east-1.cf-edge-security-headers-develop",
+            "metricFilterCount": 0,
+            "storedBytes": 307826
+        }
+    ]
+}

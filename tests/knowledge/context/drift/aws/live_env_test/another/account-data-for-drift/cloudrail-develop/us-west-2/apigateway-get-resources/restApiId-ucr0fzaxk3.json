@@ -1,0 +1,26 @@
+{
+    "items": [
+        {
+            "id": "54jyq7k7a1",
+            "path": "/"
+        },
+        {
+            "id": "8bhm8b",
+            "parentId": "54jyq7k7a1",
+            "path": "/habit",
+            "pathPart": "habit",
+            "resourceMethods": {
+                "GET": {}
+            }
+        },
+        {
+            "id": "oxafc4",
+            "parentId": "54jyq7k7a1",
+            "path": "/test-resource",
+            "pathPart": "test-resource",
+            "resourceMethods": {
+                "GET": {}
+            }
+        }
+    ]
+}

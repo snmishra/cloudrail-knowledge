@@ -1,0 +1,142 @@
+{
+    "Aliases": [
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/acm",
+            "AliasName": "alias/aws/acm",
+            "CreationDate": "2020-08-20T12:01:15.095000+00:00",
+            "LastUpdatedDate": "2020-08-20T12:01:15.095000+00:00",
+            "TargetKeyId": "047023a9-2cc7-49ab-b47f-c0155668fab7"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/dynamodb",
+            "AliasName": "alias/aws/dynamodb"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/ebs",
+            "AliasName": "alias/aws/ebs",
+            "CreationDate": "2020-02-25T12:30:05.175000+00:00",
+            "LastUpdatedDate": "2020-02-25T12:30:05.175000+00:00",
+            "TargetKeyId": "d06b746e-5914-414c-be76-ad4bf16babf5"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/elasticfilesystem",
+            "AliasName": "alias/aws/elasticfilesystem"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/es",
+            "AliasName": "alias/aws/es"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/glue",
+            "AliasName": "alias/aws/glue"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/kinesisvideo",
+            "AliasName": "alias/aws/kinesisvideo"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/lambda",
+            "AliasName": "alias/aws/lambda",
+            "CreationDate": "2020-06-17T12:25:54.747000+00:00",
+            "LastUpdatedDate": "2020-06-17T12:25:54.747000+00:00",
+            "TargetKeyId": "e28c70eb-cd41-4ede-b138-077971303afc"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/rds",
+            "AliasName": "alias/aws/rds",
+            "CreationDate": "2020-05-17T13:50:29.380000+00:00",
+            "LastUpdatedDate": "2020-05-17T13:50:29.380000+00:00",
+            "TargetKeyId": "3255b09e-0b71-4808-b772-a165620d5b9b"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/redshift",
+            "AliasName": "alias/aws/redshift"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/redshifttest",
+            "AliasName": "alias/aws/redshifttest"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/s3",
+            "AliasName": "alias/aws/s3",
+            "CreationDate": "2021-02-08T15:27:29.765000+00:00",
+            "LastUpdatedDate": "2021-02-08T15:27:29.765000+00:00",
+            "TargetKeyId": "ef5899ed-4a98-47ea-b9a3-eab0b90960ff"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/secretsmanager",
+            "AliasName": "alias/aws/secretsmanager",
+            "CreationDate": "2020-06-07T07:16:27.998000+00:00",
+            "LastUpdatedDate": "2020-06-07T07:16:27.998000+00:00",
+            "TargetKeyId": "7dc01e36-7ddb-4f0a-ad53-e22145ca1e2d"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/sns",
+            "AliasName": "alias/aws/sns",
+            "CreationDate": "2020-05-17T14:27:51.838000+00:00",
+            "LastUpdatedDate": "2020-05-17T14:27:51.838000+00:00",
+            "TargetKeyId": "1a6722ac-6e8f-4a84-b40e-87fed9755c84"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/sqs",
+            "AliasName": "alias/aws/sqs",
+            "CreationDate": "2021-07-28T16:54:18.342000+00:00",
+            "LastUpdatedDate": "2021-07-28T16:54:18.342000+00:00",
+            "TargetKeyId": "490571ac-80ff-4d48-9500-f7222c8973a0"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/ssm",
+            "AliasName": "alias/aws/ssm"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/aws/xray",
+            "AliasName": "alias/aws/xray",
+            "CreationDate": "2021-02-08T16:13:13.633000+00:00",
+            "LastUpdatedDate": "2021-02-08T16:13:13.633000+00:00",
+            "TargetKeyId": "03748349-3025-4531-a60b-940446999301"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/cognito-key-Cloudrail-develop-us-east-1",
+            "AliasName": "alias/cognito-key-Cloudrail-develop-us-east-1",
+            "CreationDate": "2020-12-24T10:44:36.632000+00:00",
+            "LastUpdatedDate": "2020-12-24T10:44:36.632000+00:00",
+            "TargetKeyId": "559a7629-53f5-4eb1-9a07-00c6891b492c"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/guardduty-us-east-1",
+            "AliasName": "alias/guardduty-us-east-1",
+            "CreationDate": "2020-09-10T15:28:38.504000+00:00",
+            "LastUpdatedDate": "2020-09-10T15:28:38.504000+00:00",
+            "TargetKeyId": "60526984-0de3-40d8-bd5a-65f955a7d02e"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/secret_manager-key-Cloudrail-develop-RDS-us-east-1",
+            "AliasName": "alias/secret_manager-key-Cloudrail-develop-RDS-us-east-1",
+            "CreationDate": "2021-05-31T09:47:10.024000+00:00",
+            "LastUpdatedDate": "2021-05-31T09:47:10.024000+00:00",
+            "TargetKeyId": "5459c32f-8138-45de-b4c9-e37f1698d13a"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/secret_manager-key-Cloudrail-develop-google-auth-us-east-1",
+            "AliasName": "alias/secret_manager-key-Cloudrail-develop-google-auth-us-east-1",
+            "CreationDate": "2021-05-31T09:47:10.280000+00:00",
+            "LastUpdatedDate": "2021-05-31T09:47:10.280000+00:00",
+            "TargetKeyId": "8525be02-af59-471b-9598-ffee8dfbf032"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/secret_manager-key-Cloudrail-develop-mailjet-us-east-1",
+            "AliasName": "alias/secret_manager-key-Cloudrail-develop-mailjet-us-east-1",
+            "CreationDate": "2021-05-31T09:47:10.015000+00:00",
+            "LastUpdatedDate": "2021-05-31T09:47:10.015000+00:00",
+            "TargetKeyId": "d89eb47d-4b30-4772-8a0d-49bb6f8b52af"
+        },
+        {
+            "AliasArn": "arn:aws:kms:us-east-1:167389268608:alias/secret_manager-key-Cloudrail-develop-recaptcha-us-east-1",
+            "AliasName": "alias/secret_manager-key-Cloudrail-develop-recaptcha-us-east-1",
+            "CreationDate": "2021-06-10T09:42:27.371000+00:00",
+            "LastUpdatedDate": "2021-06-10T09:42:27.371000+00:00",
+            "TargetKeyId": "e0e46c6f-4081-405d-a86a-547170a315cf"
+        }
+    ],
+    "Truncated": false
+}

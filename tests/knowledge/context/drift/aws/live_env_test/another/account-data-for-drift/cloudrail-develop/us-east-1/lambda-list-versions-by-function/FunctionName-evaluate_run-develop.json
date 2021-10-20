@@ -1,0 +1,314 @@
+{
+    "Versions": [
+        {
+            "CodeSha256": "7UHcUOfaQAGh9Jnjdj5y94iX0Jg/9sc/uiaefG+3FG8=",
+            "CodeSize": 592997,
+            "Description": "aws:states:opt-out",
+            "Environment": {
+                "Variables": {
+                    "CAPTCHA_SECRET_ID": "arn:aws:secretsmanager:us-east-1:167389268608:secret:Cloudrail-develop-recaptcha-iq0qq4",
+                    "COGNITO_CLIENT_ID": "l7iiki4d0u40f5fqr80lp68l1",
+                    "COGNITO_USER_POOL_ID": "us-east-1_hUwBHD6yQ",
+                    "ENVIRONMENT_NAME": "develop",
+                    "HTTP_HEADERS_ACCESS_CONTROL_ALLOW_ORIGIN": "https://web.develop.internal.cloudrail.app",
+                    "LUMIGO_ORIGINAL_HANDLER": "core.api.aws_lambda.evaluation_run.lambda_handler",
+                    "LUMIGO_TRACER_TOKEN": "t_032aabca8344493e99c15",
+                    "PSQL_DB_NAME": "cloudrail",
+                    "PSQL_HOST": "cloudrail-develop-rds.cwz8ng8rczcc.us-east-1.rds.amazonaws.com",
+                    "PSQL_USERNAME": "psql_read_write",
+                    "REGION": "us-east-1",
+                    "S3_API_BUCKET": "cloudrail-develop-apikeys-s3",
+                    "S3_COLLECT_BUCKET": "cloudrail-develop-collect-s3",
+                    "S3_DRIFT_DETECTION_RESULTS_BUCKET": "cloudrail-develop-drift-detection-results-s3",
+                    "S3_LOG_BUCKET": "cloudrail-develop-logs-s3",
+                    "S3_TERRAFORM_BUCKET": "cloudrail-develop-terraform-s3",
+                    "S3_TERRAFORM_DRIFT_BUCKET": "cloudrail-develop-terraform-drift-s3",
+                    "STEP_FUNCTION_NAME": "Cloudrail-develop-Step-Functions"
+                }
+            },
+            "FunctionArn": "arn:aws:lambda:us-east-1:167389268608:function:evaluate_run-develop:$LATEST",
+            "FunctionName": "evaluate_run-develop",
+            "Handler": "/opt/python/lumigo_tracer._handler",
+            "LastModified": "2021-10-20T05:50:33.236+0000",
+            "Layers": [
+                {
+                    "Arn": "arn:aws:lambda:us-east-1:167389268608:layer:Cloudrail-develop-Lambda-Layer:1564",
+                    "CodeSize": 44996330
+                },
+                {
+                    "Arn": "arn:aws:lambda:us-east-1:114300393969:layer:lumigo-python-tracer:169",
+                    "CodeSize": 61846
+                }
+            ],
+            "MemorySize": 1024,
+            "PackageType": "Zip",
+            "RevisionId": "80235d9a-b1db-4b3b-a81a-d4d63ab37106",
+            "Role": "arn:aws:iam::167389268608:role/evaluate_run-develop-Role",
+            "Runtime": "python3.8",
+            "Timeout": 29,
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "Version": "$LATEST",
+            "VpcConfig": {
+                "SecurityGroupIds": [
+                    "sg-068cabcda3224fedd"
+                ],
+                "SubnetIds": [
+                    "subnet-0e10a30c478bff9ca",
+                    "subnet-00cdc2582ba0547d3",
+                    "subnet-0e93b1032f200f270"
+                ],
+                "VpcId": "vpc-0e39b445bad43bfed"
+            }
+        },
+        {
+            "CodeSha256": "z6Kai4r7I2ciB+lIpcuaNbBp8EOjK4MPfTSxOOh2G6Y=",
+            "CodeSize": 592969,
+            "Description": "aws:states:opt-out",
+            "Environment": {
+                "Variables": {
+                    "CAPTCHA_SECRET_ID": "arn:aws:secretsmanager:us-east-1:167389268608:secret:Cloudrail-develop-recaptcha-iq0qq4",
+                    "COGNITO_CLIENT_ID": "l7iiki4d0u40f5fqr80lp68l1",
+                    "COGNITO_USER_POOL_ID": "us-east-1_hUwBHD6yQ",
+                    "ENVIRONMENT_NAME": "develop",
+                    "HTTP_HEADERS_ACCESS_CONTROL_ALLOW_ORIGIN": "https://web.develop.internal.cloudrail.app",
+                    "LUMIGO_ORIGINAL_HANDLER": "core.api.aws_lambda.evaluation_run.lambda_handler",
+                    "LUMIGO_TRACER_TOKEN": "t_032aabca8344493e99c15",
+                    "PSQL_DB_NAME": "cloudrail",
+                    "PSQL_HOST": "cloudrail-develop-rds.cwz8ng8rczcc.us-east-1.rds.amazonaws.com",
+                    "PSQL_USERNAME": "psql_read_write",
+                    "REGION": "us-east-1",
+                    "S3_API_BUCKET": "cloudrail-develop-apikeys-s3",
+                    "S3_COLLECT_BUCKET": "cloudrail-develop-collect-s3",
+                    "S3_DRIFT_DETECTION_RESULTS_BUCKET": "cloudrail-develop-drift-detection-results-s3",
+                    "S3_LOG_BUCKET": "cloudrail-develop-logs-s3",
+                    "S3_TERRAFORM_BUCKET": "cloudrail-develop-terraform-s3",
+                    "S3_TERRAFORM_DRIFT_BUCKET": "cloudrail-develop-terraform-drift-s3",
+                    "STEP_FUNCTION_NAME": "Cloudrail-develop-Step-Functions"
+                }
+            },
+            "FunctionArn": "arn:aws:lambda:us-east-1:167389268608:function:evaluate_run-develop:1542",
+            "FunctionName": "evaluate_run-develop",
+            "Handler": "/opt/python/lumigo_tracer._handler",
+            "LastModified": "2021-10-19T12:42:20.875+0000",
+            "Layers": [
+                {
+                    "Arn": "arn:aws:lambda:us-east-1:167389268608:layer:Cloudrail-develop-Lambda-Layer:1561",
+                    "CodeSize": 44811327
+                },
+                {
+                    "Arn": "arn:aws:lambda:us-east-1:114300393969:layer:lumigo-python-tracer:169",
+                    "CodeSize": 61846
+                }
+            ],
+            "MemorySize": 1024,
+            "PackageType": "Zip",
+            "RevisionId": "dac1a9c9-3abc-48b2-b988-f4bdd6576087",
+            "Role": "arn:aws:iam::167389268608:role/evaluate_run-develop-Role",
+            "Runtime": "python3.8",
+            "Timeout": 29,
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "Version": "1542",
+            "VpcConfig": {
+                "SecurityGroupIds": [
+                    "sg-068cabcda3224fedd"
+                ],
+                "SubnetIds": [
+                    "subnet-0e10a30c478bff9ca",
+                    "subnet-00cdc2582ba0547d3",
+                    "subnet-0e93b1032f200f270"
+                ],
+                "VpcId": "vpc-0e39b445bad43bfed"
+            }
+        },
+        {
+            "CodeSha256": "VOb7AnLzMhpgxQnWdss1H3i5I2oLeCM+pMepHxaTe1c=",
+            "CodeSize": 592823,
+            "Description": "aws:states:opt-out",
+            "Environment": {
+                "Variables": {
+                    "CAPTCHA_SECRET_ID": "arn:aws:secretsmanager:us-east-1:167389268608:secret:Cloudrail-develop-recaptcha-iq0qq4",
+                    "COGNITO_CLIENT_ID": "l7iiki4d0u40f5fqr80lp68l1",
+                    "COGNITO_USER_POOL_ID": "us-east-1_hUwBHD6yQ",
+                    "ENVIRONMENT_NAME": "develop",
+                    "HTTP_HEADERS_ACCESS_CONTROL_ALLOW_ORIGIN": "https://web.develop.internal.cloudrail.app",
+                    "LUMIGO_ORIGINAL_HANDLER": "core.api.aws_lambda.evaluation_run.lambda_handler",
+                    "LUMIGO_TRACER_TOKEN": "t_032aabca8344493e99c15",
+                    "PSQL_DB_NAME": "cloudrail",
+                    "PSQL_HOST": "cloudrail-develop-rds.cwz8ng8rczcc.us-east-1.rds.amazonaws.com",
+                    "PSQL_USERNAME": "psql_read_write",
+                    "REGION": "us-east-1",
+                    "S3_API_BUCKET": "cloudrail-develop-apikeys-s3",
+                    "S3_COLLECT_BUCKET": "cloudrail-develop-collect-s3",
+                    "S3_DRIFT_DETECTION_RESULTS_BUCKET": "cloudrail-develop-drift-detection-results-s3",
+                    "S3_LOG_BUCKET": "cloudrail-develop-logs-s3",
+                    "S3_TERRAFORM_BUCKET": "cloudrail-develop-terraform-s3",
+                    "S3_TERRAFORM_DRIFT_BUCKET": "cloudrail-develop-terraform-drift-s3",
+                    "STEP_FUNCTION_NAME": "Cloudrail-develop-Step-Functions"
+                }
+            },
+            "FunctionArn": "arn:aws:lambda:us-east-1:167389268608:function:evaluate_run-develop:1543",
+            "FunctionName": "evaluate_run-develop",
+            "Handler": "/opt/python/lumigo_tracer._handler",
+            "LastModified": "2021-10-19T15:18:06.307+0000",
+            "Layers": [
+                {
+                    "Arn": "arn:aws:lambda:us-east-1:167389268608:layer:Cloudrail-develop-Lambda-Layer:1562",
+                    "CodeSize": 44811680
+                },
+                {
+                    "Arn": "arn:aws:lambda:us-east-1:114300393969:layer:lumigo-python-tracer:169",
+                    "CodeSize": 61846
+                }
+            ],
+            "MemorySize": 1024,
+            "PackageType": "Zip",
+            "RevisionId": "4a7f567d-612e-40e7-a85a-2647d6fd9f7c",
+            "Role": "arn:aws:iam::167389268608:role/evaluate_run-develop-Role",
+            "Runtime": "python3.8",
+            "Timeout": 29,
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "Version": "1543",
+            "VpcConfig": {
+                "SecurityGroupIds": [
+                    "sg-068cabcda3224fedd"
+                ],
+                "SubnetIds": [
+                    "subnet-0e10a30c478bff9ca",
+                    "subnet-00cdc2582ba0547d3",
+                    "subnet-0e93b1032f200f270"
+                ],
+                "VpcId": "vpc-0e39b445bad43bfed"
+            }
+        },
+        {
+            "CodeSha256": "SH302xXBtL8EdJKZFNnG9lIfG3Ke9VHdWyooiZDBV6E=",
+            "CodeSize": 593082,
+            "Description": "aws:states:opt-out",
+            "Environment": {
+                "Variables": {
+                    "CAPTCHA_SECRET_ID": "arn:aws:secretsmanager:us-east-1:167389268608:secret:Cloudrail-develop-recaptcha-iq0qq4",
+                    "COGNITO_CLIENT_ID": "l7iiki4d0u40f5fqr80lp68l1",
+                    "COGNITO_USER_POOL_ID": "us-east-1_hUwBHD6yQ",
+                    "ENVIRONMENT_NAME": "develop",
+                    "HTTP_HEADERS_ACCESS_CONTROL_ALLOW_ORIGIN": "https://web.develop.internal.cloudrail.app",
+                    "LUMIGO_ORIGINAL_HANDLER": "core.api.aws_lambda.evaluation_run.lambda_handler",
+                    "LUMIGO_TRACER_TOKEN": "t_032aabca8344493e99c15",
+                    "PSQL_DB_NAME": "cloudrail",
+                    "PSQL_HOST": "cloudrail-develop-rds.cwz8ng8rczcc.us-east-1.rds.amazonaws.com",
+                    "PSQL_USERNAME": "psql_read_write",
+                    "REGION": "us-east-1",
+                    "S3_API_BUCKET": "cloudrail-develop-apikeys-s3",
+                    "S3_COLLECT_BUCKET": "cloudrail-develop-collect-s3",
+                    "S3_DRIFT_DETECTION_RESULTS_BUCKET": "cloudrail-develop-drift-detection-results-s3",
+                    "S3_LOG_BUCKET": "cloudrail-develop-logs-s3",
+                    "S3_TERRAFORM_BUCKET": "cloudrail-develop-terraform-s3",
+                    "S3_TERRAFORM_DRIFT_BUCKET": "cloudrail-develop-terraform-drift-s3",
+                    "STEP_FUNCTION_NAME": "Cloudrail-develop-Step-Functions"
+                }
+            },
+            "FunctionArn": "arn:aws:lambda:us-east-1:167389268608:function:evaluate_run-develop:1544",
+            "FunctionName": "evaluate_run-develop",
+            "Handler": "/opt/python/lumigo_tracer._handler",
+            "LastModified": "2021-10-19T16:43:56.193+0000",
+            "Layers": [
+                {
+                    "Arn": "arn:aws:lambda:us-east-1:167389268608:layer:Cloudrail-develop-Lambda-Layer:1563",
+                    "CodeSize": 44847589
+                },
+                {
+                    "Arn": "arn:aws:lambda:us-east-1:114300393969:layer:lumigo-python-tracer:169",
+                    "CodeSize": 61846
+                }
+            ],
+            "MemorySize": 1024,
+            "PackageType": "Zip",
+            "RevisionId": "b4fc844e-831e-4119-afeb-8cecbf9fcad9",
+            "Role": "arn:aws:iam::167389268608:role/evaluate_run-develop-Role",
+            "Runtime": "python3.8",
+            "Timeout": 29,
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "Version": "1544",
+            "VpcConfig": {
+                "SecurityGroupIds": [
+                    "sg-068cabcda3224fedd"
+                ],
+                "SubnetIds": [
+                    "subnet-0e10a30c478bff9ca",
+                    "subnet-00cdc2582ba0547d3",
+                    "subnet-0e93b1032f200f270"
+                ],
+                "VpcId": "vpc-0e39b445bad43bfed"
+            }
+        },
+        {
+            "CodeSha256": "7UHcUOfaQAGh9Jnjdj5y94iX0Jg/9sc/uiaefG+3FG8=",
+            "CodeSize": 592997,
+            "Description": "aws:states:opt-out",
+            "Environment": {
+                "Variables": {
+                    "CAPTCHA_SECRET_ID": "arn:aws:secretsmanager:us-east-1:167389268608:secret:Cloudrail-develop-recaptcha-iq0qq4",
+                    "COGNITO_CLIENT_ID": "l7iiki4d0u40f5fqr80lp68l1",
+                    "COGNITO_USER_POOL_ID": "us-east-1_hUwBHD6yQ",
+                    "ENVIRONMENT_NAME": "develop",
+                    "HTTP_HEADERS_ACCESS_CONTROL_ALLOW_ORIGIN": "https://web.develop.internal.cloudrail.app",
+                    "LUMIGO_ORIGINAL_HANDLER": "core.api.aws_lambda.evaluation_run.lambda_handler",
+                    "LUMIGO_TRACER_TOKEN": "t_032aabca8344493e99c15",
+                    "PSQL_DB_NAME": "cloudrail",
+                    "PSQL_HOST": "cloudrail-develop-rds.cwz8ng8rczcc.us-east-1.rds.amazonaws.com",
+                    "PSQL_USERNAME": "psql_read_write",
+                    "REGION": "us-east-1",
+                    "S3_API_BUCKET": "cloudrail-develop-apikeys-s3",
+                    "S3_COLLECT_BUCKET": "cloudrail-develop-collect-s3",
+                    "S3_DRIFT_DETECTION_RESULTS_BUCKET": "cloudrail-develop-drift-detection-results-s3",
+                    "S3_LOG_BUCKET": "cloudrail-develop-logs-s3",
+                    "S3_TERRAFORM_BUCKET": "cloudrail-develop-terraform-s3",
+                    "S3_TERRAFORM_DRIFT_BUCKET": "cloudrail-develop-terraform-drift-s3",
+                    "STEP_FUNCTION_NAME": "Cloudrail-develop-Step-Functions"
+                }
+            },
+            "FunctionArn": "arn:aws:lambda:us-east-1:167389268608:function:evaluate_run-develop:1545",
+            "FunctionName": "evaluate_run-develop",
+            "Handler": "/opt/python/lumigo_tracer._handler",
+            "LastModified": "2021-10-20T05:50:33.236+0000",
+            "Layers": [
+                {
+                    "Arn": "arn:aws:lambda:us-east-1:167389268608:layer:Cloudrail-develop-Lambda-Layer:1564",
+                    "CodeSize": 44996330
+                },
+                {
+                    "Arn": "arn:aws:lambda:us-east-1:114300393969:layer:lumigo-python-tracer:169",
+                    "CodeSize": 61846
+                }
+            ],
+            "MemorySize": 1024,
+            "PackageType": "Zip",
+            "RevisionId": "689d731b-0021-45a8-a2c9-94a56a6c73ac",
+            "Role": "arn:aws:iam::167389268608:role/evaluate_run-develop-Role",
+            "Runtime": "python3.8",
+            "Timeout": 29,
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "Version": "1545",
+            "VpcConfig": {
+                "SecurityGroupIds": [
+                    "sg-068cabcda3224fedd"
+                ],
+                "SubnetIds": [
+                    "subnet-0e10a30c478bff9ca",
+                    "subnet-00cdc2582ba0547d3",
+                    "subnet-0e93b1032f200f270"
+                ],
+                "VpcId": "vpc-0e39b445bad43bfed"
+            }
+        }
+    ]
+}

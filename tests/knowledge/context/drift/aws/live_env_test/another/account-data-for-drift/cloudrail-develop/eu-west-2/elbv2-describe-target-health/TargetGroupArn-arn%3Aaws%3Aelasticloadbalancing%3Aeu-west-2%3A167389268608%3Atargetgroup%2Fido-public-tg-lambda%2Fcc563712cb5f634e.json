@@ -1,0 +1,15 @@
+{
+    "TargetHealthDescriptions": [
+        {
+            "Target": {
+                "AvailabilityZone": "all",
+                "Id": "arn:aws:lambda:eu-west-2:167389268608:function:serverlessrepo-ido-Lambda-Targe-HelloWorldFunction-XO1F04RO8YT1"
+            },
+            "TargetHealth": {
+                "Description": "Target group is not configured to receive traffic from the load balancer",
+                "Reason": "Target.NotInUse",
+                "State": "unused"
+            }
+        }
+    ]
+}

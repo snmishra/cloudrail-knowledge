@@ -1,0 +1,12 @@
+{
+    "Attributes": {
+        "DisplayName": "StepFunctionsTemplate-CallbackTopic",
+        "EffectiveDeliveryPolicy": "{\"http\":{\"defaultHealthyRetryPolicy\":{\"minDelayTarget\":20,\"maxDelayTarget\":20,\"numRetries\":3,\"numMaxDelayRetries\":0,\"numNoDelayRetries\":0,\"numMinDelayRetries\":0,\"backoffFunction\":\"linear\"},\"disableSubscriptionOverrides\":false}}",
+        "Owner": "167389268608",
+        "Policy": "{\"Version\":\"2008-10-17\",\"Id\":\"__default_policy_ID\",\"Statement\":[{\"Sid\":\"__default_statement_ID\",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"*\"},\"Action\":[\"SNS:GetTopicAttributes\",\"SNS:SetTopicAttributes\",\"SNS:AddPermission\",\"SNS:RemovePermission\",\"SNS:DeleteTopic\",\"SNS:Subscribe\",\"SNS:ListSubscriptionsByTopic\",\"SNS:Publish\",\"SNS:Receive\"],\"Resource\":\"arn:aws:sns:us-east-1:167389268608:StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa-SNSTopic-5YNXPPR68J7P\",\"Condition\":{\"StringEquals\":{\"AWS:SourceOwner\":\"167389268608\"}}}]}",
+        "SubscriptionsConfirmed": "0",
+        "SubscriptionsDeleted": "0",
+        "SubscriptionsPending": "0",
+        "TopicArn": "arn:aws:sns:us-east-1:167389268608:StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa-SNSTopic-5YNXPPR68J7P"
+    }
+}

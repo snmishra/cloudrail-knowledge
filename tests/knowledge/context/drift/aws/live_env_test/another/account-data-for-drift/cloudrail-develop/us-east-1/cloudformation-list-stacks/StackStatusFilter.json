@@ -1,0 +1,136 @@
+{
+    "StackSummaries": [
+        {
+            "CreationTime": "2021-10-17T07:24:03.729000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/cloudrail-integration-Imanuel/349fc0b0-2f1b-11ec-aa37-12722b358535",
+            "StackName": "cloudrail-integration-Imanuel",
+            "StackStatus": "CREATE_COMPLETE"
+        },
+        {
+            "CreationTime": "2021-09-25T18:47:20.216000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "ParentId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog/ea62f4e0-1e30-11ec-9ba6-0a22f5b12cc3",
+            "RootId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog/ea62f4e0-1e30-11ec-9ba6-0a22f5b12cc3",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog-DatadogIntegrationRoleStack-1SKW722WR8S0/0363ddb0-1e31-11ec-b4ef-12732f42e421",
+            "StackName": "datadog-DatadogIntegrationRoleStack-1SKW722WR8S0",
+            "StackStatus": "CREATE_COMPLETE",
+            "TemplateDescription": "IAM role for Datadog AWS Integration"
+        },
+        {
+            "CreationTime": "2021-09-25T18:46:43.802000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "ParentId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog/ea62f4e0-1e30-11ec-9ba6-0a22f5b12cc3",
+            "RootId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog/ea62f4e0-1e30-11ec-9ba6-0a22f5b12cc3",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog-ForwarderStack-6UNJUVFRG84D/eda77180-1e30-11ec-a718-12722b358535",
+            "StackName": "datadog-ForwarderStack-6UNJUVFRG84D",
+            "StackStatus": "CREATE_COMPLETE",
+            "TemplateDescription": "Pushes logs, metrics and traces from AWS to Datadog."
+        },
+        {
+            "CreationTime": "2021-09-25T18:46:43.213000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "ParentId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog/ea62f4e0-1e30-11ec-9ba6-0a22f5b12cc3",
+            "RootId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog/ea62f4e0-1e30-11ec-9ba6-0a22f5b12cc3",
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog-DatadogPolicyMacroStack-MXIXYI0A86WC/ed5ad820-1e30-11ec-a033-0e2d7a31746d",
+            "StackName": "datadog-DatadogPolicyMacroStack-MXIXYI0A86WC",
+            "StackStatus": "CREATE_COMPLETE",
+            "TemplateDescription": "CloudFormation macro that dynamically generates the IAM policy for the Datadog integration role"
+        },
+        {
+            "CreationTime": "2021-09-25T18:46:38.278000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/datadog/ea62f4e0-1e30-11ec-9ba6-0a22f5b12cc3",
+            "StackName": "datadog",
+            "StackStatus": "CREATE_COMPLETE",
+            "TemplateDescription": "Datadog AWS Integration"
+        },
+        {
+            "CreationTime": "2021-04-21T14:57:17.470000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/cloudrail-integration-tomer/dd6b9b20-a2b1-11eb-b418-0e09773e6f3f",
+            "StackName": "cloudrail-integration-tomer",
+            "StackStatus": "CREATE_COMPLETE"
+        },
+        {
+            "CreationTime": "2021-02-24T01:32:40.369000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/cloudrail-integration-v1-yoni/2ef05920-7640-11eb-ac2a-0e713d9d57d5",
+            "StackName": "cloudrail-integration-v1-yoni",
+            "StackStatus": "CREATE_COMPLETE"
+        },
+        {
+            "CreationTime": "2021-02-04T11:30:29.342000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/cloudrail-integration-v1/48685f10-66dc-11eb-95b8-0e6b672d4ae7",
+            "StackName": "cloudrail-integration-v1",
+            "StackStatus": "CREATE_COMPLETE"
+        },
+        {
+            "CreationTime": "2020-12-24T08:00:42.544000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/lumigo-integration-minimal-cloudformation/1e99a2a0-45be-11eb-a062-127c6c2d7f71",
+            "StackName": "lumigo-integration-minimal-cloudformation",
+            "StackStatus": "CREATE_COMPLETE",
+            "TemplateDescription": "This template creates a role which only Lumigo can use."
+        },
+        {
+            "CreationTime": "2020-12-20T10:38:30.356000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/LumigoIntegrationV5/802fd320-42af-11eb-8f9b-0a1e17b4f729",
+            "StackName": "LumigoIntegrationV5",
+            "StackStatus": "CREATE_COMPLETE",
+            "TemplateDescription": "This template creates a role which only Lumigo can use."
+        },
+        {
+            "CreationTime": "2020-08-06T09:37:34.689000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa/75128340-d7c8-11ea-9d72-12717722e021",
+            "StackName": "StepFunctionsSample-WaitForCallback922cda7f-2306-4fd1-85f1-c5a86d08c3aa",
+            "StackStatus": "CREATE_COMPLETE",
+            "TemplateDescription": "AWS Step Functions sample project for sending a message to an SQS queue and pausing the workflow until it receives a call back from Lambda."
+        },
+        {
+            "CreationTime": "2020-05-24T09:50:43.646000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/StepFunctionsSample-SelectiveCheckpointing564959b7-3dab-4dc6-88ec-e2d707a78b7b/08bd1bf0-9da4-11ea-bb71-0ee1cf96ccc3",
+            "StackName": "StepFunctionsSample-SelectiveCheckpointing564959b7-3dab-4dc6-88ec-e2d707a78b7b",
+            "StackStatus": "CREATE_COMPLETE",
+            "TemplateDescription": "AWS Step Functions sample project for combining workflows using the Step Functions StartExecution API service integration in various patterns."
+        },
+        {
+            "CreationTime": "2020-05-24T08:54:31.110000+00:00",
+            "DriftInformation": {
+                "StackDriftStatus": "NOT_CHECKED"
+            },
+            "StackId": "arn:aws:cloudformation:us-east-1:167389268608:stack/StepFunctionsSample-ContainerTaskManagementc6450f03-5bdf-4727-aa95-cce804da6391/2e7aa4f0-9d9c-11ea-80ee-12a640cb526e",
+            "StackName": "StepFunctionsSample-ContainerTaskManagementc6450f03-5bdf-4727-aa95-cce804da6391",
+            "StackStatus": "CREATE_COMPLETE",
+            "TemplateDescription": "AWS Step Functions sample project for getting notified on AWS Fargate task completion"
+        }
+    ]
+}

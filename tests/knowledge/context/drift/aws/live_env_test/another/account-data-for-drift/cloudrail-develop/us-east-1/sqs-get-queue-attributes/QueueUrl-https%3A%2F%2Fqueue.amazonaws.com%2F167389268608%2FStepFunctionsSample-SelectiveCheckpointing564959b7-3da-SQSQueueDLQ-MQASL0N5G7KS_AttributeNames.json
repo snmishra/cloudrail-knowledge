@@ -1,0 +1,15 @@
+{
+    "Attributes": {
+        "ApproximateNumberOfMessages": "0",
+        "ApproximateNumberOfMessagesDelayed": "0",
+        "ApproximateNumberOfMessagesNotVisible": "0",
+        "CreatedTimestamp": "1590313848",
+        "DelaySeconds": "0",
+        "LastModifiedTimestamp": "1590313848",
+        "MaximumMessageSize": "262144",
+        "MessageRetentionPeriod": "345600",
+        "QueueArn": "arn:aws:sqs:us-east-1:167389268608:StepFunctionsSample-SelectiveCheckpointing564959b7-3da-SQSQueueDLQ-MQASL0N5G7KS",
+        "ReceiveMessageWaitTimeSeconds": "0",
+        "VisibilityTimeout": "30"
+    }
+}

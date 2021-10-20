@@ -1,0 +1,495 @@
+{
+    "NetworkInterfaces": [
+        {
+            "Attachment": {
+                "AttachmentId": "ela-attach-9be0c5ac",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "amazon-aws",
+                "Status": "attached"
+            },
+            "AvailabilityZone": "us-east-1d",
+            "Description": "Network Interface for Transit Gateway Attachment tgw-attach-0c57f6653faf82796",
+            "Groups": [],
+            "InterfaceType": "transit_gateway",
+            "Ipv6Addresses": [],
+            "MacAddress": "0e:dd:be:82:21:e1",
+            "NetworkInterfaceId": "eni-055dc974d492d6809",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-28-200.ec2.internal",
+            "PrivateIpAddress": "86.150.204.0",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-28-200.ec2.internal",
+                    "PrivateIpAddress": "86.150.204.0"
+                }
+            ],
+            "RequesterId": "936118442230",
+            "RequesterManaged": false,
+            "SourceDestCheck": false,
+            "Status": "in-use",
+            "SubnetId": "subnet-0e10a30c478bff9ca",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Attachment": {
+                "AttachmentId": "ela-attach-0b14038765bd73070",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "amazon-aws",
+                "Status": "attached"
+            },
+            "AvailabilityZone": "us-east-1d",
+            "Description": "AWS Lambda VPC ENI-custom_email_sender-develop-fa616716-47aa-464d-9d47-7a7f29ffe530",
+            "Groups": [
+                {
+                    "GroupId": "sg-068cabcda3224fedd",
+                    "GroupName": "Cloudrail-develop-Lambda-Security-Group"
+                }
+            ],
+            "InterfaceType": "lambda",
+            "Ipv6Addresses": [],
+            "MacAddress": "0e:c9:66:8c:49:d7",
+            "NetworkInterfaceId": "eni-0df5cecec46a4d508",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-29-193.ec2.internal",
+            "PrivateIpAddress": "113.73.175.241",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-29-193.ec2.internal",
+                    "PrivateIpAddress": "113.73.175.241"
+                }
+            ],
+            "RequesterId": "AROASN6JNRKAG6ERLNWGL:749678902839",
+            "RequesterManaged": false,
+            "SourceDestCheck": true,
+            "Status": "in-use",
+            "SubnetId": "subnet-0e10a30c478bff9ca",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Attachment": {
+                "AttachTime": "2021-10-20T06:40:19+00:00",
+                "AttachmentId": "eni-attach-02695409ad02fd96f",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "303868107759",
+                "NetworkCardIndex": 0,
+                "Status": "attached"
+            },
+            "AvailabilityZone": "us-east-1d",
+            "Description": "arn:aws:ecs:us-east-1:167389268608:attachment/dbad54a9-c3c4-427f-914e-01307d9dc8d7",
+            "Groups": [
+                {
+                    "GroupId": "sg-068cabcda3224fedd",
+                    "GroupName": "Cloudrail-develop-Lambda-Security-Group"
+                }
+            ],
+            "InterfaceType": "interface",
+            "Ipv6Addresses": [],
+            "MacAddress": "0e:fc:46:ba:15:67",
+            "NetworkInterfaceId": "eni-045a4e2e7d3eaea30",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-28-203.ec2.internal",
+            "PrivateIpAddress": "238.34.90.139",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-28-203.ec2.internal",
+                    "PrivateIpAddress": "238.34.90.139"
+                }
+            ],
+            "RequesterId": "578734482556",
+            "RequesterManaged": true,
+            "SourceDestCheck": true,
+            "Status": "in-use",
+            "SubnetId": "subnet-0e10a30c478bff9ca",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Attachment": {
+                "AttachTime": "2021-10-20T06:41:14+00:00",
+                "AttachmentId": "eni-attach-0481beba4f0616c61",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "407407591197",
+                "NetworkCardIndex": 0,
+                "Status": "attaching"
+            },
+            "AvailabilityZone": "us-east-1c",
+            "Description": "arn:aws:ecs:us-east-1:167389268608:attachment/d834f8df-6f59-45b7-b940-7e83a78aea50",
+            "Groups": [
+                {
+                    "GroupId": "sg-068cabcda3224fedd",
+                    "GroupName": "Cloudrail-develop-Lambda-Security-Group"
+                }
+            ],
+            "InterfaceType": "interface",
+            "Ipv6Addresses": [],
+            "MacAddress": "0a:71:40:f7:7f:f7",
+            "NetworkInterfaceId": "eni-0d8b25188d3e7c84e",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-27-159.ec2.internal",
+            "PrivateIpAddress": "211.190.172.103",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-27-159.ec2.internal",
+                    "PrivateIpAddress": "211.190.172.103"
+                }
+            ],
+            "RequesterId": "578734482556",
+            "RequesterManaged": true,
+            "SourceDestCheck": true,
+            "Status": "in-use",
+            "SubnetId": "subnet-0e93b1032f200f270",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Attachment": {
+                "AttachTime": "2021-10-20T06:37:13+00:00",
+                "AttachmentId": "eni-attach-0b7c2a395bc8fdbdf",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "350974131948",
+                "NetworkCardIndex": 0,
+                "Status": "attached"
+            },
+            "AvailabilityZone": "us-east-1c",
+            "Description": "arn:aws:ecs:us-east-1:167389268608:attachment/ac48002c-ed7f-428f-978e-86ee6d1702f6",
+            "Groups": [
+                {
+                    "GroupId": "sg-068cabcda3224fedd",
+                    "GroupName": "Cloudrail-develop-Lambda-Security-Group"
+                }
+            ],
+            "InterfaceType": "interface",
+            "Ipv6Addresses": [],
+            "MacAddress": "0a:ab:bb:51:65:7d",
+            "NetworkInterfaceId": "eni-0a805f1ac48cbc9e2",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-27-36.ec2.internal",
+            "PrivateIpAddress": "178.195.161.212",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-27-36.ec2.internal",
+                    "PrivateIpAddress": "178.195.161.212"
+                }
+            ],
+            "RequesterId": "578734482556",
+            "RequesterManaged": true,
+            "SourceDestCheck": true,
+            "Status": "in-use",
+            "SubnetId": "subnet-0e93b1032f200f270",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Attachment": {
+                "AttachmentId": "ela-attach-6c09cb5c",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "amazon-aws",
+                "Status": "attached"
+            },
+            "AvailabilityZone": "us-east-1c",
+            "Description": "Network Interface for Transit Gateway Attachment tgw-attach-0c57f6653faf82796",
+            "Groups": [],
+            "InterfaceType": "transit_gateway",
+            "Ipv6Addresses": [],
+            "MacAddress": "0a:9b:3c:55:7b:bb",
+            "NetworkInterfaceId": "eni-0b8928e1b83bd65f7",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-27-129.ec2.internal",
+            "PrivateIpAddress": "219.198.186.48",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-27-129.ec2.internal",
+                    "PrivateIpAddress": "219.198.186.48"
+                }
+            ],
+            "RequesterId": "936118442230",
+            "RequesterManaged": false,
+            "SourceDestCheck": false,
+            "Status": "in-use",
+            "SubnetId": "subnet-0e93b1032f200f270",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Attachment": {
+                "AttachmentId": "ela-attach-0e74adb205380bfb6",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "amazon-aws",
+                "Status": "attached"
+            },
+            "AvailabilityZone": "us-east-1c",
+            "Description": "AWS Lambda VPC ENI-custom_email_sender-develop-fd406c9d-f1a3-4a0c-8fa8-11b9d843844b",
+            "Groups": [
+                {
+                    "GroupId": "sg-068cabcda3224fedd",
+                    "GroupName": "Cloudrail-develop-Lambda-Security-Group"
+                }
+            ],
+            "InterfaceType": "lambda",
+            "Ipv6Addresses": [],
+            "MacAddress": "0a:07:3e:78:4e:23",
+            "NetworkInterfaceId": "eni-044ee774f0a1a93e8",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-26-248.ec2.internal",
+            "PrivateIpAddress": "71.233.248.31",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-26-248.ec2.internal",
+                    "PrivateIpAddress": "71.233.248.31"
+                }
+            ],
+            "RequesterId": "AROASN6JNRKAG6ERLNWGL:749678902839",
+            "RequesterManaged": false,
+            "SourceDestCheck": true,
+            "Status": "in-use",
+            "SubnetId": "subnet-0e93b1032f200f270",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Attachment": {
+                "AttachmentId": "ela-attach-91c9ba9c",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "amazon-aws",
+                "Status": "attached"
+            },
+            "AvailabilityZone": "us-east-1b",
+            "Description": "Network Interface for Transit Gateway Attachment tgw-attach-0c57f6653faf82796",
+            "Groups": [],
+            "InterfaceType": "transit_gateway",
+            "Ipv6Addresses": [],
+            "MacAddress": "12:ba:20:c0:be:2f",
+            "NetworkInterfaceId": "eni-008968aff9b7eac8c",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-25-237.ec2.internal",
+            "PrivateIpAddress": "22.74.225.130",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-25-237.ec2.internal",
+                    "PrivateIpAddress": "22.74.225.130"
+                }
+            ],
+            "RequesterId": "936118442230",
+            "RequesterManaged": false,
+            "SourceDestCheck": false,
+            "Status": "in-use",
+            "SubnetId": "subnet-00cdc2582ba0547d3",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Attachment": {
+                "AttachTime": "2020-09-10T15:30:12+00:00",
+                "AttachmentId": "eni-attach-0a1a5e16d90023a1b",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "amazon-rds",
+                "NetworkCardIndex": 0,
+                "Status": "attached"
+            },
+            "AvailabilityZone": "us-east-1b",
+            "Description": "RDSNetworkInterface",
+            "Groups": [
+                {
+                    "GroupId": "sg-085cc55f0e614c80c",
+                    "GroupName": "cloudrail-develop-DB-SG"
+                }
+            ],
+            "InterfaceType": "interface",
+            "Ipv6Addresses": [],
+            "MacAddress": "12:8b:ba:61:5d:11",
+            "NetworkInterfaceId": "eni-07eee329afc7381b2",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-25-204.ec2.internal",
+            "PrivateIpAddress": "15.120.86.223",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-25-204.ec2.internal",
+                    "PrivateIpAddress": "15.120.86.223"
+                }
+            ],
+            "RequesterId": "amazon-rds",
+            "RequesterManaged": true,
+            "SourceDestCheck": true,
+            "Status": "in-use",
+            "SubnetId": "subnet-00cdc2582ba0547d3",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Attachment": {
+                "AttachmentId": "ela-attach-0347c6412d19178d3",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "amazon-aws",
+                "Status": "attached"
+            },
+            "AvailabilityZone": "us-east-1b",
+            "Description": "AWS Lambda VPC ENI-custom_email_sender-develop-46e1077b-be02-4481-aa47-65305998b8fe",
+            "Groups": [
+                {
+                    "GroupId": "sg-068cabcda3224fedd",
+                    "GroupName": "Cloudrail-develop-Lambda-Security-Group"
+                }
+            ],
+            "InterfaceType": "lambda",
+            "Ipv6Addresses": [],
+            "MacAddress": "12:9a:cf:8b:d4:21",
+            "NetworkInterfaceId": "eni-0c9f5d4e822cb67c5",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-25-108.ec2.internal",
+            "PrivateIpAddress": "196.128.20.157",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-25-108.ec2.internal",
+                    "PrivateIpAddress": "196.128.20.157"
+                }
+            ],
+            "RequesterId": "AROASN6JNRKAG6ERLNWGL:749678902839",
+            "RequesterManaged": false,
+            "SourceDestCheck": true,
+            "Status": "in-use",
+            "SubnetId": "subnet-00cdc2582ba0547d3",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Attachment": {
+                "AttachTime": "2021-10-20T06:40:13+00:00",
+                "AttachmentId": "eni-attach-0ba08f5dd152ea9b0",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "473932476725",
+                "NetworkCardIndex": 0,
+                "Status": "attached"
+            },
+            "AvailabilityZone": "us-east-1b",
+            "Description": "arn:aws:ecs:us-east-1:167389268608:attachment/52fcc650-7b41-412c-b804-e7ca13b8f141",
+            "Groups": [
+                {
+                    "GroupId": "sg-068cabcda3224fedd",
+                    "GroupName": "Cloudrail-develop-Lambda-Security-Group"
+                }
+            ],
+            "InterfaceType": "interface",
+            "Ipv6Addresses": [],
+            "MacAddress": "12:a2:e8:61:1a:57",
+            "NetworkInterfaceId": "eni-0d9128e6e60d853ca",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-25-137.ec2.internal",
+            "PrivateIpAddress": "136.87.95.120",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-25-137.ec2.internal",
+                    "PrivateIpAddress": "136.87.95.120"
+                }
+            ],
+            "RequesterId": "578734482556",
+            "RequesterManaged": true,
+            "SourceDestCheck": true,
+            "Status": "in-use",
+            "SubnetId": "subnet-00cdc2582ba0547d3",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "AvailabilityZone": "us-east-1b",
+            "Description": "QuickSightinternal-vpc-cloudrail-develop",
+            "Groups": [
+                {
+                    "GroupId": "sg-0659797daebf28b00",
+                    "GroupName": "default"
+                }
+            ],
+            "InterfaceType": "interface",
+            "Ipv6Addresses": [],
+            "MacAddress": "12:5c:ed:47:a1:39",
+            "NetworkInterfaceId": "eni-0cd81a9960dd752ae",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-24-214.ec2.internal",
+            "PrivateIpAddress": "44.224.147.194",
+            "PrivateIpAddresses": [
+                {
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-24-214.ec2.internal",
+                    "PrivateIpAddress": "44.224.147.194"
+                }
+            ],
+            "RequesterId": "259480462132",
+            "RequesterManaged": false,
+            "SourceDestCheck": true,
+            "Status": "available",
+            "SubnetId": "subnet-00cdc2582ba0547d3",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        },
+        {
+            "Association": {
+                "AllocationId": "eipalloc-034793491b30426b2",
+                "AssociationId": "eipassoc-055571f68093ad71c",
+                "IpOwnerId": "167389268608",
+                "PublicDnsName": "ec2-18-233-236-26.compute-1.amazonaws.com",
+                "PublicIp": "168.140.1.218"
+            },
+            "Attachment": {
+                "AttachmentId": "ela-attach-69dcaf64",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "amazon-aws",
+                "Status": "attached"
+            },
+            "AvailabilityZone": "us-east-1b",
+            "Description": "Interface for NAT Gateway nat-081471f2bb427f9ae",
+            "Groups": [],
+            "InterfaceType": "nat_gateway",
+            "Ipv6Addresses": [],
+            "MacAddress": "12:fd:78:4f:c4:73",
+            "NetworkInterfaceId": "eni-04f69f7d4ecab3369",
+            "OwnerId": "167389268608",
+            "PrivateDnsName": "ip-10-22-17-159.ec2.internal",
+            "PrivateIpAddress": "121.62.5.59",
+            "PrivateIpAddresses": [
+                {
+                    "Association": {
+                        "AllocationId": "eipalloc-034793491b30426b2",
+                        "AssociationId": "eipassoc-055571f68093ad71c",
+                        "IpOwnerId": "167389268608",
+                        "PublicDnsName": "ec2-18-233-236-26.compute-1.amazonaws.com",
+                        "PublicIp": "168.140.1.218"
+                    },
+                    "Primary": true,
+                    "PrivateDnsName": "ip-10-22-17-159.ec2.internal",
+                    "PrivateIpAddress": "121.62.5.59"
+                }
+            ],
+            "RequesterId": "583328430953",
+            "RequesterManaged": true,
+            "SourceDestCheck": false,
+            "Status": "in-use",
+            "SubnetId": "subnet-0d5b79f695930bb50",
+            "TagSet": [],
+            "VpcId": "vpc-0e39b445bad43bfed"
+        }
+    ]
+}

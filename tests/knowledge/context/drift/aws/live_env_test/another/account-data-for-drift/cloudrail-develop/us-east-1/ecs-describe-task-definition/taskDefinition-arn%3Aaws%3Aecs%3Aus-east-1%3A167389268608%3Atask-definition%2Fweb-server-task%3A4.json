@@ -1,0 +1,55 @@
+{
+    "taskDefinition": {
+        "compatibilities": [
+            "EC2"
+        ],
+        "containerDefinitions": [
+            {
+                "cpu": 0,
+                "environment": [],
+                "essential": true,
+                "image": "167389268608.dkr.ecr.us-east-1.amazonaws.com/apache-web-server:latest",
+                "mountPoints": [],
+                "name": "apache-web-server",
+                "portMappings": [
+                    {
+                        "containerPort": 80,
+                        "hostPort": 80,
+                        "protocol": "tcp"
+                    }
+                ],
+                "volumesFrom": []
+            }
+        ],
+        "cpu": "256",
+        "deregisteredAt": "2020-09-21T16:54:40.259000+00:00",
+        "executionRoleArn": "arn:aws:iam::167389268608:role/ecsExecRole",
+        "family": "web-server-task",
+        "memory": "256",
+        "networkMode": "awsvpc",
+        "placementConstraints": [],
+        "registeredAt": "2020-09-21T16:27:30.181000+00:00",
+        "registeredBy": "arn:aws:iam::167389268608:user/yoni.l",
+        "requiresAttributes": [
+            {
+                "name": "com.amazonaws.ecs.capability.ecr-auth"
+            },
+            {
+                "name": "ecs.capability.execution-role-ecr-pull"
+            },
+            {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+            },
+            {
+                "name": "ecs.capability.task-eni"
+            }
+        ],
+        "requiresCompatibilities": [
+            "EC2"
+        ],
+        "revision": 4,
+        "status": "INACTIVE",
+        "taskDefinitionArn": "arn:aws:ecs:us-east-1:167389268608:task-definition/web-server-task:4",
+        "volumes": []
+    }
+}
