@@ -76,7 +76,7 @@ from cloudrail.knowledge.context.aws.resources.ecr.ecr_repository_policy import 
 from cloudrail.knowledge.context.aws.resources.ecs.ecs_cluster import EcsCluster
 from cloudrail.knowledge.context.aws.resources.ecs.ecs_service import EcsService
 from cloudrail.knowledge.context.aws.resources.ecs.ecs_target import EcsTarget
-from cloudrail.knowledge.context.aws.resources.ecs.ecs_task_definition import EcsTaskDefinition, TaskDefinitionStatus
+from cloudrail.knowledge.context.aws.resources.ecs.ecs_task_definition import EcsTaskDefinition
 from cloudrail.knowledge.context.aws.resources.efs.efs_file_system import ElasticFileSystem
 from cloudrail.knowledge.context.aws.resources.efs.efs_mount_target import EfsMountTarget
 from cloudrail.knowledge.context.aws.resources.efs.efs_policy import EfsPolicy
