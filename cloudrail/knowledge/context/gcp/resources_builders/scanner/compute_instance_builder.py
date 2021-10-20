@@ -1,5 +1,4 @@
 from typing import List
-from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance import GcpComputeInstance, GcpComputeInstanceNetworkInterface, \
         GcpComputeInstanceNetIntfAccessCfg, GcpComputeInstanceNetIntfAliasIpRange, GcpComputeInstanceNetIntfNicType, GcpComputeInstanceServiceAcount, \
             GcpComputeInstanceShieldInstCfg
@@ -33,32 +32,37 @@ class ComputeInstanceBuilder(BaseGcpScannerBuilder):
                 aliases_ip_range.append(GcpComputeInstanceNetIntfAliasIpRange(ip_cidr_range=ip.get('ipCidrRange'),
                                                                               subnetwork_range_name=ip.get('subnetworkRangeName')))
 
+            subnetwork_project = self.get_project_from_url(interface.get('subnetwork'))
             network_interfaces.append(GcpComputeInstanceNetworkInterface(network = interface.get('network'), subnetwork = interface.get('subnetwork'),
-                                                                         subnetwork_project = interface.get('subnetwork_project'),
-                                                                         network_ip = self._get_known_value(interface, 'network_ip'),
+                                                                         subnetwork_project = subnetwork_project,
+                                                                         network_ip = interface.get('networkIP'),
                                                                          access_config=access_config_list,
                                                                          alias_ip_range=aliases_ip_range,
                                                                          nic_type=nic_type))
 
         ## Service Account ##
         service_account = None
-        if service_account_data := self._get_known_value(attributes, 'service_account'):
-            service_account = GcpComputeInstanceServiceAcount(email=service_account_data[0].get('email'),
+        if service_account_data := attributes.get('serviceAccounts'):
+            service_account = GcpComputeInstanceServiceAcount(email=service_account_data[0]['email'],
                                                               scopes=service_account_data[0]['scopes'])
 
         ## Shielded Instance Config ##
         shielded_instance_config = None
-        if shielded_instance_config_data := self._get_known_value(attributes, 'shielded_instance_config'):
-            shielded_instance_config = GcpComputeInstanceShieldInstCfg(self._get_known_value(shielded_instance_config_data[0], 'enable_secure_boot', False),
-                                                                       self._get_known_value(shielded_instance_config_data[0], 'enable_vtpm', True),
-                                                                       self._get_known_value(shielded_instance_config_data[0], 'enable_integrity_monitoring', True))
+        if shielded_instance_config_data := attributes.get('shieldedInstanceConfig'):
+            shielded_instance_config = GcpComputeInstanceShieldInstCfg(shielded_instance_config_data.get('enableSecureBoot', False),
+                                                                       shielded_instance_config_data.get('enableVtpm', True),
+                                                                       shielded_instance_config_data.get('enableIntegrityMonitoring', True))
+
+        metadata = []
+        for metadata_attrbute in attributes.get('metadata', []):
+            metadata.append(metadata_attrbute['items'])
 
         return GcpComputeInstance(name=attributes['name'],
-                                  zone=self._get_known_value(attributes, 'zone'),
+                                  zone=attributes['zone'],
                                   network_interfaces=network_interfaces,
-                                  can_ip_forward=self._get_known_value(attributes, 'can_ip_forward', False),
-                                  hostname=self._get_known_value(attributes, 'hostname'),
-                                  metadata=self._get_known_value(attributes, 'metadata', []),
-                                  project=self._get_known_value(attributes, 'project'),
+                                  can_ip_forward=attributes.get('canIpForward', False),
+                                  hostname=attributes.get('hostname'),
+                                  metadata=metadata,
+                                  project=self.get_project_from_url(attributes['selfLink']),
                                   service_account=service_account,
                                   shielded_instance_config=shielded_instance_config)

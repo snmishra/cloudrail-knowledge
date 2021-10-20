@@ -60,3 +60,10 @@ class BaseGcpScannerBuilder(BaseScannerBuilder):
         if not resource.get_id() and (_id := attributes.get('id')):
             resource.set_id(_id)
             resource.with_aliases(_id)
+
+    @staticmethod
+    def get_project_from_url(url: str) -> str:
+        if url:
+            split_project = url.split('projects')[1]
+            return split_project.split('/')[0]
+        return None
