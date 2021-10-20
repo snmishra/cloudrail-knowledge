@@ -1,0 +1,84 @@
+{
+    "value": [
+        {
+            "id": "4550563255430263480",
+            "creationTimestamp": "2021-10-20T05:32:23.879-07:00",
+            "name": "cloudrail-test-google-compute-instance",
+            "tags": {
+                "items": [
+                    "http-server"
+                ],
+                "fingerprint": "FYLDgkTKlA4="
+            },
+            "machineType": "https://www.googleapis.com/compute/v1/projects/dev-for-tests/zones/us-west1-a/machineTypes/f1-micro",
+            "status": "RUNNING",
+            "zone": "https://www.googleapis.com/compute/v1/projects/dev-for-tests/zones/us-west1-a",
+            "canIpForward": false,
+            "networkInterfaces": [
+                {
+                    "network": "https://www.googleapis.com/compute/v1/projects/dev-for-tests/global/networks/default",
+                    "subnetwork": "https://www.googleapis.com/compute/v1/projects/dev-for-tests/regions/us-west1/subnetworks/default",
+                    "networkIP": "10.138.0.5",
+                    "name": "nic0",
+                    "accessConfigs": [
+                        {
+                            "type": "ONE_TO_ONE_NAT",
+                            "name": "external-nat",
+                            "natIP": "34.127.40.75",
+                            "networkTier": "PREMIUM",
+                            "kind": "compute#accessConfig"
+                        }
+                    ],
+                    "fingerprint": "EAbuYoHjjMM=",
+                    "stackType": "IPV4_ONLY",
+                    "kind": "compute#networkInterface"
+                }
+            ],
+            "disks": [
+                {
+                    "type": "PERSISTENT",
+                    "mode": "READ_WRITE",
+                    "source": "https://www.googleapis.com/compute/v1/projects/dev-for-tests/zones/us-west1-a/disks/cloudrail-test-google-compute-instance",
+                    "deviceName": "persistent-disk-0",
+                    "index": 0,
+                    "boot": true,
+                    "autoDelete": true,
+                    "licenses": [
+                        "https://www.googleapis.com/compute/v1/projects/debian-cloud/global/licenses/debian-9-stretch"
+                    ],
+                    "interface": "SCSI",
+                    "guestOsFeatures": [
+                        {
+                            "type": "VIRTIO_SCSI_MULTIQUEUE"
+                        }
+                    ],
+                    "diskSizeGb": "10",
+                    "kind": "compute#attachedDisk"
+                }
+            ],
+            "metadata": {
+                "fingerprint": "KfTqQAH2glo=",
+                "items": [
+                    {
+                        "key": "startup-script",
+                        "value": "sudo apt-get update && sudo apt-get install apache2 -y && echo '<!doctype html><html><body><h1>Hello from Terraform on Google Cloud!</h1></body></html>' | sudo tee /var/www/html/index.html"
+                    }
+                ],
+                "kind": "compute#metadata"
+            },
+            "selfLink": "https://www.googleapis.com/compute/v1/projects/dev-for-tests/zones/us-west1-a/instances/cloudrail-test-google-compute-instance",
+            "scheduling": {
+                "onHostMaintenance": "MIGRATE",
+                "automaticRestart": true,
+                "preemptible": false
+            },
+            "cpuPlatform": "Intel Broadwell",
+            "labelFingerprint": "42WmSpB8rSM=",
+            "startRestricted": false,
+            "deletionProtection": false,
+            "fingerprint": "epwwLwH58kg=",
+            "lastStartTimestamp": "2021-10-20T05:32:31.111-07:00",
+            "kind": "compute#instance"
+        }
+    ]
+}

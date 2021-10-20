@@ -52,11 +52,33 @@ class GcpComputeInstanceNetworkInterface:
     alias_ip_range: Optional[List[GcpComputeInstanceNetIntfAliasIpRange]]
     nic_type: Optional[GcpComputeInstanceNetIntfNicType]
 
+@dataclass
+class GcpComputeInstanceServiceAcount:
+    """
+        Attributes:
+            email: (Optional) The service account e-mail address. If not given, the default Google Compute Engine service account is used.
+            scopes: A list of service scopes. Both OAuth2 URLs and gcloud short names are supported.
+    """
+    email: Optional[str]
+    scopes: str
+
+@dataclass
+class GcpComputeInstanceShieldInstCfg:
+    """
+        Attributes:
+            enable_secure_boot: (Optional) Verify the digital signature of all boot components, and halt the boot process on failure.
+            enable_vtpm: (Optional) Use a virtualized trusted platform module, to encrypt objects like keys and certificates.
+            enable_integrity_monitoring: (Optional) Compare the most recent boot measurements to the integrity policy baseline and return a pair of pass/fail results.
+    """
+    enable_secure_boot: Optional[bool] = False
+    enable_vtpm: Optional[bool] = True
+    enable_integrity_monitoring: Optional[bool] = True
 
 class GcpComputeInstance(GcpResource):
     """
         Attributes:
             name: A unique name for the compute instance.
+            zone: The zone this compute instance located at.
             network_interfaces: Networks to attach to the instance.
             can_ip_forward: (Optional) Whether to allow sending and receiving of packets with non-matching source or destination IPs.
             hostname: (Optional) A custom hostname for the instance.
@@ -67,6 +89,7 @@ class GcpComputeInstance(GcpResource):
     """
     def __init__(self,
                  name: str,
+                 zone: str,
                  network_interfaces: Optional[List[GcpComputeInstanceNetworkInterface]],
                  can_ip_forward: Optional[bool],
                  hostname: Optional[str],
@@ -77,6 +100,7 @@ class GcpComputeInstance(GcpResource):
 
         super().__init__(GcpResourceType.GOOGLE_COMPUTE_INSTANCE)
         self.name: str = name
+        self.zone: str = zone
         self.network_interfaces: Optional[List[GcpComputeInstanceNetworkInterface]] = network_interfaces
         self.can_ip_forward: bool = can_ip_forward
         self.hostname: str = hostname
@@ -100,3 +124,11 @@ class GcpComputeInstance(GcpResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'network_interfaces': self.network_interfaces,
+                'can_ip_forward': self.can_ip_forward,
+                'hostname': self.hostname,
+                'metadata': self.metadata,
+                'service_account': self.service_account,
+                'shielded_instance_config': self.shielded_instance_config}
