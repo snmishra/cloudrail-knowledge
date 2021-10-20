@@ -2206,12 +2206,9 @@ class AwsRelationsAssigner(DependencyInvocation):
     ## To avoid drifts, assigning tags for such INACTIVE task definitions.
     @staticmethod
     def _ecs_task_arn_check(resource: EcsTaskDefinition, tags_arn: str) -> bool:
-        if 'task-definition/' in tags_arn and resource.status == TaskDefinitionStatus.INACTIVE \
-                and resource.task_arn.split(':')[-1].isnumeric() and tags_arn.split(':')[-1].isnumeric():
-            resource_num = int(resource.task_arn.split(':')[-1])
-            tags_num_to_check = int(tags_arn.split(':')[-1]) - 1
-            return resource_num == tags_num_to_check
-        return False
+        return 'task-definition/' in tags_arn and resource.status == TaskDefinitionStatus.INACTIVE \
+                and resource.task_arn.split(':')[-1].isnumeric() and tags_arn.split(':')[-1].isnumeric() \
+                    and (':').join(resource.task_arn.split(':')[:-1]) == (':').join(tags_arn.split(':')[:-1])
 
     @staticmethod
     def _assign_s3_bucket_objects(bucket_object: S3BucketObject, buckets: AliasesDict[S3Bucket]):
