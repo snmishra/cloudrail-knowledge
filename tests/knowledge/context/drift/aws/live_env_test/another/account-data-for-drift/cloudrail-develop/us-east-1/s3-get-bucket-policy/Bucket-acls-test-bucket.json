@@ -1,3 +1,0 @@
-{
-    "Policy": "{\"Version\":\"2008-10-17\",\"Statement\":[{\"Sid\":\"BucketAclRead\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ecs.amazonaws.com\",\"AWS\":\"*\"},\"Action\":\"s3:Get*\",\"Resource\":[\"arn:aws:s3:::acls-test-bucket\",\"arn:aws:s3:::acls-test-bucket/*.zip\"]}]}"
-}

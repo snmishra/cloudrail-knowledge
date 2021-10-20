@@ -1,5 +1,0 @@
-{
-    "clusterArns": [
-        "arn:aws:ecs:us-east-1:167389268608:cluster/Cloudrail-develop-ecs"
-    ]
-}

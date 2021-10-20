@@ -1,9 +1,0 @@
-{
-    "clusters": [],
-    "failures": [
-        {
-            "arn": "arn:aws:ecs:eu-north-1:167389268608:cluster/default",
-            "reason": "MISSING"
-        }
-    ]
-}

@@ -1,3 +1,0 @@
-{
-    "Policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"RootAccess\",\"Effect\":\"Allow\",\"Principal\":{\"AWS\":\"arn:aws:iam::167389268608:root\"},\"Action\":\"s3:*\",\"Resource\":[\"arn:aws:s3:::tfstate.us-east-1.cloudrail.develop\",\"arn:aws:s3:::tfstate.us-east-1.cloudrail.develop/*\"]}]}"
-}

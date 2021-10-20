@@ -1,9 +1,0 @@
-{
-    "Keys": [
-        {
-            "KeyArn": "arn:aws:kms:eu-west-3:167389268608:key/8253021a-aed7-4a84-938c-438f8cf321e7",
-            "KeyId": "8253021a-aed7-4a84-938c-438f8cf321e7"
-        }
-    ],
-    "Truncated": false
-}

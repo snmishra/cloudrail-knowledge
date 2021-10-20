@@ -96,6 +96,10 @@ class EcsTaskDefinition(AwsResource):
         return '{0}ecs/home?region={1}#/taskDefinitions/{2}/{3}' \
             .format(self.AWS_CONSOLE_URL, self.region, self.family, self.revision)
 
+    @staticmethod
+    def is_standalone() -> bool:
+        return False
+
     @property
     def is_tagable(self) -> bool:
         return True

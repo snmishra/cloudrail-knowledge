@@ -1,6 +1,0 @@
-{
-    "EnableDnsHostnames": {
-        "Value": true
-    },
-    "VpcId": "vpc-3e2aca58"
-}

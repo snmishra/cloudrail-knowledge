@@ -1,4 +1,0 @@
-{
-    "Policy": "{\"Version\":\"2012-10-17\",\"Id\":\"default\",\"Statement\":[{\"Sid\":\"AllowAPIGatewayInvoke\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"apigateway.amazonaws.com\"},\"Action\":\"lambda:InvokeFunction\",\"Resource\":\"arn:aws:lambda:us-east-1:167389268608:function:user_register_with_invitation-develop:stable\",\"Condition\":{\"ArnLike\":{\"AWS:SourceArn\":\"arn:aws:execute-api:us-east-1:167389268608:a7l0j273ea/*/*\"}}}]}",
-    "RevisionId": "c02efa00-338b-465e-936b-a9e23d5688c6"
-}

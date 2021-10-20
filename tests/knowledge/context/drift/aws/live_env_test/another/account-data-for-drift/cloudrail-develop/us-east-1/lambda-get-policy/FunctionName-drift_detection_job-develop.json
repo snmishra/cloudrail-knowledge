@@ -1,4 +1,0 @@
-{
-    "Policy": "{\"Version\":\"2012-10-17\",\"Id\":\"default\",\"Statement\":[{\"Sid\":\"AllowExecutionFromS3Bucket\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"s3.amazonaws.com\"},\"Action\":\"lambda:InvokeFunction\",\"Resource\":\"arn:aws:lambda:us-east-1:167389268608:function:drift_detection_job-develop\"}]}",
-    "RevisionId": "aaafcaa3-721f-4345-b12a-389d5cf06a5c"
-}

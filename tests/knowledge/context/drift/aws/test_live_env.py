@@ -14,9 +14,3 @@ class TestLiveEnv(BaseAwsDriftTest):
         self.assertEqual(len(results), 13)
         for result in results:
             self.assertTrue(result.resource_type in ('ECS task definition', 'KMS alias', 'KMS key', 'KMS key resource policy'))
-
-    @drift_test(module_path="another", from_live_env=True, live_customer_id='ed52db48-5253-45f6-9933-aa77a42d9f6c')
-    def test_live_env_drift_another(self, results: List[Drift]):
-        self.assertEqual(len(results), 13)
-        for result in results:
-            self.assertTrue(result.resource_type in ('ECS task definition', 'KMS alias', 'KMS key', 'KMS key resource policy'))

@@ -1,5 +1,0 @@
-{
-    "taskDefinitionArns": [
-        "arn:aws:ecs:eu-central-1:167389268608:task-definition/product-service:1"
-    ]
-}

@@ -2190,26 +2190,13 @@ class AwsRelationsAssigner(DependencyInvocation):
 
         resource.tags = ResourceInvalidator.get_by_logic(get_tags_data, False)
 
-    def _are_arns_equal(self, tags_arn: str, resource: AwsResource) -> bool:
+    @staticmethod
+    def _are_arns_equal(tags_arn: str, resource: AwsResource) -> bool:
         if isinstance(resource, LambdaFunction):
             lambda_arn = re.sub(r":[^:]+$", "", resource.arn)
             return tags_arn == lambda_arn
-        elif isinstance(resource, EcsTaskDefinition):
-            if tags_arn == resource.task_arn:
-                return True
-            else:
-                return self._ecs_task_arn_check(resource, tags_arn)
         else:
             return tags_arn == resource.get_arn()
-
-    ## IaC might include tags for INACTIVE task definitions, while scanner won't.
-    ## To avoid drifts, assigning tags for such INACTIVE task definitions.
-    @staticmethod
-    def _ecs_task_arn_check(resource: EcsTaskDefinition, tags_arn: str) -> bool:
-        return False
-        # return 'task-definition/' in tags_arn and resource.status == TaskDefinitionStatus.INACTIVE \
-        #         and resource.task_arn.split(':')[-1].isnumeric() and tags_arn.split(':')[-1].isnumeric() \
-        #             and (':').join(resource.task_arn.split(':')[:-1]) == (':').join(tags_arn.split(':')[:-1])
 
     @staticmethod
     def _assign_s3_bucket_objects(bucket_object: S3BucketObject, buckets: AliasesDict[S3Bucket]):
