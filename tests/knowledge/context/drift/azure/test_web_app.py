@@ -13,8 +13,6 @@ class TestWebApp(BaseAzureDriftTest):
     def test_ftps_state(self, results: List[Drift]):
         self.assertEqual(len(results), 1)
         web_app = next((res for res in results if res.resource_id == 'azurerm_app_service.webapp'), None)
-        self.assertIsNotNone(web_app.resource_iac['app_service_config'])
-        self.assertIsNotNone(web_app.resource_live['app_service_config'])
         self.assertEqual(web_app.resource_iac['app_service_config']['ftps_state'], 'FtpsOnly')
         self.assertEqual(web_app.resource_live['app_service_config']['ftps_state'], 'AllAllowed')
 
@@ -22,8 +20,6 @@ class TestWebApp(BaseAzureDriftTest):
     def test_authentication_check(self, results: List[Drift]):
         self.assertEqual(len(results), 1)
         web_app = next((res for res in results if res.resource_id == 'azurerm_app_service.webapp'), None)
-        self.assertIsNotNone(web_app.resource_iac['app_service_config']['auth_settings']['enabled'])
-        self.assertIsNotNone(web_app.resource_live['app_service_config']['auth_settings']['enabled'])
         self.assertTrue(web_app.resource_iac['app_service_config']['auth_settings']['enabled'])
         self.assertFalse(web_app.resource_live['app_service_config']['auth_settings']['enabled'])
 
@@ -31,7 +27,5 @@ class TestWebApp(BaseAzureDriftTest):
     def test_latest_tls(self, results: List[Drift]):
         self.assertEqual(len(results), 1)
         web_app = next((res for res in results if res.resource_id == 'azurerm_app_service.webapp'), None)
-        self.assertIsNotNone(web_app.resource_iac['app_service_config'])
-        self.assertIsNotNone(web_app.resource_live['app_service_config'])
         self.assertEqual(web_app.resource_iac['app_service_config']['minimum_tls_version'], '1.2')
         self.assertEqual(web_app.resource_live['app_service_config']['minimum_tls_version'], '1.1')
