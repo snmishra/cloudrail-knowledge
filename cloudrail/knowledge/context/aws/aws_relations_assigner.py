@@ -273,7 +273,9 @@ class AwsRelationsAssigner(DependencyInvocation):
                              (ctx.vpcs,)),
             IterFunctionData(self._assign_subnet_id_to_nacl, ctx.network_acl_associations, (ctx.network_acls,)),
             ### EC2 ###
-            IterFunctionData(self._assign_ec2_role_permissions, ctx.ec2s, (ctx.roles, ctx.iam_instance_profiles),
+            IterFunctionData(self._assign_ec2_role_permissions, ctx.ec2s,
+                             ({role.role_name: role for role in ctx.roles},
+                              {profile.iam_instance_profile_name: profile for profile in ctx.iam_instance_profiles}),
                              [self._add_auto_scale_ec2s]),
             IterFunctionData(self._assign_ec2_network_interfaces, ctx.ec2s, (ctx.network_interfaces, ctx.subnets, ctx.vpcs)),
             IterFunctionData(self._assign_ec2_images_data, ctx.ec2s, (ctx.ec2_images,)),
@@ -1015,18 +1017,11 @@ class AwsRelationsAssigner(DependencyInvocation):
             eni.owner = ec2
 
     @staticmethod
-    def _assign_ec2_role_permissions(ec2: Ec2Instance, roles: List[Role], iam_instance_profiles: List[IamInstanceProfile]):
-        roles_mapping = {}
-        for role in roles:
-            match_profile = next((profile for profile in iam_instance_profiles if profile.role_name == role.role_name), None)
-            if match_profile:
-                roles_mapping.update({role: match_profile})
-        if roles_mapping:
+    def _assign_ec2_role_permissions(ec2: Ec2Instance, roles: Dict[str, Role], iam_instance_profiles: Dict[str, IamInstanceProfile]):
+        if ec2.iam_profile_name:
             def get_matching_role():
-                relevant_role = next((role for role, instance in roles_mapping.items()
-                                      if instance.iam_instance_profile_name == ec2.iam_profile_name), None)
-                return relevant_role
-
+                profile: IamInstanceProfile = iam_instance_profiles.get(ec2.iam_profile_name)
+                return profile and roles.get(profile.role_name)
             ec2.iam_role = ResourceInvalidator.get_by_logic(get_matching_role, True, ec2, 'Unable to find matching IAM instance profile')
 
     @staticmethod
