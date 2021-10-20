@@ -1,9 +1,6 @@
-from abc import abstractmethod
 from typing import Dict
-
 from cloudrail.knowledge.context.aws.resources.ec2.network_acl_rule import NetworkAclRule
 from cloudrail.knowledge.context.aws.resources_builders.scanner.cloud_mapper_component_builder import _build_network_acl_rule
-
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.resources.ec2.network_acl import NetworkAcl
 from cloudrail.knowledge.context.aws.resources.ec2.network_acl_association import NetworkAclAssociation
@@ -15,7 +12,6 @@ class CloudformationNetworkAclBuilder(BaseCloudformationBuilder):
     def __init__(self, cfn_by_type_map: Dict[CloudformationResourceType, Dict[str, Dict]]) -> None:
         super().__init__(CloudformationResourceType.NETWORK_ACL, cfn_by_type_map)
 
-    @abstractmethod
     def parse_resource(self, cfn_res_attr: dict) -> NetworkAcl:
         properties: dict = cfn_res_attr['Properties']
         network_acl_id = self.get_resource_id(cfn_res_attr)
@@ -29,7 +25,6 @@ class CloudformationNetworkAclAssociationBuilder(BaseCloudformationBuilder):
     def __init__(self, cfn_by_type_map: Dict[CloudformationResourceType, Dict[str, Dict]]) -> None:
         super().__init__(CloudformationResourceType.SUBNET_NETWORK_ACL_ASSOCIATION, cfn_by_type_map)
 
-    @abstractmethod
     def parse_resource(self, cfn_res_attr: dict) -> NetworkAclAssociation:
         properties: dict = cfn_res_attr['Properties']
         network_acl_id = self.get_property(properties, 'NetworkAclId')
@@ -43,7 +38,6 @@ class NetworkAclRuleBuilder(BaseCloudformationBuilder):
     def __init__(self, cfn_by_type_map: Dict[CloudformationResourceType, Dict[str, Dict]]) -> None:
         super().__init__(CloudformationResourceType.NETWORK_ACL_ENTRY, cfn_by_type_map)
 
-    @abstractmethod
     def parse_resource(self, cfn_res_attr: dict) -> NetworkAclRule:
         properties: dict = cfn_res_attr['Properties']
         network_acl_id = self.get_property(properties, 'NetworkAclId')
