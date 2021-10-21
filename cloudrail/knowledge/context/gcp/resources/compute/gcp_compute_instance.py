@@ -82,7 +82,7 @@ class GcpComputeInstance(GcpResource):
             network_interfaces: Networks to attach to the instance.
             can_ip_forward: (Optional) Whether to allow sending and receiving of packets with non-matching source or destination IPs.
             hostname: (Optional) A custom hostname for the instance.
-            metadata: (Optional) Metadata key/value pairs to make available from within the instance.
+            compute_metadata: (Optional) Metadata key/value pairs to make available from within the instance.
             project: (Optional) The ID of the project in which the resource belongs.
             service_account: (Optional) Service account to attach to the instance.
             shielded_instance_config: (Optional) Enable Shielded VM on this instance.
@@ -93,7 +93,7 @@ class GcpComputeInstance(GcpResource):
                  network_interfaces: Optional[List[GcpComputeInstanceNetworkInterface]],
                  can_ip_forward: Optional[bool],
                  hostname: Optional[str],
-                 metadata: Optional[List[str]],
+                 compute_metadata: Optional[List[str]],
                  project: Optional[str],
                  service_account: Optional[GcpComputeInstanceServiceAcount],
                  shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg]):
@@ -104,7 +104,7 @@ class GcpComputeInstance(GcpResource):
         self.network_interfaces: Optional[List[GcpComputeInstanceNetworkInterface]] = network_interfaces
         self.can_ip_forward: bool = can_ip_forward
         self.hostname: str = hostname
-        self.metadata: List[str] = metadata
+        self.compute_metadata: List[str] = compute_metadata
         self.project: str = project
         self.service_account: Optional[GcpComputeInstanceServiceAcount] = service_account
         self.shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg] = shielded_instance_config
@@ -129,6 +129,6 @@ class GcpComputeInstance(GcpResource):
         return {'network_interfaces': self.network_interfaces,
                 'can_ip_forward': self.can_ip_forward,
                 'hostname': self.hostname,
-                'metadata': self.metadata,
+                'compute_metadata': self.compute_metadata,
                 'service_account': self.service_account,
                 'shielded_instance_config': self.shielded_instance_config}

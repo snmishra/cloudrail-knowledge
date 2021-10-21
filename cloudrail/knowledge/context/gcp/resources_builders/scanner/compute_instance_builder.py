@@ -54,16 +54,16 @@ class ComputeInstanceBuilder(BaseGcpScannerBuilder):
                                                                        shielded_instance_config_data.get('enableVtpm', True),
                                                                        shielded_instance_config_data.get('enableIntegrityMonitoring', True))
 
-        metadata = []
+        compute_metadata = []
         for metadata_attrbute in attributes.get('metadata', {}).get('items', []):
-            metadata.append({metadata_attrbute['key']: metadata_attrbute['value']})
+            compute_metadata.append({metadata_attrbute['key']: metadata_attrbute['value']})
 
         return GcpComputeInstance(name=attributes['name'],
                                   zone=attributes['zone'].split('/')[-1],
                                   network_interfaces=network_interfaces,
                                   can_ip_forward=attributes.get('canIpForward', False),
                                   hostname=attributes.get('hostname'),
-                                  metadata=metadata,
+                                  compute_metadata=compute_metadata,
                                   project=self.get_project_from_url(attributes['selfLink']),
                                   service_account=service_account,
                                   shielded_instance_config=shielded_instance_config)

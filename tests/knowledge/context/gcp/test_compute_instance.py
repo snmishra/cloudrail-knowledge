@@ -12,6 +12,7 @@ class TestComputeInstance(GcpContextTest):
     @context(module_path="basic")
     def test_basic(self, ctx: GcpEnvironmentContext):
         compute = next((compute for compute in ctx.compute_instances if compute.name == 'cloudrail-test-google-compute-instance'), None)
+        self.assertIsNotNone(compute)
         self.assertFalse(compute.can_ip_forward)
         self.assertIsNone(compute.hostname)
         self.assertEqual(compute.project, 'dev-for-tests')
@@ -35,3 +36,14 @@ class TestComputeInstance(GcpContextTest):
             self.assertEqual(compute.network_interfaces[0].network_ip, '10.138.0.5')
             self.assertEqual(compute.network_interfaces[0].subnetwork, 'default')
             self.assertEqual(compute.network_interfaces[0].subnetwork_project, 'dev-for-tests')
+
+    @context(module_path="serial_ports_one_enabled_one_disabled")
+    def test_serial_ports_one_enabled_one_disabled(self, ctx: GcpEnvironmentContext):
+        self.assertEqual(len(ctx.compute_instances), 2)
+        compute = next((compute for compute in ctx.compute_instances if compute.name == 'gce-5'), None)
+        self.assertIsNotNone(compute)
+        self.assertTrue(compute.compute_metadata)
+        self.assertEqual(compute.compute_metadata, [{'serial-port-enable': 'true'}])
+        compute = next((compute for compute in ctx.compute_instances if compute.name == 'gce-6'), None)
+        self.assertIsNotNone(compute)
+        self.assertFalse(compute.compute_metadata)
