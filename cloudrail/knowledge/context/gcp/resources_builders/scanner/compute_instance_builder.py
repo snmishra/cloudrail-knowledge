@@ -33,7 +33,8 @@ class ComputeInstanceBuilder(BaseGcpScannerBuilder):
                                                                               subnetwork_range_name=ip.get('subnetworkRangeName')))
 
             subnetwork_project = self.get_project_from_url(interface.get('subnetwork'))
-            network_interfaces.append(GcpComputeInstanceNetworkInterface(network = interface.get('network'), subnetwork = interface.get('subnetwork'),
+            network_interfaces.append(GcpComputeInstanceNetworkInterface(network = interface.get('network').split('/')[-1],
+                                                                         subnetwork = interface.get('subnetwork').split('/')[-1],
                                                                          subnetwork_project = subnetwork_project,
                                                                          network_ip = interface.get('networkIP'),
                                                                          access_config=access_config_list,
@@ -54,11 +55,11 @@ class ComputeInstanceBuilder(BaseGcpScannerBuilder):
                                                                        shielded_instance_config_data.get('enableIntegrityMonitoring', True))
 
         metadata = []
-        for metadata_attrbute in attributes.get('metadata', []):
-            metadata.append(metadata_attrbute['items'])
+        for metadata_attrbute in attributes.get('metadata', {}).get('items', []):
+            metadata.append({metadata_attrbute['key']: metadata_attrbute['value']})
 
         return GcpComputeInstance(name=attributes['name'],
-                                  zone=attributes['zone'],
+                                  zone=attributes['zone'].split('/')[-1],
                                   network_interfaces=network_interfaces,
                                   can_ip_forward=attributes.get('canIpForward', False),
                                   hostname=attributes.get('hostname'),

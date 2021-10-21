@@ -64,6 +64,6 @@ class BaseGcpScannerBuilder(BaseScannerBuilder):
     @staticmethod
     def get_project_from_url(url: str) -> str:
         if url:
-            split_project = url.split('projects')[1]
-            return split_project.split('/')[0]
+            split_url = url.split('projects')[1]
+            return split_url.split('/')[1]
         return None
