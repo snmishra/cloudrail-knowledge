@@ -1,3 +1,4 @@
+import dataclasses
 from typing import List, Optional
 from enum import Enum
 from dataclasses import dataclass
@@ -111,3 +112,19 @@ class GcpComputeHealthCheck(GcpResource):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def to_drift_detection_object(self) -> dict:
+        return {'name': self.name,
+                'health_check_type': self.health_check_type.value,
+                'check_interval_sec': self.check_interval_sec,
+                'healthy_threshold': self.healthy_threshold,
+                'timeout_sec': self.timeout_sec,
+                'unhealthy_threshold': self.unhealthy_threshold,
+                'http_health_check': dataclasses.asdict(self.http_health_check),
+                'https_health_check': dataclasses.asdict(self.https_health_check),
+                'tcp_health_check': dataclasses.asdict(self.tcp_health_check),
+                'ssl_health_check': dataclasses.asdict(self.ssl_health_check),
+                'http2_health_check': dataclasses.asdict(self.http2_health_check),
+                'grpc_health_check': dataclasses.asdict(self.grpc_health_check),
+                'logging_enabled': self.logging_enabled,
+                'project': self.project}
