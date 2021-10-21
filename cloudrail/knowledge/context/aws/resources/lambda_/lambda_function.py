@@ -10,7 +10,6 @@ from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceAtt
 from cloudrail.knowledge.utils.arn_utils import are_arns_intersected, is_valid_arn
 
 
-
 class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
     """
         Attributes:
@@ -78,7 +77,7 @@ class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
         return None
 
     def get_id(self) -> str:
-        return self.get_arn()
+        return self.get_arn()  # todo - conflicts with CFN Ref Doc
 
     def get_cloud_resource_url(self) -> str:
         return '{0}lambda/home?region={1}#/functions/{2}?tab=configure' \
