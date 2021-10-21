@@ -110,7 +110,7 @@ class SecurityGroup(AwsResource):
     def to_drift_detection_object(self) -> dict:
         return {'name': self.name,
                 'vpc_id': self.vpc_id,
-                'inbound_permissions': [permission.to_drift_detection_object() for permission in self.inbound_permissions],
-                'outbound_permissions': [permission.to_drift_detection_object() for permission in self.outbound_permissions],
+                'inbound_permissions': self.inbound_permissions,
+                'outbound_permissions': self.outbound_permissions,
                 'is_default': self.is_default,
                 'has_description': self.has_description}

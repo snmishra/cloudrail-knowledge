@@ -92,4 +92,4 @@ class EcsService(NetworkEntity, INetworkConfiguration, IEcsInstance):
                 'network_conf_list': [conf.to_dict() for conf in self.network_conf_list],
                 'task_definition_arn': self.task_definition_arn,
                 'cluster_name': self.cluster_name,
-                'task_definition': self._task_definition.to_drift_detection_object()}
+                'task_definition': self._task_definition}

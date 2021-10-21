@@ -103,7 +103,9 @@ class S3ACL(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'actions': self.actions,
-                'type': self.type.value,
-                'type_value': self.type_value,
-                'bucket_name': self.bucket_name}
+        if self.type != GranteeTypes.CANONICAL_USER:
+            return {'actions': self.actions,
+                    'type': self.type.value,
+                    'type_value': self.type_value,
+                    'bucket_name': self.bucket_name}
+        return {}

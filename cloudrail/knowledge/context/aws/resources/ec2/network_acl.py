@@ -76,5 +76,5 @@ class NetworkAcl(AwsResource):
                 'is_default': self.is_default,
                 'name': self.name,
                 'subnet_ids': self.subnet_ids,
-                'inbound_rules': [rule.to_drift_detection_object() for rule in self.inbound_rules],
-                'outbound_rules': [rule.to_drift_detection_object() for rule in self.outbound_rules]}
+                'inbound_rules': self.inbound_rules,
+                'outbound_rules': self.outbound_rules}
