@@ -15,7 +15,6 @@ class TestComputeInstance(GcpContextTest):
         self.assertIsNotNone(compute)
         self.assertFalse(compute.can_ip_forward)
         self.assertIsNone(compute.hostname)
-        self.assertEqual(compute.project, 'dev-for-tests')
         self.assertIsNone(compute.service_account)
         self.assertIsNone(compute.shielded_instance_config)
         self.assertEqual(compute.zone, 'us-west1-a')
