@@ -58,7 +58,6 @@ class ComputeInstanceBuilder(BaseGcpTerraformBuilder):
                                   can_ip_forward=self._get_known_value(attributes, 'can_ip_forward', False),
                                   hostname=self._get_known_value(attributes, 'hostname'),
                                   compute_metadata=compute_metadata,
-                                  project=self._get_known_value(attributes, 'project'),
                                   service_account=service_account,
                                   shielded_instance_config=shielded_instance_config)
 

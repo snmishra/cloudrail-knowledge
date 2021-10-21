@@ -64,6 +64,5 @@ class ComputeInstanceBuilder(BaseGcpScannerBuilder):
                                   can_ip_forward=attributes.get('canIpForward', False),
                                   hostname=attributes.get('hostname'),
                                   compute_metadata=compute_metadata,
-                                  project=self.get_project_from_url(attributes['selfLink']),
                                   service_account=service_account,
                                   shielded_instance_config=shielded_instance_config)

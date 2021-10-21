@@ -83,7 +83,6 @@ class GcpComputeInstance(GcpResource):
             can_ip_forward: (Optional) Whether to allow sending and receiving of packets with non-matching source or destination IPs.
             hostname: (Optional) A custom hostname for the instance.
             compute_metadata: (Optional) Metadata key/value pairs to make available from within the instance.
-            project: (Optional) The ID of the project in which the resource belongs.
             service_account: (Optional) Service account to attach to the instance.
             shielded_instance_config: (Optional) Enable Shielded VM on this instance.
     """
@@ -94,7 +93,6 @@ class GcpComputeInstance(GcpResource):
                  can_ip_forward: Optional[bool],
                  hostname: Optional[str],
                  compute_metadata: Optional[List[str]],
-                 project: Optional[str],
                  service_account: Optional[GcpComputeInstanceServiceAcount],
                  shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg]):
 
@@ -105,7 +103,6 @@ class GcpComputeInstance(GcpResource):
         self.can_ip_forward: bool = can_ip_forward
         self.hostname: str = hostname
         self.compute_metadata: List[str] = compute_metadata
-        self.project: str = project
         self.service_account: Optional[GcpComputeInstanceServiceAcount] = service_account
         self.shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg] = shielded_instance_config
 
@@ -113,7 +110,7 @@ class GcpComputeInstance(GcpResource):
         return [self.get_id()]
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        return f'{self._BASE_URL}/compute/instancesDetail/zones/{self.zone}/instances/{self.name}?project={self.project}'
+        return f'{self._BASE_URL}/compute/instancesDetail/zones/{self.zone}/instances/{self.name}?project={self.project_id}'
 
     def get_type(self, is_plural: bool = False) -> str:
         if not is_plural:
