@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import Optional, List
+from typing import Dict, Optional, List
 
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.mergeable import Mergeable
@@ -15,6 +15,7 @@ class AzureResource(Mergeable):
         self.tf_resource_type: AzureResourceType = resource_type
         self.tenant_id: str = None
         self._id: str = None
+        self.tags: Dict[str, str] = {}
 
     @abstractmethod
     def get_keys(self) -> List[str]:
