@@ -1,6 +1,6 @@
 import os
 from functools import lru_cache
-from typing import Dict, Optional, List
+from typing import Dict, Optional, List, Union
 from cfn_tools import ODict
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
@@ -10,7 +10,8 @@ from cloudrail.knowledge.context.mergeable import Mergeable
 from cloudrail.knowledge.context.iac_action_type import IacActionType
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_transform_context import CloudformationTransformContext
-from cloudrail.knowledge.context.aws.cloudformation.intrinsic_functions.cloudformation_intrinsic_functions import CloudformationFunction, FunctionsFactory
+from cloudrail.knowledge.context.aws.cloudformation.intrinsic_functions.cloudformation_intrinsic_functions import CloudformationFunction, \
+    FunctionsFactory
 
 
 class CloudformationMetadataParser:
@@ -247,7 +248,6 @@ class CloudformationMetadataParser:
             CloudformationResourceType.AUTO_SCALING_GROUP: AliasesDict(*scanner_context.auto_scaling_groups),
             CloudformationResourceType.CLOUDFRONT_DISTRIBUTION_LIST: AliasesDict(*scanner_context.cloudfront_distribution_list),
             CloudformationResourceType.CLOUDWATCH_LOGS_DESTINATION: AliasesDict(*scanner_context.cloudwatch_logs_destinations),
-            CloudformationResourceType.BATCH_COMPUTE_ENVIRONMENT: AliasesDict(*scanner_context.batch_compute_environments),
             CloudformationResourceType.VPC_ENDPOINT: AliasesDict(*scanner_context.vpc_endpoints),
             CloudformationResourceType.IAM_ROLE: AliasesDict(*scanner_context.roles),
             CloudformationResourceType.S3_BUCKET_POLICY: AliasesDict(*scanner_context.s3_bucket_policies),
@@ -255,19 +255,20 @@ class CloudformationMetadataParser:
             CloudformationResourceType.NETWORK_ACL_ENTRY: AliasesDict(*scanner_context.network_acl_rules)
         }
 
-    def _cfn_template_crawler(self, current_node, parent_node, current_key: str = None):
-        for child_key, child_node in current_node.items():
-            if FunctionsFactory.has_function(child_key):
-                value = CloudformationFunction.transform(current_node, self._cfn_transform_context)
-                if isinstance(parent_node, dict):
-                    parent_node[current_key] = value
-                else:
-                    parent_node.remove(current_node)
-                    parent_node.append(value)
+    def _cfn_template_crawler(self, current_node: Union[Dict, List], parent_node, current_key: str = None):
+        if isinstance(current_node, dict):
+            for child_key, child_node in current_node.items():
+                if FunctionsFactory.has_function(child_key) and not (child_key == 'Condition' and current_key == 'Statement'):
+                    value = CloudformationFunction.transform(current_node, self._cfn_transform_context)
+                    if isinstance(parent_node, dict):
+                        parent_node[current_key] = value
+                    else:
+                        parent_node.remove(current_node)
+                        parent_node.append(value)
 
-            elif isinstance(child_node, dict):
-                self._cfn_template_crawler(child_node, current_node, child_key)
-            elif isinstance(child_node, list):
-                for item in list(child_node):
-                    if isinstance(item, (dict, list)):
-                        self._cfn_template_crawler(item, child_node, child_key)
+                elif isinstance(child_node, (dict, list)):
+                    self._cfn_template_crawler(child_node, current_node, child_key)
+        elif isinstance(current_node, list):
+            for item in list(current_node):
+                if isinstance(item, (dict, list)):
+                    self._cfn_template_crawler(item, current_node, current_key)
