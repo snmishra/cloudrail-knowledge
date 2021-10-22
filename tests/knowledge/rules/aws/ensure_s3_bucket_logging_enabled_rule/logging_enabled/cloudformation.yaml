@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+
+Resources:
+
+  LoggingBucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Delete
+    Properties:
+      AccessControl: LogDeliveryWrite
+
+  TestBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: "cloudrail-logging-enabled-bucket-jjfhduyd"
+      LoggingConfiguration:
+        DestinationBucketName: !Ref LoggingBucket
