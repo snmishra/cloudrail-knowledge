@@ -16,9 +16,6 @@ from cloudrail.knowledge.drift_detection.base_environment_context_drift_detector
 
 
 class AwsEnvironmentContextDriftDetector(BaseEnvironmentContextDriftDetector):
-    excluded_tags_list = ['aws:cloudformation:stack-name_hashcode',
-                          'aws:cloudformation:logical-id_hashcode',
-                          'aws:cloudformation:stack-id_hashcode']
 
     @classmethod
     def supported_drift_resource(cls, mergeable: Mergeable) -> bool:
@@ -27,11 +24,3 @@ class AwsEnvironmentContextDriftDetector(BaseEnvironmentContextDriftDetector):
                                            S3BucketObject, TransitGatewayRouteTablePropagation, IamGroupMembership,
                                            VpcEndpointRouteTableAssociation, IamPolicyAttachment, RestApiGwDomain,
                                            RestApiGwMapping)))
-
-    @classmethod
-    def convert_to_drift_detection_object(cls, mergeable: Mergeable) -> dict:
-        filtered_tags = {k: v for k, v in mergeable.tags.items() if k not in cls.excluded_tags_list}
-        default_drift_fields = {'tags': filtered_tags} if mergeable.is_tagable else {}
-        full_entity_drift_fields = mergeable.to_drift_detection_object()
-        full_entity_drift_fields.update(default_drift_fields)
-        return full_entity_drift_fields
