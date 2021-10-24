@@ -79,6 +79,7 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.s3_bucket
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_auto_scaling_group_builder import CloudformationAutoScalingGroupBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_launch_configuration_builder import CloudformationLaunchConfigurationBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_launch_template_builder import CloudformationLaunchTemplateBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dax.cloudformation_dax_cluster_builder import CloudformationDaxClusterBuilder
 from cloudrail.knowledge.context.environment_context.iac_context_builder import IacContextBuilder
 
 
@@ -174,7 +175,8 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             lambda_function_list=CloudformationLambdaFunctionBuilder(cfn_by_type_map).build(),
             network_acls=AliasesDict(*CloudformationNetworkAclBuilder(cfn_by_type_map).build()),
             network_acl_associations=AliasesDict(*CloudformationNetworkAclAssociationBuilder(cfn_by_type_map).build()),
-            network_acl_rules=NetworkAclRuleBuilder(cfn_by_type_map).build()
+            network_acl_rules=NetworkAclRuleBuilder(cfn_by_type_map).build(),
+            dax_cluster=CloudformationDaxClusterBuilder(cfn_by_type_map).build()
         )
 
     @staticmethod

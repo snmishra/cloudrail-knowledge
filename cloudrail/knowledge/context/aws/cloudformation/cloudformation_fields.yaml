@@ -12,6 +12,12 @@ AWS::EC2::VPC:
             - EnableDnsHostnames
             - EnableDnsSupport
 
+AWS::DAX::Cluster:
+    known_fields:
+        pass:
+            - ClusterName
+            - SSESpecification
+
 AWS::S3::Bucket:
     known_fields:
         pass:

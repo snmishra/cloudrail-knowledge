@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 
@@ -19,13 +19,17 @@ class DaxCluster(AwsResource):
                  account: str):
         super().__init__(account, region, AwsServiceName.AWS_DAX_CLUSTER)
         self.cluster_name: str = cluster_name
-        self.server_side_encryption: bool = server_side_encryption
+        self.with_aliases(self.cluster_name)
+        self.server_side_encryption: Optional[bool] = server_side_encryption
         self.cluster_arn: str = cluster_arn
 
     def get_keys(self) -> List[str]:
-        return [self.cluster_arn]
+        return [self.account, self.region, self.cluster_name]
 
     def get_name(self) -> str:
+        return self.cluster_name
+
+    def get_id(self) -> str:
         return self.cluster_name
 
     def get_arn(self) -> str:
