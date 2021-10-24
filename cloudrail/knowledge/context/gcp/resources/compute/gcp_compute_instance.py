@@ -82,7 +82,7 @@ class GcpComputeInstance(GcpResource):
             network_interfaces: Networks to attach to the instance.
             can_ip_forward: (Optional) Whether to allow sending and receiving of packets with non-matching source or destination IPs.
             hostname: (Optional) A custom hostname for the instance.
-            compute_metadata: (Optional) Metadata key/value pairs to make available from within the instance.
+            metadata: (Optional) Metadata key/value pairs to make available from within the instance.
             service_account: (Optional) Service account to attach to the instance.
             shielded_instance_config: (Optional) Enable Shielded VM on this instance.
     """
@@ -92,7 +92,7 @@ class GcpComputeInstance(GcpResource):
                  network_interfaces: Optional[List[GcpComputeInstanceNetworkInterface]],
                  can_ip_forward: Optional[bool],
                  hostname: Optional[str],
-                 compute_metadata: Optional[List[str]],
+                 metadata: Optional[List[str]],
                  service_account: Optional[GcpComputeInstanceServiceAcount],
                  shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg]):
 
@@ -102,7 +102,7 @@ class GcpComputeInstance(GcpResource):
         self.network_interfaces: Optional[List[GcpComputeInstanceNetworkInterface]] = network_interfaces
         self.can_ip_forward: bool = can_ip_forward
         self.hostname: str = hostname
-        self.compute_metadata: List[str] = compute_metadata
+        self.metadata: List[str] = metadata
         self.service_account: Optional[GcpComputeInstanceServiceAcount] = service_account
         self.shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg] = shielded_instance_config
 
@@ -126,6 +126,6 @@ class GcpComputeInstance(GcpResource):
         return {'network_interfaces': self.network_interfaces,
                 'can_ip_forward': self.can_ip_forward,
                 'hostname': self.hostname,
-                'compute_metadata': self.compute_metadata,
+                'metadata': self.metadata,
                 'service_account': self.service_account,
                 'shielded_instance_config': self.shielded_instance_config}

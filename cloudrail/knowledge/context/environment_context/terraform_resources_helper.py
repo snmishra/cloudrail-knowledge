@@ -52,14 +52,10 @@ def get_after_raw_resources_by_type(raw_data,
         after_att = resource['change']['after']
         if before_att:
             before_att['tf_address'] = address
-            if 'metadata' in before_att.keys():
-                before_att['resource_metadata'] = before_att['metadata']
         if after_att is not None:
             if resource['change']['after_unknown']:
                 for key in resource['change']['after_unknown']:
                     after_att[key] = after_att.get(key, '{}.{}'.format(address, key))
-            if 'metadata' in after_att.keys():
-                after_att['resource_metadata'] = after_att['metadata']
             after_att['tf_address'] = address
 
         metadata = resources_metadata.get(address.split('[')[0])
