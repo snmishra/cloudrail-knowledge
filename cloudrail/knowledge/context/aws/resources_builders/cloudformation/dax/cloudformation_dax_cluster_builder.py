@@ -18,7 +18,3 @@ class CloudformationDaxClusterBuilder(BaseCloudformationBuilder):
                           cluster_arn=self.create_random_pseudo_identifier(),
                           region=cfn_res_attr['region'],
                           account=cfn_res_attr['account_id'])
-
-
-
-
