@@ -1,6 +1,5 @@
 import dataclasses
 import json
-import logging
 import os
 import shutil
 import tempfile
@@ -20,7 +19,6 @@ from cloudrail.knowledge.drift_detection.drift_detection_result import DriftDete
 from cloudrail.knowledge.drift_detection.environment_context_drift_detector_factory import EnvironmentContextDriftDetectorFactory
 from cloudrail.knowledge.utils import file_utils
 from cloudrail.knowledge.utils.terraform_show_output_transformer import TerraformShowOutputTransformer
-
 from tests.knowledge.context.test_context_annotation import TestOptions
 
 
@@ -94,7 +92,7 @@ class BaseContextTest(unittest.TestCase):
 
         module_path = '{}/{}'.format(self.get_component(), module_path)
         if test_options.run_drift_detection:
-            self._run_drift_detection_for_terraform(module_path)
+            # self._run_drift_detection_for_terraform(module_path)
             self._run_drift_detection_for_cloudformation(module_path, test_options.cfn_template_params)
 
         if test_options.run_cloudformation:
@@ -200,14 +198,13 @@ class BaseContextTest(unittest.TestCase):
         working_dir = os.path.join(tempfile.gettempdir(), str(uuid.uuid4()))
         scenario_folder = os.path.join(self.scenarios_dir, 'cross_version', module_path)
         shutil.copytree(scenario_folder, working_dir)
-        template_file_for_drift = os.path.join(working_dir, 'cloudformation.yaml')
-        account_data_for_drift_path = os.path.join(working_dir, 'account-data-for-drift-cloudformation')
+        cached_plan_for_drift_path = os.path.join(working_dir, 'cached_plan_for_drift.json')
+        account_data_for_drift_path = os.path.join(working_dir, 'account-data-for-drift')
         try:
-            if not os.path.isfile(template_file_for_drift) or not os.path.isfile(account_data_for_drift_path):
-                logging.info(f'missing cloudformation.yaml or account-data-for-drift-cloudformation.zip for {scenario_folder}')
-                return
+            if not os.path.isfile(cached_plan_for_drift_path):
+                raise Exception(f'missing cached_plan_for_drift.json for {scenario_folder}')
             shutil.unpack_archive(account_data_for_drift_path + '.zip', extract_dir=account_data_for_drift_path, format='zip')
-            result = self._find_drifts(account_data_for_drift_path, template_file_for_drift, self.DUMMY_ACCOUNT_ID, IacType.TERRAFORM).drifts
+            result = self._find_drifts(account_data_for_drift_path, cached_plan_for_drift_path, self.DUMMY_ACCOUNT_ID, IacType.TERRAFORM).drifts
             self.assertEqual(result, [], "found drifts which means tf object and cm objects are different\n."
                                          " drifts are: {}".format(json.dumps([dataclasses.asdict(r) for r in result], indent=4)))
         finally:
@@ -226,9 +223,10 @@ class BaseContextTest(unittest.TestCase):
         cloudformation_template = os.path.join(working_dir, 'cloudformation.yaml')
         account_data_for_drift_path = os.path.join(working_dir, 'account-data-for-drift-cloudformation')
         try:
-            if not os.path.isfile(cloudformation_template) or not os.path.isfile(account_data_for_drift_path):
-                logging.info(f'missing cloudformation.yaml for {scenario_folder}')
+            if not os.path.isfile(cloudformation_template):
                 return
+            if not os.path.isfile(account_data_for_drift_path + '.zip'):
+                raise Exception(f'missing account-data-for-drift-cloudformation.zip for {scenario_folder}')
             shutil.unpack_archive(account_data_for_drift_path + '.zip', extract_dir=account_data_for_drift_path, format='zip')
             result = self._find_drifts(account_data_for_drift_path, cloudformation_template, self.DUMMY_ACCOUNT_ID, IacType.CLOUDFORMATION,
                                        cfn_template_params, 'testCfnStack').drifts
@@ -249,9 +247,10 @@ class BaseContextTest(unittest.TestCase):
                                                 salt=self.DUMMY_SALT,
                                                 **self.context_builder_extra_args)
         output_path = self.transform_cached_plan(iac_file) if iac_type == IacType.TERRAFORM else iac_file
-        iac_file_before = output_path if iac_type == IacType.TERRAFORM else self.find_cloudformation_workspace_template(iac_file,
-                                                                                                                        cloud_mapper_dir,
-                                                                                                                        workspace_name)
+        iac_file_before, region = (output_path, 'us-east-1') if iac_type == IacType.TERRAFORM else self.find_cloudformation_workspace_template(
+            iac_file,
+            cloud_mapper_dir,
+            workspace_name)
         iac_context_before = context_builder.build(cloud_mapper_dir,
                                                    iac_file_before,
                                                    account_id,
@@ -260,10 +259,10 @@ class BaseContextTest(unittest.TestCase):
                                                    run_enrichment_requiring_aws=False,
                                                    salt=self.DUMMY_SALT,
                                                    stack_name=workspace_name,
-                                                   region='us-east-1',
+                                                   region=region,
                                                    cfn_template_params=cfn_template_params or {},
                                                    **self.context_builder_extra_args)
-        iac_context_after = context_builder.build(None,
+        iac_context_after = context_builder.build(cloud_mapper_dir,
                                                   output_path,
                                                   account_id,
                                                   use_after_data=True,
@@ -272,7 +271,7 @@ class BaseContextTest(unittest.TestCase):
                                                   run_enrichment_requiring_aws=False,
                                                   salt=self.DUMMY_SALT,
                                                   stack_name=workspace_name,
-                                                  region='us-east-1',
+                                                  region=region,
                                                   cfn_template_params=cfn_template_params or {},
                                                   **self.context_builder_extra_args)
         drift_detector = EnvironmentContextDriftDetectorFactory.get(self.cloud_provider)
@@ -281,6 +280,15 @@ class BaseContextTest(unittest.TestCase):
 
     @staticmethod
     def find_cloudformation_workspace_template(iac_file, account_data_dir_path, workspace_name) -> tuple:
+        def save_into_file(path: str):
+            with open(path) as input_file:
+                template = json.load(input_file).get('TemplateBody')
+                file_extension = '.json' if template.startswith('{') else '.yaml'
+            output_path = path.replace('StackName', 'template').replace('.json', file_extension)
+            with open(output_path, 'w+') as output_file:
+                output_file.write(template)
+            return output_path
+
         def get_subfolders_names(path: str):
             return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
 
@@ -290,7 +298,7 @@ class BaseContextTest(unittest.TestCase):
             expected_template_file_path = os.path.join(account_data_dir_path, account, region,
                                                        'cloudformation-get-template', f'StackName-{workspace_name}.json')
             if os.path.isfile(expected_template_file_path):
-                return expected_template_file_path, region
+                return save_into_file(expected_template_file_path), region
         raise Exception('did not find cloudformation template in account_data')
 
     def transform_cached_plan(self, iac_file):
