@@ -13,11 +13,11 @@ class CloudformationDaxClusterBuilder(BaseCloudformationBuilder):
     def parse_resource(self, cfn_res_attr: dict) -> DaxCluster:
         properties: dict = cfn_res_attr['Properties']
         server_side_encryption = properties.get("SSESpecification", {}).get("SSEEnabled", False)
-        return DaxCluster(properties["ClusterName"],
-                          server_side_encryption,
-                          self.create_random_pseudo_identifier(),
-                          cfn_res_attr['region'],
-                          cfn_res_attr['account_id'])
+        return DaxCluster(cluster_name=properties["ClusterName"],
+                          server_side_encryption=server_side_encryption,
+                          cluster_arn=self.create_random_pseudo_identifier(),
+                          region=cfn_res_attr['region'],
+                          account=cfn_res_attr['account_id'])
 
 
 
