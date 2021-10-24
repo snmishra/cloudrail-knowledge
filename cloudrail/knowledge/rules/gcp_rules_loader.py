@@ -5,6 +5,7 @@ from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_instance_no_pu
     SqlDatabaseNoPublicIpRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_ssl_required_rule import SqlDatabaseSslRequiredRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_restrict_trusted_ip_rule import SqlDatabaseRestrictTrustedIpRule
+from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_no_serial_port_connection_rule import ComputeInstanceNoSerialPortConnectionRule
 from cloudrail.knowledge.rules.abstract_rules_loader import AbstractRulesLoader
 
 
@@ -14,6 +15,7 @@ class GcpRulesLoader(AbstractRulesLoader):
         rules: List[BaseRule] = [
             SqlDatabaseSslRequiredRule(),
             SqlDatabaseRestrictTrustedIpRule(),
-            SqlDatabaseNoPublicIpRule()
+            SqlDatabaseNoPublicIpRule(),
+            ComputeInstanceNoSerialPortConnectionRule(),
         ]
         return {rule.get_id(): rule for rule in rules}
