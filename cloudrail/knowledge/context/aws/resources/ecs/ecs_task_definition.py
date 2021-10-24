@@ -98,14 +98,14 @@ class EcsTaskDefinition(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'efs_volume_data': [dataclasses.asdict(data) for data in self.efs_volume_data],
+        return {'tags': self.tags,
+                'efs_volume_data': [dataclasses.asdict(data) for data in self.efs_volume_data],
                 'task_role_arn': self.task_role_arn,
                 'execution_role_arn': self.execution_role_arn,
                 'network_mode': self.network_mode.value,
                 'is_volume_efs': self.is_volume_efs,
                 'container_definitions': [{k: v for k,v in dataclasses.asdict(definition).items() if k != 'image'}
-                                          for definition in self.container_definitions],
-                'tags': self.tags}
+                                          for definition in self.container_definitions]}
 
 
 class IEcsInstance(AwsClient):

@@ -81,5 +81,5 @@ class RestApiGw(PoliciedResource):
                 'api_gateway_type': self.api_gateway_type,
                 'is_public': self.is_public,
                 'api_gateway_methods': [method.to_drift_detection_object() for method in self.api_gateway_methods],
-                'agw_methods_with_valid_integrations_and_allowed_lambda_access': 
+                'agw_methods_with_valid_integrations_and_allowed_lambda_access':
                     [method.to_drift_detection_object() for method in self.agw_methods_with_valid_integrations_and_allowed_lambda_access]}
