@@ -163,5 +163,5 @@ class GcpSqlDatabaseInstance(GcpResource):
             return 'SQL Database Instances'
 
     def to_drift_detection_object(self) -> dict:
-        return {'name': self.name,
+        return {'tags': self.tags, 'name': self.name,
                 'settings': self.settings and dataclasses.asdict(self.settings)}  # TODO: check drift detection on this resource
