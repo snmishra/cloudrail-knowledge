@@ -96,6 +96,4 @@ class LoadBalancer(NetworkEntity):
         return {'tags': filter_tags(self.tags), 'name': self.name,
                 'scheme_type': self.scheme_type.value,
                 'load_balancer_type': self.load_balancer_type.value,
-                'listener_ports': self.listener_ports,
-                'subnets_ids': self.raw_data and self.raw_data.subnets_ids,
-                'security_groups_ids': self.raw_data and self.raw_data.security_groups_ids}
+                'listener_ports': self.listener_ports}

@@ -1,6 +1,6 @@
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from tests.knowledge.context.aws_context_test import AwsContextTest
-from tests.knowledge.context.test_context_annotation import context
+from tests.knowledge.context.test_context_annotation import TestOptions, context
 
 
 class TestCloudFrontDistributionLogging(AwsContextTest):
@@ -29,7 +29,7 @@ class TestCloudFrontDistributionLogging(AwsContextTest):
         self.assertTrue(cloudfront_dist.logs_settings)
         self.assertTrue(cloudfront_dist.logs_settings.logging_enabled)
 
-    @context(module_path="logging_enabled_basic_config")
+    @context(module_path="logging_enabled_basic_config", test_options=TestOptions(run_drift_detection=False))
     def test_logging_enabled_basic_config(self, ctx: AwsEnvironmentContext):
         cloudfront = next((cloudfront for cloudfront in ctx.cloudfront_log_settings
                            if cloudfront.name == 'd10vu83o5lodi4.cloudfront.net'
@@ -43,7 +43,7 @@ class TestCloudFrontDistributionLogging(AwsContextTest):
         self.assertFalse(cloudfront.prefix)
         self.assertFalse(cloudfront.include_cookies)
 
-    @context(module_path="no_logging_at_all")
+    @context(module_path="no_logging_at_all", test_options=TestOptions(run_drift_detection=False))
     def test_no_logging_at_all(self, ctx: AwsEnvironmentContext):
         cloudfront = next((cloudfront for cloudfront in ctx.cloudfront_log_settings
                            if cloudfront.name == 'd2h40sipo10d74.cloudfront.net'

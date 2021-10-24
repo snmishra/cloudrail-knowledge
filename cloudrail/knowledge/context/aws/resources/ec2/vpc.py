@@ -137,6 +137,4 @@ class Vpc(AwsResource):
         return {'tags': filter_tags(self.tags), 'cidr_block': self.cidr_block,
                 'ipv6_cidr_block': self.ipv6_cidr_block,
                 'name': self.name,
-                'is_default': self.is_default,
-                'enable_dns_support': self.enable_dns_support,
-                'enable_dns_hostnames': self.enable_dns_hostnames}
+                'is_default': self.is_default}

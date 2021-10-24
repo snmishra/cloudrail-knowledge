@@ -154,9 +154,7 @@ class Ec2Instance(NetworkEntity, AwsClient):
         full_security_groups_ids = flat_list([eni.security_groups_ids for eni in self.network_resource.network_interfaces])
         security_groups_ids_no_pseudo = [sg_id for sg_id in full_security_groups_ids if 'pseudo' not in sg_id]
         return {'name': self.name,
-                'network_interfaces_ids': self.network_interfaces_ids,
                 'state': self.state,
-                'image_id': self.image_id,
                 'iam_profile_name': self.iam_profile_name,
                 'http_tokens': self.http_tokens,
                 'availability_zone': self.availability_zone,

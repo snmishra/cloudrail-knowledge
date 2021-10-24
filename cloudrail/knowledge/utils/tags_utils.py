@@ -51,4 +51,4 @@ def filter_tags(tags: dict):
     excluded_tags = ['aws:cloudformation:stack-name_hashcode',
                      'aws:cloudformation:logical-id_hashcode',
                      'aws:cloudformation:stack-id_hashcode']
-    return {k: v for k, v in tags.items() if not k not in excluded_tags}
+    return {k: v for k, v in tags.items() if k not in excluded_tags}
