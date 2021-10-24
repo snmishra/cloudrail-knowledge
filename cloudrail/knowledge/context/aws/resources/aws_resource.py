@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from typing import List, Optional
+from typing import Dict, List, Optional
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName, AwsServiceAttributes
 from cloudrail.knowledge.context.mergeable import Mergeable
 from cloudrail.knowledge.utils.arn_utils import are_arns_intersected
@@ -17,6 +17,7 @@ class AwsResource(Mergeable):
         super().__init__()
         self.account: str = account
         self.region: str = region
+        self.tags: Dict[str, str] = {}
         self.tf_resource_type: AwsServiceName = tf_resource_type
         self.aws_service_attributes: Optional[AwsServiceAttributes] = aws_service_attributes
 

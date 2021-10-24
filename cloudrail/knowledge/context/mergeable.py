@@ -2,7 +2,7 @@
 import re
 from abc import abstractmethod
 from enum import Enum
-from typing import List, Set, Dict, Optional, FrozenSet
+from typing import List, Set, Optional, FrozenSet
 
 from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.context.iac_type import IacType
@@ -22,7 +22,6 @@ class Mergeable:
         self._aliases: Set[str] = set()
         self.iac_state: Optional[IacState] = None
         self.is_pseudo = False
-        self.tags: Dict[str, str] = {}
         self.invalidation: Set[str] = set()
 
     def with_aliases(self, *aliases: str):
