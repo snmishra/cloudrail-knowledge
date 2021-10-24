@@ -1,3 +1,4 @@
+from cloudrail.knowledge.context.iac_type import IacType
 from cloudrail.knowledge.rules.base_rule import RuleResponse
 from cloudrail.knowledge.rules.aws.non_context_aware.protocol_enforcments.ensure_alb_is_using_https import EnsureLoadBalancerListenerIsUsingHttps
 from tests.knowledge.rules.base_rule_test import AwsBaseRuleTest, rule_test
@@ -10,8 +11,12 @@ class TestEnsureLoadBalancerListenerIsUsingHttpsRule(AwsBaseRuleTest):
 
     @rule_test('load_balancer_listener_http', True)
     def test_load_balancer_listener_http(self, rule_result: RuleResponse):
-        self.assertEqual('aws_lb_listener.lb_listener_test',
-                         rule_result.issues[0].exposed.iac_state.address)
+        if rule_result.issues[0].exposed.iac_state.iac_type == IacType.TERRAFORM:
+            self.assertEqual('aws_lb_listener.lb_listener_test',
+                             rule_result.issues[0].exposed.iac_state.address)
+        elif rule_result.issues[0].exposed.iac_state.iac_type == IacType.CLOUDFORMATION:
+            self.assertEqual('Alb1Lis1',
+                             rule_result.issues[0].exposed.iac_state.address)
 
     @rule_test('load_balancer_listener_https', False)
     def test_load_balancer_listener_https(self, rule_result: RuleResponse):
