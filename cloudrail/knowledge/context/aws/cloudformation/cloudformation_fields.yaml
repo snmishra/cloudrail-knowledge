@@ -269,3 +269,10 @@ AWS::AWS::EC2::NetworkAclEntry:
             - RuleNumber
             - Egress
             - Protocol
+
+AWS::EC2::TransitGatewayAttachment:
+    known_fields:
+        pass:
+            - TransitGatewayId
+            - VpcId
+            - SubnetIds
