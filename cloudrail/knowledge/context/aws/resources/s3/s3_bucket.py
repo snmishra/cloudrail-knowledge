@@ -10,7 +10,7 @@ from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceNam
 from cloudrail.knowledge.context.connection import ConnectionInstance
 from cloudrail.knowledge.context.aws.resources.s3.s3_policy import S3Policy
 from cloudrail.knowledge.context.aws.resources.s3.public_access_block_settings import PublicAccessBlockSettings
-from cloudrail.knowledge.context.aws.resources.s3.s3_acl import S3ACL
+from cloudrail.knowledge.context.aws.resources.s3.s3_acl import GranteeTypes, S3ACL
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_access_point import S3BucketAccessPoint, S3BucketAccessPointNetworkOriginType
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_encryption import S3BucketEncryption
 
@@ -89,8 +89,8 @@ class S3Bucket(ConnectionInstance, PoliciedResource):
         return len(self.publicly_allowing_resources) > 0
 
     def to_drift_detection_object(self) -> dict:
-        return {'bucket_name': self.bucket_name,
-                'encryption_data': self.encryption_data,
-                'versioning_data': self.versioning_data,
-                'exposed_to_agw_methods': self.exposed_to_agw_methods,
-                'acls': self.acls}
+        return {'tags': self.tags, 'bucket_name': self.bucket_name,
+                'encryption_data': self.encryption_data and self.encryption_data.to_drift_detection_object(),
+                'versioning_data': self.versioning_data and self.versioning_data.to_drift_detection_object(),
+                'exposed_to_agw_methods': [method.to_drift_detection_object() for method in self.exposed_to_agw_methods],
+                'acls': [acl.to_drift_detection_object() for acl in self.acls if acl.type != GranteeTypes.CANONICAL_USER]}

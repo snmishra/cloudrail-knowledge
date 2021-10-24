@@ -24,26 +24,3 @@ class AwsEnvironmentContextDriftDetector(BaseEnvironmentContextDriftDetector):
                                            S3BucketObject, TransitGatewayRouteTablePropagation, IamGroupMembership,
                                            VpcEndpointRouteTableAssociation, IamPolicyAttachment, RestApiGwDomain,
                                            RestApiGwMapping)))
-
-    @classmethod
-    def convert_to_drift_detection_object(cls, mergeable: Mergeable) -> dict:
-        default_drift_fields = {'tags': mergeable.tags}
-        full_entity_drift_fields = mergeable.to_drift_detection_object()
-        full_entity_drift_fields.update(default_drift_fields)
-        for key, value in full_entity_drift_fields.items():
-            if isinstance(value, Mergeable):
-                default_drift_fields = {'tags': value.tags}
-                full_entity_drift_fields[key] = cls._add_default_drift_fields(value, default_drift_fields)
-            elif isinstance(value, list) and any(isinstance(item, Mergeable) for item in value):
-                for count, item in enumerate(value):
-                    default_drift_fields = {'tags': item.tags}
-                    value[count] = cls._add_default_drift_fields(item, default_drift_fields)
-                full_entity_drift_fields[key] = [x for x in value if x]
-        return full_entity_drift_fields
-
-    @staticmethod
-    def _add_default_drift_fields(drift_value: Mergeable, default_drifts: dict) -> dict:
-        resource_drift_fields = drift_value.to_drift_detection_object()
-        if drift_value.is_tagable:
-            resource_drift_fields.update(default_drifts)
-        return resource_drift_fields if resource_drift_fields else None
