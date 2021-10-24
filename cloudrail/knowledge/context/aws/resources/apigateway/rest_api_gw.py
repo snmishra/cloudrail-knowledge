@@ -9,6 +9,7 @@ from cloudrail.knowledge.context.aws.resources.apigateway.rest_api_gw_domain imp
 from cloudrail.knowledge.context.aws.resources.apigateway.rest_api_gw_policy import RestApiGwPolicy
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName, AwsServiceType, AwsServiceAttributes
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method_settings import ApiGatewayMethodSettings
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class ApiGatewayType(str, Enum):
@@ -77,7 +78,7 @@ class RestApiGw(PoliciedResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'api_gw_name': self.api_gw_name,
+        return {'tags': filter_tags(self.tags), 'api_gw_name': self.api_gw_name,
                 'api_gateway_type': self.api_gateway_type,
                 'is_public': self.is_public,
                 'api_gateway_methods': [method.to_drift_detection_object() for method in self.api_gateway_methods],

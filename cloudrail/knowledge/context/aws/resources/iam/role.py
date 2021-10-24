@@ -5,6 +5,7 @@ from cloudrail.knowledge.context.aws.resources.iam.policy import AssumeRolePolic
 from cloudrail.knowledge.context.aws.resources.iam.role_last_used import RoleLastUsed
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.iam.iam_identity import IamIdentity
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class Role(IamIdentity):
@@ -71,5 +72,5 @@ class Role(IamIdentity):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'role_name': self.role_name,
+        return {'tags': filter_tags(self.tags), 'role_name': self.role_name,
                 'permission_boundary_arn': self.permission_boundary_arn}

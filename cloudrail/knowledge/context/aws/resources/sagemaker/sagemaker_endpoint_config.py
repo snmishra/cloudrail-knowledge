@@ -2,6 +2,7 @@ from typing import List
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class SageMakerEndpointConfig(AwsResource):
@@ -47,5 +48,6 @@ class SageMakerEndpointConfig(AwsResource):
             .format(self.AWS_CONSOLE_URL, self.region, self.sagemaker_endpoint_config_name)
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'sagemaker_endpoint_config_name': self.sagemaker_endpoint_config_name,
+        return {'tags': filter_tags(self.tags),
+                'sagemaker_endpoint_config_name': self.sagemaker_endpoint_config_name,
                 'encrypted': self.encrypted}

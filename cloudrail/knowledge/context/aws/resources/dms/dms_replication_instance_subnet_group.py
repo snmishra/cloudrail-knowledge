@@ -1,6 +1,7 @@
 from typing import List, Optional
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class DmsReplicationInstanceSubnetGroup(AwsResource):
@@ -49,6 +50,6 @@ class DmsReplicationInstanceSubnetGroup(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'rep_subnet_group_id': self.rep_subnet_group_id,
+        return {'tags': filter_tags(self.tags), 'rep_subnet_group_id': self.rep_subnet_group_id,
                 'subnet_ids': self.subnet_ids,
                 'vpc_id': self.vpc_id}

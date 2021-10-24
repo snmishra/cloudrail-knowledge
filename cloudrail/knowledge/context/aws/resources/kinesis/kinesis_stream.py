@@ -2,6 +2,7 @@ from typing import List
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class KinesisStream(AwsResource):
@@ -47,5 +48,5 @@ class KinesisStream(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'stream_name': self.stream_name,
+        return {'tags': filter_tags(self.tags), 'stream_name': self.stream_name,
                 'encrypted_at_rest': self.encrypted_at_rest}

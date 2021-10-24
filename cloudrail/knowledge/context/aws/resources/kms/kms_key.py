@@ -4,6 +4,7 @@ from cloudrail.knowledge.context.aws.resources.aws_policied_resource import Poli
 from cloudrail.knowledge.context.aws.resources.kms.kms_alias import KmsAlias
 from cloudrail.knowledge.context.aws.resources.kms.kms_key_manager import KeyManager
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class KmsKey(PoliciedResource):
@@ -55,4 +56,4 @@ class KmsKey(PoliciedResource):
         return self.key_id
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'key_manager': self.key_manager.value}
+        return {'tags': filter_tags(self.tags), 'key_manager': self.key_manager.value}

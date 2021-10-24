@@ -3,6 +3,7 @@ from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class CodeBuildProject(NetworkEntity):
@@ -62,7 +63,8 @@ class CodeBuildProject(NetworkEntity):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'project_name': self.project_name,
+        return {'tags': filter_tags(self.tags),
+                'project_name': self.project_name,
                 'encryption_key': self.encryption_key,
                 'assign_public_ip': self.vpc_config and self.vpc_config.assign_public_ip,
                 'security_groups_ids': self.vpc_config and self.vpc_config.security_groups_ids,

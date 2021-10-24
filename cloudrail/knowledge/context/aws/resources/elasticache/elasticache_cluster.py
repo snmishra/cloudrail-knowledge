@@ -3,6 +3,7 @@ from typing import List, Optional
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class ElastiCacheCluster(NetworkEntity):
@@ -76,7 +77,8 @@ class ElastiCacheCluster(NetworkEntity):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'cluster_name': self.cluster_name,
+        return {'tags': filter_tags(self.tags),
+                'cluster_name': self.cluster_name,
                 'replication_group_id': self.replication_group_id,
                 'subnet_group_name': self.subnet_group_name,
                 'engine': self.engine,
