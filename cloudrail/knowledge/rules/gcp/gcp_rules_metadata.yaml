@@ -45,3 +45,25 @@ rules_metadata:
       - database
     supported_iac_types:
       - terraform
+  - rule_id: non_car_compute_instance_ensure_serial_port_disabled
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '4.5'
+    name: Ensure ‘Enable connecting to serial ports’ is not enabled for VM Instance
+    severity: major
+    description: The interactive serial console does not support IP-based access restrictions such as IP whitelists. 
+      If the interactive serial console is enabled on an instance, clients can attempt to connect to that instance from any IP address.
+      This allows unwanted access to that instance if they know the correct SSH key, username, project ID, zone, and instance name. 
+      Hence interactive serial console support should be disabled.
+    human_readable_logic: Cloudrail will review the compute instances configuration within your GCP subscription and Terraform plan to ensure that metadata value for serial-port-enable is not set to true.
+    remediation_steps:
+      terraform: For the google_compute_instance resource ensure the metadata serial-port-enable is not set to true (default is false).
+      console: Follow the guides at <https://cloud.google.com/compute/docs/instances/interacting-with-serial-console> in order to disable the serial console access to the compute VM instance.
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - compute
+    supported_iac_types:
+      - terraform
