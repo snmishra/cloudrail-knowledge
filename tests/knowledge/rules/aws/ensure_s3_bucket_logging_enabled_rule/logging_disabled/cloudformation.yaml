@@ -1,0 +1,16 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+
+Resources:
+
+  TestBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: "cloudrail-logging-disabled-bucket-jjfhduyd"
+
+  LoggingBucket:
+    Type: 'AWS::S3::Bucket'
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: "cloudrail-logging-disabled-bucket-jjfhduyd"

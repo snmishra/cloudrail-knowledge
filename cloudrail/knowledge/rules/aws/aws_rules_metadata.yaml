@@ -2090,6 +2090,7 @@ rules_metadata:
   severity: medium
   supported_iac_types:
   - terraform
+  - cloudformation
 - cloud_provider: amazon_web_services
   compliance:
     PCI DSS:
@@ -4937,6 +4938,7 @@ rules_metadata:
   severity: medium
   supported_iac_types:
   - terraform
+  - cloudformation
 - cloud_provider: amazon_web_services
   compliance:
     PCI DSS:
