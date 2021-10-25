@@ -1,6 +1,7 @@
+# pyright: reportGeneralTypeIssues=false
 import json
 from collections.abc import Iterable
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional, TypeVar, Union, cast, overload
 
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_integration import (
     ApiGatewayIntegration,
@@ -11,7 +12,7 @@ from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method imp
 )
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method_settings import (
     ApiGatewayMethodSettings,
-    RestApiMethods,
+    RestApiMethod,
 )
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_stage import (
     AccessLogsSettings,
@@ -55,7 +56,7 @@ from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template impor
 from cloudrail.knowledge.context.aws.resources.batch.batch_compute_environment import (
     BatchComputeEnvironment,
 )
-from cloudrail.knowledge.context.aws.resources.cloudfront.cloud_front_distribution_list import (
+from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import (
     CacheBehavior,
     CloudFrontDistribution,
     OriginConfig,
@@ -313,8 +314,6 @@ from cloudrail.knowledge.context.aws.resources.iam.policy import (
     InlinePolicy,
     ManagedPolicy,
     Policy,
-    S3AccessPointPolicy,
-    S3Policy,
 )
 from cloudrail.knowledge.context.aws.resources.iam.policy_group_attachment import (
     PolicyGroupAttachment,
@@ -346,8 +345,8 @@ from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.resources.kms.kms_key_manager import KeyManager
 from cloudrail.knowledge.context.aws.resources.kms.kms_key_policy import KmsKeyPolicy
 from cloudrail.knowledge.context.aws.resources.lambda_.lambda_alias import (
-    create_lambda_function_arn,
     LambdaAlias,
+    create_lambda_function_arn,
 )
 from cloudrail.knowledge.context.aws.resources.lambda_.lambda_function import (
     LambdaFunction,
@@ -380,9 +379,12 @@ from cloudrail.knowledge.context.aws.resources.s3.public_access_block_settings i
     PublicAccessBlockLevel,
     PublicAccessBlockSettings,
 )
+from cloudrail.knowledge.context.aws.resources.s3.s3_access_point_policy import (
+    S3AccessPointPolicy,
+)
 from cloudrail.knowledge.context.aws.resources.s3.s3_acl import (
-    GranteeTypes,
     S3ACL,
+    GranteeTypes,
     S3Permission,
     S3PredefinedGroups,
 )
@@ -402,6 +404,7 @@ from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_object import S3Buck
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_versioning import (
     S3BucketVersioning,
 )
+from cloudrail.knowledge.context.aws.resources.s3.s3_policy import S3Policy
 from cloudrail.knowledge.context.aws.resources.s3outposts.s3outpost_endpoint import (
     S3OutpostEndpoint,
 )
@@ -427,28 +430,25 @@ from cloudrail.knowledge.context.aws.resources.ssm.ssm_parameter import SsmParam
 from cloudrail.knowledge.context.aws.resources.worklink.worklink_fleet import (
     WorkLinkFleet,
 )
+from cloudrail.knowledge.context.aws.resources.workspaces.workspace import Workspace
 from cloudrail.knowledge.context.aws.resources.workspaces.workspace_directory import (
     WorkspaceDirectory,
 )
-from cloudrail.knowledge.context.aws.resources.workspaces.workspaces import Workspace
 from cloudrail.knowledge.context.aws.resources.xray.xray_encryption import (
     XrayEncryption,
 )
+from cloudrail.knowledge.context.environment_context.common_component_builder import (
+    ALL_SERVICES_PUBLIC_FULL_ACCESS,
+    build_policy_statement,
+    build_policy_statements_from_str,
+)
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
 from cloudrail.knowledge.utils import hash_utils
-
 from cloudrail.knowledge.utils.arn_utils import build_arn
 from cloudrail.knowledge.utils.port_utils import get_port_by_engine
 from cloudrail.knowledge.utils.utils import (
     build_lambda_function_integration_endpoint_uri,
     safe_json_loads,
-)
-
-from cloudrail.knowledge.context.environment_context.common_component_builder import (
-    ALL_SERVICES_PUBLIC_FULL_ACCESS,
-    build_policy_statement,
-    build_policy_statements_from_str,
-    get_dict_value,
 )
 
 route_destination_types: Dict[str, RouteTargetType] = {
@@ -466,7 +466,9 @@ def build_ec2(attributes: dict) -> Ec2Instance:
     public_ip = _get_known_value(attributes, "public_ip")
     ipv6_addresses = _get_known_value(attributes, "ipv6_addresses", [])
     network_interfaces = _get_known_value(attributes, "network_interface", [])
-    network_interface_ids = [ni["network_interface_id"] for ni in network_interfaces]
+    network_interface_ids = [
+        ni["network_interface_id"] for ni in network_interfaces or []
+    ]
     primary_network_interface_id = _get_known_value(
         attributes, "primary_network_interface_id"
     ) or _get_known_value(attributes, "network_interface_id")
@@ -496,12 +498,12 @@ def build_ec2(attributes: dict) -> Ec2Instance:
         instance_id=attributes["id"],
         name=_get_name(attributes),
         network_interfaces_ids=network_interface_ids,
-        state=attributes.get("instance_state"),
+        state=attributes.get("instance_state", ""),
         image_id=attributes["ami"],
         iam_profile_name=attributes.get("iam_instance_profile")
         if attributes.get("iam_instance_profile")
         else None,
-        http_tokens=http_tokens,
+        http_tokens=http_tokens or "",
         availability_zone=_get_known_value(attributes, "availability_zone"),
         tags=_get_known_value(attributes, "tags") or {},
         instance_type=attributes["instance_type"],
@@ -529,16 +531,16 @@ def build_iam_role(attributes: dict) -> Role:
     role: Role = Role(
         account=attributes["account_id"],
         qualified_arn=qualified_arn,
-        arn=attributes["arn"],
+        arn=attributes.get("arn"),
         role_name=attributes["name"],
-        role_id=attributes.get("unique_id"),
-        permission_boundary_arn=attributes["permissions_boundary"],
-        creation_date=_get_known_value(attributes, "create_date"),
+        role_id=attributes.get("unique_id"),  # type: ignore
+        permission_boundary_arn=attributes.get("permissions_boundary"),
+        creation_date=_get_known_value(attributes, "create_date"),  # type: ignore
     )
     if role.role_id:
         role.with_aliases(role.role_id, attributes["id"])
     else:
-        role.with_aliases(attributes["id"])
+        role.with_aliases(attributes.get("id"))
     return role
 
 
@@ -546,9 +548,9 @@ def build_iam_assume_role_policy(attributes: dict) -> AssumeRolePolicy:
     return AssumeRolePolicy(
         attributes["account_id"],
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
         _build_policy_statements_from_str(attributes, "assume_role_policy"),
-        _get_known_value(attributes, "assume_role_policy"),
+        _get_known_value(attributes, "assume_role_policy"),  # type: ignore
     )
 
 
@@ -565,7 +567,7 @@ def build_iam_group(attributes: dict) -> IamGroup:
         name=attributes["name"],
         group_id=attributes["unique_id"],
         qualified_arn=qualified_arn,
-        arn=attributes["arn"],
+        arn=attributes.get("arn"),
         account=attributes["account_id"],
     )
 
@@ -584,7 +586,7 @@ def build_iam_user(attributes: dict) -> IamUser:
         name=attributes["name"],
         user_id=attributes["unique_id"],
         qualified_arn=qualified_arn,
-        arn=attributes["arn"],
+        arn=attributes.get("arn"),
         permission_boundary_arn=attributes["permissions_boundary"],
     )
 
@@ -596,7 +598,7 @@ def build_user_login_profile(attributes: dict) -> IamUsersLoginProfile:
 def build_load_balancer(attributes: dict) -> LoadBalancer:
     raw_subnet_ids = attributes["subnets"]
     raw_subnet_ids = raw_subnet_ids if isinstance(raw_subnet_ids, list) else []
-    arn = attributes["arn"]
+    arn = attributes.get("arn")
 
     return (
         LoadBalancer(
@@ -612,7 +614,7 @@ def build_load_balancer(attributes: dict) -> LoadBalancer:
             _get_known_value(attributes, "security_groups"),
             _get_known_value(attributes, "subnet_mapping"),
         )
-        .with_aliases(arn, attributes["id"])
+        .with_aliases(arn, attributes.get("id"))
     )
 
 
@@ -621,7 +623,7 @@ def build_load_balancer_target_group_association(
 ) -> LoadBalancerTargetGroupAssociation:
     load_balancer_arn = attributes["load_balancer_arn"]
     target_group_arns = [
-        action["target_group_arn"] for action in attributes["default_action"]
+        action["target_group_arn"] for action in attributes["defaultActions"]
     ]
     port = attributes["port"]
     account = attributes["account_id"]
@@ -636,19 +638,18 @@ def build_load_balancer_target_group(attributes: dict) -> LoadBalancerTargetGrou
         port=attributes["port"],
         protocol=attributes["protocol"],
         vpc_id=attributes["vpc_id"],
-        target_group_arn=attributes["arn"],
+        target_group_arn=attributes.get("arn"),
         target_group_name=attributes["name"],
         target_type=attributes["target_type"],
         account=attributes["account_id"],
         region=attributes["region"],
-    ).with_aliases(attributes["id"])
+    ).with_aliases(attributes.get("id"))
 
 
 def build_load_balancer_target(attributes: dict) -> LoadBalancerTarget:
     return LoadBalancerTarget(
         port=attributes["port"],
         target_group_arn=attributes["target_group_arn"],
-        target_health="",  # TODO no target health
         target_id=attributes["target_id"],
         account=attributes["account_id"],
         region=attributes["region"],
@@ -691,9 +692,9 @@ def build_network_acl_rule(attributes: dict):
         attributes["region"],
         attributes["account_id"],
         ip_protocol_type=ip_protocol_type,
-        from_port=from_port,
-        to_port=to_port,
-        cidr_block=_get_known_value(attributes, "cidr_block"),
+        from_port=from_port,  # type: ignore
+        to_port=to_port,  # type: ignore
+        cidr_block=_get_known_value(attributes, "cidr_block"),  # type: ignore
         rule_action=RuleAction(attributes.get("rule_action") or attributes["action"]),
         rule_number=attributes.get("rule_number") or attributes["rule_no"],
         rule_type=RuleType.OUTBOUND if attributes["egress"] else RuleType.INBOUND,
@@ -740,7 +741,7 @@ def build_network_interface(attributes: dict) -> NetworkInterface:
         eni_id=attributes["id"],
         subnet_id=attributes["subnet_id"],
         security_groups_ids=security_groups_ids,
-        primary_ip_address=private_ip,
+        primary_ip_address=private_ip,  # type: ignore
         secondary_ip_addresses=private_ips,
         public_ip_address=None,
         ipv6_ip_addresses=[],
@@ -757,7 +758,7 @@ def build_s3_policy(attributes: dict) -> S3Policy:
         account=attributes["account_id"],
         bucket_name=attributes["bucket"],
         statements=_build_policy_statements_from_str(attributes, "policy"),
-        raw_document=_get_known_value(attributes, "policy"),
+        raw_document=_get_known_value(attributes, "policy"),  # type: ignore
     )
 
 
@@ -771,11 +772,11 @@ def build_inline_s3_policy(attributes: dict) -> Optional[S3Policy]:
 def build_managed_policy(attributes: dict) -> ManagedPolicy:
     return ManagedPolicy(
         account=attributes["account_id"],
-        policy_id=attributes.get("policy_id"),
+        policy_id=attributes.get("policy_id"),  # type: ignore
         policy_name=attributes["name"],
-        arn=attributes["arn"],
+        arn=attributes.get("arn"),
         statements=_build_policy_statements_from_str(attributes, "policy"),
-        raw_document=_get_known_value(attributes, "policy"),
+        raw_document=_get_known_value(attributes, "policy"),  # type: ignore
     )
 
 
@@ -785,18 +786,18 @@ def build_role_inline_policy(attributes: dict) -> InlinePolicy:
         policy_name=attributes["name"],
         owner_name=attributes["role"],
         statements=_build_policy_statements_from_str(attributes, "policy"),
-        raw_document=_get_known_value(attributes, "policy"),
+        raw_document=_get_known_value(attributes, "policy"),  # type: ignore
     )
 
 
-def build_iam_role_nested_policy(attributes: dict) -> InlinePolicy:
+def build_iam_role_nested_policy(attributes: dict) -> Optional[InlinePolicy]:
     for inline_policy_dict in _get_known_value(attributes, "inline_policy", []):
         return InlinePolicy(
             account=attributes["account_id"],
             owner_name=attributes["id"],
             policy_name=inline_policy_dict["name"],
             statements=_build_policy_statements_from_str(inline_policy_dict, "policy"),
-            raw_document=_get_known_value(inline_policy_dict, "policy"),
+            raw_document=_get_known_value(inline_policy_dict, "policy"),  # type: ignore
         )
 
 
@@ -806,7 +807,7 @@ def build_group_inline_policy(attributes: dict) -> InlinePolicy:
         owner_name=attributes["group"],
         policy_name=attributes["name"],
         statements=_build_policy_statements_from_str(attributes, "policy"),
-        raw_document=_get_known_value(attributes, "policy"),
+        raw_document=_get_known_value(attributes, "policy"),  # type: ignore
     )
 
 
@@ -816,7 +817,7 @@ def build_user_inline_policy(attributes: dict) -> InlinePolicy:
         owner_name=attributes["user"],
         policy_name=attributes["name"],
         statements=_build_policy_statements_from_str(attributes, "policy"),
-        raw_document=_get_known_value(attributes, "policy"),
+        raw_document=_get_known_value(attributes, "policy"),  # type: ignore
     )
 
 
@@ -848,7 +849,7 @@ def build_iam_instance_profile(attributes: dict) -> IamInstanceProfile:
 
 def build_route_table(attributes: dict) -> RouteTable:
     return RouteTable(
-        route_table_id=attributes["id"],
+        route_table_id=attributes.get("id"),
         vpc_id=attributes["vpc_id"],
         name=_get_name(attributes),
         region=attributes["region"],
@@ -941,9 +942,9 @@ def build_route(attributes: dict) -> Route:
 
     return Route(
         route_table_id,
-        cidr,
-        route_key,
-        route_value,
+        cidr,  # type: ignore
+        route_key,  # type: ignore
+        route_value,  # type: ignore
         attributes["region"],
         attributes["account_id"],
     )
@@ -1045,7 +1046,7 @@ def build_s3_access_point(attributes: dict) -> S3BucketAccessPoint:
     return S3BucketAccessPoint(
         bucket_name=attributes["bucket"],
         name=attributes["name"],
-        arn=attributes["arn"],
+        arn=attributes.get("arn"),
         region=attributes["region"],
         account=attributes["account_id"],
         network_origin=_get_network_origin(
@@ -1056,7 +1057,7 @@ def build_s3_access_point(attributes: dict) -> S3BucketAccessPoint:
             attributes["region"],
             attributes["name"],
             _build_policy_statements_from_str(attributes, "policy"),
-            _get_known_value(attributes, "policy"),
+            _get_known_value(attributes, "policy"),  # type: ignore
         ),
     )
 
@@ -1064,7 +1065,7 @@ def build_s3_access_point(attributes: dict) -> S3BucketAccessPoint:
 def build_s3_public_access_block_settings(
     attributes: dict,
 ) -> PublicAccessBlockSettings:
-    level: PublicAccessBlockLevel = get_dict_value(
+    level: PublicAccessBlockLevel = _get_known_value(
         attributes, "access_level", PublicAccessBlockLevel.BUCKET
     )
     bucket_name_or_account_id = (
@@ -1088,23 +1089,21 @@ def build_inline_security_group_rules(attributes: dict) -> List[SecurityGroupRul
     rules = []
     egress = _get_known_value(attributes, "egress")
     ingress = _get_known_value(attributes, "ingress")
-    security_group_id = attributes["id"]
+    security_group_id = attributes.get("id")
     region = attributes["region"]
     account = attributes["account_id"]
-    if egress:
-        for raw_rule in egress:
-            raw_rule["type"] = "egress"
-            raw_rule["security_group_id"] = security_group_id
-            raw_rule["region"] = region
-            raw_rule["account_id"] = account
-            rules.extend(build_security_group_rule(raw_rule))
-    if ingress:
-        for raw_rule in ingress:
-            raw_rule["type"] = "ingress"
-            raw_rule["security_group_id"] = security_group_id
-            raw_rule["region"] = region
-            raw_rule["account_id"] = account
-            rules.extend(build_security_group_rule(raw_rule))
+    for raw_rule in egress or []:
+        raw_rule["type"] = "egress"
+        raw_rule["security_group_id"] = security_group_id
+        raw_rule["region"] = region
+        raw_rule["account_id"] = account
+        rules.extend(build_security_group_rule(raw_rule))
+    for raw_rule in ingress or []:
+        raw_rule["type"] = "ingress"
+        raw_rule["security_group_id"] = security_group_id
+        raw_rule["region"] = region
+        raw_rule["account_id"] = account
+        rules.extend(build_security_group_rule(raw_rule))
     return rules
 
 
@@ -1133,7 +1132,7 @@ def build_security_group_rule(attributes: dict) -> List[SecurityGroupRule]:
         [source]
         if (source := _get_known_value(attributes, "source_security_group_id"))
         else None
-        or _get_known_value(attributes, "security_groups", [security_group_id])
+        or _get_known_value(attributes, "security_groups", [security_group_id])  # type: ignore
     )
 
     if not cidr_blocks:
@@ -1142,8 +1141,8 @@ def build_security_group_rule(attributes: dict) -> List[SecurityGroupRule]:
             property_value = source_sg
             rules.append(
                 SecurityGroupRule(
-                    from_port,
-                    to_port,
+                    from_port,  # type: ignore
+                    to_port,  # type: ignore
                     ip_protocol,
                     property_type,
                     property_value,
@@ -1159,8 +1158,8 @@ def build_security_group_rule(attributes: dict) -> List[SecurityGroupRule]:
         property_value = cidr_block
         rules.append(
             SecurityGroupRule(
-                from_port,
-                to_port,
+                from_port,  # type: ignore
+                to_port,  # type: ignore
                 ip_protocol,
                 property_type,
                 property_value,
@@ -1181,24 +1180,24 @@ def build_security_group(attributes: dict, is_default: bool) -> SecurityGroup:
             "description_hashcode"
         ) != hash_utils.to_hashcode("Managed by Pulumi", attributes.get("salt"))
     return SecurityGroup(
-        security_group_id=attributes["id"],
+        security_group_id=attributes.get("id"),
         region=attributes["region"],
         account=attributes["account_id"],
         name=attributes.get("name") or _get_name(attributes),
-        vpc_id=_get_known_value(attributes, "vpc_id"),
+        vpc_id=_get_known_value(attributes, "vpc_id"),  # type: ignore
         is_default=is_default,
-        has_description=has_description,
+        has_description=has_description,  # type: ignore
     )
 
 
 def build_subnet(attributes: dict) -> Subnet:
     return Subnet(
-        subnet_id=attributes["id"],
-        vpc_id=attributes.get("vpc_id"),
+        subnet_id=attributes.get("id"),
+        vpc_id=attributes.get("vpc_id"),  # type: ignore
         cidr_block=attributes["cidr_block"],
         name=_get_name(attributes),
-        availability_zone=attributes.get("availability_zone"),
-        map_public_ip_on_launch=attributes.get("map_public_ip_on_launch"),
+        availability_zone=attributes.get("availability_zone"),  # type: ignore
+        map_public_ip_on_launch=attributes.get("map_public_ip_on_launch"),  # type: ignore
         region=attributes["region"],
         is_default=attributes["is_default"],
         account=attributes["account_id"],
@@ -1290,7 +1289,7 @@ def build_vpc_attribute(
 ) -> List[VpcAttribute]:
     account: str = raw_data["account_id"]
     region: str = raw_data["region"]
-    vpc_id: str = raw_data["id"]
+    vpc_id: str = raw_data.get("id")
     enable_dns_support = _get_known_value(
         raw_data, "enable_dns_support", True if assign_default_values else None
     )
@@ -1330,7 +1329,7 @@ def build_vpc(attributes: dict) -> Vpc:
 
 def build_internet_gateway(attributes: dict) -> InternetGateway:
     return InternetGateway(
-        pulumi_resource_type=attributes["pulumi_res_type"],
+        tf_resource_type=attributes["tf_res_type"],
         vpc_id=attributes.get("vpc_id"),
         igw_id=attributes.get("id"),
         igw_type=attributes["igw_type"],
@@ -1436,7 +1435,7 @@ def build_policy_user_attachment(attributes: dict) -> PolicyUserAttachment:
 
 def build_launch_configuration(attributes: dict) -> LaunchConfiguration:
     return LaunchConfiguration(
-        arn=attributes["arn"],
+        arn=attributes.get("arn"),
         image_id=attributes["image_id"],
         instance_type=attributes["instance_type"],
         key_name=attributes["key_name"],
@@ -1460,7 +1459,7 @@ def build_auto_scaling_group(attributes: dict) -> AutoScalingGroup:
     )  # pylint: disable=E0601
 
     return AutoScalingGroup(
-        arn=attributes["arn"],
+        arn=attributes.get("arn"),
         target_group_arns=attributes["target_group_arns"] or [],
         name=attributes["name"],
         availability_zones=_get_known_value(attributes, "availability_zones", []),
@@ -1487,7 +1486,7 @@ def build_redshift_cluster(attributes: dict) -> RedshiftCluster:
         subnet_group_name,
         vpc_security_group_ids,
         attributes["publicly_accessible"],
-        get_dict_value(attributes, "encrypted", False),
+        _get_known_value(attributes, "encrypted", False),
     )
 
 
@@ -1524,14 +1523,14 @@ def build_rds_cluster_instance(attributes: dict) -> RdsInstance:
         account=attributes["account_id"],
         region=attributes["region"],
         name=attributes["identifier"],
-        arn=attributes["arn"],
+        arn=attributes.get("arn"),
         port=_get_known_value(attributes, "port")
         or get_port_by_engine(_get_known_value(attributes, "engine") or "aurora"),
         publicly_accessible=attributes["publicly_accessible"],
         db_subnet_group_name=_get_known_value(attributes, "db_subnet_group_name"),
         security_group_ids=_get_known_value(attributes, "vpc_security_group_ids", []),
         db_cluster_id=_get_known_value(attributes, "cluster_identifier"),
-        encrypted_at_rest=get_dict_value(attributes, "storage_encrypted", False),
+        encrypted_at_rest=_get_known_value(attributes, "storage_encrypted", False),
         performance_insights_enabled=_get_known_value(
             attributes, "performance_insights_enabled", False
         ),
@@ -1551,14 +1550,14 @@ def build_rds_db_instance(attributes: dict) -> RdsInstance:
         account=attributes["account_id"],
         region=attributes["region"],
         name=attributes["identifier"],
-        arn=attributes["arn"],
+        arn=attributes.get("arn"),
         port=_get_known_value(attributes, "port")
         or get_port_by_engine(_get_known_value(attributes, "engine") or "aurora"),
         publicly_accessible=attributes["publicly_accessible"],
         db_subnet_group_name=_get_known_value(attributes, "db_subnet_group_name"),
         security_group_ids=_get_known_value(attributes, "vpc_security_group_ids", []),
         db_cluster_id=None,
-        encrypted_at_rest=get_dict_value(attributes, "storage_encrypted", False),
+        encrypted_at_rest=_get_known_value(attributes, "storage_encrypted", False),
         performance_insights_enabled=_get_known_value(
             attributes, "performance_insights_enabled", False
         ),
@@ -1589,7 +1588,7 @@ def build_db_subnet_group(attributes: dict) -> DbSubnetGroup:
         attributes["subnet_ids"],
         attributes["region"],
         attributes["account_id"],
-        attributes["arn"],
+        attributes.get("arn"),
     )
 
 
@@ -1598,7 +1597,7 @@ def build_rds_cluster(attributes: dict) -> RdsCluster:
         account=attributes["account_id"],
         region=attributes["region"],
         cluster_id=attributes["id"],
-        arn=attributes["arn"],
+        arn=attributes.get("arn"),
         port=_get_known_value(attributes, "port")
         or get_port_by_engine(_get_known_value(attributes, "engine", "aurora")),
         db_subnet_group_name=_get_known_value(attributes, "db_subnet_group_name"),
@@ -1680,8 +1679,10 @@ def _get_name(attributes: dict) -> str:
     tags = _get_known_value(attributes, "tags_all") or _get_known_value(
         attributes, "tags", {}
     )
-    return _get_known_value(tags, "Name")
-
+    name = _get_known_value(tags, "Name")
+    if name is None and (urn := attributes.get("urn")):
+        name = urn.split("::")[-1]
+    return name
 
 def _is_known_value(attributes: dict, key: str) -> bool:
     address = attributes.get("pulumi_address", "")
@@ -1705,8 +1706,26 @@ def _add_resource_for_es_domain_policy_statements(
     return es_policies
 
 
-def _get_known_value(attributes: dict, key: str, default=None):
-    return attributes.get(key) if _is_known_value(attributes, key) else default
+R = TypeVar("R")
+
+
+@overload
+def _get_known_value(attributes: Dict[str, Any], key: str):
+    ...
+
+
+@overload
+def _get_known_value(attributes: Dict[str, Any], key: str, default: None):
+    ...
+
+
+@overload
+def _get_known_value(attributes: Dict[str, Any], key: str, default: R) -> R:
+    ...
+
+
+def _get_known_value(attributes: Dict[str, Any], key: str, default=None):
+    return attributes[key] if _is_known_value(attributes, key) else default
 
 
 def build_ecs_cluster(attributes: dict) -> EcsCluster:
@@ -1718,8 +1737,8 @@ def build_ecs_cluster(attributes: dict) -> EcsCluster:
     cluster: EcsCluster = EcsCluster(
         account=attributes["account_id"],
         region=attributes["region"],
-        cluster_arn=attributes["arn"],
-        cluster_id=attributes["id"],
+        cluster_arn=attributes.get("arn"),
+        cluster_id=attributes.get("id"),
         cluster_name=attributes["name"],
         is_container_insights_enabled=is_container_insights_enabled,
     )
@@ -1727,11 +1746,12 @@ def build_ecs_cluster(attributes: dict) -> EcsCluster:
 
 
 def build_ecs_service(attributes: dict) -> EcsService:
-    network_conf_list: List[NetworkConfiguration] = [
+    network_conf_list: List[NetworkConfiguration] = []
+    nc = attributes["network_configuration"]
+    network_conf_list = [
         NetworkConfiguration(
-            conf["assign_public_ip"], conf["security_groups"], conf["subnets"]
+            nc["assign_public_ip"], nc["security_groups"], nc["subnets"]
         )
-        for conf in attributes["network_configuration"]
     ]
 
     service: EcsService = EcsService(
@@ -1743,10 +1763,10 @@ def build_ecs_service(attributes: dict) -> EcsService:
         network_conf_list=network_conf_list,
         task_definition_arn=attributes.get("task_definition", None),
     )
-    elb_list: dict = attributes["load_balancer"]
+    elb_list: dict = attributes["loadBalancers"]
     for elb_dict in elb_list:
         elb: LoadBalancingConfiguration = LoadBalancingConfiguration(
-            elb_dict["elb_name"],
+            elb_dict.get("elb_name"),
             elb_dict["target_group_arn"],
             elb_dict["container_name"],
             elb_dict["container_port"],
@@ -1771,7 +1791,7 @@ def build_ecs_target(attributes: dict) -> CloudWatchEventTarget:
             LaunchType(event_target_dict["launch_type"]),
             attributes["account_id"],
             attributes["region"],
-            attributes["arn"],
+            attributes.get("arn"),
             attributes["role_arn"],
             network_conf_list,
             event_target_dict.get("task_definition_arn", None),
@@ -1785,7 +1805,7 @@ def build_ecs_target(attributes: dict) -> CloudWatchEventTarget:
         rule_name=attributes["rule"],
         target_id=attributes["target_id"],
         role_arn=attributes["role_arn"],
-        cluster_arn=attributes["arn"],
+        cluster_arn=attributes.get("arn"),
         ecs_target_list=ecs_target_list,
     )
 
@@ -1799,16 +1819,16 @@ def build_ecs_task_definition(attributes: dict) -> EcsTaskDefinition:
     if container_definitions_data:
         for container in container_definitions_data:
             port_mappings: List[PortMappings] = []
-            for port_map in get_dict_value(container, "portMappings", []):
-                host_port: int = get_dict_value(port_map, "hostPort", -1)
-                container_port: int = get_dict_value(port_map, "containerPort", -1)
+            for port_map in _get_known_value(container, "portMappings", []):
+                host_port: int = _get_known_value(port_map, "hostPort", -1)
+                container_port: int = _get_known_value(port_map, "containerPort", -1)
                 if network_mode == NetworkMode.AWS_VPC:
                     host_port = container_port
                 port_mappings.append(
                     PortMappings(
                         container_port=container_port,
                         host_port=host_port,
-                        protocol=IpProtocol(get_dict_value(port_map, "protocol", "")),
+                        protocol=IpProtocol(_get_known_value(port_map, "protocol", "")),
                     )
                 )
             container_definitions.append(
@@ -1832,12 +1852,12 @@ def build_ecs_task_definition(attributes: dict) -> EcsTaskDefinition:
                 )
             )
     ecs_task_definition = EcsTaskDefinition(
-        task_arn=attributes["arn"],
+        task_arn=attributes.get("arn"),
         family=attributes["family"],
-        revision=attributes["revision"],
+        revision=attributes.get("revision"),
         account=attributes["account_id"],
         region=attributes["region"],
-        task_role_arn=get_dict_value(attributes, "task_role_arn", None),
+        task_role_arn=_get_known_value(attributes, "task_role_arn", None),
         execution_role_arn=attributes.get("execution_role_arn", None),
         network_mode=network_mode,
         container_definitions=container_definitions,
@@ -1862,7 +1882,7 @@ def build_default_vpc(attributes: dict) -> Vpc:
         name=_get_name(attributes),
         is_default=True,
         ipv6_cidr_block=ipv6_cidr_block,
-    ).with_aliases(attributes["id"])
+    ).with_aliases(attributes.get("id"))
 
 
 def build_elastic_search_domain(attributes: dict) -> ElasticSearchDomain:
@@ -1909,7 +1929,7 @@ def build_elastic_search_domain(attributes: dict) -> ElasticSearchDomain:
     return_statement = ElasticSearchDomain(
         attributes["domain_id"],
         attributes["domain_name"],
-        attributes["arn"],
+        attributes.get("arn"),
         enforce_https,
         subnet_ids,
         security_group_ids,
@@ -1942,18 +1962,18 @@ def build_elastic_search_domain(attributes: dict) -> ElasticSearchDomain:
 
 
 def build_load_balancer_listener(attributes: dict) -> LoadBalancerListener:
-    default_action_type = attributes["default_action"][0]["type"]
+    default_action_type = attributes["defaultActions"][0]["type"]
     redirect_action_protocol = None
     redirect_action_port = None
     if default_action_type.lower() == "redirect":
-        redirect_action_protocol = attributes["default_action"][0]["redirect"][0][
+        redirect_action_protocol = attributes["defaultActions"][0]["redirect"][0][
             "protocol"
         ]
-        redirect_action_port = attributes["default_action"][0]["redirect"][0]["port"]
+        redirect_action_port = attributes["defaultActions"][0]["redirect"][0]["port"]
     return LoadBalancerListener(
         listener_port=attributes["port"],
         listener_protocol=attributes["protocol"],
-        listener_arn=attributes["arn"],
+        listener_arn=attributes.get("arn"),
         load_balancer_arn=attributes["load_balancer_arn"],
         account=attributes["account_id"],
         region=attributes["region"],
@@ -1965,19 +1985,21 @@ def build_load_balancer_listener(attributes: dict) -> LoadBalancerListener:
 
 def build_eks_cluster(attributes: dict) -> EksCluster:
     vpc_config = attributes["vpc_config"][0]
-    public_access_cidrs = get_dict_value(
+    public_access_cidrs = _get_known_value(
         vpc_config, "public_access_cidrs", ["0.0.0.0/0"]
     )
-    security_group_ids = get_dict_value(vpc_config, "security_group_ids", [])
-    subnet_ids = get_dict_value(vpc_config, "subnet_ids", [])
-    endpoint_public_access = get_dict_value(vpc_config, "endpoint_public_access", True)
-    endpoint_private_access = get_dict_value(
+    security_group_ids = _get_known_value(vpc_config, "security_group_ids", [])
+    subnet_ids = _get_known_value(vpc_config, "subnet_ids", [])
+    endpoint_public_access = _get_known_value(
+        vpc_config, "endpoint_public_access", True
+    )
+    endpoint_private_access = _get_known_value(
         vpc_config, "endpoint_private_access", False
     )
 
     return EksCluster(
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["role_arn"],
         attributes["endpoint"],
         security_group_ids,
@@ -1997,13 +2019,13 @@ def build_cloudfront_distribution_list(attributes: dict) -> CloudFrontDistributi
         cloudfront_default_certificate=viewer_cert_dict[
             "cloudfront_default_certificate"
         ],
-        minimum_protocol_version=get_dict_value(
+        minimum_protocol_version=_get_known_value(
             viewer_cert_dict, "minimum_protocol_version", "TLSv1"
         ),
     )
     cache_behavior_list: List[CacheBehavior] = []
     order: int = 0
-    for cache_behavior_dict in attributes["default_cache_behavior"] + get_dict_value(
+    for cache_behavior_dict in attributes["default_cache_behavior"] + _get_known_value(
         attributes, "ordered_cache_behavior", []
     ):
         cache_behavior: CacheBehavior = CacheBehavior(
@@ -2038,7 +2060,7 @@ def build_cloudfront_distribution_list(attributes: dict) -> CloudFrontDistributi
         origin_config_list.append(origin_config)
     web_acl_id = attributes["web_acl_id"]
     return CloudFrontDistribution(
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["domain_name"],
         attributes["id"],
         attributes["account_id"],
@@ -2063,7 +2085,7 @@ def build_cloudfront_distribution_logging(
         prefix = _get_known_value(logging_config[0], "prefix", None)
         logging_enabled = True
     return CloudfrontDistributionLogging(
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["domain_name"],
         attributes["id"],
         attributes["account_id"],
@@ -2112,12 +2134,12 @@ def build_launch_template(attributes: dict) -> LaunchTemplate:
     )
     version = _get_known_value(attributes, "latest_version", 0) + 1
     network_configurations: List[NetworkConfiguration] = []
-    for net_conf in get_dict_value(attributes, "network_interfaces", []):
-        assign_public_ip: Optional[bool] = get_dict_value(
+    for net_conf in _get_known_value(attributes, "network_interfaces", []):
+        assign_public_ip: Optional[bool] = _get_known_value(
             net_conf, "associate_public_ip_address", None
         )
-        security_groups: List[str] = get_dict_value(net_conf, "security_groups", [])
-        subnet_id: str = get_dict_value(net_conf, "subnet_id", None)
+        security_groups: List[str] = _get_known_value(net_conf, "security_groups", [])
+        subnet_id: str = _get_known_value(net_conf, "subnet_id", None)
         network_configurations.append(
             NetworkConfiguration(
                 assign_public_ip=assign_public_ip,
@@ -2173,9 +2195,9 @@ def build_athena_workgroup(attributes: dict) -> AthenaWorkgroup:
 
 
 def build_rest_api_gw(attributes: dict) -> RestApiGw:
-    agw_type = get_dict_value(attributes, "endpoint_configuration", {})
+    agw_type = _get_known_value(attributes, "endpoint_configuration", {})
     if agw_type:
-        agw_type = get_dict_value(agw_type[0], "types", [])
+        agw_type = _get_known_value(agw_type[0], "types", [])
         agw_type = agw_type[0] if agw_type else "EDGE"
         agw_type = ApiGatewayType(agw_type)
     else:
@@ -2197,16 +2219,16 @@ def build_rest_api_gw(attributes: dict) -> RestApiGw:
 
 
 def build_api_gateway_method_settings(attributes: dict) -> ApiGatewayMethodSettings:
-    caching_enabled = get_dict_value(
+    caching_enabled = _get_known_value(
         attributes["settings"][0], "caching_enabled", False
     )
-    caching_encrypted = get_dict_value(
+    caching_encrypted = _get_known_value(
         attributes["settings"][0], "cache_data_encrypted", False
     )
     method_path = attributes["method_path"]
     http_method = method_path.split("/")[-1]
     http_method = (
-        RestApiMethods.ANY if http_method == "*" else RestApiMethods(http_method)
+        RestApiMethod.ANY if http_method == "*" else RestApiMethod(http_method)
     )
     return ApiGatewayMethodSettings(
         attributes["rest_api_id"],
@@ -2226,7 +2248,7 @@ def build_api_gateway_method(attributes: dict) -> ApiGatewayMethod:
         region=attributes["region"],
         rest_api_id=attributes["rest_api_id"],
         resource_id=attributes["resource_id"],
-        http_method=RestApiMethods(attributes["http_method"]),
+        http_method=RestApiMethod(attributes["http_method"]),
         authorization=attributes["authorization"],
     )
 
@@ -2238,7 +2260,7 @@ def build_api_gateway_integration(attributes: dict) -> ApiGatewayIntegration:
     integration_http_method = (
         integration_http_method if integration_http_method else None
     )
-    uri: str = get_dict_value(attributes, "uri", None)
+    uri: str = _get_known_value(attributes, "uri", None)
     if uri and uri.__contains__(
         AwsServiceName.AWS_LAMBDA_FUNCTION.value
     ):  # currently support only Lambda integration
@@ -2256,8 +2278,8 @@ def build_api_gateway_integration(attributes: dict) -> ApiGatewayIntegration:
         region=region,
         rest_api_id=attributes["rest_api_id"],
         resource_id=attributes["resource_id"],
-        request_http_method=RestApiMethods(attributes["http_method"]),
-        integration_http_method=RestApiMethods(integration_http_method),
+        request_http_method=RestApiMethod(attributes["http_method"]),
+        integration_http_method=RestApiMethod(integration_http_method),
         integration_type=IntegrationType(attributes["type"]),
         uri=uri,
     )
@@ -2286,7 +2308,7 @@ def build_dynamodb_table(attributes: dict) -> DynamoDbTable:
         for field_attr in attributes["attribute"]
     ]
     billing_mode: BillingMode = BillingMode(
-        get_dict_value(attributes, "billing_mode", "PROVISIONED")
+        _get_known_value(attributes, "billing_mode", "PROVISIONED")
     )
     server_side_encryption = False
     kms_key_id = None
@@ -2298,7 +2320,7 @@ def build_dynamodb_table(attributes: dict) -> DynamoDbTable:
         region=attributes["region"],
         account=attributes["account_id"],
         table_id=attributes["id"],
-        table_arn=attributes["arn"],
+        table_arn=attributes.get("arn"),
         billing_mode=billing_mode,
         partition_key=attributes["hash_key"],
         sort_key=attributes.get("range_key"),
@@ -2351,7 +2373,7 @@ def build_dax_cluster(attributes: dict) -> DaxCluster:
     return DaxCluster(
         attributes["cluster_name"],
         server_side_encryption,
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["region"],
         attributes["account_id"],
     )
@@ -2360,12 +2382,12 @@ def build_dax_cluster(attributes: dict) -> DaxCluster:
 def build_docdb_cluster(attributes: dict) -> DocumentDbCluster:
     return DocumentDbCluster(
         attributes.get("cluster_identifier"),
-        get_dict_value(attributes, "storage_encrypted", False),
+        _get_known_value(attributes, "storage_encrypted", False),
         attributes.get("db_cluster_parameter_group_name"),
         _get_known_value(attributes, "kms_key_id"),
         attributes["region"],
         attributes["account_id"],
-        attributes["arn"],
+        attributes.get("arn"),
         _get_known_value(attributes, "enabled_cloudwatch_logs_exports", []),
     )
 
@@ -2431,7 +2453,7 @@ def build_code_build_projects(attributes: dict) -> CodeBuildProject:
     return CodeBuildProject(
         attributes["name"],
         attributes["encryption_key"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["account_id"],
         attributes["region"],
         vpc_config,
@@ -2449,7 +2471,7 @@ def build_code_build_report_group(attributes: dict) -> CodeBuildReportGroup:
             attributes["export_config"][0]["s3_destination"][0], "encryption_key"
         ),
         attributes["export_config"][0]["s3_destination"][0]["encryption_disabled"],
-        attributes["arn"],
+        attributes.get("arn"),
     )
 
 
@@ -2460,7 +2482,7 @@ def build_cloudtrail(attributes: dict) -> CloudTrail:
     return CloudTrail(
         attributes["name"],
         kms_encryption,
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["enable_log_file_validation"],
         attributes["region"],
         attributes["account_id"],
@@ -2472,7 +2494,7 @@ def build_cloud_watch_log_groups(attributes: dict) -> CloudWatchLogGroup:
     return CloudWatchLogGroup(
         attributes["name"],
         attributes.get("kms_key_id"),
-        attributes["arn"],
+        attributes.get("arn"),
         attributes.get("retention_in_days"),
         attributes["region"],
         attributes["account_id"],
@@ -2482,7 +2504,7 @@ def build_cloud_watch_log_groups(attributes: dict) -> CloudWatchLogGroup:
 def build_kms_key(attributes: dict) -> KmsKey:
     return KmsKey(
         attributes.get("key_id"),
-        attributes["arn"],
+        attributes.get("arn"),
         KeyManager("CUSTOMER"),
         attributes["region"],
         attributes["account_id"],
@@ -2553,8 +2575,8 @@ def build_elasti_cache_replication_group(
 def build_sns_topic(attributes: dict) -> SnsTopic:
     encrypted_at_rest = False
     sns_topic_resource = SnsTopic(
-        attributes["arn"],
-        get_dict_value(attributes, "name", attributes.get("name_prefix")),
+        attributes.get("arn"),
+        _get_known_value(attributes, "name", attributes.get("name_prefix")),
         encrypted_at_rest,
         attributes["region"],
         attributes["account_id"],
@@ -2580,7 +2602,7 @@ def build_sqs_queue_policy(attributes: dict) -> SqsQueuePolicy:
 def build_neptune_cluster(attributes: dict) -> NeptuneCluster:
     neptune_cluster_resource = NeptuneCluster(
         attributes["cluster_identifier"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["storage_encrypted"],
         attributes["region"],
         attributes["account_id"],
@@ -2610,10 +2632,10 @@ def build_neptune_instance(attributes: dict) -> NeptuneInstance:
 
 def build_ecr_repository(attributes: dict) -> EcrRepository:
     is_image_scan_on_push = False
-    if len(attributes["image_scanning_configuration"]) > 0 and attributes[
+    if attributes.get("image_scanning_configuration") and attributes[
         "image_scanning_configuration"
-    ][0].get("scan_on_push"):
-        is_image_scan_on_push = attributes["image_scanning_configuration"][0][
+    ].get("scan_on_push"):
+        is_image_scan_on_push = attributes["image_scanning_configuration"][
             "scan_on_push"
         ]
     encryption_type = "AES256"
@@ -2628,7 +2650,7 @@ def build_ecr_repository(attributes: dict) -> EcrRepository:
         kms_key_id = _get_known_value(encryption_settings[0], "kms_key")
     return EcrRepository(
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["region"],
         attributes["account_id"],
         attributes["image_tag_mutability"],
@@ -2652,7 +2674,7 @@ def build_cloudwatch_logs_destination(attributes: dict) -> CloudWatchLogsDestina
         attributes["account_id"],
         attributes["region"],
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
     )
 
 
@@ -2734,7 +2756,7 @@ def build_lambda_function(attributes: dict) -> LambdaFunction:
         region=attributes["region"],
         function_name=attributes["function_name"],
         lambda_func_version=lambda_func_version,
-        arn=attributes["arn"],
+        arn=attributes.get("arn"),
         qualified_arn=attributes.get("qualified_arn"),
         role_arn=attributes["role"],
         handler=attributes["handler"],
@@ -2793,7 +2815,7 @@ def build_lambda_alias(attributes: dict) -> LambdaAlias:
     return LambdaAlias(
         account=attributes["account_id"],
         region=attributes["region"],
-        arn=attributes["arn"],
+        arn=attributes.get("arn"),
         name=attributes["name"],
         function_name_or_arn=attributes["function_name"],
         function_version=attributes["function_version"],
@@ -2804,7 +2826,7 @@ def build_lambda_alias(attributes: dict) -> LambdaAlias:
 def build_glacier_vault(attributes: dict) -> GlacierVault:
     return GlacierVault(
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["region"],
         attributes["account_id"],
     )
@@ -2817,7 +2839,7 @@ def build_glacier_vault_policy(attributes: dict) -> GlacierVaultPolicy:
     ):
         policy = _build_policy_statements_from_str(attributes, "access_policy")
     return GlacierVaultPolicy(
-        attributes["arn"],
+        attributes.get("arn"),
         policy,
         _get_known_value(attributes, "access_policy"),
         attributes["account_id"],
@@ -2856,13 +2878,13 @@ def build_glue_data_catalog_policy(attributes: dict) -> GlueDataCatalogPolicy:
 def build_secrets_manager_secret(attributes: dict) -> SecretsManagerSecret:
     secrets_manager_secret_resource = SecretsManagerSecret(
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["region"],
         attributes["account_id"],
     )
     if _get_known_value(attributes, "policy"):
         secrets_manager_secret_resource.policy = SecretsManagerSecretPolicy(
-            attributes["arn"],
+            attributes.get("arn"),
             build_policy_statements_from_str(attributes["policy"]),
             _get_known_value(attributes, "policy"),
             attributes["account_id"],
@@ -2905,7 +2927,7 @@ def build_rest_api_gw_domain(attributes: dict) -> RestApiGwDomain:
 def build_kinesis_stream(attributes: dict) -> KinesisStream:
     return KinesisStream(
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
         _get_known_value(attributes, "encryption_type") == "KMS",
         attributes["region"],
         attributes["account_id"],
@@ -2951,8 +2973,8 @@ def build_kinesis_firehose_stream(attributes: dict) -> KinesisFirehoseStream:
             )
     return KinesisFirehoseStream(
         attributes["name"],
-        attributes["arn"],
-        any(item["enabled"] for item in attributes.get("server_side_encryption")),
+        attributes.get("arn"),
+        any(item["enabled"] for item in attributes.get("server_side_encryption")),  # type: ignore
         attributes["account_id"],
         attributes["region"],
         es_domain_arn,
@@ -2967,7 +2989,7 @@ def build_workspace(attributes: dict) -> Workspace:
         attributes["id"],
         _get_known_value(attributes, "root_volume_encryption_enabled"),
         _get_known_value(attributes, "user_volume_encryption_enabled"),
-        get_dict_value(attributes, "volume_encryption_key", None),
+        _get_known_value(attributes, "volume_encryption_key", None),
     )
 
 
@@ -2975,7 +2997,7 @@ def build_kms_alias(attributes: dict) -> KmsAlias:
     return KmsAlias(
         attributes["name"],
         attributes["target_key_id"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["account_id"],
         attributes["region"],
     )
@@ -3047,7 +3069,7 @@ def build_dms_replication_instance_subnet_group(
 def build_sagemaker_endpoint_config(attributes: dict) -> SageMakerEndpointConfig:
     return SageMakerEndpointConfig(
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
         bool(attributes.get("kms_key_arn")),
         attributes["region"],
         attributes["account_id"],
@@ -3057,7 +3079,7 @@ def build_sagemaker_endpoint_config(attributes: dict) -> SageMakerEndpointConfig
 def build_sagemaker_notebook_instance(attributes: dict) -> SageMakerNotebookInstance:
     return SageMakerNotebookInstance(
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
         _get_known_value(attributes, "kms_key_id"),
         attributes["region"],
         attributes["account_id"],
@@ -3073,7 +3095,7 @@ def build_elasticache_cluster(attributes: dict) -> ElastiCacheCluster:
         attributes["region"],
         attributes["account_id"],
         attributes["cluster_id"],
-        attributes["arn"],
+        attributes.get("arn"),
         _get_known_value(attributes, "replication_group_id"),
         _get_known_value(attributes, "security_group_ids"),
         _get_known_value(attributes, "snapshot_retention_limit", 0),
@@ -3179,8 +3201,8 @@ def build_load_balancer_attributes(attributes: dict) -> LoadBalancerAttributes:
     return LoadBalancerAttributes(
         attributes["account_id"],
         attributes["region"],
-        attributes["arn"],
-        get_dict_value(attributes, "drop_invalid_header_fields", False),
+        attributes.get("arn"),
+        _get_known_value(attributes, "drop_invalid_header_fields", False),
         lb_access_logs,
     )
 
@@ -3194,7 +3216,7 @@ def build_batch_compute_environment(attributes: dict) -> BatchComputeEnvironment
         )
     return BatchComputeEnvironment(
         attributes["compute_environment_name"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["account_id"],
         attributes["region"],
         vpc_config,
@@ -3204,7 +3226,7 @@ def build_batch_compute_environment(attributes: dict) -> BatchComputeEnvironment
 def build_mq_broker(attributes: dict) -> MqBroker:
     return MqBroker(
         attributes["broker_name"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["id"],
         attributes["account_id"],
         attributes["region"],
@@ -3235,7 +3257,7 @@ def build_api_gateway_v2_integration(attributes: dict) -> ApiGatewayV2Integratio
         attributes["api_id"],
         attributes["connection_id"],
         attributes["id"],
-        RestApiMethods(attributes.get("integration_method")),
+        RestApiMethod(attributes.get("integration_method")),
         IntegrationType(attributes["integration_type"]),
         attributes.get("integration_uri"),
     )
@@ -3247,7 +3269,7 @@ def build_api_gateway_v2_vpc_link(attributes: dict) -> ApiGatewayVpcLink:
         attributes["region"],
         attributes["id"],
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["security_group_ids"],
         attributes["subnet_ids"],
     )
@@ -3262,10 +3284,10 @@ def build_emr_cluster(attributes: dict) -> EmrCluster:
         subnet_ids_list = [ec2_settings[0].get("subnet_id")]
         if ec2_settings[0].get("subnet_ids"):
             subnet_ids_list.extend(ec2_settings[0]["subnet_ids"])
-        master_sg_id = get_dict_value(
+        master_sg_id = _get_known_value(
             ec2_settings[0], "emr_managed_master_security_group", None
         )
-        slave_sg_id = get_dict_value(
+        slave_sg_id = _get_known_value(
             ec2_settings[0], "emr_managed_slave_security_group", None
         )
         security_group_ids_list = [
@@ -3303,7 +3325,7 @@ def build_emr_cluster(attributes: dict) -> EmrCluster:
         attributes["region"],
         attributes["name"],
         attributes["id"],
-        attributes["arn"],
+        attributes.get("arn"),
         vpc_config,
         master_sg_id,
         slave_sg_id,
@@ -3329,7 +3351,7 @@ def build_global_accelerator_endpoint_group(
     return GlobalAcceleratorEndpointGroup(
         attributes["account_id"],
         attributes["listener_arn"],
-        attributes["arn"],
+        attributes.get("arn"),
         endpoint_config[0].get("endpoint_id"),
         endpoint_config[0].get("client_ip_preservation_enabled"),
         _get_known_value(attributes, "endpoint_group_region"),
@@ -3363,7 +3385,7 @@ def build_cloudhsm_v2_hsm(attributes: dict) -> CloudHsmV2Hsm:
 def build_s3outpost_endpoint(attributes: dict) -> S3OutpostEndpoint:
     return S3OutpostEndpoint(
         attributes["outpost_id"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["account_id"],
         attributes["region"],
         NetworkConfiguration(
@@ -3381,7 +3403,7 @@ def build_worklink_fleet(attributes: dict) -> WorkLinkFleet:
         )
     return WorkLinkFleet(
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["account_id"],
         attributes["region"],
         vpc_config,
@@ -3399,7 +3421,7 @@ def build_glue_connection(attributes: dict) -> GlueConnection:
         )
     return GlueConnection(
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
         attributes["account_id"],
         attributes["region"],
         vpc_config,
@@ -3425,7 +3447,7 @@ def build_config_aggregator(attributes: dict) -> ConfigAggregator:
         attributes["account_id"],
         attributes["region"],
         attributes["name"],
-        attributes["arn"],
+        attributes.get("arn"),
         account_aggregation_used,
         organization_aggregation_used,
         account_aggregation_all_regions_enabled,
@@ -3489,5 +3511,5 @@ def build_fsx_windows_file_system(attributes: dict) -> FsxWindowsFileSystem:
         attributes["account_id"],
         attributes["id"],
         _get_known_value(attributes, "kms_key_id"),
-        attributes["arn"],
+        attributes.get("arn"),
     )

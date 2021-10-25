@@ -71,7 +71,7 @@ class Vpc(AwsResource):
                  enable_dns_hostnames: bool = None):
         super().__init__(account, region, AwsServiceName.AWS_VPC)
         self.vpc_id: str = vpc_id
-        self.with_aliases(vpc_id)
+        self.with_aliases(name, vpc_id)
         self.cidr_block: List[str] = cidr_block
         self.ipv6_cidr_block: Optional[List[str]] = ipv6_cidr_block
         self.name: str = name

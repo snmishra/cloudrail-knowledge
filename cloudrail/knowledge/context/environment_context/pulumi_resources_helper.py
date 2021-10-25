@@ -1,22 +1,52 @@
 from cloudrail.knowledge.context.environment_context.pulumi_resources_metadata_parser import (
     PulumiMetadata,
 )
-from typing import Any, Dict, List
+from typing import Any, Dict, Generic, List, TypeVar
 
 from cloudrail.knowledge.context.iac_action_type import IacActionType
 from cloudrail.knowledge.context.iac_resource_metadata import IacResourceMetadata
+from cloudrail.knowledge.pulumi_utils import ResourceInfo, terraform_to_pulumi_name
+
+_KT = TypeVar("_KT")
+_VT = TypeVar("_VT")
+
+
+class ResourceDict(Dict[_KT, _VT]):
+    """A special dict class that snakeCase keys also as snake_case"""
+
+    pulumi_schema = None
+
+    def _k(self, k: _KT) -> _KT:
+        if isinstance(k, str) and k not in self:
+            new_key = terraform_to_pulumi_name(k, pulumi_schema=self.pulumi_schema)
+            if new_key in self:
+                return type(k)(new_key)
+        return k
+
+    def __getitem__(self, k: _KT) -> _VT:
+        return super().__getitem__(self._k(k))
+
+
+def resource_dict_factory(provider_name, provider_info):
+    return type(ResourceDict)(
+        f"{provider_name}ResourceDict",
+        (ResourceDict,),
+        {"pulumi_schema": provider_info.Resources},
+    )
 
 
 def get_before_raw_resources_by_type(
-    raw_data, resources_metadata: Dict[str, PulumiMetadata]
+    raw_data,
+    resources_metadata: Dict[str, PulumiMetadata],
+    pulumi_resource_info: Dict[str, ResourceInfo] = {},
 ) -> Dict[str, List[Dict[str, Any]]]:
-    resources = {}
+    resources = ResourceDict()
     for resource in raw_data:
         # Pulumi doesn't report anything not managed, IIUC
         # if resource["mode"] != "managed":
         #     continue
 
-        before_att = resource.get("oldState", {})
+        before_att = resource.get("oldState", ResourceDict())
         if not before_att:
             continue
         resource_type = before_att["type"]
@@ -30,6 +60,7 @@ def get_before_raw_resources_by_type(
         attributes["action"] = op
         attributes["metadata"] = metadata
         attributes["is_new"] = False
+        resource_info = pulumi_resource_info.get(resource_type)
         resources[resource_type].append(attributes)
     return resources
 
@@ -39,11 +70,11 @@ def get_after_raw_resources_by_type(
     resources_metadata: Dict[str, PulumiMetadata],
     keep_deleted_entities=True,
 ):
-    resources = {}
+    resources = ResourceDict()
     for resource in raw_data:
         address = resource["urn"]  # IacState requires address key
-        before_att = resource.get("oldState", {})
-        after_att = resource.get("newState", {})
+        before_att = resource.get("oldState", ResourceDict())
+        after_att = resource.get("newState", ResourceDict())
         resource_type = before_att.get("type") or after_att.get("type")
         if resource_type is None:
             raise Exception(f"Incorrect resource type {address}")
@@ -64,7 +95,7 @@ def get_after_raw_resources_by_type(
             attributes["address"] = address
             attributes["action"] = resource["op"]
             attributes["metadata"] = metadata
-            attributes["is_new"] = (not before_att) and after_att
+            attributes["is_new"] = bool((not before_att) and after_att)
             resources[resource_type].append(attributes)
         elif resource["op"] == "update":
             if keep_deleted_entities:

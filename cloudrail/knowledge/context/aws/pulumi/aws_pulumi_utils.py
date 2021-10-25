@@ -1,11 +1,13 @@
-from cloudrail.knowledge.context.aws.pulumi.aws_pulumi_context_builder import (
-    PulumiPreviewOutput,
-)
 import functools
 import logging
 import re
 from dataclasses import dataclass
-from typing import Any, Dict, List, TypedDict
+from typing import TYPE_CHECKING, Any, Dict, List, TypedDict
+
+if TYPE_CHECKING:
+    from cloudrail.knowledge.context.aws.pulumi.aws_pulumi_context_builder import (
+        PulumiPreviewOutput,
+    )
 
 
 @dataclass
@@ -21,7 +23,7 @@ class ProgramInfo(TypedDict):
 class AwsPulumiUtils:
     def __init__(
         self,
-        preview_json: PulumiPreviewOutput,
+        preview_json: "PulumiPreviewOutput",
         resources: Dict[str, List[Dict[str, Any]]],
     ):
         # The primal default region. Will be replaced by the region specified in "aws" provider, or will be the region of "aws" provider if a

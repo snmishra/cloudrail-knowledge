@@ -13,6 +13,7 @@ from cloudrail.knowledge.context.iac_action_type import IacActionType
 from cloudrail.knowledge.context.iac_resource_metadata import IacResourceMetadata
 from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.context.mergeable import Mergeable
+from cloudrail.knowledge.pulumi_utils import pulumi_to_terraform_name
 
 PulumiOpToIacActionMap = {
     "create": "create",
@@ -28,13 +29,12 @@ class BasePulumiBuilder(ABC):
         self.resources = resources
 
     def _build_and_map_action(self, attributes):
-        for key, value in attributes.items():
-            if value and isinstance(value, str) and "{" not in value:
-                attributes[key] = value.replace('"', "")
+        # Promote input to attributes
+        attributes.update(attributes["inputs"])
         address = attributes.get("urn")
         try:
-            action = IacActionType(PulumiOpToIacActionMap.get(attributes["op"]))
-            is_new: bool = attributes.get("op") == "create"
+            action = IacActionType(PulumiOpToIacActionMap.get(attributes["action"]))
+            is_new: bool = attributes.get("action") == "create"
             metadata: IacResourceMetadata = attributes["metadata"]
             if metadata:
                 metadata.resource_type = attributes["type"]

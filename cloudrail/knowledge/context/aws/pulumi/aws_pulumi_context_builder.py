@@ -456,6 +456,7 @@ from cloudrail.knowledge.context.aws.resources_builders.pulumi.xray_encryption_b
     XrayEncryptionBuilder,
 )
 from cloudrail.knowledge.context.environment_context.pulumi_resources_helper import (
+    ResourceDict,
     get_raw_resources_by_type,
 )
 from cloudrail.knowledge.context.environment_context.pulumi_resources_metadata_parser import (
@@ -506,10 +507,10 @@ class AwsPulumiContextBuilder(IacContextBuilder):
             else True
         )
         iac_url_template: Optional[str] = extra_args.get("iac_url_template")
-        data = file_utils.read_all_text(iac_file)
 
         # TerraformOutputValidator.validate(data)
-        dic: PulumiPreviewOutput = json.loads(data)
+        with open(iac_file) as inf:
+            dic: PulumiPreviewOutput = json.load(inf, object_hook=ResourceDict)
 
         # We don't have any metadata information from Pulumi. This is just an
         # empty dict
@@ -556,7 +557,8 @@ class AwsPulumiContextBuilder(IacContextBuilder):
             resources
         ).build()
 
-        vpcs = AliasesDict(*VpcBuilder(resources).build())
+        _vpcs = VpcBuilder(resources).build()
+        vpcs = AliasesDict(*_vpcs)
         default_vpcs = DefaultVpcBuilder(resources).build()
         vpcs.update(*default_vpcs)
 

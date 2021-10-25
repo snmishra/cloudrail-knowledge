@@ -212,6 +212,8 @@ class AwsTerraformContextBuilder(IacContextBuilder):
         cloud_watch_event_target_list: List[CloudWatchEventTarget] = CloudWatchEventTargetBuilder(resources).build()
         ecs_targets_list: List[EcsTarget] = []
         for event_target in cloud_watch_event_target_list:
+            if event_target.iac_state is None:
+                continue
             for target in event_target.ecs_target_list:
                 target.iac_state = IacState(address=event_target.iac_state.address + 'ecs_target',
                                             action=IacActionType.NO_OP,
