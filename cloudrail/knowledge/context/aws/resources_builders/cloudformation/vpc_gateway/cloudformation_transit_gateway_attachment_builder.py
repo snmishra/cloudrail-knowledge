@@ -14,7 +14,8 @@ class CloudformationTransitGatewayAttachmentBuilder(BaseCloudformationBuilder):
         properties: dict = cfn_res_attr['Properties']
         region = cfn_res_attr['region']
         account_id = cfn_res_attr['account_id']
-        return TransitGatewayVpcAttachment(attachment_id=self.get_property(properties, 'TransitGatewayId'),
+        return TransitGatewayVpcAttachment(transit_gateway_id=self.get_property(properties, 'TransitGatewayId'),
+                                           attachment_id=self.get_resource_id(cfn_res_attr),
                                            state=None,
                                            resource_type=TransitGatewayResourceType.VPC,
                                            resource_id=self.get_property(properties, 'VpcId'),

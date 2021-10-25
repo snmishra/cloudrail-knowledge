@@ -276,3 +276,22 @@ AWS::EC2::TransitGatewayAttachment:
             - TransitGatewayId
             - VpcId
             - SubnetIds
+
+AWS::EC2::TransitGatewayRouteTable:
+    known_fields:
+        pass:
+            - TransitGatewayId
+
+AWS::EC2::TransitGatewayRouteTableAssociation:
+    known_fields:
+        pass:
+            - TransitGatewayAttachmentId
+            - RouteTableId
+
+AWS::EC2::TransitGatewayRoute:
+    known_fields:
+        pass:
+            - DestinationCidrBlock
+            - Blackhole
+            - TransitGatewayAttachmentId
+            - RouteTableId
