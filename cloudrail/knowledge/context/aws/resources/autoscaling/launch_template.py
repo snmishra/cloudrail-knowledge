@@ -82,10 +82,8 @@ class LaunchTemplate(AwsResource):
         return {'name': self.name,
                 'http_token': self.http_token,
                 'image_id': self.image_id,
-                'security_group_ids': self.security_group_ids,
                 'version_number': self.version_number,
                 'iam_instance_profile': self.iam_instance_profile,
-                'network_configurations': self.network_configurations and [config.to_dict() for config in self.network_configurations],
                 'ebs_optimized': self.ebs_optimized,
                 'monitoring_enabled': self.monitoring_enabled,
                 'instance_type': self.instance_type}

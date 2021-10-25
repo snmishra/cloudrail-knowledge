@@ -8,7 +8,7 @@ class TestCloudFrontDistributionLogging(AwsContextTest):
     def get_component(self):
         return 'cloudfront_distribution_logging'
 
-    @context(module_path="with_logging_access_enabled")
+    @context(module_path="with_logging_access_enabled", test_options=TestOptions(run_drift_detection=False))
     def test_with_logging_access_enabled(self, ctx: AwsEnvironmentContext):
         cloudfront = next((cloudfront for cloudfront in ctx.cloudfront_log_settings
                            if cloudfront.name == 'dup2qudpsojs0.cloudfront.net'
