@@ -15,8 +15,8 @@ class TestComputeInstanceLaunchWithVmShieldRule(TestCase):
         [
             ["shield_vm_config_no_integrity", True, False, True, True],
             ["shield_vm_config_no_vtpm", True, True, False, True],
-            ["shield_vm_config_no_integrity_no_vtpm", True, False, False, True],
-            ["shield_vm_config_both_integrity_and_vtpm", True, True, True, False],
+            ["shield_vm_config_secure_boot_enabled_no_integrity_no_vtpm", True, False, False, True],
+            ["shield_vm_config_all_attributes_enabled", True, True, True, False],
             ["shield_vm_config_both_integrity_and_vtpm_enabled_secure_boot_disabled", False, True, True, True]
         ]
     )
