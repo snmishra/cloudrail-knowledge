@@ -1,6 +1,5 @@
 from typing import Dict, List
-
-from cloudrail.knowledge.context.aws.resources.s3.s3_policy import S3Policy
+from cloudrail.knowledge.context.aws.resources.resource_based_policy import ResourceBasedPolicy
 from cloudrail.knowledge.context.aws.resources.iam.policy_statement import StatementEffect
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket import S3Bucket
 from cloudrail.knowledge.context.aws.resources.ec2.vpc import Vpc
@@ -50,11 +49,11 @@ class S3BucketPolicyVpcEndpointRule(AwsBaseRule):
         return vpc_to_buckets_map
 
     @staticmethod
-    def _is_restrict_to_s3_vpce(policy: S3Policy, s3_vpce: VpcEndpoint) -> bool:
+    def _is_restrict_to_s3_vpce(policy: ResourceBasedPolicy, s3_vpce: VpcEndpoint) -> bool:
         for statement in policy.statements:
-            expected_operator_prefix: str = "String" if statement.effect == StatementEffect.ALLOW else "StringNot"
             for condition_block in statement.condition_block:
-                if condition_block.operator.startswith(expected_operator_prefix) and \
+                if ((statement.effect == StatementEffect.ALLOW and not condition_block.operator.startswith("StringNot") or
+                     statement.effect == StatementEffect.DENY and condition_block.operator.startswith("StringNot"))) and \
                         condition_block.key == "aws:SourceVpce" and \
                         s3_vpce.vpce_id in condition_block.values:
                     return True

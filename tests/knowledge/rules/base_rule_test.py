@@ -131,11 +131,10 @@ class BaseRuleTest(unittest.TestCase):
         test_case_folder_full_path = self._get_full_path(test_case_folder)
         local_account_data = os.path.join(test_case_folder_full_path, 'cfn-account-data')
         cfn_template_yaml_file: str = os.path.join(test_case_folder_full_path, 'cloudformation.yaml')
-        account_data_zip = f'{local_account_data}.zip'
+
         if os.path.exists(cfn_template_yaml_file):
             self._validate_supported_iac_type(IacType.CLOUDFORMATION, cfn_template_yaml_file)
-            if os.path.isfile(account_data_zip):
-                shutil.unpack_archive(account_data_zip, extract_dir=local_account_data, format='zip')
+            if os.path.isdir(local_account_data):
                 self.account_data = local_account_data
             else:
                 self.account_data = self.set_default_account_data()

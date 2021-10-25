@@ -17,6 +17,8 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloud
     CloudformationAssumeRolePolicyBuilder, CloudformationInlineRolePolicyBuilder, CloudformationS3BucketPolicyBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.lambda_function.cloudformation_lambda_function_builder import \
     CloudformationLambdaFunctionBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.s3_bucket.cloudformation_public_access_block_settings_builder import \
+    CloudformationPublicAccessBlockSettingsBuilder
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_metadata_parser import CloudformationMetadataParser
@@ -174,7 +176,8 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             lambda_function_list=CloudformationLambdaFunctionBuilder(cfn_by_type_map).build(),
             network_acls=AliasesDict(*CloudformationNetworkAclBuilder(cfn_by_type_map).build()),
             network_acl_associations=AliasesDict(*CloudformationNetworkAclAssociationBuilder(cfn_by_type_map).build()),
-            network_acl_rules=NetworkAclRuleBuilder(cfn_by_type_map).build()
+            network_acl_rules=NetworkAclRuleBuilder(cfn_by_type_map).build(),
+            s3_public_access_block_settings_list=CloudformationPublicAccessBlockSettingsBuilder(cfn_by_type_map).build()
         )
 
     @staticmethod
