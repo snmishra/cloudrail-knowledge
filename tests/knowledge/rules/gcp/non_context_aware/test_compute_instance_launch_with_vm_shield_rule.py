@@ -1,4 +1,3 @@
-from typing import Optional
 from unittest import TestCase
 from parameterized import parameterized
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
@@ -18,7 +17,7 @@ class TestComputeInstanceLaunchWithVmShieldRule(TestCase):
             ["shield_vm_config_no_vtpm", True, True, False, True],
             ["shield_vm_config_no_integrity_no_vtpm", True, False, False, True],
             ["shield_vm_config_both_integrity_and_vtpm", True, True, True, False],
-            ["shield_vm_config_no_secure_boot", False, True, True, True]
+            ["shield_vm_config_both_integrity_and_vtpm_enabled_secure_boot_disabled", False, True, True, True]
         ]
     )
 
