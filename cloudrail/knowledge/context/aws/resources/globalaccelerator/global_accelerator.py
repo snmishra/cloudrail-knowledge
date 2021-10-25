@@ -3,6 +3,7 @@ from typing import List, Optional
 from cloudrail.knowledge.context.aws.resources.globalaccelerator.global_accelerator_attributes import GlobalAcceleratorAttribute
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class GlobalAccelerator(AwsResource):
@@ -41,4 +42,4 @@ class GlobalAccelerator(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'accelerator_name': self.accelerator_name}
+        return {'tags': filter_tags(self.tags), 'accelerator_name': self.accelerator_name}

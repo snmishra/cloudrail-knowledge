@@ -8,6 +8,7 @@ from cloudrail.knowledge.context.aws.resources.elb.load_balancer_attributes impo
 from cloudrail.knowledge.context.aws.resources.elb.load_balancer_target_group import LoadBalancerTargetGroup
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class LoadBalancerSchemeType(Enum):
@@ -92,9 +93,7 @@ class LoadBalancer(NetworkEntity):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'tags': filter_tags(self.tags), 'name': self.name,
                 'scheme_type': self.scheme_type.value,
                 'load_balancer_type': self.load_balancer_type.value,
-                'listener_ports': self.listener_ports,
-                'subnets_ids': self.raw_data and self.raw_data.subnets_ids,
-                'security_groups_ids': self.raw_data and self.raw_data.security_groups_ids}
+                'listener_ports': self.listener_ports}

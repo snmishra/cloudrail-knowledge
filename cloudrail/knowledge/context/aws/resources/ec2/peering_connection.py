@@ -5,6 +5,7 @@ from typing import List
 import dataclasses
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 @dataclass
@@ -68,6 +69,7 @@ class PeeringConnection(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'requester_vpc_info': dataclasses.asdict(self.requester_vpc_info),
+        return {'tags': filter_tags(self.tags),
+                'requester_vpc_info': dataclasses.asdict(self.requester_vpc_info),
                 'accepter_vpc_info': dataclasses.asdict(self.accepter_vpc_info),
                 'status': self.status}

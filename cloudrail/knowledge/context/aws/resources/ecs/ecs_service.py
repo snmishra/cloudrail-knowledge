@@ -8,6 +8,7 @@ from cloudrail.knowledge.context.aws.resources.networking_config.network_entity 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceType, AwsServiceAttributes
 from cloudrail.knowledge.context.aws.resources.ecs.ecs_task_definition import EcsTaskDefinition, IEcsInstance
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class EcsService(NetworkEntity, INetworkConfiguration, IEcsInstance):
@@ -87,7 +88,7 @@ class EcsService(NetworkEntity, INetworkConfiguration, IEcsInstance):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'tags': filter_tags(self.tags), 'name': self.name,
                 'launch_type': self.launch_type.value,
                 'network_conf_list': [conf.to_dict() for conf in self.network_conf_list],
                 'task_definition_arn': self.task_definition_arn,

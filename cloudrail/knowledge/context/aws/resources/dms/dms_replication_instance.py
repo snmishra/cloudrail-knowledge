@@ -5,6 +5,7 @@ from cloudrail.knowledge.context.aws.resources.networking_config.inetwork_config
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class DmsReplicationInstance(NetworkEntity, INetworkConfiguration):
@@ -22,7 +23,7 @@ class DmsReplicationInstance(NetworkEntity, INetworkConfiguration):
     """
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'tags':  filter_tags(self.tags), 'name': self.name,
                 'publicly_accessible': self.publicly_accessible,
                 'rep_instance_subnet_group_id': self.rep_instance_subnet_group_id,
                 'security_group_ids': self.security_group_ids}

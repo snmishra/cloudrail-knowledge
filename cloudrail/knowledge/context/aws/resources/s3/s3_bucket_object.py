@@ -2,6 +2,7 @@ from typing import List
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class S3BucketObject(AwsResource):
@@ -52,6 +53,7 @@ class S3BucketObject(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'bucket_name': self.bucket_name,
+        return {'tags': filter_tags(self.tags),
+                'bucket_name': self.bucket_name,
                 'key': self.key,
                 'encrypted': self.encrypted}

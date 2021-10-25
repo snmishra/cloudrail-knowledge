@@ -7,6 +7,7 @@ from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distributio
 from cloudrail.knowledge.context.aws.resources.cloudfront.origin_access_identity import OriginAccessIdentity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName, AwsServiceType, AwsServiceAttributes
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class OriginConfig:
@@ -154,7 +155,7 @@ class CloudFrontDistribution(AwsResource, ConnectionInstance):
         return list(self._cache_behavior_list)
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags,
+        return {'tags': filter_tags(self.tags),
                 'name': self.name,
                 'viewer_cert': dataclasses.asdict(self.viewer_cert),
                 'cache_behavior_list': [dataclasses.asdict(cache_behavior) for cache_behavior in self.get_all_cache_behaviors()],

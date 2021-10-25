@@ -56,7 +56,7 @@ provider "aws" {{
         pass
 
     def create_context_builder_factory(self, iac_type: IacType = IacType.TERRAFORM) -> Type[BaseEnvironmentContextBuilder]:
-        if IacType.TERRAFORM:
+        if iac_type == IacType.TERRAFORM:
             return AwsTerraformEnvironmentContextBuilder
         else:
             return AwsCloudformationEnvironmentContextBuilder

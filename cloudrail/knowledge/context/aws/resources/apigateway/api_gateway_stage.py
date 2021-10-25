@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method_settings import ApiGatewayMethodSettings
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 @dataclass
@@ -71,6 +72,6 @@ class ApiGatewayStage(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'stage_name': self.stage_name,
+        return {'tags': filter_tags(self.tags), 'stage_name': self.stage_name,
                 'xray_tracing_enabled': self.xray_tracing_enabled,
                 'access_logs': self.access_logs and {'format': self.access_logs.format}}

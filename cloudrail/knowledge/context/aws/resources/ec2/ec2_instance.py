@@ -9,6 +9,7 @@ from cloudrail.knowledge.context.aws.resources.ec2.ec2_image import Ec2Image
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.networking_config.network_resource import NetworkResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName, AwsServiceAttributes, AwsServiceType
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 from cloudrail.knowledge.utils.utils import flat_list
 
 
@@ -153,13 +154,11 @@ class Ec2Instance(NetworkEntity, AwsClient):
         full_security_groups_ids = flat_list([eni.security_groups_ids for eni in self.network_resource.network_interfaces])
         security_groups_ids_no_pseudo = [sg_id for sg_id in full_security_groups_ids if 'pseudo' not in sg_id]
         return {'name': self.name,
-                'network_interfaces_ids': self.network_interfaces_ids,
                 'state': self.state,
-                'image_id': self.image_id,
                 'iam_profile_name': self.iam_profile_name,
                 'http_tokens': self.http_tokens,
                 'availability_zone': self.availability_zone,
-                'tags': self.tags,
+                'tags': filter_tags(self.tags),
                 'instance_type': self.instance_type,
                 'ebs_optimized': self.ebs_optimized,
                 'monitoring_enabled': self.monitoring_enabled,

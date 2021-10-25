@@ -4,6 +4,7 @@ from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceNam
 from cloudrail.knowledge.context.aws.resources.ec2.network_acl import NetworkAcl
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.ec2.route_table import RouteTable
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class Subnet(AwsResource):
@@ -72,7 +73,7 @@ class Subnet(AwsResource):
         return self.name
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'vpc_id': self.vpc_id,
+        return {'tags': filter_tags(self.tags), 'vpc_id': self.vpc_id,
                 'cidr_block': self.cidr_block,
                 'name': self.name,
                 'availability_zone': self.availability_zone,

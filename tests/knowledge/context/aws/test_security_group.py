@@ -5,7 +5,7 @@ from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironme
 from cloudrail.knowledge.context.aws.resources.ec2.security_group_rule import SecurityGroupRulePropertyType
 
 from tests.knowledge.context.aws_context_test import AwsContextTest
-from tests.knowledge.context.test_context_annotation import context
+from tests.knowledge.context.test_context_annotation import TestOptions, context
 
 
 # pylint: disable=protected-access
@@ -43,7 +43,7 @@ class TestSecurityGroup(AwsContextTest):
         self.assertTrue(security_group.outbound_permissions[0].has_description)
         self.assertTrue(security_group.tags)
 
-    @context(module_path="description_only_on_rules")
+    @context(module_path="description_only_on_rules", test_options=TestOptions(run_drift_detection=False))
     def test_description_only_on_rules(self, ctx: AwsEnvironmentContext):
         security_group = next((sg for sg in ctx.security_groups
                                if sg.name == 'examplerulename'), None)

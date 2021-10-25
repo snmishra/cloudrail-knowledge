@@ -4,6 +4,7 @@ from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceNam
 from cloudrail.knowledge.context.aws.resources.elb.load_balancer_target import LoadBalancerTarget
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class LoadBalancerTargetGroup(AwsResource):
@@ -66,7 +67,7 @@ class LoadBalancerTargetGroup(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'port': self.port,
+        return {'tags': filter_tags(self.tags), 'port': self.port,
                 'protocol': self.protocol.__repr__(),
                 'vpc_id': self.vpc_id,
                 'target_group_arn': self.target_group_arn,

@@ -43,5 +43,5 @@ class RoleLastUsed(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'role_name': self.role_name,
+        return {'role_name': self.role_name,
                 'last_used_date': self.last_used_date}

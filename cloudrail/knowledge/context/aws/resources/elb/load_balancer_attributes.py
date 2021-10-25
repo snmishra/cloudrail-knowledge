@@ -4,6 +4,7 @@ from typing import List, Optional
 import dataclasses
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 @dataclass
@@ -54,6 +55,6 @@ class LoadBalancerAttributes(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'load_balancer_arn': self.load_balancer_arn,
+        return {'tags': filter_tags(self.tags), 'load_balancer_arn': self.load_balancer_arn,
                 'drop_invalid_header_fields': self.drop_invalid_header_fields,
                 'access_logs': dataclasses.asdict(self.access_logs)}

@@ -2,6 +2,7 @@ from typing import List, Optional
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class ElasticIp(AwsResource):
@@ -48,5 +49,5 @@ class ElasticIp(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'public_ip': self.public_ip,
+        return {'tags': filter_tags(self.tags), 'public_ip': self.public_ip,
                 'private_ip': self.private_ip}

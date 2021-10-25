@@ -9,6 +9,7 @@ from cloudrail.knowledge.context.aws.resources.iam.role import Role
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 @dataclass
@@ -98,7 +99,7 @@ class EcsTaskDefinition(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags,
+        return {'tags': filter_tags(self.tags),
                 'efs_volume_data': [dataclasses.asdict(data) for data in self.efs_volume_data],
                 'task_role_arn': self.task_role_arn,
                 'execution_role_arn': self.execution_role_arn,

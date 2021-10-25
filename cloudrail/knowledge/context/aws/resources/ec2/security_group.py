@@ -6,6 +6,7 @@ from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceNam
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.ec2.security_group_rule import SecurityGroupRule, SecurityGroupRulePropertyType
 from cloudrail.knowledge.utils.range_util import get_range_numbers_overlap
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 from cloudrail.knowledge.utils.utils import get_overlap_cidr
 
 
@@ -108,7 +109,7 @@ class SecurityGroup(AwsResource):
         return [self._used_by]
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'tags': filter_tags(self.tags), 'name': self.name,
                 'vpc_id': self.vpc_id,
                 'inbound_permissions': [permission.to_drift_detection_object() for permission in self.inbound_permissions],
                 'outbound_permissions': [permission.to_drift_detection_object() for permission in self.outbound_permissions],

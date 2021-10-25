@@ -92,6 +92,8 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
               scanner_environment_context: Optional[BaseEnvironmentContext] = None,
               salt: Optional[str] = None,
               **extra_args) -> AwsEnvironmentContext:
+        if not iac_file:
+            return AwsEnvironmentContext()
         template_content: dict = CloudformationUtils.load_cfn_template(iac_file)
         iac_url_template: Optional[str] = extra_args.get('iac_url_template')
         extra_params: dict = template_content.get(CloudformationUtils.EXTRA_PARAMETERS_KEY, {})
