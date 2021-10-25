@@ -18,3 +18,7 @@ class TestComputeInstanceLaunchWithVmShieldRule(GcpBaseRuleTest):
     @rule_test('enable_vtpm_not_integrity', should_alert=True)
     def test_enable_vtpm_not_integrity(self, rule_result: RuleResponse):
         pass
+
+    @rule_test('no_secure_boot', should_alert=True)
+    def test_no_secure_boot(self, rule_result: RuleResponse):
+        pass
