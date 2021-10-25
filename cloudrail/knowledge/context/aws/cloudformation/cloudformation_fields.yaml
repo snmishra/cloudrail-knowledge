@@ -269,3 +269,9 @@ AWS::AWS::EC2::NetworkAclEntry:
             - RuleNumber
             - Egress
             - Protocol
+
+AWS::IAM::InstanceProfile:
+    known_fields:
+        pass:
+            - InstanceProfileName
+            - Roles

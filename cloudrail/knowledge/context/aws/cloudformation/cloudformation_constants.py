@@ -42,3 +42,4 @@ class CloudformationResourceType(str, Enum):
     NETWORK_ACL = 'AWS::EC2::NetworkAcl'
     SUBNET_NETWORK_ACL_ASSOCIATION = 'AWS::EC2::SubnetNetworkAclAssociation'
     NETWORK_ACL_ENTRY = 'AWS::EC2::NetworkAclEntry'
+    IAM_INSTANCE_PROFILE = 'AWS::IAM::InstanceProfile'

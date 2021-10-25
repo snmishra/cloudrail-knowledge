@@ -24,6 +24,9 @@ class IamInstanceProfile(AwsResource):
     def get_keys(self) -> List[str]:
         return [self.iam_instance_profile_name]
 
+    def get_name(self) -> str:
+        return self.iam_instance_profile_name
+
     def get_extra_data(self) -> str:
         role_name = 'role_name: {}'.format(self.role_name) if self.role_name else ''
 
