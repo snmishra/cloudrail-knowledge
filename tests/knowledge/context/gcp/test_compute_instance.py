@@ -46,3 +46,30 @@ class TestComputeInstance(GcpContextTest):
         compute = next((compute for compute in ctx.compute_instances if compute.name == 'gce-6'), None)
         self.assertIsNotNone(compute)
         self.assertFalse(compute.metadata)
+
+    @context(module_path="shielded_vm_config/enable_neither_vptm_nor_integrity")
+    def test_shielded_vm_enable_neither_vptm_nor_integrity(self, ctx: GcpEnvironmentContext):
+        compute = next((compute for compute in ctx.compute_instances if compute.name == 'one-enabled'), None)
+        self.assertIsNotNone(compute)
+        self.assertTrue(compute.shielded_instance_config)
+        self.assertTrue(compute.shielded_instance_config.enable_secure_boot)
+        self.assertFalse(compute.shielded_instance_config.enable_integrity_monitoring)
+        self.assertFalse(compute.shielded_instance_config.enable_vtpm)
+
+    @context(module_path="shielded_vm_config/enable_vtpm_and_integrity")
+    def test_shielded_vm_enable_vtpm_and_integrity(self, ctx: GcpEnvironmentContext):
+        compute = next((compute for compute in ctx.compute_instances if compute.name == 'one-enabled'), None)
+        self.assertIsNotNone(compute)
+        self.assertTrue(compute.shielded_instance_config)
+        self.assertTrue(compute.shielded_instance_config.enable_secure_boot)
+        self.assertTrue(compute.shielded_instance_config.enable_integrity_monitoring)
+        self.assertTrue(compute.shielded_instance_config.enable_vtpm)
+
+    @context(module_path="shielded_vm_config/enable_vtpm_not_integrity")
+    def test_shielded_vm_enable_vtpm_not_integrity(self, ctx: GcpEnvironmentContext):
+        compute = next((compute for compute in ctx.compute_instances if compute.name == 'one-enabled'), None)
+        self.assertIsNotNone(compute)
+        self.assertTrue(compute.shielded_instance_config)
+        self.assertTrue(compute.shielded_instance_config.enable_secure_boot)
+        self.assertFalse(compute.shielded_instance_config.enable_integrity_monitoring)
+        self.assertTrue(compute.shielded_instance_config.enable_vtpm)
