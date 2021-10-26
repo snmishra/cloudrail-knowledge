@@ -79,7 +79,7 @@ class BaseRuleTest(unittest.TestCase):
                        test_case_folder: str,
                        should_alert: bool = True,
                        number_of_issue_items: int = 1) -> None:
-        self._run_terraform_test_case(test_function, test_case_folder, should_alert, number_of_issue_items)
+        # self._run_terraform_test_case(test_function, test_case_folder, should_alert, number_of_issue_items)
         self._run_cloudformation_test_case(test_function, test_case_folder, should_alert, number_of_issue_items)
 
     def _run_terraform_test_case(self, test_function: Callable,
@@ -146,7 +146,7 @@ class BaseRuleTest(unittest.TestCase):
                                                            IacType.CLOUDFORMATION) \
                 .build(account_data_dir_path=self.account_data,
                        iac_file_path=cfn_template_yaml_file, account_id=self.account_id,
-                       salt=self.customer_id, **{'region': 'us-east-1'})
+                       salt=self.customer_id, **{'region': 'us-east-1', 'stack_name': 'testCfnStack'})
 
             self._execute_rule_and_assert(iac_type=IacType.CLOUDFORMATION, env_context=context,
                                           should_alert=should_alert,

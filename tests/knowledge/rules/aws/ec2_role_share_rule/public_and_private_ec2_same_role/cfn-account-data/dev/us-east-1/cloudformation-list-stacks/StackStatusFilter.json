@@ -5,8 +5,8 @@
             "DriftInformation": {
                 "StackDriftStatus": "NOT_CHECKED"
             },
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "StackStatus": "CREATE_COMPLETE"
         },
         {

@@ -8,8 +8,8 @@
             "PhysicalResourceId": "ec2-web-server-profile",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::IAM::InstanceProfile",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:44:57.720000+00:00"
         },
         {
@@ -20,8 +20,8 @@
             "PhysicalResourceId": "igw-01c05da14a29513c2",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::InternetGateway",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:42:55.624000+00:00"
         },
         {
@@ -32,8 +32,8 @@
             "PhysicalResourceId": "shari-Igw1A-15K525ZCBU06V",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::VPCGatewayAttachment",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:43:15.095000+00:00"
         },
         {
@@ -44,8 +44,8 @@
             "PhysicalResourceId": "i-039f74438c4efcb68",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::Instance",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:45:11.397000+00:00"
         },
         {
@@ -56,8 +56,8 @@
             "PhysicalResourceId": "rtbassoc-028dfc084afa7395d",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::SubnetRouteTableAssociation",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:43:35.318000+00:00"
         },
         {
@@ -68,8 +68,8 @@
             "PhysicalResourceId": "subnet-03a35e4a6f8bf0e64",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::Subnet",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:43:15.930000+00:00"
         },
         {
@@ -80,8 +80,8 @@
             "PhysicalResourceId": "rtb-0efbe96fc04bec89d",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::RouteTable",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:42:59.552000+00:00"
         },
         {
@@ -92,8 +92,8 @@
             "PhysicalResourceId": "shari-Publi-1D0907TY3TDNO",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::Route",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:43:20.383000+00:00"
         },
         {
@@ -104,8 +104,8 @@
             "PhysicalResourceId": "i-0b53b04ef48cd3762",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::Instance",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:45:12.216000+00:00"
         },
         {
@@ -116,8 +116,8 @@
             "PhysicalResourceId": "rtbassoc-0c6ac8ca8fb7751a8",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::SubnetRouteTableAssociation",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:43:35.423000+00:00"
         },
         {
@@ -128,8 +128,8 @@
             "PhysicalResourceId": "subnet-09ee2c6cdb3e79248",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::Subnet",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:43:16.075000+00:00"
         },
         {
@@ -140,8 +140,8 @@
             "PhysicalResourceId": "rtb-06647184bb4ae39be",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::RouteTable",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:42:59.858000+00:00"
         },
         {
@@ -152,8 +152,8 @@
             "PhysicalResourceId": "s3-full-access-role",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::IAM::Role",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:42:53.637000+00:00"
         },
         {
@@ -164,8 +164,8 @@
             "PhysicalResourceId": "vpc-0766de0130d5b38f7",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::VPC",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/sharing-role/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
-            "StackName": "sharing-role",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackName": "testCfnStack",
             "Timestamp": "2021-10-25T14:42:56.158000+00:00"
         }
     ]
