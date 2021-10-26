@@ -2,6 +2,7 @@ from typing import Optional, List, Dict
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class OriginAccessIdentity(AwsResource):
@@ -38,7 +39,7 @@ class OriginAccessIdentity(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags,
+        return {'tags': filter_tags(self.tags),
                 'cloudfront_access_identity_path': self.cloudfront_access_identity_path,
                 'iam_arn': self.iam_arn,
                 's3_canonical_user_id': self.s3_canonical_user_id}

@@ -2,6 +2,7 @@ from typing import List
 
 from cloudrail.knowledge.context.aws.resources.aws_policied_resource import PoliciedResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class ElasticFileSystem(PoliciedResource):
@@ -45,5 +46,6 @@ class ElasticFileSystem(PoliciedResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'creation_token': self.creation_token,
+        return {'tags': filter_tags(self.tags),
+                'creation_token': self.creation_token,
                 'encrypted': self.encrypted}

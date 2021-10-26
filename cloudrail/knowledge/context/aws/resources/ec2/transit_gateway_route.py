@@ -59,7 +59,7 @@ class TransitGatewayRoute(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'destination_cidr_block': self.destination_cidr_block,
+        return {'destination_cidr_block': self.destination_cidr_block,
                 'state': self.state.value,
                 'route_type': self.route_type.value,
                 'route_table_id': self.route_table_id}

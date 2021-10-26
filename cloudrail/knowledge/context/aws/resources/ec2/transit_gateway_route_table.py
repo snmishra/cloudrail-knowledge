@@ -4,6 +4,7 @@ from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceNam
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.ec2.transit_gateway_route import TransitGatewayRoute
 from cloudrail.knowledge.context.aws.resources.ec2.transit_gateway_route_table_association import TransitGatewayRouteTableAssociation
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class TransitGatewayRouteTable(AwsResource):
@@ -52,5 +53,5 @@ class TransitGatewayRouteTable(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'tgw_id': self.tgw_id,
+        return {'tags': filter_tags(self.tags), 'tgw_id': self.tgw_id,
                 'route_table_id': self.route_table_id}

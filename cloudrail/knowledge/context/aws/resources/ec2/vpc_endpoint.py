@@ -5,6 +5,7 @@ from cloudrail.knowledge.context.aws.resources.ec2.route_table import RouteTable
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName, AwsServiceAttributes
 from cloudrail.knowledge.context.aws.resources.iam.policy import Policy
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class VpcEndpointServiceType(Enum):
@@ -54,7 +55,7 @@ class VpcEndpoint(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'vpc_id': self.vpc_id,
+        return {'tags': filter_tags(self.tags), 'vpc_id': self.vpc_id,
                 'service_name': self.service_name,
                 'state': self.state}
 
@@ -72,7 +73,7 @@ class VpcEndpointGateway(VpcEndpoint):
         return super().get_type(is_plural) + ' Gateway'
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'vpce_id': self.vpce_id,
+        return {'tags': filter_tags(self.tags), 'vpce_id': self.vpce_id,
                 'vpc_id': self.vpc_id,
                 'service_name': self.service_name,
                 'state': self.state,
@@ -100,7 +101,7 @@ class VpcEndpointInterface(VpcEndpoint, NetworkEntity):
         return super().get_type(is_plural) + ' Interface'
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'vpce_id': self.vpce_id,
+        return {'tags': filter_tags(self.tags), 'vpce_id': self.vpce_id,
                 'vpc_id': self.vpc_id,
                 'service_name': self.service_name,
                 'state': self.state,

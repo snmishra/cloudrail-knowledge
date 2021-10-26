@@ -3,6 +3,7 @@ from typing import List
 from cloudrail.knowledge.context.aws.resources.ec2.ec2_instance import Ec2Instance
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class IamInstanceProfile(AwsResource):
@@ -46,5 +47,6 @@ class IamInstanceProfile(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'role_name': self.role_name,
+        return {'tags': filter_tags(self.tags),
+                'role_name': self.role_name,
                 'iam_instance_profile_name': self.iam_instance_profile_name}

@@ -5,6 +5,7 @@ from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceNam
 from cloudrail.knowledge.context.aws.resources.networking_config.inetwork_configuration import INetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class EksCluster(NetworkEntity, INetworkConfiguration):
@@ -83,7 +84,7 @@ class EksCluster(NetworkEntity, INetworkConfiguration):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'tags': filter_tags(self.tags), 'name': self.name,
                 'role_arn': self.role_arn,
                 'endpoint': self.endpoint,
                 'endpoint_public_access': self.endpoint_public_access,

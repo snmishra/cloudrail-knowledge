@@ -7,6 +7,7 @@ from cloudrail.knowledge.context.cloneable import Cloneable
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement, StatementEffect
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class PolicyType(str, Enum):
@@ -89,7 +90,7 @@ class Policy(AwsResource, Cloneable):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'policy_type': self.policy_type.value,
+        return {'policy_type': self.policy_type.value,
                 'policy_statements': [statement.to_dict() for statement in self.statements]}
 
 
@@ -123,7 +124,7 @@ class ManagedPolicy(Policy):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'policy_name': self.policy_name,
+        return {'tags': filter_tags(self.tags), 'policy_name': self.policy_name,
                 'policy_statements': [statement.to_dict() for statement in self.statements]}
 
 
@@ -149,7 +150,7 @@ class InlinePolicy(Policy):
         pass
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'owner_name': self.owner_name,
+        return {'owner_name': self.owner_name,
                 'policy_name': self.policy_name,
                 'policy_statements': [statement.to_dict() for statement in self.statements]}
 
@@ -179,6 +180,6 @@ class AssumeRolePolicy(Policy):
             .format(self.AWS_CONSOLE_URL, 'us-east-1', self.role_name)
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'role_name': self.role_name,
+        return {'role_name': self.role_name,
                 'is_allowing_external_assume': self.is_allowing_external_assume,
                 'policy_statements': [statement.to_dict() for statement in self.statements]}

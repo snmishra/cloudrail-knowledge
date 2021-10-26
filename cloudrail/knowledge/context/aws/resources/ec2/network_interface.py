@@ -3,6 +3,7 @@ from typing import List, Optional
 from cloudrail.knowledge.context.connection import ConnectionInstance
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class NetworkInterface(ConnectionInstance, AwsResource):
@@ -115,7 +116,8 @@ class NetworkInterface(ConnectionInstance, AwsResource):
         security_group.add_usage(self)
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'subnet_id': self.subnet_id,
+        return {'tags': filter_tags(self.tags),
+                'subnet_id': self.subnet_id,
                 'primary_ip_address': self.primary_ip_address,
                 'secondary_ip_addresses': self.secondary_ip_addresses,
                 'public_ip_address': self.public_ip_address,

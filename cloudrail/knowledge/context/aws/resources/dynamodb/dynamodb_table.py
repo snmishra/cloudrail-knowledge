@@ -6,6 +6,7 @@ import dataclasses
 from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName, AwsServiceType, AwsServiceAttributes
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class BillingMode(str, Enum):
@@ -87,7 +88,8 @@ class DynamoDbTable(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'table_name': self.table_name,
+        return {'tags': filter_tags(self.tags),
+                'table_name': self.table_name,
                 'table_arn': self.table_arn,
                 'billing_mode': self.billing_mode,
                 'partition_key': self.partition_key,

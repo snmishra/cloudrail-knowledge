@@ -44,7 +44,7 @@ class RedshiftLogging(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'cluster_identifier': self.cluster_identifier,
+        return {'cluster_identifier': self.cluster_identifier,
                 's3_bucket': self.s3_bucket,
                 's3_prefix': self.s3_prefix,
                 'logging_enabled': self.logging_enabled}

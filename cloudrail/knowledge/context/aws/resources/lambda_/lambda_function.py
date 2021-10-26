@@ -8,6 +8,7 @@ from cloudrail.knowledge.context.aws.resources.networking_config.network_configu
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceAttributes, AwsServiceName, AwsServiceType
 from cloudrail.knowledge.utils.arn_utils import are_arns_intersected, is_valid_arn
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
@@ -96,7 +97,8 @@ class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
         return "".join(self.qualified_arn.split(":")[:-1]) if ':' in self.qualified_arn else self.qualified_arn
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'function_name': self.function_name,
+        return {'tags': filter_tags(self.tags),
+                'function_name': self.function_name,
                 'role_arn': self.execution_role_arn,
                 'handler': self.handler,
                 'runtime': self.runtime,

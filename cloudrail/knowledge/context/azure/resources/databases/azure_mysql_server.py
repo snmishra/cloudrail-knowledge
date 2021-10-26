@@ -1,6 +1,7 @@
 from typing import Optional, List
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class AzureMySqlServer(AzureResource):
@@ -39,4 +40,4 @@ class AzureMySqlServer(AzureResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'ssl_enforcement_enabled': self.ssl_enforcement_enabled}
+        return {'tags': filter_tags(self.tags), 'ssl_enforcement_enabled': self.ssl_enforcement_enabled}

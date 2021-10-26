@@ -8,6 +8,7 @@ from cloudrail.knowledge.context.aws.resources.networking_config.inetwork_config
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 @dataclass
@@ -113,7 +114,7 @@ class ElasticSearchDomain(NetworkEntity, INetworkConfiguration, PoliciedResource
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'is_public': self.is_public,
+        return {'tags': filter_tags(self.tags), 'is_public': self.is_public,
                 'ports': self.ports,
                 'es_domain_version': self.es_domain_version,
                 'es_domain_cluster_instance_type': self.es_domain_cluster_instance_type,
