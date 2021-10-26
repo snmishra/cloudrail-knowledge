@@ -19,6 +19,12 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.lambda_fu
     CloudformationLambdaFunctionBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.s3_bucket.cloudformation_public_access_block_settings_builder import \
     CloudformationPublicAccessBlockSettingsBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.vpc_gateway.cloudformation_transit_gateway_attachment_builder import \
+    CloudformationTransitGatewayAttachmentBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.vpc_gateway.cloudformation_transit_gateway_builder import \
+    CloudformationTransitGatewayBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.vpc_gateway.cloudformation_transit_gateway_route_table_builder import \
+    CloudformationTransitGatewayRouteTableBuilder, CloudformationTransitGatewayRouteTableAssociationBuilder, CloudformationTransitGatewayRouteBuilder
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_metadata_parser import CloudformationMetadataParser
@@ -179,7 +185,12 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             network_acls=AliasesDict(*CloudformationNetworkAclBuilder(cfn_by_type_map).build()),
             network_acl_associations=AliasesDict(*CloudformationNetworkAclAssociationBuilder(cfn_by_type_map).build()),
             network_acl_rules=NetworkAclRuleBuilder(cfn_by_type_map).build(),
-            s3_public_access_block_settings_list=CloudformationPublicAccessBlockSettingsBuilder(cfn_by_type_map).build()
+            s3_public_access_block_settings_list=CloudformationPublicAccessBlockSettingsBuilder(cfn_by_type_map).build(),
+            transit_gateway_attachments=CloudformationTransitGatewayAttachmentBuilder(cfn_by_type_map).build(),
+            transit_gateways=CloudformationTransitGatewayBuilder(cfn_by_type_map).build(),
+            transit_gateway_route_tables=CloudformationTransitGatewayRouteTableBuilder(cfn_by_type_map).build(),
+            transit_gateway_route_table_associations=CloudformationTransitGatewayRouteTableAssociationBuilder(cfn_by_type_map).build(),
+            transit_gateway_routes=CloudformationTransitGatewayRouteBuilder(cfn_by_type_map).build()
         )
 
     @staticmethod
