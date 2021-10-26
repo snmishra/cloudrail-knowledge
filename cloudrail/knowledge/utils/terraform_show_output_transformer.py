@@ -2,16 +2,17 @@ import copy
 import json
 import os
 from typing import Dict, List
-from cloudrail.knowledge.utils.file_utils import file_to_yaml
+
 from cloudrail.knowledge.utils.hash_utils import to_hashcode
 from cloudrail.knowledge.utils.iac_fields_store import FieldAction, KnownFields, SupportedSection
+from cloudrail.knowledge.utils import file_utils
 
 
 class TerraformShowOutputTransformer:
 
     @classmethod
     def transform(cls, show_output_path: str, base_dir: str, services_to_include: dict, salt: str):
-        dic = file_to_yaml.__wrapped__(show_output_path)  # Avoid using cached version
+        dic = file_utils.file_to_json(show_output_path)
         return {'terraform_version': dic['terraform_version'],
                 'format_version': dic['format_version'],
                 'configuration': {'provider_config': dic['configuration'].get('provider_config', {}),

@@ -1,0 +1,24 @@
+{
+    "Regions": [
+        {
+            "Endpoint": "ec2.us-east-1.amazonaws.com",
+            "OptInStatus": "opt-in-not-required",
+            "RegionName": "us-east-1"
+        }
+    ],
+    "ResponseMetadata": {
+        "HTTPHeaders": {
+            "cache-control": "no-cache, no-store",
+            "content-length": "3875",
+            "content-type": "text/xml;charset=UTF-8",
+            "date": "Tue, 26 Oct 2021 14:50:29 GMT",
+            "server": "AmazonEC2",
+            "strict-transport-security": "max-age=31536000; includeSubDomains",
+            "vary": "accept-encoding",
+            "x-amzn-requestid": "e4dcd5dc-254f-438e-986d-7f4e3a8adeee"
+        },
+        "HTTPStatusCode": 200,
+        "RequestId": "e4dcd5dc-254f-438e-986d-7f4e3a8adeee",
+        "RetryAttempts": 0
+    }
+}

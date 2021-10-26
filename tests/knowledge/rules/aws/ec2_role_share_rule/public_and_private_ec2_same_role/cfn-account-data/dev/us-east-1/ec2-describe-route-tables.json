@@ -78,14 +78,15 @@
                     "AssociationState": {
                         "State": "associated"
                     },
-                    "Main": true,
-                    "RouteTableAssociationId": "rtbassoc-0997670e748082d3f",
-                    "RouteTableId": "rtb-0a085c24b8034f298"
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-0e044bfbe6eb50ac6",
+                    "RouteTableId": "rtb-0d811325a1acd5484",
+                    "SubnetId": "subnet-03d56885b124982e2"
                 }
             ],
             "OwnerId": "115553109071",
             "PropagatingVgws": [],
-            "RouteTableId": "rtb-0a085c24b8034f298",
+            "RouteTableId": "rtb-0d811325a1acd5484",
             "Routes": [
                 {
                     "DestinationCidrBlock": "10.10.0.0/16",
@@ -94,8 +95,21 @@
                     "State": "active"
                 }
             ],
-            "Tags": [],
-            "VpcId": "vpc-08700e841cd24b926"
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "testCfnStack"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "PrivateSubnetRtb"
+                }
+            ],
+            "VpcId": "vpc-06d743d8637d90418"
         },
         {
             "Associations": [
@@ -181,14 +195,14 @@
                         "State": "associated"
                     },
                     "Main": false,
-                    "RouteTableAssociationId": "rtbassoc-07d754b1a00809be9",
-                    "RouteTableId": "rtb-0a861ac516f331992",
-                    "SubnetId": "subnet-035afe93d799f72d5"
+                    "RouteTableAssociationId": "rtbassoc-011ee87f29652a089",
+                    "RouteTableId": "rtb-017fd650316e3178e",
+                    "SubnetId": "subnet-0f480fe83010ca272"
                 }
             ],
             "OwnerId": "115553109071",
             "PropagatingVgws": [],
-            "RouteTableId": "rtb-0a861ac516f331992",
+            "RouteTableId": "rtb-017fd650316e3178e",
             "Routes": [
                 {
                     "DestinationCidrBlock": "10.10.0.0/16",
@@ -198,7 +212,7 @@
                 },
                 {
                     "DestinationCidrBlock": "0.0.0.0/0",
-                    "GatewayId": "igw-0e6616c2ab3d98d6d",
+                    "GatewayId": "igw-02d338ea494495147",
                     "Origin": "CreateRoute",
                     "State": "active"
                 }
@@ -206,7 +220,7 @@
             "Tags": [
                 {
                     "Key": "aws:cloudformation:stack-id",
-                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd"
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
                 },
                 {
                     "Key": "aws:cloudformation:logical-id",
@@ -217,7 +231,7 @@
                     "Value": "testCfnStack"
                 }
             ],
-            "VpcId": "vpc-08700e841cd24b926"
+            "VpcId": "vpc-06d743d8637d90418"
         },
         {
             "Associations": [
@@ -320,15 +334,14 @@
                     "AssociationState": {
                         "State": "associated"
                     },
-                    "Main": false,
-                    "RouteTableAssociationId": "rtbassoc-0241838b7120ff2db",
-                    "RouteTableId": "rtb-0d2ed71415582226c",
-                    "SubnetId": "subnet-0f08095297a180b23"
+                    "Main": true,
+                    "RouteTableAssociationId": "rtbassoc-01abd64b9560d1ec4",
+                    "RouteTableId": "rtb-0c1a2f71891b4e104"
                 }
             ],
             "OwnerId": "115553109071",
             "PropagatingVgws": [],
-            "RouteTableId": "rtb-0d2ed71415582226c",
+            "RouteTableId": "rtb-0c1a2f71891b4e104",
             "Routes": [
                 {
                     "DestinationCidrBlock": "10.10.0.0/16",
@@ -337,21 +350,8 @@
                     "State": "active"
                 }
             ],
-            "Tags": [
-                {
-                    "Key": "aws:cloudformation:stack-id",
-                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd"
-                },
-                {
-                    "Key": "aws:cloudformation:stack-name",
-                    "Value": "testCfnStack"
-                },
-                {
-                    "Key": "aws:cloudformation:logical-id",
-                    "Value": "PrivateSubnetRtb"
-                }
-            ],
-            "VpcId": "vpc-08700e841cd24b926"
+            "Tags": [],
+            "VpcId": "vpc-06d743d8637d90418"
         }
     ]
 }

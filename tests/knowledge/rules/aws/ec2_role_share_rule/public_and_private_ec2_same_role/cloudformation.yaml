@@ -71,6 +71,8 @@ Resources:
       SubnetId: !Ref PublicSubnet
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref Ec2WebServerProfile
+      SecurityGroupIds:
+        - !Ref AllowSSHAccess
 
   PrivateInstance:
     Type: AWS::EC2::Instance
@@ -79,6 +81,8 @@ Resources:
       SubnetId: !Ref PrivateSubnet
       ImageId: !Ref LatestAmiId
       IamInstanceProfile: !Ref Ec2WebServerProfile
+      SecurityGroupIds:
+        - !Ref AllowSSHAccess
 
   S3FullAccessRole:
     Type: AWS::IAM::Role
@@ -99,3 +103,15 @@ Resources:
       InstanceProfileName: "ec2-web-server-profile"
       Roles:
         - !Ref S3FullAccessRole
+
+  AllowSSHAccess:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: "Allow access Security Group"
+      GroupDescription: "Allow SSH traffic"
+      VpcId: !Ref Vpc1
+      SecurityGroupIngress:
+        - CidrIp: "0.0.0.0/0"
+          FromPort: 22
+          ToPort: 22
+          IpProtocol: "tcp"

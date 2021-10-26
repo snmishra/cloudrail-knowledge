@@ -4,6 +4,30 @@
             "Attachments": [
                 {
                     "State": "available",
+                    "VpcId": "vpc-06d743d8637d90418"
+                }
+            ],
+            "InternetGatewayId": "igw-02d338ea494495147",
+            "OwnerId": "115553109071",
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "testCfnStack"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "Igw1"
+                }
+            ]
+        },
+        {
+            "Attachments": [
+                {
+                    "State": "available",
                     "VpcId": "vpc-04a1c5d8672155142"
                 }
             ],
@@ -29,30 +53,6 @@
                 {
                     "Key": "Tier",
                     "Value": "Public"
-                }
-            ]
-        },
-        {
-            "Attachments": [
-                {
-                    "State": "available",
-                    "VpcId": "vpc-08700e841cd24b926"
-                }
-            ],
-            "InternetGatewayId": "igw-0e6616c2ab3d98d6d",
-            "OwnerId": "115553109071",
-            "Tags": [
-                {
-                    "Key": "aws:cloudformation:stack-id",
-                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd"
-                },
-                {
-                    "Key": "aws:cloudformation:stack-name",
-                    "Value": "testCfnStack"
-                },
-                {
-                    "Key": "aws:cloudformation:logical-id",
-                    "Value": "Igw1"
                 }
             ]
         },

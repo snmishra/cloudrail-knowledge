@@ -211,6 +211,40 @@
             "VpcId": "vpc-bd9b60c0"
         },
         {
+            "Description": "default VPC security group",
+            "GroupId": "sg-03e73191e44c08109",
+            "GroupName": "default",
+            "IpPermissions": [
+                {
+                    "IpProtocol": "-1",
+                    "IpRanges": [],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": [],
+                    "UserIdGroupPairs": [
+                        {
+                            "GroupId": "sg-03e73191e44c08109",
+                            "UserId": "115553109071"
+                        }
+                    ]
+                }
+            ],
+            "IpPermissionsEgress": [
+                {
+                    "IpProtocol": "-1",
+                    "IpRanges": [
+                        {
+                            "CidrIp": "0.0.0.0/0"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": [],
+                    "UserIdGroupPairs": []
+                }
+            ],
+            "OwnerId": "115553109071",
+            "VpcId": "vpc-06d743d8637d90418"
+        },
+        {
             "Description": "ELB created security group used when no security group is specified during ELB creation - modifications could impact traffic to future ELBs",
             "GroupId": "sg-03ea6dbd2c5f84c7e",
             "GroupName": "default_elb_18295f8f-187f-336d-9938-11ed04392220",
@@ -718,6 +752,55 @@
             "VpcId": "vpc-bd9b60c0"
         },
         {
+            "Description": "Allow SSH traffic",
+            "GroupId": "sg-0e5f2154cfee1f0ef",
+            "GroupName": "Allow access Security Group",
+            "IpPermissions": [
+                {
+                    "FromPort": 22,
+                    "IpProtocol": "tcp",
+                    "IpRanges": [
+                        {
+                            "CidrIp": "0.0.0.0/0"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": [],
+                    "ToPort": 22,
+                    "UserIdGroupPairs": []
+                }
+            ],
+            "IpPermissionsEgress": [
+                {
+                    "IpProtocol": "-1",
+                    "IpRanges": [
+                        {
+                            "CidrIp": "0.0.0.0/0"
+                        }
+                    ],
+                    "Ipv6Ranges": [],
+                    "PrefixListIds": [],
+                    "UserIdGroupPairs": []
+                }
+            ],
+            "OwnerId": "115553109071",
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "testCfnStack"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "AllowSSHAccess"
+                }
+            ],
+            "VpcId": "vpc-06d743d8637d90418"
+        },
+        {
             "Description": "default VPC security group",
             "GroupId": "sg-0ee85b077999bd139",
             "GroupName": "default",
@@ -764,40 +847,6 @@
             ],
             "OwnerId": "115553109071",
             "VpcId": "vpc-bd9b60c0"
-        },
-        {
-            "Description": "default VPC security group",
-            "GroupId": "sg-0f713ec56817c4fe0",
-            "GroupName": "default",
-            "IpPermissions": [
-                {
-                    "IpProtocol": "-1",
-                    "IpRanges": [],
-                    "Ipv6Ranges": [],
-                    "PrefixListIds": [],
-                    "UserIdGroupPairs": [
-                        {
-                            "GroupId": "sg-0f713ec56817c4fe0",
-                            "UserId": "115553109071"
-                        }
-                    ]
-                }
-            ],
-            "IpPermissionsEgress": [
-                {
-                    "IpProtocol": "-1",
-                    "IpRanges": [
-                        {
-                            "CidrIp": "0.0.0.0/0"
-                        }
-                    ],
-                    "Ipv6Ranges": [],
-                    "PrefixListIds": [],
-                    "UserIdGroupPairs": []
-                }
-            ],
-            "OwnerId": "115553109071",
-            "VpcId": "vpc-08700e841cd24b926"
         },
         {
             "Description": "Slave group for Elastic MapReduce created on 2021-05-10T16:57:04.181Z",

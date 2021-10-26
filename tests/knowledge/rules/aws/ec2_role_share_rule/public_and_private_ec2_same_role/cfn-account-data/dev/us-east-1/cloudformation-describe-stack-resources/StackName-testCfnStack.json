@@ -4,145 +4,157 @@
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
+            "LogicalResourceId": "AllowSSHAccess",
+            "PhysicalResourceId": "sg-0e5f2154cfee1f0ef",
+            "ResourceStatus": "CREATE_COMPLETE",
+            "ResourceType": "AWS::EC2::SecurityGroup",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
+            "StackName": "testCfnStack",
+            "Timestamp": "2021-10-26T14:30:53.975000+00:00"
+        },
+        {
+            "DriftInformation": {
+                "StackResourceDriftStatus": "NOT_CHECKED"
+            },
             "LogicalResourceId": "Ec2WebServerProfile",
             "PhysicalResourceId": "ec2-web-server-profile",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::IAM::InstanceProfile",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:11:57.636000+00:00"
+            "Timestamp": "2021-10-26T14:32:45.984000+00:00"
         },
         {
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
             "LogicalResourceId": "Igw1",
-            "PhysicalResourceId": "igw-0e6616c2ab3d98d6d",
+            "PhysicalResourceId": "igw-02d338ea494495147",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::InternetGateway",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:09:54.548000+00:00"
+            "Timestamp": "2021-10-26T14:30:43.470000+00:00"
         },
         {
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
             "LogicalResourceId": "Igw1Attachment",
-            "PhysicalResourceId": "testC-Igw1A-LA7O2GLXZXEP",
+            "PhysicalResourceId": "testC-Igw1A-PFIAL6ZV517K",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::VPCGatewayAttachment",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:10:14.709000+00:00"
+            "Timestamp": "2021-10-26T14:31:03.040000+00:00"
         },
         {
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
             "LogicalResourceId": "PrivateInstance",
-            "PhysicalResourceId": "i-0baf0f99384c0c0f6",
+            "PhysicalResourceId": "i-0c6fc5bfca7a67cec",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::Instance",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:12:19.744000+00:00"
+            "Timestamp": "2021-10-26T14:32:58.198000+00:00"
         },
         {
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
             "LogicalResourceId": "PrivateRouteTableAssoc",
-            "PhysicalResourceId": "rtbassoc-0241838b7120ff2db",
+            "PhysicalResourceId": "rtbassoc-0e044bfbe6eb50ac6",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::SubnetRouteTableAssociation",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:10:35.400000+00:00"
+            "Timestamp": "2021-10-26T14:31:23.703000+00:00"
         },
         {
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
             "LogicalResourceId": "PrivateSubnet",
-            "PhysicalResourceId": "subnet-0f08095297a180b23",
+            "PhysicalResourceId": "subnet-03d56885b124982e2",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::Subnet",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:10:16.495000+00:00"
+            "Timestamp": "2021-10-26T14:31:04.584000+00:00"
         },
         {
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
             "LogicalResourceId": "PrivateSubnetRtb",
-            "PhysicalResourceId": "rtb-0d2ed71415582226c",
+            "PhysicalResourceId": "rtb-0d811325a1acd5484",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::RouteTable",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:10:00.266000+00:00"
+            "Timestamp": "2021-10-26T14:30:48.121000+00:00"
         },
         {
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
             "LogicalResourceId": "PublicDefaultRoute",
-            "PhysicalResourceId": "testC-Publi-J3NFSQOM5CV6",
+            "PhysicalResourceId": "testC-Publi-7D4OKC2XZY11",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::Route",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:10:21.221000+00:00"
+            "Timestamp": "2021-10-26T14:31:06.884000+00:00"
         },
         {
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
             "LogicalResourceId": "PublicInstance",
-            "PhysicalResourceId": "i-031cb9415976aa658",
+            "PhysicalResourceId": "i-047c8610171a138ba",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::Instance",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:12:18.821000+00:00"
+            "Timestamp": "2021-10-26T14:32:58.445000+00:00"
         },
         {
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
             "LogicalResourceId": "PublicRouteTableAssoc",
-            "PhysicalResourceId": "rtbassoc-07d754b1a00809be9",
+            "PhysicalResourceId": "rtbassoc-011ee87f29652a089",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::SubnetRouteTableAssociation",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:10:35.448000+00:00"
+            "Timestamp": "2021-10-26T14:31:23.281000+00:00"
         },
         {
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
             "LogicalResourceId": "PublicSubnet",
-            "PhysicalResourceId": "subnet-035afe93d799f72d5",
+            "PhysicalResourceId": "subnet-0f480fe83010ca272",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::Subnet",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:10:16.386000+00:00"
+            "Timestamp": "2021-10-26T14:31:04.296000+00:00"
         },
         {
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
             "LogicalResourceId": "PublicSubnetRtb",
-            "PhysicalResourceId": "rtb-0a861ac516f331992",
+            "PhysicalResourceId": "rtb-017fd650316e3178e",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::RouteTable",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:10:00.169000+00:00"
+            "Timestamp": "2021-10-26T14:30:48.088000+00:00"
         },
         {
             "DriftInformation": {
@@ -152,21 +164,21 @@
             "PhysicalResourceId": "s3-full-access-role",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::IAM::Role",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:09:53.899000+00:00"
+            "Timestamp": "2021-10-26T14:30:41.255000+00:00"
         },
         {
             "DriftInformation": {
                 "StackResourceDriftStatus": "NOT_CHECKED"
             },
             "LogicalResourceId": "Vpc1",
-            "PhysicalResourceId": "vpc-08700e841cd24b926",
+            "PhysicalResourceId": "vpc-06d743d8637d90418",
             "ResourceStatus": "CREATE_COMPLETE",
             "ResourceType": "AWS::EC2::VPC",
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab",
             "StackName": "testCfnStack",
-            "Timestamp": "2021-10-26T13:09:56.269000+00:00"
+            "Timestamp": "2021-10-26T14:30:44.301000+00:00"
         }
     ]
 }

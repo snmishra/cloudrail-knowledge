@@ -43,3 +43,8 @@ class CloudformationResourceType(str, Enum):
     SUBNET_NETWORK_ACL_ASSOCIATION = 'AWS::EC2::SubnetNetworkAclAssociation'
     NETWORK_ACL_ENTRY = 'AWS::EC2::NetworkAclEntry'
     IAM_INSTANCE_PROFILE = 'AWS::IAM::InstanceProfile'
+    TRANSIT_GATEWAY_ATTACHMENT = 'AWS::EC2::TransitGatewayAttachment'
+    TRANSIT_GATEWAY = 'AWS::EC2::TransitGateway'
+    TRANSIT_GATEWAY_ROUTE_TABLE = 'AWS::EC2::TransitGatewayRouteTable'
+    TRANSIT_GATEWAY_ROUTE_TABLE_ASSOCIATION = 'AWS::EC2::TransitGatewayRouteTableAssociation'
+    TRANSIT_GATEWAY_ROUTE = 'AWS::EC2::TransitGatewayRoute'

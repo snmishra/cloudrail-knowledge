@@ -1,0 +1,71 @@
+{
+    "InternetGateways": [
+        {
+            "Attachments": [
+                {
+                    "State": "available",
+                    "VpcId": "vpc-04a1c5d8672155142"
+                }
+            ],
+            "InternetGatewayId": "igw-06b740536f0fe8162",
+            "OwnerId": "115553109071",
+            "Tags": [
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "dev-imanuel"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-dev-imanuel-Public-IGW"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Tier",
+                    "Value": "Public"
+                }
+            ]
+        },
+        {
+            "Attachments": [
+                {
+                    "State": "available",
+                    "VpcId": "vpc-03652b16842fd8886"
+                }
+            ],
+            "InternetGatewayId": "igw-074883db3790916ab",
+            "OwnerId": "115553109071",
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/6860fcf0-366b-11ec-a35a-0a975ef1459f"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "Igw1"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "testCfnStack"
+                }
+            ]
+        },
+        {
+            "Attachments": [
+                {
+                    "State": "available",
+                    "VpcId": "vpc-bd9b60c0"
+                }
+            ],
+            "InternetGatewayId": "igw-b57c52ce",
+            "OwnerId": "115553109071",
+            "Tags": []
+        }
+    ]
+}

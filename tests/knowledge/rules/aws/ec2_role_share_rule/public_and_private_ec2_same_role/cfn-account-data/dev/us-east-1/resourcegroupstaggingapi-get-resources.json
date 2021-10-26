@@ -1,5 +1,5 @@
 {
-    "PaginationToken": "ALt2aez7bY8fLA3uQQEBCbwVSpCV5y9nAL1Chwq1lLB46y/HRxsJyHuKcFmu8L2BaS0lf2+sh9P0HSYy9KsBpp7vmLeS3tqddvTYCqFshG7FvmdOZoX2mIllVtOVzHCsIzyFTYD0YISk7SjpTcqT97+pz7rFwEaJg8pndbeRYcngIRuYrT3S7ZyxEldP3RoPiEZCOnapqDmdtXtOEqxNtBU6H7nFNDMEPLUUlyOvWoYeKBv7fzNIJEPDXbXfUnR9UT/b16EpkS8izEgOh2nJ6Hb4aNT+/ckpd/3P8aSq1a5tjc+yPKzYiDLmOLob5EYe289JCkLywqcm0FcEw54SPfI+FqKJ2PwX6gz82eef3OoYMfKYHaBOFYWyfPMku+TB/lCTtMBq9+zzYwn1TvSa/kDrQT8NeKFlJNo4nbGU54jKqTuwztTmSwCiE1H1R1CrEqiT4FhWGQOdxMS5Kcmv8SC9b3RrxOqN1MgVOWWtKKyjHdXvQb5jAopPbnY3DdX4P6y6huN0qVQ42/mwtsf8b/p95ByA5nDmS2YWeUEvp+5GoBuHYPTQhKebbGDnTyheYCVqUZFXL7f5qxJLLZ5pyxaQr+N6wQX7JR54uRYMw9165zhHThEZGxQ=",
+    "PaginationToken": "AIZZ9DbAbLo61OknWAEBO3JoR0fCieAJrzSjaIIRAlK1YGHvRFrPLug092QKwzzztwqDEN5oXBcM4zfXML+Fi2GQYSHDcQv+shyz6TFZIIIES2dBaTaupQex4H+Zg1WtqmupQvsLQ41yPDtV9rcgAqUTsKgfvHyZaYbaP/F4BlmaQC1CNCN3yhA0yJjRJmN1zmqptFUu+goYzyU+c/gor9j+uqtrkiZiEb/OZ6f2veUS4W5e67fbQL6lAKxgD+0VKqFSbU5gKPEH0V801C+HZxh8yTbZ7cthrki2le9O6Q38MZ2JF1Ni03uFFma6AdWbnbvAt7pab4r3aeuf2/2z24o6M6SxqE8FrMJsmPPVY2trhIlN6dNAMkGnzGJL7uoPb8Vg56A6/ib1IsJ2O5P1kDWf1LA4olN5RD6SuYeQofLEwaJtNzlJEriGDGGGTPZphGIn6Rn9mqwSoaSvnUPOK1g5/eVGk/T204LUshSA9f6QLpGfW8RJWD3z3RtnBfXcrGUmdQOAUo42Kb4CqqP46nwOB6gu8dcEH679eCOhNqk0DF3AESsyLTiBZsbORXuFAKTIYfkBy1+ssE0IS0t7/2Fbjx8URBT0MhvBVaHJJKN+lESuZEnhAa4=",
     "ResourceTagMappingList": [
         {
             "ResourceARN": "arn:aws:acm:us-east-1:115553109071:certificate/e9b4b83c-f756-4d98-ad0c-89be13c3eecf",
@@ -119,7 +119,7 @@
             ]
         },
         {
-            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:internet-gateway/igw-0e6616c2ab3d98d6d",
+            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:internet-gateway/igw-02d338ea494495147",
             "Tags": [
                 {
                     "Key": "aws:cloudformation:stack-name",
@@ -127,11 +127,28 @@
                 },
                 {
                     "Key": "aws:cloudformation:stack-id",
-                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd"
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
                 },
                 {
                     "Key": "aws:cloudformation:logical-id",
                     "Value": "Igw1"
+                }
+            ]
+        },
+        {
+            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:route-table/rtb-017fd650316e3178e",
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "testCfnStack"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "PublicSubnetRtb"
                 }
             ]
         },
@@ -157,6 +174,23 @@
                 {
                     "Key": "Name",
                     "Value": "Cloudrail-dev-imanuel-Private-RT"
+                }
+            ]
+        },
+        {
+            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:route-table/rtb-0d811325a1acd5484",
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "testCfnStack"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "PrivateSubnetRtb"
                 }
             ]
         },
@@ -200,7 +234,11 @@
             ]
         },
         {
-            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:subnet/subnet-0f08095297a180b23",
+            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:subnet/subnet-65f08f28",
+            "Tags": []
+        },
+        {
+            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:subnet/subnet-0f480fe83010ca272",
             "Tags": [
                 {
                     "Key": "aws:cloudformation:stack-name",
@@ -208,17 +246,13 @@
                 },
                 {
                     "Key": "aws:cloudformation:stack-id",
-                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd"
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
                 },
                 {
                     "Key": "aws:cloudformation:logical-id",
-                    "Value": "PrivateSubnet"
+                    "Value": "PublicSubnet"
                 }
             ]
-        },
-        {
-            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:subnet/subnet-65f08f28",
-            "Tags": []
         },
         {
             "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:subnet/subnet-3260cf54",
@@ -1317,40 +1351,6 @@
                 {
                     "Key": "Name",
                     "Value": "Cloudrail-dev-imanuel-Public-RT"
-                }
-            ]
-        },
-        {
-            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:route-table/rtb-0a861ac516f331992",
-            "Tags": [
-                {
-                    "Key": "aws:cloudformation:stack-name",
-                    "Value": "testCfnStack"
-                },
-                {
-                    "Key": "aws:cloudformation:stack-id",
-                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd"
-                },
-                {
-                    "Key": "aws:cloudformation:logical-id",
-                    "Value": "PublicSubnetRtb"
-                }
-            ]
-        },
-        {
-            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:route-table/rtb-0d2ed71415582226c",
-            "Tags": [
-                {
-                    "Key": "aws:cloudformation:stack-name",
-                    "Value": "testCfnStack"
-                },
-                {
-                    "Key": "aws:cloudformation:stack-id",
-                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd"
-                },
-                {
-                    "Key": "aws:cloudformation:logical-id",
-                    "Value": "PrivateSubnetRtb"
                 }
             ]
         },
@@ -3189,6 +3189,23 @@
             ]
         },
         {
+            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:instance/i-047c8610171a138ba",
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "testCfnStack"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "PublicInstance"
+                }
+            ]
+        },
+        {
             "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:internet-gateway/igw-06b740536f0fe8162",
             "Tags": [
                 {
@@ -3269,7 +3286,7 @@
             ]
         },
         {
-            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:subnet/subnet-035afe93d799f72d5",
+            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:subnet/subnet-03d56885b124982e2",
             "Tags": [
                 {
                     "Key": "aws:cloudformation:stack-name",
@@ -3277,11 +3294,11 @@
                 },
                 {
                     "Key": "aws:cloudformation:stack-id",
-                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd"
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
                 },
                 {
                     "Key": "aws:cloudformation:logical-id",
-                    "Value": "PublicSubnet"
+                    "Value": "PrivateSubnet"
                 }
             ]
         },
@@ -4811,6 +4828,23 @@
             ]
         },
         {
+            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:instance/i-0c6fc5bfca7a67cec",
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "testCfnStack"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "PrivateInstance"
+                }
+            ]
+        },
+        {
             "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:natgateway/nat-0d6dceeb94081edbd",
             "Tags": [
                 {
@@ -4832,6 +4866,23 @@
                 {
                     "Key": "Name",
                     "Value": "Cloudrail-dev-imanuel-Private-NATGW"
+                }
+            ]
+        },
+        {
+            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:security-group/sg-0e5f2154cfee1f0ef",
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "testCfnStack"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "AllowSSHAccess"
                 }
             ]
         },
@@ -4865,7 +4916,7 @@
             ]
         },
         {
-            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:vpc/vpc-08700e841cd24b926",
+            "ResourceARN": "arn:aws:ec2:us-east-1:115553109071:vpc/vpc-06d743d8637d90418",
             "Tags": [
                 {
                     "Key": "aws:cloudformation:stack-name",
@@ -4873,7 +4924,7 @@
                 },
                 {
                     "Key": "aws:cloudformation:stack-id",
-                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd"
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/3fc05cc0-3669-11ec-b566-0ae6e74961ab"
                 },
                 {
                     "Key": "aws:cloudformation:logical-id",
