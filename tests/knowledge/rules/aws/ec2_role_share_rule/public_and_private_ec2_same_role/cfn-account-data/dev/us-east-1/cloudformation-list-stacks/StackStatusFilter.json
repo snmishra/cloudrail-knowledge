@@ -1,11 +1,11 @@
 {
     "StackSummaries": [
         {
-            "CreationTime": "2021-10-25T14:42:33+00:00",
+            "CreationTime": "2021-10-26T13:09:32.938000+00:00",
             "DriftInformation": {
                 "StackDriftStatus": "NOT_CHECKED"
             },
-            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/c9777a20-35a1-11ec-8871-0a7e7ad373fb",
+            "StackId": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd",
             "StackName": "testCfnStack",
             "StackStatus": "CREATE_COMPLETE"
         },

@@ -1,0 +1,357 @@
+{
+    "RouteTables": [
+        {
+            "Associations": [
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": true,
+                    "RouteTableAssociationId": "rtbassoc-0ee98ed64db676703",
+                    "RouteTableId": "rtb-0385b358e83be1f46"
+                }
+            ],
+            "OwnerId": "115553109071",
+            "PropagatingVgws": [],
+            "RouteTableId": "rtb-0385b358e83be1f46",
+            "Routes": [
+                {
+                    "DestinationCidrBlock": "10.21.128.0/20",
+                    "GatewayId": "local",
+                    "Origin": "CreateRouteTable",
+                    "State": "active"
+                }
+            ],
+            "Tags": [
+                {
+                    "Key": "Environment",
+                    "Value": "dev-imanuel"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-dev-imanuel-Default-RT"
+                }
+            ],
+            "VpcId": "vpc-04a1c5d8672155142"
+        },
+        {
+            "Associations": [
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": true,
+                    "RouteTableAssociationId": "rtbassoc-82ea5cf3",
+                    "RouteTableId": "rtb-e24c0a9c"
+                }
+            ],
+            "OwnerId": "115553109071",
+            "PropagatingVgws": [],
+            "RouteTableId": "rtb-e24c0a9c",
+            "Routes": [
+                {
+                    "DestinationCidrBlock": "172.31.0.0/16",
+                    "GatewayId": "local",
+                    "Origin": "CreateRouteTable",
+                    "State": "active"
+                }
+            ],
+            "Tags": [
+                {
+                    "Key": "Name",
+                    "Value": "default table"
+                }
+            ],
+            "VpcId": "vpc-bd9b60c0"
+        },
+        {
+            "Associations": [
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": true,
+                    "RouteTableAssociationId": "rtbassoc-0997670e748082d3f",
+                    "RouteTableId": "rtb-0a085c24b8034f298"
+                }
+            ],
+            "OwnerId": "115553109071",
+            "PropagatingVgws": [],
+            "RouteTableId": "rtb-0a085c24b8034f298",
+            "Routes": [
+                {
+                    "DestinationCidrBlock": "10.10.0.0/16",
+                    "GatewayId": "local",
+                    "Origin": "CreateRouteTable",
+                    "State": "active"
+                }
+            ],
+            "Tags": [],
+            "VpcId": "vpc-08700e841cd24b926"
+        },
+        {
+            "Associations": [
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-07ddd169109769805",
+                    "RouteTableId": "rtb-04f6f0e61468e405c",
+                    "SubnetId": "subnet-0d4b79ce0ba1e0913"
+                },
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-0de19911bdf89dbc6",
+                    "RouteTableId": "rtb-04f6f0e61468e405c",
+                    "SubnetId": "subnet-07b7849af809e164a"
+                },
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-0124b3b3c32f9b14a",
+                    "RouteTableId": "rtb-04f6f0e61468e405c",
+                    "SubnetId": "subnet-0ac7ab4e705a7d184"
+                }
+            ],
+            "OwnerId": "115553109071",
+            "PropagatingVgws": [],
+            "RouteTableId": "rtb-04f6f0e61468e405c",
+            "Routes": [
+                {
+                    "DestinationCidrBlock": "10.21.128.0/20",
+                    "GatewayId": "local",
+                    "Origin": "CreateRouteTable",
+                    "State": "active"
+                },
+                {
+                    "DestinationCidrBlock": "0.0.0.0/0",
+                    "GatewayId": "igw-06b740536f0fe8162",
+                    "Origin": "CreateRoute",
+                    "State": "active"
+                },
+                {
+                    "DestinationPrefixListId": "pl-63a5400a",
+                    "GatewayId": "vpce-0923e315fc70d887a",
+                    "Origin": "CreateRoute",
+                    "State": "active"
+                }
+            ],
+            "Tags": [
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Tier",
+                    "Value": "Public"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "dev-imanuel"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-dev-imanuel-Public-RT"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                }
+            ],
+            "VpcId": "vpc-04a1c5d8672155142"
+        },
+        {
+            "Associations": [
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-07d754b1a00809be9",
+                    "RouteTableId": "rtb-0a861ac516f331992",
+                    "SubnetId": "subnet-035afe93d799f72d5"
+                }
+            ],
+            "OwnerId": "115553109071",
+            "PropagatingVgws": [],
+            "RouteTableId": "rtb-0a861ac516f331992",
+            "Routes": [
+                {
+                    "DestinationCidrBlock": "10.10.0.0/16",
+                    "GatewayId": "local",
+                    "Origin": "CreateRouteTable",
+                    "State": "active"
+                },
+                {
+                    "DestinationCidrBlock": "0.0.0.0/0",
+                    "GatewayId": "igw-0e6616c2ab3d98d6d",
+                    "Origin": "CreateRoute",
+                    "State": "active"
+                }
+            ],
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "PublicSubnetRtb"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "testCfnStack"
+                }
+            ],
+            "VpcId": "vpc-08700e841cd24b926"
+        },
+        {
+            "Associations": [
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-04adb466304cefbee",
+                    "RouteTableId": "rtb-031a97bb1cca8e105",
+                    "SubnetId": "subnet-004d655196329d93a"
+                },
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-0dcc22c89c7a4f2ba",
+                    "RouteTableId": "rtb-031a97bb1cca8e105",
+                    "SubnetId": "subnet-05a12b58cb8bb928e"
+                },
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-0bbaa711a131c72ab",
+                    "RouteTableId": "rtb-031a97bb1cca8e105",
+                    "SubnetId": "subnet-04d441d9f2365b71a"
+                }
+            ],
+            "OwnerId": "115553109071",
+            "PropagatingVgws": [],
+            "RouteTableId": "rtb-031a97bb1cca8e105",
+            "Routes": [
+                {
+                    "DestinationCidrBlock": "10.21.128.0/20",
+                    "GatewayId": "local",
+                    "Origin": "CreateRouteTable",
+                    "State": "active"
+                },
+                {
+                    "DestinationCidrBlock": "10.24.0.0/20",
+                    "Origin": "CreateRoute",
+                    "State": "active",
+                    "TransitGatewayId": "tgw-0bb1396f4b2cc782c"
+                },
+                {
+                    "DestinationCidrBlock": "172.16.0.0/16",
+                    "Origin": "CreateRoute",
+                    "State": "active",
+                    "TransitGatewayId": "tgw-0bb1396f4b2cc782c"
+                },
+                {
+                    "DestinationCidrBlock": "192.168.0.0/16",
+                    "Origin": "CreateRoute",
+                    "State": "active",
+                    "TransitGatewayId": "tgw-0bb1396f4b2cc782c"
+                },
+                {
+                    "DestinationCidrBlock": "0.0.0.0/0",
+                    "NatGatewayId": "nat-0d6dceeb94081edbd",
+                    "Origin": "CreateRoute",
+                    "State": "active"
+                },
+                {
+                    "DestinationPrefixListId": "pl-63a5400a",
+                    "GatewayId": "vpce-0923e315fc70d887a",
+                    "Origin": "CreateRoute",
+                    "State": "active"
+                }
+            ],
+            "Tags": [
+                {
+                    "Key": "Tier",
+                    "Value": "Private"
+                },
+                {
+                    "Key": "Name",
+                    "Value": "Cloudrail-dev-imanuel-Private-RT"
+                },
+                {
+                    "Key": "Project",
+                    "Value": "Cloudrail"
+                },
+                {
+                    "Key": "Environment",
+                    "Value": "dev-imanuel"
+                },
+                {
+                    "Key": "Managed_by",
+                    "Value": "terraform"
+                }
+            ],
+            "VpcId": "vpc-04a1c5d8672155142"
+        },
+        {
+            "Associations": [
+                {
+                    "AssociationState": {
+                        "State": "associated"
+                    },
+                    "Main": false,
+                    "RouteTableAssociationId": "rtbassoc-0241838b7120ff2db",
+                    "RouteTableId": "rtb-0d2ed71415582226c",
+                    "SubnetId": "subnet-0f08095297a180b23"
+                }
+            ],
+            "OwnerId": "115553109071",
+            "PropagatingVgws": [],
+            "RouteTableId": "rtb-0d2ed71415582226c",
+            "Routes": [
+                {
+                    "DestinationCidrBlock": "10.10.0.0/16",
+                    "GatewayId": "local",
+                    "Origin": "CreateRouteTable",
+                    "State": "active"
+                }
+            ],
+            "Tags": [
+                {
+                    "Key": "aws:cloudformation:stack-id",
+                    "Value": "arn:aws:cloudformation:us-east-1:115553109071:stack/testCfnStack/f5ee3410-365d-11ec-a175-12d5ccbb41cd"
+                },
+                {
+                    "Key": "aws:cloudformation:stack-name",
+                    "Value": "testCfnStack"
+                },
+                {
+                    "Key": "aws:cloudformation:logical-id",
+                    "Value": "PrivateSubnetRtb"
+                }
+            ],
+            "VpcId": "vpc-08700e841cd24b926"
+        }
+    ]
+}
