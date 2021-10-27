@@ -15,13 +15,15 @@ class CloudformationSecurityGroupInlineRuleBuilder(CloudformationSecurityGroupRu
         rules = []
         properties: dict = cfn_res_attr['Properties']
 
-        rules.extend(self.parse_security_group_rule(security_group_rule_properties=ingress_rule_property,
+        rules.extend(self.parse_security_group_rule(security_group_rule_properties=ingress_rule_property 
+                                                    if isinstance(ingress_rule_property, dict) else self.get_property(properties, 'SecurityGroupIngress', {}),
                                                     egress=False,
                                                     security_group_id=self.get_resource_id(cfn_res_attr),
                                                     account_id=cfn_res_attr['account_id'],
                                                     region=cfn_res_attr['region']) for ingress_rule_property in self.get_property(properties, 'SecurityGroupIngress', []))
 
-        rules.extend(self.parse_security_group_rule(security_group_rule_properties=egress_rule_property,
+        rules.extend(self.parse_security_group_rule(security_group_rule_properties=egress_rule_property
+                                                    if isinstance(egress_rule_property, dict) else self.get_property(properties, 'SecurityGroupEgress', {}),
                                                     egress=True,
                                                     security_group_id=self.get_resource_id(cfn_res_attr),
                                                     account_id=cfn_res_attr['account_id'],
