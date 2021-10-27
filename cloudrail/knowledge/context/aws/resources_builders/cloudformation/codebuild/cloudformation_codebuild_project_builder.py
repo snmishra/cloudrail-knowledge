@@ -1,31 +1,30 @@
-ifrom typing import Dict
-
-from cloudrail.knowledge.context.aws.resources.codebuild.codebuild_report_group import CodeBuildReportGroup
+from typing import Dict
+from cloudrail.knowledge.context.aws.resources.codebuild.codebuild_project import CodeBuildProject
+from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.base_cloudformation_builder import BaseCloudformationBuilder
+from cloudrail.knowledge.utils.arn_utils import build_arn
 
-
-class CloudformationCodebuildReportGroupBuilder(BaseCloudformationBuilder):
+class CloudformationCodeBuildProjectBuilder(BaseCloudformationBuilder):
 
     def __init__(self, cfn_by_type_map: Dict[CloudformationResourceType, Dict[str, Dict]]) -> None:
-        super().__init__(CloudformationResourceType.CODEBUILD_REPORTGROUP, cfn_by_type_map)
+        super().__init__(CloudformationResourceType.CODEBUILD_PROJECT, cfn_by_type_map)
 
-    def parse_resource(self, cfn_res_attr: dict) -> CodeBuildReportGroup:
+    def parse_resource(self, cfn_res_attr: dict) -> CodeBuildProject:
         properties: dict = cfn_res_attr['Properties']
-        export_config_settings = properties['ExportConfig']
-        export_config_type = export_config_settings['ExportConfigType']
-        export_config_s3_destination_bucket = None
-        export_config_s3_destination_encryption_key = None
-        export_config_s3_destination_encryption_disabled = True
-        if export_config_type == 'S3':
-            export_config_s3_destination_bucket = export_config_settings['S3Destination']['Bucket']
-            export_config_s3_destination_encryption_key = export_config_settings['S3Destination'].get('EncryptionKey')
-            export_config_s3_destination_encryption_disabled = export_config_settings['S3Destination'].get('EncryptionDisabled')
-        return CodeBuildReportGroup(account=cfn_res_attr['account_id'],
-                                    region=cfn_res_attr['region'],
-                                    name=self.get_property(properties, 'Name'),
-                                    export_config_type=properties['ExportConfig']['ExportConfigType'],
-                                    export_config_s3_destination_bucket=export_config_s3_destination_bucket,
-                                    export_config_s3_destination_encryption_key=export_config_s3_destination_encryption_key,
-                                    export_config_s3_destination_encryption_disabled=export_config_s3_destination_encryption_disabled,
-                                    arn=cfn_res_attr.get('Arn', 'empty_arn'))
+        account = cfn_res_attr['account_id']
+        region = cfn_res_attr['region']
+        project_name = self.get_property(properties, 'Name', self.get_resource_id(cfn_res_attr))
+        encryption_key = self.get_property(properties, 'EncryptionKey')
+        arn = build_arn('codebuild', region, account, 'project', None, project_name)
+        vpc_config: NetworkConfiguration = None
+        if vpc_config_data := self.get_property(properties, 'VpcConfig'):
+            vpc_config = NetworkConfiguration(assign_public_ip=False,
+                                              security_groups_ids=self.get_property(vpc_config_data, 'SecurityGroupIds', []),
+                                              subnet_list_ids=self.get_property(vpc_config_data, 'Subnets', []))
+        return CodeBuildProject(account=account,
+                                region=region,
+                                project_name=project_name,
+                                encryption_key=encryption_key,
+                                arn=arn,
+                                vpc_config=vpc_config)

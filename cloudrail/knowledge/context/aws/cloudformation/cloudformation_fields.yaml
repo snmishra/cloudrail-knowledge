@@ -295,3 +295,10 @@ AWS::EC2::TransitGatewayRoute:
             - Blackhole
             - TransitGatewayAttachmentId
             - RouteTableId
+
+AWS::CodeBuild::Project:
+    known_fields:
+        pass:
+            - Name
+            - EncryptionKey
+            - VpcConfig
