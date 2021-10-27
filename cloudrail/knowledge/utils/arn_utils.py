@@ -98,8 +98,6 @@ def build_arn(service: str, region: Optional[str], account_id: Optional[str],
         resource = resource_name
     elif service == 'db':
         resource = f"{resource_type}:{resource_name}"
-    elif service == 'dax':
-        resource = f"{path}{resource_name}"
     else:
         resource = f"{resource_type}{path or '/'}{resource_name}"
 

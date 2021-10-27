@@ -16,7 +16,7 @@ class CloudformationDaxClusterBuilder(BaseCloudformationBuilder):
         region = cfn_res_attr['region']
         account = cfn_res_attr['account_id']
         cluster_name = self.get_property(properties, "ClusterName", self.create_random_pseudo_identifier())
-        cluster_arn = build_arn(service='dax', region=region, account_id=account, path='cache/', resource_name=cluster_name, resource_type=None)
+        cluster_arn = build_arn(service='dax', region=region, account_id=account, path='cache/', resource_name=cluster_name, resource_type="")
         server_side_encryption = properties.get("SSESpecification", {}).get("SSEEnabled", False)
         return DaxCluster(cluster_name=cluster_name,
                           server_side_encryption=server_side_encryption,
