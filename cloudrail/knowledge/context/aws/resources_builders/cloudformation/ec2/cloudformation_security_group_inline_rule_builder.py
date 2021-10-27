@@ -15,7 +15,7 @@ class CloudformationSecurityGroupInlineRuleBuilder(CloudformationSecurityGroupRu
         rules = []
         properties: dict = cfn_res_attr['Properties']
 
-        rules.extend(self.parse_security_group_rule(security_group_rule_properties=ingress_rule_property 
+        rules.extend(self.parse_security_group_rule(security_group_rule_properties=ingress_rule_property
                                                     if isinstance(ingress_rule_property, dict) else self.get_property(properties, 'SecurityGroupIngress', {}),
                                                     egress=False,
                                                     security_group_id=self.get_resource_id(cfn_res_attr),
