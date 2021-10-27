@@ -12,7 +12,8 @@ class CloudformationIamInstanceProfileBuilder(CloudformationBaseIamBuilder):
     def parse_resource(self, cfn_res_attr: dict) -> IamInstanceProfile:
         res_properties: dict = cfn_res_attr['Properties']
         instance_profile_name = self.get_property(res_properties, 'InstanceProfileName', self.get_resource_id(cfn_res_attr))
+        role_names = self.get_property(res_properties, 'Roles')
         return IamInstanceProfile(iam_instance_profile_name=instance_profile_name,
                                   account=cfn_res_attr['account_id'],
                                   region=cfn_res_attr['region'],
-                                  role_name=self.get_property(res_properties, 'Roles')[0])
+                                  role_name=role_names[0] if role_names else None)
