@@ -1,6 +1,7 @@
 from typing import List
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class DaxCluster(AwsResource):
@@ -50,6 +51,6 @@ class DaxCluster(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'cluster_name': self.cluster_name,
+        return {'tags': filter_tags(self.tags), 'cluster_name': self.cluster_name,
                 'server_side_encryption': self.server_side_encryption,
                 'cluster_arn': self.cluster_arn}

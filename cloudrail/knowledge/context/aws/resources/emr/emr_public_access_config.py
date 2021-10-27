@@ -36,4 +36,4 @@ class EmrPublicAccessConfiguration(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'block_public_access': self.block_public_access}
+        return {'block_public_access': self.block_public_access}

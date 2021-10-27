@@ -253,7 +253,13 @@ class CloudformationMetadataParser:
             CloudformationResourceType.S3_BUCKET_POLICY: AliasesDict(*scanner_context.s3_bucket_policies),
             CloudformationResourceType.LAMBDA_FUNCTION: AliasesDict(*scanner_context.lambda_function_list),
             CloudformationResourceType.NETWORK_ACL_ENTRY: AliasesDict(*scanner_context.network_acl_rules),
-            CloudformationResourceType.DAX_CLUSTER: AliasesDict(*scanner_context.dax_cluster)
+            CloudformationResourceType.DAX_CLUSTER: AliasesDict(*scanner_context.dax_cluster),
+            CloudformationResourceType.TRANSIT_GATEWAY_ATTACHMENT: AliasesDict(*scanner_context.transit_gateway_attachments),
+            CloudformationResourceType.TRANSIT_GATEWAY: AliasesDict(*scanner_context.transit_gateways),
+            CloudformationResourceType.TRANSIT_GATEWAY_ROUTE_TABLE: AliasesDict(*scanner_context.transit_gateway_route_tables),
+            CloudformationResourceType.TRANSIT_GATEWAY_ROUTE_TABLE_ASSOCIATION: AliasesDict(*scanner_context
+                                                                                            .transit_gateway_route_table_associations),
+            CloudformationResourceType.TRANSIT_GATEWAY_ROUTE: AliasesDict(*scanner_context.transit_gateway_routes)
         }
 
     def _cfn_template_crawler(self, current_node: Union[Dict, List], parent_node, current_key: str = None):

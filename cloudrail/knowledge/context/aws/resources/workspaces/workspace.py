@@ -2,6 +2,7 @@ from typing import List
 from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class Workspace(AwsResource):
@@ -50,6 +51,6 @@ class Workspace(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'root_encryption_enabled': self.root_encryption_enabled,
+        return {'tags': filter_tags(self.tags), 'root_encryption_enabled': self.root_encryption_enabled,
                 'user_encryption_enabled': self.user_encryption_enabled,
                 'volume_encryption_key': self.volume_encryption_key}

@@ -6,6 +6,7 @@ from typing import List, Optional
 from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template import LaunchTemplate
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class LaunchConfiguration(AwsResource):
@@ -76,7 +77,7 @@ class LaunchConfiguration(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'image_id': self.image_id,
+        return {'image_id': self.image_id,
                 'instance_type': self.instance_type,
                 'key_name': self.key_name,
                 'name': self.name,
@@ -176,7 +177,8 @@ class AutoScalingGroup(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'target_group_arns': self.target_group_arns,
+        return {'tags': filter_tags(self.tags),
+                'target_group_arns': self.target_group_arns,
                 'name': self.name,
                 'availability_zones': self.availability_zones,
                 'subnet_ids': self.subnet_ids}

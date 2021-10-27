@@ -53,5 +53,5 @@ class NetworkAclAssociation(AwsResource):
         pass
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'network_acl_id': self.network_acl_id,
+        return {'network_acl_id': self.network_acl_id,
                 'subnet_id': self.subnet_id}

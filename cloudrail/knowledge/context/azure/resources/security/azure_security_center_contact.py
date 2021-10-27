@@ -26,4 +26,4 @@ class AzureSecurityCenterContact(AzureResource):
         return [self.subscription_id]
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'alert_notifications': self.alert_notifications}
+        return {'alert_notifications': self.alert_notifications}

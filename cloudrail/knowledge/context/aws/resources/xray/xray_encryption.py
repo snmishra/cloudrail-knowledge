@@ -37,4 +37,4 @@ class XrayEncryption(AwsResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'kms_id': self.key_id}
+        return {'kms_id': self.key_id}

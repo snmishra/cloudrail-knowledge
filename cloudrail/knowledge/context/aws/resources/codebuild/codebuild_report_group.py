@@ -2,6 +2,7 @@ from typing import List, Optional
 from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class CodeBuildReportGroup(AwsResource):
@@ -67,7 +68,8 @@ class CodeBuildReportGroup(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'tags': filter_tags(self.tags),
+                'name': self.name,
                 'export_config_type': self.export_config_type,
                 'export_config_s3_destination_bucket': self.export_config_s3_destination_bucket,
                 'export_config_s3_destination_encryption_key': self.export_config_s3_destination_encryption_key,

@@ -3,6 +3,7 @@ from typing import List
 from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class SageMakerNotebookInstance(AwsResource):
@@ -54,6 +55,7 @@ class SageMakerNotebookInstance(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'tags': filter_tags(self.tags),
+                'name': self.name,
                 'kms_key_id': self.kms_key_id,
                 'direct_internet_access': self.direct_internet_access}

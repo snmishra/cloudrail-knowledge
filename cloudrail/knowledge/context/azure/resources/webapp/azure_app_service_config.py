@@ -52,7 +52,7 @@ class AzureAppServiceConfig(AzureResource):
         return False
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'name': self.name,
+        return {'name': self.name,
                 'ftps_state': self.ftps_state.value,
                 'auth_settings': dataclasses.asdict(self.auth_settings),
                 'minimum_tls_version': self.minimum_tls_version,

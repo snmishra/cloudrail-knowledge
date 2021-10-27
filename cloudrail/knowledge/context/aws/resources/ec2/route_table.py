@@ -3,6 +3,7 @@ from typing import List, Optional
 from netaddr import IPNetwork
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 from cloudrail.knowledge.utils.utils import is_subset
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.ec2.route import Route, RouteTargetType
@@ -88,6 +89,6 @@ class RouteTable(AwsResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'vpc_id': self.vpc_id,
+        return {'tags': filter_tags(self.tags), 'vpc_id': self.vpc_id,
                 'name': self.name,
                 'is_main_route_table': self.is_main_route_table}

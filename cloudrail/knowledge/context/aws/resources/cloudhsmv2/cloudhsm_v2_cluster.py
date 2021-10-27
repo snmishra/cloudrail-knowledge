@@ -4,6 +4,7 @@ from cloudrail.knowledge.context.aws.resources.cloudhsmv2.cloudhsm_v2_hsm import
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class CloudHsmV2Cluster(NetworkEntity):
@@ -67,7 +68,8 @@ class CloudHsmV2Cluster(NetworkEntity):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags, 'hsm_type': self.hsm_type,
+        return {'tags': filter_tags(self.tags),
+                'hsm_type': self.hsm_type,
                 'subnet_ids': self.subnet_ids,
                 'vpc_id': self.vpc_id,
                 'security_group_id': self.security_group_id,
