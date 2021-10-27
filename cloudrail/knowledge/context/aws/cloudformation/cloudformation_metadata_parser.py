@@ -258,7 +258,9 @@ class CloudformationMetadataParser:
             CloudformationResourceType.TRANSIT_GATEWAY_ROUTE_TABLE: AliasesDict(*scanner_context.transit_gateway_route_tables),
             CloudformationResourceType.TRANSIT_GATEWAY_ROUTE_TABLE_ASSOCIATION: AliasesDict(*scanner_context
                                                                                             .transit_gateway_route_table_associations),
-            CloudformationResourceType.TRANSIT_GATEWAY_ROUTE: AliasesDict(*scanner_context.transit_gateway_routes)
+            CloudformationResourceType.TRANSIT_GATEWAY_ROUTE: AliasesDict(*scanner_context.transit_gateway_routes),
+            CloudformationResourceType.DOCDB_CLUSTER: AliasesDict(*scanner_context.docdb_cluster),
+            CloudformationResourceType.DOCDB_CLUSTER_PARAMETER_GROUP: AliasesDict(*scanner_context.docdb_cluster_parameter_groups),
         }
 
     def _cfn_template_crawler(self, current_node: Union[Dict, List], parent_node, current_key: str = None):
