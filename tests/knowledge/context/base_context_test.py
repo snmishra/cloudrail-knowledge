@@ -184,19 +184,19 @@ class BaseContextTest(unittest.TestCase):
                     scanner_account_data_folder_zip = os.path.join(current_path, '..', 'testing-accounts-data', base_scanner_data_for_iac + '.zip')
                 else:
                     scanner_account_data_folder_zip = os.path.join(working_dir, 'cfn-account-data.zip')
-                    if not os.path.isdir(scanner_account_data_folder_zip):
+                    if not os.path.isfile(scanner_account_data_folder_zip):
                         scanner_account_data_folder_zip = os.path.join(current_path, '..', 'testing-accounts-data', 'account-data-vpc-platform.zip')
                 if os.path.isfile(scanner_account_data_folder_zip):
                     shutil.unpack_archive(scanner_account_data_folder_zip, extract_dir=scanner_account_data_folder, format='zip')
 
                 context = EnvironmentContextBuilderFactory.get(CloudProvider.AMAZON_WEB_SERVICES,
                                                             IacType.CLOUDFORMATION).build(account_data_dir_path=scanner_account_data_folder,
-                                                                                        iac_file_path=template_file,
-                                                                                        account_id=self.DUMMY_ACCOUNT_ID,
-                                                                                        stack_name='testCfnStack',
-                                                                                        region='us-east-1',
-                                                                                        cfn_template_params=cfn_template_params or {},
-                                                                                        salt=self.DUMMY_SALT)
+                                                                                          iac_file_path=template_file,
+                                                                                          account_id=self.DUMMY_ACCOUNT_ID,
+                                                                                          stack_name='testCfnStack',
+                                                                                          region='us-east-1',
+                                                                                          cfn_template_params=cfn_template_params or {},
+                                                                                          salt=self.DUMMY_SALT)
                 assert_func(self, context)
             finally:
                 if os.path.isdir(working_dir):

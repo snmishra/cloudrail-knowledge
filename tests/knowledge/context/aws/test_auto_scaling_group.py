@@ -4,7 +4,7 @@ from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template impor
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.mergeable import EntityOrigin
 from tests.knowledge.context.aws_context_test import AwsContextTest
-from tests.knowledge.context.test_context_annotation import context
+from tests.knowledge.context.test_context_annotation import TestOptions, context
 
 
 class TestAutoScalingGroup(AwsContextTest):
@@ -39,7 +39,7 @@ class TestAutoScalingGroup(AwsContextTest):
         self.assertEqual(len(ec2.network_resource.subnets), 2)
         self.assertEqual(len(ec2.network_resource.security_groups), 2)
 
-    @context(module_path="launch-template-network-interfaces-settings-only")
+    @context(module_path="launch-template-network-interfaces-settings-only", test_options=TestOptions(run_cloudmapper=False, run_terraform=False, run_drift_detection=False))
     def test_launch_template_network_interfaces_settings_only(self, ctx: AwsEnvironmentContext):
         self.assertEqual(len(ctx.ec2s), 1)
         ec2: Ec2Instance = ctx.ec2s[0]
