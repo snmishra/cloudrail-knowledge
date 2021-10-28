@@ -181,7 +181,7 @@ class BaseContextTest(unittest.TestCase):
                 current_path = os.path.dirname(os.path.realpath(__file__))
 
                 if base_scanner_data_for_iac:
-                    scanner_account_data_folder_zip = os.path.join(current_path, '..', 'testing-accounts-data', base_scanner_data_for_iac + '.zip')
+                    scanner_account_data_folder_zip = os.path.join(current_path, '..', 'testing-accounts-data', base_scanner_data_for_iac)
                 else:
                     scanner_account_data_folder_zip = os.path.join(working_dir, 'cfn-account-data.zip')
                     if not os.path.isfile(scanner_account_data_folder_zip):
