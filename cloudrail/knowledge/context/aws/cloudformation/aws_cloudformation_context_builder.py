@@ -6,6 +6,8 @@ from cloudrail.knowledge.context.aws.cloudformation.cloudformation_utils import 
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_info import CloudformationResourceInfo
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_status import CloudformationResourceStatus
 from cloudrail.knowledge.context.aws.resources.ec2.security_group import SecurityGroup
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_builder import CloudformationDocumentDbClusterBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_parameter_group_builder import CloudformationDocDbClusterParameterGroupBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.nat_gw.cloudformation_nat_gw_builder import CloudformationNatGatewayBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dynamodb.cloudformation_dynamodb_table_builder import CloudformationDynamoDbTableBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.configservice.cloudformation_config_service_aggregator_builder import CloudformationConfigServiceAggregatorBuilder
@@ -192,7 +194,9 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             transit_gateways=CloudformationTransitGatewayBuilder(cfn_by_type_map).build(),
             transit_gateway_route_tables=CloudformationTransitGatewayRouteTableBuilder(cfn_by_type_map).build(),
             transit_gateway_route_table_associations=CloudformationTransitGatewayRouteTableAssociationBuilder(cfn_by_type_map).build(),
-            transit_gateway_routes=CloudformationTransitGatewayRouteBuilder(cfn_by_type_map).build()
+            transit_gateway_routes=CloudformationTransitGatewayRouteBuilder(cfn_by_type_map).build(),
+            docdb_cluster=CloudformationDocumentDbClusterBuilder(cfn_by_type_map).build(),
+            docdb_cluster_parameter_groups=CloudformationDocDbClusterParameterGroupBuilder(cfn_by_type_map).build(),
         )
 
     @staticmethod
