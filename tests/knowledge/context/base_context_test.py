@@ -124,7 +124,7 @@ class BaseContextTest(unittest.TestCase):
             self._copy_module_dir(version, module_path, working_dir)
             current_path = os.path.dirname(os.path.realpath(__file__))
             base_scanner_data_for_iac_zip = os.path.join(current_path, '..', 'testing-accounts-data',
-                                                     (base_scanner_data_for_iac + '.zip') or 'account-data-vpc-platform.zip')
+                                                     base_scanner_data_for_iac or 'account-data-vpc-platform.zip')
             base_scanner_data_for_iac = os.path.join(working_dir, 'account-data')
             shutil.unpack_archive(base_scanner_data_for_iac_zip, extract_dir=base_scanner_data_for_iac, format='zip')
             plan_json = os.path.join(self._get_module_dir_path(version, module_path), 'cached_plan.json')
