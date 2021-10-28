@@ -168,7 +168,6 @@ class BaseContextTest(unittest.TestCase):
             shutil.rmtree(working_dir, ignore_errors=True)
 
     def _run_cloudformation_test_case(self, module_path: str, assert_func, cfn_template_params: dict, base_scanner_data_for_iac: Optional[str]):
-        working_dir = None
         scenario_folder = os.path.join(self.scenarios_dir, 'cross_version', module_path)
         template_file = os.path.join(scenario_folder, 'cloudformation.yaml')
         if os.path.isfile(template_file):
