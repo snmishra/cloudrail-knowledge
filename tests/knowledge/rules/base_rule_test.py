@@ -128,17 +128,15 @@ class BaseRuleTest(unittest.TestCase):
                                       test_case_folder: str,
                                       should_alert: bool = True,
                                       number_of_issue_items: int = 1) -> None:
-        print(f'about to execute CloudFormation \'{test_function.__name__}\' scenario')
-        local_account_data = None
-        try:
-            test_case_folder_full_path = self._get_full_path(test_case_folder)
-            local_account_data_zip = os.path.join(test_case_folder_full_path, 'cfn-account-data.zip')
-            cfn_template_yaml_file: str = os.path.join(test_case_folder_full_path, 'cloudformation.yaml')
-
-            if os.path.exists(cfn_template_yaml_file):
+        test_case_folder_full_path = self._get_full_path(test_case_folder)
+        cfn_template_yaml_file: str = os.path.join(test_case_folder_full_path, 'cloudformation.yaml')
+        if os.path.exists(cfn_template_yaml_file):
+            print(f'about to execute CloudFormation \'{test_function.__name__}\' scenario')
+            try:
+                local_account_data_zip = os.path.join(test_case_folder_full_path, 'cfn-account-data.zip')
                 self._validate_supported_iac_type(IacType.CLOUDFORMATION, cfn_template_yaml_file)
+                local_account_data = os.path.join(test_case_folder_full_path, 'cfn-account-data')
                 if os.path.isfile(local_account_data_zip):
-                    local_account_data = os.path.join(test_case_folder_full_path, 'cfn-account-data')
                     shutil.unpack_archive(local_account_data_zip, extract_dir=local_account_data, format='zip')
                     self.account_data = local_account_data
                 else:
@@ -158,9 +156,9 @@ class BaseRuleTest(unittest.TestCase):
                                             should_alert=should_alert,
                                             number_of_issue_items=number_of_issue_items,
                                             test_function=test_function)
-        finally:
-            if self.account_data and Path(self.account_data).parent.name == Path(local_account_data).parent.name:
-                shutil.rmtree(local_account_data, ignore_errors=True)
+            finally:
+                if self.account_data and Path(self.account_data).parent.name == Path(local_account_data).parent.name:
+                    shutil.rmtree(local_account_data, ignore_errors=True)
 
     def _validate_supported_iac_type(self, iac_type: IacType, iac_file_path: str) -> None:
         metadata: RuleMetadata = self.RULES_METADATA.get_by_rule_id(self.get_rule().get_id())
