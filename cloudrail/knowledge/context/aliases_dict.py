@@ -14,7 +14,6 @@ class AliasesDict(Generic[_VT]):
     def __init__(self, *args: _VT):
         self._values = set(args)
         self._dict = {alias: arg for arg in args for alias in arg.aliases}
-        self._dict.update({arg.get_id(): arg for arg in args if arg.get_id()})
 
     def update(self, *items: _VT) -> None:
         for item in items:

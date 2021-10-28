@@ -38,3 +38,4 @@ class AwsTerraformBuilder(BaseTerraformBuilder):
         if not resource.region:
             resource.region = attributes['region']
         resource.account = attributes['account_id']
+        resource.with_aliases(resource.get_id())
