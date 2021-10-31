@@ -21,6 +21,7 @@ from cloudrail.knowledge.context.aws.resources.ec2.vpc_endpoint import VpcEndpoi
 from cloudrail.knowledge.context.aws.resources.elb.load_balancer import LoadBalancer
 from cloudrail.knowledge.context.aws.resources.elb.load_balancer_listener import LoadBalancerListener
 from cloudrail.knowledge.context.aws.resources.iam.role import Role
+from cloudrail.knowledge.context.aws.resources.iam.iam_instance_profile import IamInstanceProfile
 from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.resources.lambda_.lambda_function import LambdaFunction
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket import S3Bucket
@@ -201,6 +202,12 @@ class CloudformationAttributesCallableStore:
         return None
 
     @staticmethod
+    def get_iam_instance_profile_attribute(iam_instance_profile: IamInstanceProfile, attribute_name: str):
+        if attribute_name == "Arn":
+            return iam_instance_profile.get_arn()
+        return None
+
+    @staticmethod
     def get_transit_gateway_attribute(transit_gateway: TransitGateway, attribute_name: str):
         if attribute_name == "Id":
             return transit_gateway.get_id()
@@ -230,8 +237,10 @@ class CloudformationResourceAttributesMapper:
         VpcEndpointInterface: CloudformationAttributesCallableStore.get_vpc_endpoint_interface_attribute,
         Role: CloudformationAttributesCallableStore.get_iam_role_attribute,
         LambdaFunction: CloudformationAttributesCallableStore.get_lambda_func_attribute,
+        IamInstanceProfile: CloudformationAttributesCallableStore.get_iam_instance_profile_attribute,
+        TransitGatewayVpcAttachment: CloudformationAttributesCallableStore.get_transit_gateway_attribute,
         DaxCluster: CloudformationAttributesCallableStore.get_dax_cluster_attribute,
-        TransitGatewayVpcAttachment: CloudformationAttributesCallableStore.get_transit_gateway_attribute
+        TransitGatewayVpcAttachment: CloudformationAttributesCallableStore.get_transit_gateway_attribute,
     }
 
     @classmethod
