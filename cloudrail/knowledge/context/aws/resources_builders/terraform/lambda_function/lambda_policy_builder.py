@@ -16,20 +16,20 @@ class LambdaPolicyBuilder(AwsTerraformBuilder):
         return AwsServiceName.AWS_LAMBDA_PERMISSION
 
     @staticmethod
-    def post_build(lambda_policies: List[LambdaPolicy]) -> List[LambdaPolicy]:
+    def post_build(build_results: List[LambdaPolicy]) -> List[LambdaPolicy]:
         policy_statements = {}
 
-        for policy in lambda_policies:
+        for policy in build_results:
             if policy.lambda_func_arn not in policy_statements:
                 policy_statements[policy.lambda_func_arn] = [policy.statements[0]]
             else:
                 policy_statements[policy.lambda_func_arn].append(policy.statements[0])
 
-        arns = {lambda_policy.lambda_func_arn for lambda_policy in lambda_policies}
+        arns = {lambda_policy.lambda_func_arn for lambda_policy in build_results}
         policies = []
         for arn in arns:
-            policy = next((policy for policy in lambda_policies
-                          if policy.lambda_func_arn == arn and policy.iac_state.action != IacActionType.DELETE), None)
+            policy = next((policy for policy in build_results
+                           if policy.lambda_func_arn == arn and policy.iac_state.action != IacActionType.DELETE), None)
             if policy:
                 policy.statements = policy_statements[arn]
                 policies.append(policy)

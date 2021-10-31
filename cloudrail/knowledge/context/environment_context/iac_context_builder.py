@@ -14,4 +14,3 @@ class IacContextBuilder:
     @staticmethod
     def validate(iac_context: BaseEnvironmentContext):
         pass
-
