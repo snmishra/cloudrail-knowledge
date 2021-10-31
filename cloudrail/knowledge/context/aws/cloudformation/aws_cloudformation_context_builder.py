@@ -7,6 +7,8 @@ from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_res
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_status import CloudformationResourceStatus
 from cloudrail.knowledge.context.aws.resources.ec2.security_group import SecurityGroup
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_instance_profile_builder import CloudformationIamInstanceProfileBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_builder import CloudformationDocumentDbClusterBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_parameter_group_builder import CloudformationDocDbClusterParameterGroupBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.nat_gw.cloudformation_nat_gw_builder import CloudformationNatGatewayBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dynamodb.cloudformation_dynamodb_table_builder import CloudformationDynamoDbTableBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.configservice.cloudformation_config_service_aggregator_builder import CloudformationConfigServiceAggregatorBuilder
@@ -88,6 +90,7 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.s3_bucket
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_auto_scaling_group_builder import CloudformationAutoScalingGroupBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_launch_configuration_builder import CloudformationLaunchConfigurationBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_launch_template_builder import CloudformationLaunchTemplateBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dax.cloudformation_dax_cluster_builder import CloudformationDaxClusterBuilder
 from cloudrail.knowledge.context.environment_context.iac_context_builder import IacContextBuilder
 
 
@@ -186,6 +189,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             network_acls=AliasesDict(*CloudformationNetworkAclBuilder(cfn_by_type_map).build()),
             network_acl_associations=AliasesDict(*CloudformationNetworkAclAssociationBuilder(cfn_by_type_map).build()),
             network_acl_rules=NetworkAclRuleBuilder(cfn_by_type_map).build(),
+            dax_cluster=CloudformationDaxClusterBuilder(cfn_by_type_map).build(),
             s3_public_access_block_settings_list=CloudformationPublicAccessBlockSettingsBuilder(cfn_by_type_map).build(),
             iam_instance_profiles=CloudformationIamInstanceProfileBuilder(cfn_by_type_map).build(),
             transit_gateway_attachments=CloudformationTransitGatewayAttachmentBuilder(cfn_by_type_map).build(),
@@ -193,6 +197,8 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             transit_gateway_route_tables=CloudformationTransitGatewayRouteTableBuilder(cfn_by_type_map).build(),
             transit_gateway_route_table_associations=CloudformationTransitGatewayRouteTableAssociationBuilder(cfn_by_type_map).build(),
             transit_gateway_routes=CloudformationTransitGatewayRouteBuilder(cfn_by_type_map).build(),
+            docdb_cluster=CloudformationDocumentDbClusterBuilder(cfn_by_type_map).build(),
+            docdb_cluster_parameter_groups=CloudformationDocDbClusterParameterGroupBuilder(cfn_by_type_map).build(),
         )
 
     @staticmethod
