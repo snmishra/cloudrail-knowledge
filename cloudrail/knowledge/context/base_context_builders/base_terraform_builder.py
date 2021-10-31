@@ -92,4 +92,4 @@ class BaseTerraformBuilder(ABC):
 
     @staticmethod
     def post_build(build_results) -> list:
-        pass
+        return build_results
