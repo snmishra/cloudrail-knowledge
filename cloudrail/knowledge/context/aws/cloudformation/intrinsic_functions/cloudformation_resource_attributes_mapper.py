@@ -1,6 +1,7 @@
 from typing import Dict, Callable, Optional, Type
 
 from cloudrail.knowledge.context.aws.resources.apigatewayv2.api_gateway_v2 import ApiGateway
+from cloudrail.knowledge.context.aws.resources.dax.dax_cluster import DaxCluster
 from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template import LaunchTemplate
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CloudFrontDistribution
@@ -94,6 +95,12 @@ class CloudformationAttributesCallableStore:
     def get_api_gateway_attribute(api_gateway: ApiGateway, attribute_name: str):
         if attribute_name == "ApiEndpoint":
             return api_gateway.api_endpoint
+        return None
+
+    @staticmethod
+    def get_dax_cluster_attribute(dax_cluster: DaxCluster, attribute_name: str):
+        if attribute_name == "Arn":
+            return dax_cluster.cluster_arn
         return None
 
     @staticmethod
@@ -232,6 +239,8 @@ class CloudformationResourceAttributesMapper:
         LambdaFunction: CloudformationAttributesCallableStore.get_lambda_func_attribute,
         TransitGatewayVpcAttachment: CloudformationAttributesCallableStore.get_transit_gateway_attribute,
         CodeBuildProject: CloudformationAttributesCallableStore.get_codebuild_project_attribute,
+        DaxCluster: CloudformationAttributesCallableStore.get_dax_cluster_attribute,
+        TransitGatewayVpcAttachment: CloudformationAttributesCallableStore.get_transit_gateway_attribute,
     }
 
     @classmethod

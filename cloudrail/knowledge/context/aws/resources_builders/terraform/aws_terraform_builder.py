@@ -12,7 +12,7 @@ class AwsTerraformBuilder(BaseTerraformBuilder):
     def get_service_name(self) -> AwsServiceName:
         pass
 
-    def build(self):
+    def _build(self) -> list:
         all_attributes = self.resources.get(self.get_service_name().value)
         if not all_attributes:
             return []

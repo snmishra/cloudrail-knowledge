@@ -1,7 +1,0 @@
-{
-    "StagesAvailable": [
-        "Original",
-        "Processed"
-    ],
-    "TemplateBody": "AWSTemplateFormatVersion: \"2010-09-09\"\n\nResources:\n  CodeBuildRole:\n    Type: AWS::IAM::Role\n    Properties:\n      RoleName: \"codebuild-cloudrail-test\"\n      AssumeRolePolicyDocument:\n        Version: \"2012-10-17\"\n        Statement:\n          - Effect: Allow\n            Action: \"sts:AssumeRole\"\n            Principal:\n              Service: \"codebuild.amazonaws.com\"\n  \n  CodeBuildProject:\n    Type: AWS::CodeBuild::Project\n    Properties:\n      Name: \"project-cloudrail-test\"\n      Description: \"project-cloudrail-test\"\n      TimeoutInMinutes: 5\n      QueuedTimeoutInMinutes: 5\n      ServiceRole: !GetAtt CodeBuildRole.Arn\n      Artifacts:\n        Type: \"NO_ARTIFACTS\"\n      Cache:\n        Type: \"LOCAL\"\n        Modes:\n          - \"LOCAL_DOCKER_LAYER_CACHE\"\n          - \"LOCAL_SOURCE_CACHE\"\n      Environment:\n        ComputeType: \"BUILD_GENERAL1_SMALL\"\n        Image: \"aws/codebuild/standard:1.0\"\n        Type: \"LINUX_CONTAINER\"       \n        ImagePullCredentialsType: \"CODEBUILD\"\n        EnvironmentVariables:\n          - Name: \"SOME_KEY1\"\n            Value: \"SOME_VALUE1\"\n      Source:\n        Type: \"GITHUB\"\n        Location: \"https://github.com/mitchellh/packer.git\"\n        GitCloneDepth: 1\n"
-}
