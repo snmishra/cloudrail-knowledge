@@ -16,7 +16,7 @@ class LambdaPolicyBuilder(AwsTerraformBuilder):
         return AwsServiceName.AWS_LAMBDA_PERMISSION
 
     @staticmethod
-    def post_build(build_results: List[LambdaPolicy]) -> List[LambdaPolicy]:
+    def _post_build(build_results: List[LambdaPolicy]) -> List[LambdaPolicy]:
         policy_statements = {}
 
         for policy in build_results:

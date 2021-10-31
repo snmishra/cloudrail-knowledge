@@ -85,11 +85,11 @@ class BaseTerraformBuilder(ABC):
     def build(self) -> list:
         try:
             build_result = self._build()
-            return self.post_build(build_result)
+            return self._post_build(build_result)
         except Exception as ex:
             logging.exception(f'An error occurred while building resources of type {self.get_service_name()}', exc_info=ex)
             return []
 
     @staticmethod
-    def post_build(build_results) -> list:
+    def _post_build(build_results) -> list:
         return build_results
