@@ -15,19 +15,19 @@ class CloudformationSecurityGroupInlineRuleBuilder(CloudformationSecurityGroupRu
         rules = []
         properties: dict = cfn_res_attr['Properties']
         sg_ingress_rules = self.get_property(properties, 'SecurityGroupIngress', [])
-        security_group_rule_properties = sg_ingress_rules if isinstance(sg_ingress_rules, list) else [sg_ingress_rules]
+        ingress_rule_properties = sg_ingress_rules if isinstance(sg_ingress_rules, list) else [sg_ingress_rules]
         rules.extend(self.parse_security_group_rule(security_group_rule_properties=ingress_rule_property,
                                                     egress=False,
                                                     security_group_id=self.get_resource_id(cfn_res_attr),
                                                     account_id=cfn_res_attr['account_id'],
-                                                    region=cfn_res_attr['region']) for ingress_rule_property in security_group_rule_properties)
+                                                    region=cfn_res_attr['region']) for ingress_rule_property in ingress_rule_properties)
 
         sg_egress_rules = self.get_property(properties, 'SecurityGroupEgress', [])
-        security_group_rule_properties = sg_ingress_rules if isinstance(sg_egress_rules, list) else [sg_egress_rules]
+        egress_rule_properties = sg_egress_rules if isinstance(sg_egress_rules, list) else [sg_egress_rules]
         rules.extend(self.parse_security_group_rule(security_group_rule_properties=egress_rule_property,
                                                     egress=True,
                                                     security_group_id=self.get_resource_id(cfn_res_attr),
                                                     account_id=cfn_res_attr['account_id'],
-                                                    region=cfn_res_attr['region']) for egress_rule_property in security_group_rule_properties)
+                                                    region=cfn_res_attr['region']) for egress_rule_property in egress_rule_properties)
 
         return rules
