@@ -12,6 +12,13 @@ AWS::EC2::VPC:
             - EnableDnsHostnames
             - EnableDnsSupport
 
+AWS::DMS::ReplicationSubnetGroup:
+    known_fields:
+        pass:
+            - ReplicationSubnetGroupDescription
+            - ReplicationSubnetGroupIdentifier
+            - SubnetIds
+
 AWS::DAX::Cluster:
     known_fields:
         pass:

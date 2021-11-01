@@ -6,6 +6,7 @@ from cloudrail.knowledge.context.aws.cloudformation.cloudformation_utils import 
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_info import CloudformationResourceInfo
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_status import CloudformationResourceStatus
 from cloudrail.knowledge.context.aws.resources.ec2.security_group import SecurityGroup
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dms.cloudformation_dms_replication_instance_builder import CloudformationDmsReplicationInstanceBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_instance_profile_builder import CloudformationIamInstanceProfileBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_builder import CloudformationDocumentDbClusterBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_parameter_group_builder import CloudformationDocDbClusterParameterGroupBuilder
@@ -153,6 +154,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             kms_keys=CloudformationKmsKeyBuilder(cfn_by_type_map).build(),
             security_groups=AliasesDict(*security_groups),
             security_group_rules=security_groups_rules,
+            dms_replication_instance_subnet_groups=CloudformationDmsReplicationInstanceBuilder(cfn_by_type_map).build(),
             internet_gateways=CloudformationInternetGatewayBuilder(cfn_by_type_map).build(),
             vpc_gateway_attachment=AliasesDict(*CloudformationVpcGatewayAttachmentBuilder(cfn_by_type_map).build()),
             subnets=AliasesDict(*CloudformationSubnetBuilder(cfn_by_type_map).build()),
