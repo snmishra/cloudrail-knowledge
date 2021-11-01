@@ -7,6 +7,7 @@ from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_res
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_status import CloudformationResourceStatus
 from cloudrail.knowledge.context.aws.resources.ec2.security_group import SecurityGroup
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dms.cloudformation_dms_replication_instance_builder import CloudformationDmsReplicationInstanceBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_instance_profile_builder import CloudformationIamInstanceProfileBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_builder import CloudformationDocumentDbClusterBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_parameter_group_builder import CloudformationDocDbClusterParameterGroupBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.nat_gw.cloudformation_nat_gw_builder import CloudformationNatGatewayBuilder
@@ -192,6 +193,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             network_acl_rules=NetworkAclRuleBuilder(cfn_by_type_map).build(),
             dax_cluster=CloudformationDaxClusterBuilder(cfn_by_type_map).build(),
             s3_public_access_block_settings_list=CloudformationPublicAccessBlockSettingsBuilder(cfn_by_type_map).build(),
+            iam_instance_profiles=CloudformationIamInstanceProfileBuilder(cfn_by_type_map).build(),
             transit_gateway_attachments=CloudformationTransitGatewayAttachmentBuilder(cfn_by_type_map).build(),
             transit_gateways=CloudformationTransitGatewayBuilder(cfn_by_type_map).build(),
             transit_gateway_route_tables=CloudformationTransitGatewayRouteTableBuilder(cfn_by_type_map).build(),

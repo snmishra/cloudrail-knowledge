@@ -283,6 +283,12 @@ AWS::AWS::EC2::NetworkAclEntry:
             - Egress
             - Protocol
 
+AWS::IAM::InstanceProfile:
+    known_fields:
+        pass:
+            - InstanceProfileName
+            - Roles
+
 AWS::EC2::TransitGatewayAttachment:
     known_fields:
         pass:
