@@ -49,5 +49,6 @@ class CloudformationResourceType(str, Enum):
     TRANSIT_GATEWAY_ROUTE_TABLE = 'AWS::EC2::TransitGatewayRouteTable'
     TRANSIT_GATEWAY_ROUTE_TABLE_ASSOCIATION = 'AWS::EC2::TransitGatewayRouteTableAssociation'
     TRANSIT_GATEWAY_ROUTE = 'AWS::EC2::TransitGatewayRoute'
+    CODEBUILD_PROJECT = 'AWS::CodeBuild::Project'
     DOCDB_CLUSTER = 'AWS::DocDB::DBCluster'
     DOCDB_CLUSTER_PARAMETER_GROUP = 'AWS::DocDB::DBClusterParameterGroup'
