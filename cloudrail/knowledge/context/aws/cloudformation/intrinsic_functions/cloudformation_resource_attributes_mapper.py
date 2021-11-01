@@ -6,6 +6,7 @@ from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template impor
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CloudFrontDistribution
 from cloudrail.knowledge.context.aws.resources.cloudtrail.cloudtrail import CloudTrail
+from cloudrail.knowledge.context.aws.resources.codebuild.codebuild_project import CodeBuildProject
 from cloudrail.knowledge.context.aws.resources.cloudwatch.cloudwatch_logs_destination import CloudWatchLogsDestination
 from cloudrail.knowledge.context.aws.resources.codebuild.codebuild_report_group import CodeBuildReportGroup
 from cloudrail.knowledge.context.aws.resources.configservice.config_aggregator import ConfigAggregator
@@ -213,6 +214,12 @@ class CloudformationAttributesCallableStore:
             return transit_gateway.get_id()
         return None
 
+    @staticmethod
+    def get_codebuild_project_attribute(codebuild_project: CodeBuildProject, attribute_name: str):
+        if attribute_name == "Arn":
+            return codebuild_project.get_arn()
+        return None
+
 
 class CloudformationResourceAttributesMapper:
 
@@ -237,8 +244,8 @@ class CloudformationResourceAttributesMapper:
         VpcEndpointInterface: CloudformationAttributesCallableStore.get_vpc_endpoint_interface_attribute,
         Role: CloudformationAttributesCallableStore.get_iam_role_attribute,
         LambdaFunction: CloudformationAttributesCallableStore.get_lambda_func_attribute,
+        CodeBuildProject: CloudformationAttributesCallableStore.get_codebuild_project_attribute,
         IamInstanceProfile: CloudformationAttributesCallableStore.get_iam_instance_profile_attribute,
-        TransitGatewayVpcAttachment: CloudformationAttributesCallableStore.get_transit_gateway_attribute,
         DaxCluster: CloudformationAttributesCallableStore.get_dax_cluster_attribute,
         TransitGatewayVpcAttachment: CloudformationAttributesCallableStore.get_transit_gateway_attribute,
     }
