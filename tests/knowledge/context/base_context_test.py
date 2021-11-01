@@ -96,7 +96,7 @@ class BaseContextTest(unittest.TestCase):
             self._run_drift_detection_for_cloudformation(module_path, test_options.cfn_template_params)
 
         if test_options.run_cloudformation:
-            self._run_cloudformation_test_case(module_path, assert_func, test_options.cfn_template_params, base_scanner_data_for_iac)
+            self._run_cloudformation_test_case(module_path, assert_func, test_options.cfn_template_params)
 
         if test_options.run_cloudmapper:
             self._safe_execute('cloudmapper', self._run_cloudmapper_test_case, module_path, assert_func)
@@ -167,7 +167,7 @@ class BaseContextTest(unittest.TestCase):
         finally:
             shutil.rmtree(working_dir, ignore_errors=True)
 
-    def _run_cloudformation_test_case(self, module_path: str, assert_func, cfn_template_params: dict, base_scanner_data_for_iac: Optional[str]):
+    def _run_cloudformation_test_case(self, module_path: str, assert_func, cfn_template_params: dict):
         scenario_folder = os.path.join(self.scenarios_dir, 'cross_version', module_path)
         template_file = os.path.join(scenario_folder, 'cloudformation.yaml')
         if os.path.isfile(template_file):
@@ -179,12 +179,9 @@ class BaseContextTest(unittest.TestCase):
                 scanner_account_data_folder = os.path.join(working_dir, 'cfn-account-data')
                 current_path = os.path.dirname(os.path.realpath(__file__))
 
-                if base_scanner_data_for_iac:
-                    scanner_account_data_folder_zip = os.path.join(current_path, '..', 'testing-accounts-data', base_scanner_data_for_iac)
-                else:
-                    scanner_account_data_folder_zip = os.path.join(working_dir, 'cfn-account-data.zip')
-                    if not os.path.isfile(scanner_account_data_folder_zip):
-                        scanner_account_data_folder_zip = os.path.join(current_path, '..', 'testing-accounts-data', 'account-data-vpc-platform.zip')
+                scanner_account_data_folder_zip = os.path.join(working_dir, 'cfn-account-data.zip')
+                if not os.path.isfile(scanner_account_data_folder_zip):
+                    scanner_account_data_folder_zip = os.path.join(current_path, '..', 'testing-accounts-data', 'account-data-vpc-platform.zip')
                 if os.path.isfile(scanner_account_data_folder_zip):
                     shutil.unpack_archive(scanner_account_data_folder_zip, extract_dir=scanner_account_data_folder, format='zip')
 
