@@ -1,9 +1,9 @@
 from typing import List
+
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance import GcpComputeInstance, GcpComputeInstanceNetworkInterface, \
-        GcpComputeInstanceNetIntfAccessCfg, GcpComputeInstanceNetIntfAliasIpRange, GcpComputeInstanceNetIntfNicType, GcpComputeInstanceServiceAcount, \
-            GcpComputeInstanceShieldInstCfg
-
+    GcpComputeInstanceNetIntfAccessCfg, GcpComputeInstanceNetIntfAliasIpRange, GcpComputeInstanceNetIntfNicType, GcpComputeInstanceServiceAcount, \
+    GcpComputeInstanceShieldInstCfg
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.base_gcp_terraform_builder import BaseGcpTerraformBuilder
 
 
@@ -21,18 +21,18 @@ class ComputeInstanceBuilder(BaseGcpTerraformBuilder):
 
             access_config_list: List[GcpComputeInstanceNetIntfAccessCfg] = []
             for access_config in self._get_known_value(interface, 'access_config', []):
-                access_config_list.append(GcpComputeInstanceNetIntfAccessCfg(nat_ip = self._get_known_value(access_config, 'nat_ip'),
-                                                                             public_ptr_domain_name = self._get_known_value(access_config, 'public_ptr_domain_name'),
-                                                                             network_tier = self._get_known_value(access_config, 'network_tier', 'PREMIUM')))
+                access_config_list.append(GcpComputeInstanceNetIntfAccessCfg(nat_ip=self._get_known_value(access_config, 'nat_ip'),
+                                                                             public_ptr_domain_name=self._get_known_value(access_config, 'public_ptr_domain_name'),
+                                                                             network_tier=self._get_known_value(access_config, 'network_tier', 'PREMIUM')))
 
             aliases_ip_range: List[GcpComputeInstanceNetIntfAliasIpRange] = []
             for ip in self._get_known_value(interface, 'alias_ip_range', []):
                 aliases_ip_range.append(GcpComputeInstanceNetIntfAliasIpRange(ip_cidr_range=self._get_known_value(ip, 'ip_cidr_range'),
                                                                               subnetwork_range_name=self._get_known_value(ip, 'subnetwork_range_name')))
 
-            network_interfaces.append(GcpComputeInstanceNetworkInterface(network = interface.get('network'), subnetwork = interface.get('subnetwork'),
-                                                                         subnetwork_project = interface.get('subnetwork_project'),
-                                                                         network_ip = self._get_known_value(interface, 'network_ip'),
+            network_interfaces.append(GcpComputeInstanceNetworkInterface(network=interface.get('network'), subnetwork=self._get_known_value(interface, 'subnetwork'),
+                                                                         subnetwork_project=self._get_known_value(interface, 'subnetwork_project'),
+                                                                         network_ip=self._get_known_value(interface, 'network_ip'),
                                                                          access_config=access_config_list,
                                                                          alias_ip_range=aliases_ip_range,
                                                                          nic_type=nic_type))
