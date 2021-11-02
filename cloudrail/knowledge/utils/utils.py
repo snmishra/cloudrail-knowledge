@@ -138,7 +138,7 @@ def hash_list(data: list) -> int:
     return hash(str(data))
 
 def check_array_has_value(array: Union[list, set]) -> bool:
-    return all(x for x in array)
+    return bool(array) and all(x for x in array)
 
 # --- NETWORKING UTILS
 def compare_prefix_length(cidr1: str, cidr2: str) -> int:
