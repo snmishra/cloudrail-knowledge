@@ -13,6 +13,7 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.clo
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.load_balancer.cloudformation_load_balancer_attributes_builder import CloudformationLoadBalancerAttributesBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.nat_gw.cloudformation_nat_gw_builder import CloudformationNatGatewayBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dynamodb.cloudformation_dynamodb_table_builder import CloudformationDynamoDbTableBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.codebuild.cloudformation_codebuild_project_builder import CloudformationCodeBuildProjectBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.configservice.cloudformation_config_service_aggregator_builder import CloudformationConfigServiceAggregatorBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.ec2.cloudformation_network_acl_builder import \
     CloudformationNetworkAclAssociationBuilder, CloudformationNetworkAclBuilder, NetworkAclRuleBuilder
@@ -200,6 +201,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             transit_gateway_route_tables=CloudformationTransitGatewayRouteTableBuilder(cfn_by_type_map).build(),
             transit_gateway_route_table_associations=CloudformationTransitGatewayRouteTableAssociationBuilder(cfn_by_type_map).build(),
             transit_gateway_routes=CloudformationTransitGatewayRouteBuilder(cfn_by_type_map).build(),
+            codebuild_projects=CloudformationCodeBuildProjectBuilder(cfn_by_type_map).build(),
             docdb_cluster=CloudformationDocumentDbClusterBuilder(cfn_by_type_map).build(),
             docdb_cluster_parameter_groups=CloudformationDocDbClusterParameterGroupBuilder(cfn_by_type_map).build(),
             load_balancers_attributes=CloudformationLoadBalancerAttributesBuilder(cfn_by_type_map).build(),
