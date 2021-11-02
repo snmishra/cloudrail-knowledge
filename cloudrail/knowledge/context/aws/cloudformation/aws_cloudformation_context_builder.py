@@ -42,6 +42,7 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.api_gatew
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.athena.cloudformation_athena_workgroup_builder import \
     CloudformationAthenaWorkgroupBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.kms.cloudformation_kms_key_builder import CloudformationKmsKeyBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.kms.cloudformation_kms_alias_builder import CloudformationKmsAliasBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.batch.cloudformation_batch_compute_environment_builder import \
     CloudformationBatchComputeEnvironmentBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.cloudtrail.cloudfromation_cloudtrail_builder import \
@@ -203,6 +204,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             codebuild_projects=CloudformationCodeBuildProjectBuilder(cfn_by_type_map).build(),
             docdb_cluster=CloudformationDocumentDbClusterBuilder(cfn_by_type_map).build(),
             docdb_cluster_parameter_groups=CloudformationDocDbClusterParameterGroupBuilder(cfn_by_type_map).build(),
+            kms_aliases=CloudformationKmsAliasBuilder(cfn_by_type_map).build(),
         )
 
     @staticmethod
