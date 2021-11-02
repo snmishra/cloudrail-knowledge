@@ -196,15 +196,14 @@ class BaseEnvironmentContextDriftDetector:
                 del dst_dict[non_exists_field]
 
     @staticmethod
-    def _filter_empty_fields(cm_dict: dict, tf_dict: dict):
-        common_fields = set(cm_dict.keys()).intersection(tf_dict.keys())
+    def _filter_empty_fields(src_dict: dict, dst_dict: dict):
+        common_fields = set(dst_dict.keys()).intersection(src_dict.keys())
         for common_field in common_fields:
-            cm_value = cm_dict[common_field]
-            tf_value = tf_dict[common_field]
-            if not isinstance(cm_value, bool) and not isinstance(tf_value, bool) and \
-                    (not tf_value and not cm_value or tf_value is None):
-                del cm_dict[common_field]
-                del tf_dict[common_field]
+            dst_value = dst_dict[common_field]
+            src_value = src_dict[common_field]
+            if not isinstance(dst_value, bool) and not isinstance(src_value, bool) and not dst_value and not src_value:
+                del dst_dict[common_field]
+                del src_dict[common_field]
 
     @classmethod
     def _calculate_iac_coverage(cls, cm_context: BaseEnvironmentContext, tf_context_after: BaseEnvironmentContext):

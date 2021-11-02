@@ -239,8 +239,8 @@ class BaseContextTest(unittest.TestCase):
             shutil.unpack_archive(account_data_for_drift_path + '.zip', extract_dir=account_data_for_drift_path, format='zip')
             result = self._find_drifts(account_data_for_drift_path, cloudformation_template, self.DUMMY_ACCOUNT_ID, IacType.CLOUDFORMATION,
                                        cfn_template_params, 'testCfnStack').drifts
-            self.assertEqual(result, [], "found drifts which means cfn object and cm objects are different\n."
-                                         " drifts are: {}".format(json.dumps([dataclasses.asdict(r) for r in result], indent=4)))
+            self.assertEqual(result, [], f"found {len(result)} drifts which means cfn object and cm objects are different\n."
+                                         f" drifts are: {format(json.dumps([dataclasses.asdict(r) for r in result], indent=4))}")
         finally:
             shutil.rmtree(working_dir, ignore_errors=True)
 
