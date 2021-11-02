@@ -244,48 +244,32 @@ class BaseContextTest(unittest.TestCase):
         finally:
             shutil.rmtree(working_dir, ignore_errors=True)
 
-    def _find_drifts(self, cloud_mapper_dir: str, iac_file: str, account_id: str, iac_type: IacType,
-                     cfn_template_params: Optional[dict] = None, workspace_name: Optional[str] = None) -> DriftDetectionResult:
-        workspace_name = workspace_name or 'workspace'
-        context_builder = self.create_context_builder_factory(iac_type)
-        scanner_context = context_builder.build(cloud_mapper_dir,
-                                                None,
-                                                self.DUMMY_ACCOUNT_ID,
-                                                ignore_exceptions=True,
-                                                run_enrichment_requiring_aws=False,
-                                                salt=self.DUMMY_SALT,
-                                                **self.context_builder_extra_args)
-        output_path = self.transform_cached_plan(iac_file) if iac_type == IacType.TERRAFORM else iac_file
-        iac_file_before, region = (output_path, 'us-east-1') if iac_type == IacType.TERRAFORM else self.find_cloudformation_workspace_template(
+    def _find_drifts(self,
+                     cloud_mapper_dir: str,
+                     iac_file: str,
+                     account_id: str,
+                     iac_type: IacType,
+                     cfn_template_params: Optional[dict] = None,
+                     workspace_name: Optional[str] = None) -> DriftDetectionResult:
+        drift_detector = EnvironmentContextDriftDetectorFactory.get(self.cloud_provider)
+        iac_file_after = self.transform_cached_plan(iac_file) if iac_type == IacType.TERRAFORM else iac_file
+        iac_file_before, region = (iac_file_after, 'us-east-1') if iac_type == IacType.TERRAFORM else self.find_cloudformation_workspace_template(
             iac_file,
             cloud_mapper_dir,
             workspace_name)
-        iac_context_before = context_builder.build(cloud_mapper_dir,
-                                                   iac_file_before,
-                                                   account_id,
-                                                   use_after_data=False,
-                                                   ignore_exceptions=True,
-                                                   run_enrichment_requiring_aws=False,
-                                                   salt=self.DUMMY_SALT,
-                                                   stack_name=workspace_name,
-                                                   region=region,
-                                                   cfn_template_params=cfn_template_params or {},
-                                                   **self.context_builder_extra_args)
-        iac_context_after = context_builder.build(cloud_mapper_dir,
-                                                  output_path,
-                                                  account_id,
-                                                  use_after_data=True,
-                                                  keep_deleted_entities=False,
-                                                  ignore_exceptions=True,
-                                                  run_enrichment_requiring_aws=False,
-                                                  salt=self.DUMMY_SALT,
-                                                  stack_name=workspace_name,
-                                                  region=region,
-                                                  cfn_template_params=cfn_template_params or {},
-                                                  **self.context_builder_extra_args)
-        drift_detector = EnvironmentContextDriftDetectorFactory.get(self.cloud_provider)
-        drifts = drift_detector.find_drifts(scanner_context, iac_context_before, iac_context_after, workspace_name)
-        return drifts
+        result = drift_detector.find_drifts(provider=self.cloud_provider,
+                                            iac_type=iac_type,
+                                            account_data=cloud_mapper_dir,
+                                            iac_file_before=iac_file_before,
+                                            iac_file_after=iac_file_after,
+                                            salt=self.DUMMY_SALT,
+                                            account_id=account_id,
+                                            workspace_id=workspace_name or 'workspace',
+                                            tenant_id='871cad0f-903e-4648-9655-89b796e7c99e',
+                                            region=region,
+                                            cfn_template_params=cfn_template_params,
+                                            stack_name=workspace_name)
+        return result
 
     @staticmethod
     def find_cloudformation_workspace_template(iac_file, account_data_dir_path, workspace_name) -> tuple:
