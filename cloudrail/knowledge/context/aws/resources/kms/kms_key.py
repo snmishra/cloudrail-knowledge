@@ -4,6 +4,7 @@ from cloudrail.knowledge.context.aws.resources.aws_policied_resource import Poli
 from cloudrail.knowledge.context.aws.resources.kms.kms_alias import KmsAlias
 from cloudrail.knowledge.context.aws.resources.kms.kms_key_manager import KeyManager
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class KmsKey(PoliciedResource):
@@ -14,6 +15,7 @@ class KmsKey(PoliciedResource):
             key_manager: The Key Manager of this key (customer, or AWS).
             alias_data: The key's alias, if any.
     """
+
     def __init__(self,
                  key_id: str,
                  arn: str,
@@ -52,3 +54,6 @@ class KmsKey(PoliciedResource):
 
     def get_id(self) -> str:
         return self.key_id
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'key_manager': self.key_manager.value}

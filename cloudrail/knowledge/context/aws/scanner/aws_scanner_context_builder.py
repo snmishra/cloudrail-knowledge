@@ -4,6 +4,7 @@ from typing import List, Optional
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.aws.resources.efs.efs_mount_target import EfsMountTarget, MountTargetSecurityGroups
+from cloudrail.knowledge.context.aws.resources_builders.scanner.network_acl_association_builder import NetworkAclAssociationBuilder
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 
 from cloudrail.knowledge.context.aws.resources_builders.scanner.account_builder import AccountBuilder
@@ -182,6 +183,20 @@ class AwsScannerContextBuilder(ScannerContextBuilder):
             logging.warning('cloud mapper working dir does not exists: {}'.format(account_data_dir))
             return AwsEnvironmentContext()
 
+        if extra_args.get('default_resources_only'):
+            vpcs = AliasesDict(*[vpc for vpc in VpcBuilder(account_data_dir, salt).build() if vpc.is_default])
+            default_vpcs_ids = [vpc.vpc_id for vpc in vpcs]
+            return AwsEnvironmentContext(
+                vpcs=vpcs,
+                vpcs_attributes=[vpc_attribute for vpc_attribute in VpcAttributeBuilder(account_data_dir, salt).build()
+                                 if vpc_attribute.vpc_id in default_vpcs_ids],
+                subnets=AliasesDict(*[subnet for subnet in SubnetBuilder(account_data_dir, salt).build() if subnet.is_default]),
+                security_groups=AliasesDict(*[sg for sg in SecurityGroupBuilder(account_data_dir, salt).build() if sg.is_default]),
+                route_tables=AliasesDict(*[rt for rt in RouteTableBuilder(account_data_dir, salt).build() if rt.is_main_route_table]),
+                network_acls=AliasesDict(*[nacl for nacl in NetworkAclBuilder(account_data_dir, salt).build() if nacl.is_default]),
+                main_route_table_associations=MainRouteTableAssociationBuilder(account_data_dir, salt).build(),
+            )
+
         accounts = AccountBuilder(account_data_dir, salt).build()
         s3_buckets = S3BucketBuilder(account_data_dir, salt).build()
         s3_bucket_access_points = S3BucketAccessPointBuilder(account_data_dir, salt).build()
@@ -203,6 +218,7 @@ class AwsScannerContextBuilder(ScannerContextBuilder):
             main_route_table_associations=MainRouteTableAssociationBuilder(account_data_dir, salt).build(),
             network_acls=AliasesDict(*NetworkAclBuilder(account_data_dir, salt).build()),
             network_acl_rules=NetworkAclRuleBuilder(account_data_dir, salt).build(),
+            network_acl_associations=AliasesDict(*NetworkAclAssociationBuilder(account_data_dir, salt).build()),
             ec2s=Ec2Builder(account_data_dir, salt).build(),
             load_balancers=LoadBalancerBuilder(account_data_dir, salt).build(),
             load_balancer_target_groups=LoadBalancerTargetGroupBuilder(account_data_dir, salt).build(),

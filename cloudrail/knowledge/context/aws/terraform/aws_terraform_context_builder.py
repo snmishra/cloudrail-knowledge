@@ -1,7 +1,6 @@
 import json
 from typing import List, Dict, Optional
 
-from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import LambdaPolicy
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_integration import ApiGatewayIntegration
 from cloudrail.knowledge.context.aws.resources.apigateway.api_gateway_method import ApiGatewayMethod
@@ -16,6 +15,7 @@ from cloudrail.knowledge.context.aws.resources.iam.policy_group_attachment impor
 from cloudrail.knowledge.context.aws.resources.iam.policy_role_attachment import PolicyRoleAttachment
 from cloudrail.knowledge.context.aws.resources.iam.policy_user_attachment import PolicyUserAttachment
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket_regions import S3BucketRegions
+from cloudrail.knowledge.context.aws.resources_builders.terraform.network_acl_association_builder import NetworkAclAssociationBuilder
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 from cloudrail.knowledge.context.iac_type import IacType
 from cloudrail.knowledge.context.managed_resources_summary import ManagedResourcesSummary
@@ -198,9 +198,8 @@ class AwsTerraformContextBuilder(IacContextBuilder):
         resources_metadata = TerraformResourcesMetadataParser.parse(dic['configuration'])
         resources = get_raw_resources_by_type(dic['resource_changes'], resources_metadata, use_after_data, keep_deleted_entities)
         unknown_blocks = TerraformUnknownBlocksParser.parse(dic['resource_changes'])
-        managed_resources_summary = cls.to_managed_resources_summary(dic.get('managed_resources_summary', {}))
+        managed_resources_summary = cls._to_managed_resources_summary(dic.get('managed_resources_summary', {}))
         aws_terraform_utils = AwsTerraformUtils(dic)
-        aws_terraform_utils.build_region_map()
         for resource in resources.values():
             for entity in resource:
                 entity['account_id'] = account_id
@@ -239,12 +238,16 @@ class AwsTerraformContextBuilder(IacContextBuilder):
         security_groups.update(*default_security_groups)
 
         route_tables = AliasesDict(*RouteTableBuilder(resources).build())
+
         default_route_tables = AliasesDict(*DefaultRouteTableBuilder(resources).build())
         route_tables.update(*default_route_tables)
 
         network_acls = AliasesDict(*NetworkAclBuilder(resources).build())
+
         default_network_acls = AliasesDict(*DefaultNetworkAclBuilder(resources).build())
         network_acls.update(*default_network_acls)
+
+        network_acl_associations = AliasesDict(*NetworkAclAssociationBuilder(resources).build())
 
         security_group_rules = SecurityGroupRuleBuilder(resources).build()
 
@@ -459,8 +462,7 @@ class AwsTerraformContextBuilder(IacContextBuilder):
 
         lambda_function_list = LambdaFunctionBuilder(resources).build()
 
-        lambda_policies_not_unified = LambdaPolicyBuilder(resources).build()
-        lambda_policies = cls.unify_lambda_functions_policies(lambda_policies_not_unified)
+        lambda_policies = LambdaPolicyBuilder(resources).build()
 
         lambda_aliases = AliasesDict(*LambdaAliasBuilder(resources).build())
 
@@ -508,8 +510,8 @@ class AwsTerraformContextBuilder(IacContextBuilder):
 
         iam_policy_attachments = IamPolicyAttachmentBuilder(resources).build()
 
-        cls.check_duplication_of_attachments(policy_role_attachments, policy_user_attachments, policy_group_attachments,
-                                             iam_policy_attachments)
+        cls._check_duplication_of_attachments(policy_role_attachments, policy_user_attachments, policy_group_attachments,
+                                              iam_policy_attachments)
 
         ssm_parameters = SsmParameterBuilder(resources).build()
 
@@ -596,6 +598,7 @@ class AwsTerraformContextBuilder(IacContextBuilder):
                                      route_table_associations=route_table_associations,
                                      main_route_table_associations=main_route_table_associations,
                                      network_acls=network_acls,
+                                     network_acl_associations=network_acl_associations,
                                      network_acl_rules=network_acl_rules,
                                      load_balancer_target_groups=load_balancers_target_groups,
                                      load_balancer_target_group_associations=load_balancer_target_group_associations,
@@ -744,12 +747,20 @@ class AwsTerraformContextBuilder(IacContextBuilder):
                                      athena_databases=athena_databases,
                                      fsx_windows_file_systems=fsx_windows_file_systems)
 
+    @classmethod
+    def validate(cls, iac_context: AwsEnvironmentContext):
+        cls._check_duplication_of_attachments(iac_context.policy_role_attachments,
+                                              iac_context.policy_user_attachments,
+                                              iac_context.policy_group_attachments,
+                                              iac_context.iam_policy_attachments)
+
     @staticmethod
-    def check_duplication_of_attachments(roles_attachments: List[PolicyRoleAttachment], users_attachments: List[PolicyUserAttachment],
-                                         groups_attachments: List[PolicyGroupAttachment], policy_attachments: List[IamPolicyAttachment]):
+    def _check_duplication_of_attachments(roles_attachments: List[PolicyRoleAttachment], users_attachments: List[PolicyUserAttachment],
+                                          groups_attachments: List[PolicyGroupAttachment], policy_attachments: List[IamPolicyAttachment]):
         all_iam_unique_attachments = roles_attachments + users_attachments + groups_attachments
-        for attachment in policy_attachments:
-            policies_affected = [policy.policy_arn for policy in all_iam_unique_attachments if policy.policy_arn == attachment.policy_arn]
+        for policy_attachment in policy_attachments:
+            policies_affected = [iam_attachment.policy_arn for iam_attachment in all_iam_unique_attachments
+                                 if iam_attachment.policy_arn == policy_attachment.policy_arn]
             if policies_affected:
                 raise UnknownResultOfTerraformApply(f'The Terraform content provided uses both “aws_iam_policy_attachment” and'
                                                     f' one of the unique policy attachments (aws_iam_user_policy_attachment,'
@@ -758,25 +769,5 @@ class AwsTerraformContextBuilder(IacContextBuilder):
                                                     f'This creates an unknown end-result and is not supported by Cloudrail.')
 
     @staticmethod
-    def to_managed_resources_summary(dic: Dict[str, int]):
+    def _to_managed_resources_summary(dic: Dict[str, int]):
         return ManagedResourcesSummary(dic.get('created', 0), dic.get('updated', 0), dic.get('deleted', 0), dic.get('total', 0))
-
-    @staticmethod
-    def unify_lambda_functions_policies(lambda_policies: List[LambdaPolicy]) -> List[LambdaPolicy]:
-        policy_statements = {}
-
-        for policy in lambda_policies:
-            if policy.lambda_func_arn not in policy_statements:
-                policy_statements[policy.lambda_func_arn] = [policy.statements[0]]
-            else:
-                policy_statements[policy.lambda_func_arn].append(policy.statements[0])
-
-        arns = {lambda_policy.lambda_func_arn for lambda_policy in lambda_policies}
-        policies = []
-        for arn in arns:
-            policy = next(policy for policy in lambda_policies
-                          if policy.lambda_func_arn == arn and policy.iac_state.action != IacActionType.DELETE)
-            policy.statements = policy_statements[arn]
-            policies.append(policy)
-
-        return policies

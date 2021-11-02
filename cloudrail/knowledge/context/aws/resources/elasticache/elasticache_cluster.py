@@ -3,6 +3,7 @@ from typing import List, Optional
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class ElastiCacheCluster(NetworkEntity):
@@ -20,6 +21,7 @@ class ElastiCacheCluster(NetworkEntity):
             snapshot_retention_limit: Number of days for which ElastiCache will retain automatic cache cluster snapshots before deleting them.
             engine: Name of the cache engine to be used for the ElasticCache cluster
     """
+
     def __init__(self,
                  region: str,
                  account: str,
@@ -67,9 +69,17 @@ class ElastiCacheCluster(NetworkEntity):
             return '{0}elasticache/home?region={1}#redis-group-nodes:id={2};clusters={3}' \
                 .format(self.AWS_CONSOLE_URL, self.region, self.replication_group_id, self.cluster_name)
         else:
-            return '{0}elasticache/home?region={1}#redis-nodes:id={2}'\
+            return '{0}elasticache/home?region={1}#redis-nodes:id={2}' \
                 .format(self.AWS_CONSOLE_URL, self.region, self.cluster_name)
 
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'cluster_name': self.cluster_name,
+                'replication_group_id': self.replication_group_id,
+                'subnet_group_name': self.subnet_group_name,
+                'engine': self.engine,
+                'snapshot_retention_limit': self.snapshot_retention_limit}

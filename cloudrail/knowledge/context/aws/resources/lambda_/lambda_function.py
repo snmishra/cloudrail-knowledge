@@ -8,7 +8,7 @@ from cloudrail.knowledge.context.aws.resources.networking_config.network_configu
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceAttributes, AwsServiceName, AwsServiceType
 from cloudrail.knowledge.utils.arn_utils import are_arns_intersected, is_valid_arn
-
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
@@ -78,7 +78,7 @@ class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
         return None
 
     def get_id(self) -> str:
-        return self.get_arn()
+        return self.get_arn()  # todo - conflicts with CFN Ref Doc
 
     def get_cloud_resource_url(self) -> str:
         return '{0}lambda/home?region={1}#/functions/{2}?tab=configure' \
@@ -95,3 +95,14 @@ class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
 
     def _get_simplified_arn(self) -> str:
         return "".join(self.qualified_arn.split(":")[:-1]) if ':' in self.qualified_arn else self.qualified_arn
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'function_name': self.function_name,
+                'role_arn': self.execution_role_arn,
+                'handler': self.handler,
+                'runtime': self.runtime,
+                'assign_public_ip': self.vpc_config and self.vpc_config.assign_public_ip,
+                'security_groups_ids': self.vpc_config and self.vpc_config.security_groups_ids,
+                'subnet_list_ids': self.vpc_config and self.vpc_config.subnet_list_ids,
+                'xray_tracing_enabled': self.xray_tracing_enabled}

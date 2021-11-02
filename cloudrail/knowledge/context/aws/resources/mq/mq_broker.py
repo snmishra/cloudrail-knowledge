@@ -3,6 +3,7 @@ from typing import List, Optional
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class MqBroker(NetworkEntity):
@@ -64,3 +65,8 @@ class MqBroker(NetworkEntity):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'broker_name': self.broker_name,
+                'deployment_mode': self.deployment_mode,
+                'vpc_config': self.vpc_config and self.vpc_config.to_dict()}

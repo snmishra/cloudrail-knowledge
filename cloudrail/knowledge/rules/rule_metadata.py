@@ -2,8 +2,8 @@ import os
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Optional, Set, Dict
-
 import yaml
+from cloudrail.knowledge.context.iac_type import IacType
 from cloudrail.knowledge.context.cloud_provider import CloudProvider
 
 
@@ -83,6 +83,7 @@ class RuleMetadata:
     rule_type: RuleType
     security_layer: SecurityLayer
     resource_types: Set[ResourceType]
+    supported_iac_types: Set[IacType]
     cloud_provider: CloudProvider = field(default=CloudProvider.AMAZON_WEB_SERVICES)
     is_deleted: bool = False
     compliance: Dict[BenchmarkType, Dict[str, str]] = field(default_factory=dict)

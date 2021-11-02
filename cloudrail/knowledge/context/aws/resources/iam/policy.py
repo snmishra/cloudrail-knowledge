@@ -7,6 +7,7 @@ from cloudrail.knowledge.context.cloneable import Cloneable
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement, StatementEffect
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class PolicyType(str, Enum):
@@ -25,6 +26,7 @@ class Policy(AwsResource, Cloneable):
                 policy validation API on this policy's JSON.
             policy_type: The type of the policy (identity, resource, SCP).
     """
+
     def __init__(self,
                  account: str,
                  statements: List[PolicyStatement],
@@ -87,6 +89,10 @@ class Policy(AwsResource, Cloneable):
     def is_tagable(self) -> bool:
         return False
 
+    def to_drift_detection_object(self) -> dict:
+        return {'policy_type': self.policy_type.value,
+                'policy_statements': [statement.to_dict() for statement in self.statements]}
+
 
 class ManagedPolicy(Policy):
 
@@ -117,6 +123,11 @@ class ManagedPolicy(Policy):
     def is_tagable(self) -> bool:
         return True
 
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'policy_name': self.policy_name,
+                'policy_statements': [statement.to_dict() for statement in self.statements]}
+
+
 class InlinePolicy(Policy):
 
     def __init__(self, account: str, owner_name: str,
@@ -137,6 +148,11 @@ class InlinePolicy(Policy):
 
     def get_cloud_resource_url(self) -> str:
         pass
+
+    def to_drift_detection_object(self) -> dict:
+        return {'owner_name': self.owner_name,
+                'policy_name': self.policy_name,
+                'policy_statements': [statement.to_dict() for statement in self.statements]}
 
 
 class AssumeRolePolicy(Policy):
@@ -162,3 +178,8 @@ class AssumeRolePolicy(Policy):
     def get_cloud_resource_url(self) -> str:
         return '{0}iam/home?region={1}#/roles/{2}?section=trust' \
             .format(self.AWS_CONSOLE_URL, 'us-east-1', self.role_name)
+
+    def to_drift_detection_object(self) -> dict:
+        return {'role_name': self.role_name,
+                'is_allowing_external_assume': self.is_allowing_external_assume,
+                'policy_statements': [statement.to_dict() for statement in self.statements]}

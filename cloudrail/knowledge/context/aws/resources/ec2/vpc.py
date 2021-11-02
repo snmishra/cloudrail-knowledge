@@ -11,6 +11,7 @@ from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.ec2.route_table import RouteTable
 from cloudrail.knowledge.context.aws.resources.ec2.security_group import SecurityGroup
 from cloudrail.knowledge.context.aws.resources.ec2.vpc_endpoint import VpcEndpoint
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 @dataclass
@@ -48,6 +49,11 @@ class VpcAttribute(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def to_drift_detection_object(self) -> dict:
+        return {'vpc_id': self.vpc_id,
+                'attribute_name': self.attribute_name,
+                'enable': self.enable}
 
 
 class Vpc(AwsResource):
@@ -92,7 +98,7 @@ class Vpc(AwsResource):
         return self.name
 
     def get_cloud_resource_url(self) -> str:
-        return '{0}vpc/home?region={1}#VpcDetails:VpcId={2}'\
+        return '{0}vpc/home?region={1}#VpcDetails:VpcId={2}' \
             .format(self.AWS_CONSOLE_URL, self.region, self.vpc_id)
 
     def get_extra_data(self) -> str:
@@ -126,3 +132,9 @@ class Vpc(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'cidr_block': self.cidr_block,
+                'ipv6_cidr_block': self.ipv6_cidr_block,
+                'name': self.name,
+                'is_default': self.is_default}

@@ -2,6 +2,7 @@ from typing import List
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class NatGateways(NetworkEntity):
@@ -14,6 +15,7 @@ class NatGateways(NetworkEntity):
             private_ip: The private IP of the NAT gateway.
             public_ip: The public IP of the NAT gateway.
     """
+
     def __init__(self, nat_gateway_id: str, allocation_id: str, subnet_id: str, eni_id: str,
                  private_ip: str, public_ip: str, account: str, region: str):
         super().__init__(nat_gateway_id, account, region, AwsServiceName.AWS_NAT_GATEWAY)
@@ -47,3 +49,11 @@ class NatGateways(NetworkEntity):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'allocation_id': self.allocation_id,
+                'subnet_id': self.subnet_id,
+                'eni_id': self.eni_id,
+                'private_ip': self.private_ip,
+                'public_ip': self.public_ip}

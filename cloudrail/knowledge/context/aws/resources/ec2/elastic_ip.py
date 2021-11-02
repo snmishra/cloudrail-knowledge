@@ -2,6 +2,7 @@ from typing import List, Optional
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class ElasticIp(AwsResource):
@@ -13,6 +14,7 @@ class ElasticIp(AwsResource):
                 still being built).
             private_ip: The private IP of the elastic IP, may be None.
     """
+
     def __init__(self, allocation_id: str, public_ip: Optional[str], private_ip: Optional[str], region: str, account: str):
         super().__init__(account, region, AwsServiceName.AWS_ELASTIC_IP)
         self.allocation_id: str = allocation_id
@@ -45,3 +47,7 @@ class ElasticIp(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'public_ip': self.public_ip,
+                'private_ip': self.private_ip}

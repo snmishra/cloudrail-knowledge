@@ -18,6 +18,9 @@ class BaseGcpScannerBuilder(BaseScannerBuilder):
         self.project_id: str = project_id
         self.accounts = get_account_names(self.account_data_folder)
 
+    def get_service_name(self):
+        pass
+
     @abstractmethod
     def do_build(self, attributes: dict) -> GcpResource:
         pass
@@ -52,7 +55,15 @@ class BaseGcpScannerBuilder(BaseScannerBuilder):
             return
 
         resource.project_id = self.project_id
+        resource.tags = attributes.get('tags', {}).get('items')
 
         if not resource.get_id() and (_id := attributes.get('id')):
             resource.set_id(_id)
             resource.with_aliases(_id)
+
+    @staticmethod
+    def get_project_from_url(url: str) -> str:
+        if url:
+            split_url = url.split('projects')[1]
+            return split_url.split('/')[1]
+        return None

@@ -2,6 +2,7 @@ from typing import List
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class DbSubnetGroup(AwsResource):
@@ -40,3 +41,8 @@ class DbSubnetGroup(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'name': self.name,
+                'subnet_ids': self.subnet_ids}

@@ -2,12 +2,14 @@ from abc import abstractmethod
 from dataclasses import dataclass, field
 from typing import List, Optional
 
+import dataclasses
 from cloudrail.knowledge.context.aws.resources.aws_client import AwsClient
 from cloudrail.knowledge.context.aws.resources.ecs.ecs_constants import NetworkMode
 from cloudrail.knowledge.context.aws.resources.iam.role import Role
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 @dataclass
@@ -46,6 +48,7 @@ class EcsTaskDefinition(AwsResource):
             efs_volume_data: The EFS configuration in the task, if one is configured.
             is_volume_efs: True if there is EFS configured.
     """
+
     def __init__(self, task_arn: str, family: str, revision: str, account: str, region: str, efs_volume_data: List[EfsVolume] = None,
                  task_role_arn: str = None, execution_role_arn: str = None, network_mode: NetworkMode = None, is_volume_efs: bool = False,
                  container_definitions: List[ContainerDefinition] = None) -> None:
@@ -87,9 +90,23 @@ class EcsTaskDefinition(AwsResource):
         return '{0}ecs/home?region={1}#/taskDefinitions/{2}/{3}' \
             .format(self.AWS_CONSOLE_URL, self.region, self.family, self.revision)
 
+    @staticmethod
+    def is_standalone() -> bool:
+        return False
+
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'efs_volume_data': [dataclasses.asdict(data) for data in self.efs_volume_data],
+                'task_role_arn': self.task_role_arn,
+                'execution_role_arn': self.execution_role_arn,
+                'network_mode': self.network_mode.value,
+                'is_volume_efs': self.is_volume_efs,
+                'container_definitions': [{k: v for k,v in dataclasses.asdict(definition).items() if k != 'image'}
+                                          for definition in self.container_definitions]}
 
 
 class IEcsInstance(AwsClient):

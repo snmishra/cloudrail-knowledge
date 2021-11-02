@@ -1,6 +1,7 @@
 from typing import List
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class GlueCrawler(AwsResource):
@@ -10,6 +11,7 @@ class GlueCrawler(AwsResource):
             database_name: The name of the database.
             arn: The ARN of the crawler.
     """
+
     def __init__(self,
                  crawler_name: str,
                  database_name: str,
@@ -18,10 +20,7 @@ class GlueCrawler(AwsResource):
         super().__init__(account, region, AwsServiceName.AWS_GLUE_CRAWLER)
         self.crawler_name: str = crawler_name
         self.database_name: str = database_name
-        if self.account:
-            self.arn: str = f'arn:aws:glue:{self.region}:{self.account}:crawler/{self.crawler_name}'
-        else:
-            self.arn = None
+        self.arn: str = f'arn:aws:glue:{self.region}:{self.account}:crawler/{self.crawler_name}' if self.account else None
 
     def get_keys(self) -> List[str]:
         return [self.crawler_name, self.account, self.region]
@@ -45,3 +44,7 @@ class GlueCrawler(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'crawler_name': self.crawler_name,
+                'database_name': self.database_name}

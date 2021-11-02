@@ -1,6 +1,7 @@
 from typing import Dict, List, Optional
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 from cloudrail.knowledge.utils.utils import flat_list
 from cloudrail.knowledge.context.aws.resources.iam.iam_group import IamGroup
 from cloudrail.knowledge.context.aws.resources.iam.iam_identity import IamIdentity
@@ -65,3 +66,6 @@ class IamUser(IamIdentity):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'name': self.name}

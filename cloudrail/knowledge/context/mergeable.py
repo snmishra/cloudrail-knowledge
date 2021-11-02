@@ -2,7 +2,7 @@
 import re
 from abc import abstractmethod
 from enum import Enum
-from typing import List, Set, Dict, Optional, FrozenSet
+from typing import List, Set, Optional, FrozenSet
 
 from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.context.iac_type import IacType
@@ -22,7 +22,6 @@ class Mergeable:
         self._aliases: Set[str] = set()
         self.iac_state: Optional[IacState] = None
         self.is_pseudo = False
-        self.tags: Dict[str, str] = {}
         self.invalidation: Set[str] = set()
 
     def with_aliases(self, *aliases: str):
@@ -71,6 +70,11 @@ class Mergeable:
     def get_existing_cloud_resource_url(self) -> Optional[str]:
         if not self.is_new_resource():
             return self.get_cloud_resource_url()
+        return None
+
+    def get_existing_cloud_entity_id(self) -> Optional[str]:
+        if not self.is_new_resource():
+            return self.get_id()
         return None
 
     def add_invalidation(self, reason: str) -> None:
@@ -123,3 +127,7 @@ class Mergeable:
     @staticmethod
     def is_standalone() -> bool:
         return True
+
+    @abstractmethod
+    def to_drift_detection_object(self) -> dict:
+        pass

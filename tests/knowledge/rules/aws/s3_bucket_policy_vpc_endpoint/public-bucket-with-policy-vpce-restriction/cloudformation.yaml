@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Resources:
+
+  TestVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: "192.168.100.0/24"
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref TestVPC
+      CidrBlock: "192.168.100.128/25"
+      AvailabilityZone: !Select [ 0, !GetAZs ]
+
+  PrivateSubnetRtb:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref TestVPC
+
+  PrivateRouteTableAssoc:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId: !Ref PrivateSubnetRtb
+      SubnetId: !Ref PrivateSubnet
+
+  S3VpcEndpoint:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      VpcId: !Ref TestVPC
+      ServiceName: !Sub "com.amazonaws.${AWS::Region}.s3"
+      VpcEndpointType: "Gateway"
+      RouteTableIds:
+        - !Ref PrivateSubnetRtb
+
+  TestBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+
+  TestBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref TestBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Sid: "AllowIfVpc"
+            Action:
+              - "s3:*"
+            Effect: Allow
+            Resource:
+              - !Join ["", ["arn:aws:s3:::", !Ref TestBucket]]
+              - !Join ["", ["arn:aws:s3:::", !Ref TestBucket, "/*"]]
+            Principal: "*"
+            Condition:
+              StringEquals:
+                aws:SourceVpce: !Ref S3VpcEndpoint

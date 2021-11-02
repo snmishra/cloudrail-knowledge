@@ -1,30 +1,31 @@
 from typing import Dict, Callable, Optional, Type
+
 from cloudrail.knowledge.context.aws.resources.apigatewayv2.api_gateway_v2 import ApiGateway
-from cloudrail.knowledge.context.aws.resources.apigatewayv2.api_gateway_v2_integration import ApiGatewayV2Integration
-from cloudrail.knowledge.context.aws.resources.apigatewayv2.api_gateway_v2_vpc_link import ApiGatewayVpcLink
-from cloudrail.knowledge.context.aws.resources.athena.athena_workgroup import AthenaWorkgroup
+from cloudrail.knowledge.context.aws.resources.dax.dax_cluster import DaxCluster
+from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template import LaunchTemplate
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CloudFrontDistribution
 from cloudrail.knowledge.context.aws.resources.cloudtrail.cloudtrail import CloudTrail
-from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
+from cloudrail.knowledge.context.aws.resources.codebuild.codebuild_project import CodeBuildProject
 from cloudrail.knowledge.context.aws.resources.cloudwatch.cloudwatch_logs_destination import CloudWatchLogsDestination
-from cloudrail.knowledge.context.aws.resources.dynamodb.dynamodb_table import DynamoDbTable
+from cloudrail.knowledge.context.aws.resources.codebuild.codebuild_report_group import CodeBuildReportGroup
 from cloudrail.knowledge.context.aws.resources.configservice.config_aggregator import ConfigAggregator
+from cloudrail.knowledge.context.aws.resources.dynamodb.dynamodb_table import DynamoDbTable
+from cloudrail.knowledge.context.aws.resources.ec2.elastic_ip import ElasticIp
 from cloudrail.knowledge.context.aws.resources.ec2.internet_gateway import InternetGateway
-from cloudrail.knowledge.context.aws.resources.ec2.route import Route
-from cloudrail.knowledge.context.aws.resources.ec2.route_table import RouteTable
-from cloudrail.knowledge.context.aws.resources.ec2.route_table_association import RouteTableAssociation
 from cloudrail.knowledge.context.aws.resources.ec2.security_group import SecurityGroup
 from cloudrail.knowledge.context.aws.resources.ec2.subnet import Subnet
+from cloudrail.knowledge.context.aws.resources.ec2.transit_gateway import TransitGateway
+from cloudrail.knowledge.context.aws.resources.ec2.transit_gateway_vpc_attachment import TransitGatewayVpcAttachment
 from cloudrail.knowledge.context.aws.resources.ec2.vpc import Vpc
-from cloudrail.knowledge.context.aws.resources.codebuild.codebuild_report_group import CodeBuildReportGroup
-from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
-from cloudrail.knowledge.context.aws.resources.ec2.vpc_gateway_attachment import VpcGatewayAttachment
+from cloudrail.knowledge.context.aws.resources.ec2.vpc_endpoint import VpcEndpointInterface
 from cloudrail.knowledge.context.aws.resources.elb.load_balancer import LoadBalancer
 from cloudrail.knowledge.context.aws.resources.elb.load_balancer_listener import LoadBalancerListener
+from cloudrail.knowledge.context.aws.resources.iam.role import Role
+from cloudrail.knowledge.context.aws.resources.iam.iam_instance_profile import IamInstanceProfile
+from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
+from cloudrail.knowledge.context.aws.resources.lambda_.lambda_function import LambdaFunction
 from cloudrail.knowledge.context.aws.resources.s3.s3_bucket import S3Bucket
-from cloudrail.knowledge.context.aws.resources.batch.batch_compute_environment import BatchComputeEnvironment
-from cloudrail.knowledge.context.aws.resources.ec2.nat_gateways import NatGateways
-from cloudrail.knowledge.context.aws.resources.ec2.elastic_ip import ElasticIp
 
 
 class CloudformationAttributesCallableStore:
@@ -72,10 +73,6 @@ class CloudformationAttributesCallableStore:
         return None
 
     @staticmethod
-    def get_none_attribute(unused_aws_resource: AwsResource, unused_attribute_name: str):
-        return None
-
-    @staticmethod
     def get_load_balancer_attribute(load_balancer: LoadBalancer, attribute_name: str):
         if attribute_name == "CanonicalHostedZoneID":
             return None
@@ -99,6 +96,12 @@ class CloudformationAttributesCallableStore:
     def get_api_gateway_attribute(api_gateway: ApiGateway, attribute_name: str):
         if attribute_name == "ApiEndpoint":
             return api_gateway.api_endpoint
+        return None
+
+    @staticmethod
+    def get_dax_cluster_attribute(dax_cluster: DaxCluster, attribute_name: str):
+        if attribute_name == "Arn":
+            return dax_cluster.cluster_arn
         return None
 
     @staticmethod
@@ -160,43 +163,96 @@ class CloudformationAttributesCallableStore:
         return None
 
     @staticmethod
+    def get_launch_template_attribute(launch_template: LaunchTemplate, attribute_name: str):
+        if attribute_name in ('DefaultVersionNumber', 'LatestVersionNumber'):
+            return launch_template.version_number
+        return None
+
+    @staticmethod
     def get_cloudwatch_logs_destination_attribute(cloudwatch_logs_destination: CloudWatchLogsDestination, attribute_name: str):
         if attribute_name == "Arn":
             return cloudwatch_logs_destination.get_arn()
         return None
+
+    @staticmethod
+    def get_cloudfront_distribution_list_attribute(cloudfront_dist_list: CloudFrontDistribution, attribute_name: str):
+        if attribute_name == "DomainName":
+            return cloudfront_dist_list.get_name()
+        if attribute_name == "Id":
+            return cloudfront_dist_list.get_id()
+        return None
+
+    @staticmethod
+    def get_vpc_endpoint_interface_attribute(vpc_endpoint: VpcEndpointInterface, attribute_name: str):
+        if attribute_name == "NetworkInterfaceIds":
+            return vpc_endpoint.network_interface_ids
+        return None
+
+    @staticmethod
+    def get_iam_role_attribute(iam_role: Role, attribute_name: str):
+        if attribute_name == "Arn":
+            return iam_role.get_arn()
+        if attribute_name == "RoleId":
+            return iam_role.role_id
+        return None
+
+    @staticmethod
+    def get_lambda_func_attribute(lambda_func: LambdaFunction, attribute_name: str):
+        if attribute_name == "Arn":
+            return lambda_func.get_arn()
+        return None
+
+    @staticmethod
+    def get_iam_instance_profile_attribute(iam_instance_profile: IamInstanceProfile, attribute_name: str):
+        if attribute_name == "Arn":
+            return iam_instance_profile.get_arn()
+        return None
+
+    @staticmethod
+    def get_transit_gateway_attribute(transit_gateway: TransitGateway, attribute_name: str):
+        if attribute_name == "Id":
+            return transit_gateway.get_id()
+        return None
+
+    @staticmethod
+    def get_codebuild_project_attribute(codebuild_project: CodeBuildProject, attribute_name: str):
+        if attribute_name == "Arn":
+            return codebuild_project.get_arn()
+        return None
+
+
 class CloudformationResourceAttributesMapper:
 
-    RESOURCE_ATTRIBUTES_MAP: Dict[Type[AwsResource], Callable] = {
+    _RESOURCE_ATTRIBUTES_MAP: Dict[Type[AwsResource], Callable] = {
         Vpc: CloudformationAttributesCallableStore.get_vpc_attribute,
         KmsKey: CloudformationAttributesCallableStore.get_kms_key_attribute,
         S3Bucket: CloudformationAttributesCallableStore.get_s3_bucket_attribute,
         SecurityGroup: CloudformationAttributesCallableStore.get_security_group_attribute,
-        AthenaWorkgroup: CloudformationAttributesCallableStore.get_none_attribute,
         InternetGateway: CloudformationAttributesCallableStore.get_vpc_internet_gateway_attribute,
-        VpcGatewayAttachment: CloudformationAttributesCallableStore.get_none_attribute,
-        RouteTable: CloudformationAttributesCallableStore.get_none_attribute,
-        Route: CloudformationAttributesCallableStore.get_none_attribute,
-        RouteTableAssociation: CloudformationAttributesCallableStore.get_none_attribute,
         LoadBalancer: CloudformationAttributesCallableStore.get_load_balancer_attribute,
         LoadBalancerListener: CloudformationAttributesCallableStore.get_load_balancer_listener_attribute,
         ApiGateway: CloudformationAttributesCallableStore.get_api_gateway_attribute,
-        ApiGatewayVpcLink: CloudformationAttributesCallableStore.get_none_attribute,
-        ApiGatewayV2Integration: CloudformationAttributesCallableStore.get_none_attribute,
         Subnet: CloudformationAttributesCallableStore.get_subnet_attribute,
         CloudTrail: CloudformationAttributesCallableStore.get_cloudtrail_attribute,
         CodeBuildReportGroup: CloudformationAttributesCallableStore.get_codebuild_report_group_attribute,
-        BatchComputeEnvironment: CloudformationAttributesCallableStore.get_none_attribute,
-        NatGateways: CloudformationAttributesCallableStore.get_none_attribute,
         ElasticIp: CloudformationAttributesCallableStore.get_eip_attribute,
         DynamoDbTable: CloudformationAttributesCallableStore.get_dynamo_db_table_attribute,
         ConfigAggregator: CloudformationAttributesCallableStore.get_config_service_aggregator_attribute,
-        CloudfrontDistributionLogging: CloudformationAttributesCallableStore.get_none_attribute,
+        LaunchTemplate: CloudformationAttributesCallableStore.get_launch_template_attribute,
         CloudWatchLogsDestination: CloudformationAttributesCallableStore.get_cloudwatch_logs_destination_attribute,
+        CloudFrontDistribution: CloudformationAttributesCallableStore.get_cloudfront_distribution_list_attribute,
+        VpcEndpointInterface: CloudformationAttributesCallableStore.get_vpc_endpoint_interface_attribute,
+        Role: CloudformationAttributesCallableStore.get_iam_role_attribute,
+        LambdaFunction: CloudformationAttributesCallableStore.get_lambda_func_attribute,
+        CodeBuildProject: CloudformationAttributesCallableStore.get_codebuild_project_attribute,
+        IamInstanceProfile: CloudformationAttributesCallableStore.get_iam_instance_profile_attribute,
+        DaxCluster: CloudformationAttributesCallableStore.get_dax_cluster_attribute,
+        TransitGatewayVpcAttachment: CloudformationAttributesCallableStore.get_transit_gateway_attribute,
     }
 
     @classmethod
     def get_attribute(cls, aws_resource, attribute_name: str) -> Optional[str]:
         if isinstance(aws_resource, AwsResource):
-            if get_attr_func := cls.RESOURCE_ATTRIBUTES_MAP.get(aws_resource.__class__):
+            if get_attr_func := cls._RESOURCE_ATTRIBUTES_MAP.get(aws_resource.__class__):
                 return get_attr_func(aws_resource, attribute_name)
         return None

@@ -1,6 +1,7 @@
 from typing import List
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class CloudTrail(AwsResource):
@@ -12,6 +13,7 @@ class CloudTrail(AwsResource):
             log_file_validation: True if log file validation is enabled.
             is_multi_region_trail: An indication if the trail is created in the current region or in all regions.
     """
+
     def __init__(self,
                  name: str,
                  kms_encryption: bool,
@@ -53,3 +55,10 @@ class CloudTrail(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'name': self.name,
+                'kms_encryption': self.kms_encryption,
+                'log_file_validation': self.log_file_validation,
+                'is_multi_region_trail': self.is_multi_region_trail}

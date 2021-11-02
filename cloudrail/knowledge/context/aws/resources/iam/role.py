@@ -5,6 +5,7 @@ from cloudrail.knowledge.context.aws.resources.iam.policy import AssumeRolePolic
 from cloudrail.knowledge.context.aws.resources.iam.role_last_used import RoleLastUsed
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.iam.iam_identity import IamIdentity
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class Role(IamIdentity):
@@ -22,6 +23,7 @@ class Role(IamIdentity):
             last_used_date: Last date the role was used (comes from an API call
                 made to the AWS IAM API).
     """
+
     def __init__(self, account: str,
                  qualified_arn: str,
                  role_name: str,
@@ -52,7 +54,7 @@ class Role(IamIdentity):
             return 'IAM Roles'
 
     def get_cloud_resource_url(self) -> str:
-        return '{0}iam/home?region={1}#/roles/{2}'\
+        return '{0}iam/home?region={1}#/roles/{2}' \
             .format(self.AWS_CONSOLE_URL, 'us-east-1', self.role_name)
 
     @property
@@ -68,3 +70,7 @@ class Role(IamIdentity):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'role_name': self.role_name,
+                'permission_boundary_arn': self.permission_boundary_arn}

@@ -5,6 +5,7 @@ from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.neptune.neptune_instance import NeptuneInstance
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class NeptuneCluster(ConnectionInstance, AwsResource):
@@ -76,3 +77,11 @@ class NeptuneCluster(ConnectionInstance, AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'encrypted_at_rest': self.encrypted_at_rest,
+                'port': self.port,
+                'db_subnet_group_name': self.db_subnet_group_name,
+                'security_group_ids': self.security_group_ids,
+                'cloudwatch_logs_exports': self.cloudwatch_logs_exports}

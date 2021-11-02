@@ -1,6 +1,7 @@
 from typing import Optional, List
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class AzureMySqlServer(AzureResource):
@@ -9,7 +10,6 @@ class AzureMySqlServer(AzureResource):
             server_name: The name of the SQL server
             ssl_enforcement_enabled: An indication on if ssl enforcement is enabled.
     """
-
     def __init__(self, server_name: str, ssl_enforcement_enabled: bool) -> None:
         super().__init__(AzureResourceType.AZURERM_MYSQL_SERVER)
         self.server_name: str = server_name
@@ -38,3 +38,6 @@ class AzureMySqlServer(AzureResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'ssl_enforcement_enabled': self.ssl_enforcement_enabled}

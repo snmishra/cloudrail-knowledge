@@ -2,6 +2,7 @@ from typing import List
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class SageMakerEndpointConfig(AwsResource):
@@ -11,6 +12,7 @@ class SageMakerEndpointConfig(AwsResource):
             arn: The ARN of the SageMaker Endpoint Config.
             encrypted: True if encryption is enabled.
     """
+
     def __init__(self,
                  sagemaker_endpoint_config_name: str,
                  arn: str,
@@ -42,5 +44,10 @@ class SageMakerEndpointConfig(AwsResource):
             return 'SageMaker Endpoint Configurations'
 
     def get_cloud_resource_url(self) -> str:
-        return '{0}sagemaker/home?region={1}#/endpointConfig/{2}'\
+        return '{0}sagemaker/home?region={1}#/endpointConfig/{2}' \
             .format(self.AWS_CONSOLE_URL, self.region, self.sagemaker_endpoint_config_name)
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'sagemaker_endpoint_config_name': self.sagemaker_endpoint_config_name,
+                'encrypted': self.encrypted}

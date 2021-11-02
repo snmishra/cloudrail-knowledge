@@ -2,6 +2,7 @@ from typing import List
 
 from cloudrail.knowledge.context.aws.resources.aws_policied_resource import PoliciedResource
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class ElasticFileSystem(PoliciedResource):
@@ -13,6 +14,7 @@ class ElasticFileSystem(PoliciedResource):
             arn: The ARN of the EFS.
             encrypted: True if the EFS is encrypted.
     """
+
     def __init__(self,
                  creation_token: str,
                  efs_id: str,
@@ -42,3 +44,8 @@ class ElasticFileSystem(PoliciedResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'creation_token': self.creation_token,
+                'encrypted': self.encrypted}

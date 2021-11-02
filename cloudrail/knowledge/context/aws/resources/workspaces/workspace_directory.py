@@ -5,6 +5,7 @@ from cloudrail.knowledge.context.aws.resources.ec2.security_group import Securit
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class WorkspaceDirectory(NetworkEntity):
@@ -53,3 +54,8 @@ class WorkspaceDirectory(NetworkEntity):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'subnet_ids': self.subnet_ids,
+                'security_group_ids': self.security_group_ids}

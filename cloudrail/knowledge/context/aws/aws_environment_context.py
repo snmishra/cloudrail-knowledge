@@ -1,6 +1,7 @@
 import functools
 from typing import List, Dict, Optional, Union, Callable, Set
 
+from cloudrail.knowledge.context.aws.resources.ec2.network_acl_association import NetworkAclAssociation
 from cloudrail.knowledge.context.aws.resources.ec2.vpc_gateway_attachment import VpcGatewayAttachment
 from cloudrail.knowledge.context.aws.resources.ec2.availability_zone import AvailabilityZone
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
@@ -24,7 +25,7 @@ from cloudrail.knowledge.context.aws.resources.aws_client import AwsClient
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.batch.batch_compute_environment import BatchComputeEnvironment
 from cloudrail.knowledge.context.aws.resources.cloudformation.cloudformation_resource_info import CloudformationResourceInfo
-from cloudrail.knowledge.context.aws.resources.cloudfront.cloud_front_distribution_list import CloudFrontDistribution
+from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_list import CloudFrontDistribution
 from cloudrail.knowledge.context.aws.resources.cloudfront.cloudfront_distribution_logging import CloudfrontDistributionLogging
 from cloudrail.knowledge.context.aws.resources.cloudfront.origin_access_identity import OriginAccessIdentity
 from cloudrail.knowledge.context.aws.resources.cloudhsmv2.cloudhsm_v2_cluster import CloudHsmV2Cluster
@@ -162,7 +163,7 @@ from cloudrail.knowledge.context.aws.resources.sqs.sqs_queue_policy import SqsQu
 from cloudrail.knowledge.context.aws.resources.ssm.ssm_parameter import SsmParameter
 from cloudrail.knowledge.context.aws.resources.worklink.worklink_fleet import WorkLinkFleet
 from cloudrail.knowledge.context.aws.resources.workspaces.workspace_directory import WorkspaceDirectory
-from cloudrail.knowledge.context.aws.resources.workspaces.workspaces import Workspace
+from cloudrail.knowledge.context.aws.resources.workspaces.workspace import Workspace
 from cloudrail.knowledge.context.aws.resources.xray.xray_encryption import XrayEncryption
 from cloudrail.knowledge.context.managed_resources_summary import ManagedResourcesSummary
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult, _TMergeAble
@@ -171,7 +172,7 @@ from cloudrail.knowledge.context.unknown_block import UnknownBlock
 from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import LambdaPolicy
 
 
-class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources should be in alias dict
+class AwsEnvironmentContext(BaseEnvironmentContext):
     def __init__(self,
                  vpcs: AliasesDict[Vpc] = None,
                  subnets: AliasesDict[Subnet] = None,
@@ -253,6 +254,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
                  main_route_table_associations: List[MainRouteTableAssociation] = None,
                  network_acls: AliasesDict[NetworkAcl] = None,
                  network_acl_rules: List[NetworkAclRule] = None,
+                 network_acl_associations: AliasesDict[NetworkAclAssociation] = None,
                  load_balancer_target_groups: List[LoadBalancerTargetGroup] = None,
                  load_balancer_target_group_associations: List[LoadBalancerTargetGroupAssociation] = None,
                  load_balancer_targets: List[LoadBalancerTarget] = None,
@@ -454,6 +456,7 @@ class AwsEnvironmentContext(BaseEnvironmentContext):  # todo - all resources sho
         self.main_route_table_associations = main_route_table_associations or []
         self.network_acls = network_acls or AliasesDict()
         self.network_acl_rules = network_acl_rules or []
+        self.network_acl_associations: AliasesDict[NetworkAclAssociation] = network_acl_associations or AliasesDict()
         self.load_balancer_target_groups = load_balancer_target_groups or []
         self.load_balancer_target_group_associations = load_balancer_target_group_associations or []
         self.load_balancer_targets = load_balancer_targets or []

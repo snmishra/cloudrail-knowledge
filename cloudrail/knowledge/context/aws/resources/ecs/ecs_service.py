@@ -8,6 +8,7 @@ from cloudrail.knowledge.context.aws.resources.networking_config.network_entity 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceType, AwsServiceAttributes
 from cloudrail.knowledge.context.aws.resources.ecs.ecs_task_definition import EcsTaskDefinition, IEcsInstance
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class EcsService(NetworkEntity, INetworkConfiguration, IEcsInstance):
@@ -22,6 +23,7 @@ class EcsService(NetworkEntity, INetworkConfiguration, IEcsInstance):
                 with the service.
             cluster_name: The name of the cluster this service belongs to.
     """
+
     def __init__(self, name: str, launch_type: LaunchType, cluster_arn: str, account: str, region: str,
                  network_conf_list: List[NetworkConfiguration], task_definition_arn: str = None) -> None:
         NetworkEntity.__init__(self, name, account, region, AwsServiceName.AWS_ECS_SERVICE,
@@ -84,3 +86,11 @@ class EcsService(NetworkEntity, INetworkConfiguration, IEcsInstance):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'name': self.name,
+                'launch_type': self.launch_type.value,
+                'network_conf_list': [conf.to_dict() for conf in self.network_conf_list],
+                'task_definition_arn': self.task_definition_arn,
+                'cluster_name': self.cluster_name,
+                'task_definition': self._task_definition.to_drift_detection_object()}

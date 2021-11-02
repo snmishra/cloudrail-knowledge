@@ -3,6 +3,7 @@ from typing import List, Optional
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class KinesisFirehoseStream(NetworkEntity):
@@ -15,6 +16,7 @@ class KinesisFirehoseStream(NetworkEntity):
             es_vpc_config: The VPC configuration of the ElasticSearch Domain related
                 to this stream, if any.
     """
+
     def __init__(self,
                  stream_name: str,
                  stream_arn: str,
@@ -60,3 +62,11 @@ class KinesisFirehoseStream(NetworkEntity):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'stream_name': self.stream_name,
+                'encrypted_at_rest': self.encrypted_at_rest,
+                'es_domain_arn': self.es_domain_arn,
+                'assign_public_ip': self.es_vpc_config and self.es_vpc_config.assign_public_ip,
+                'security_groups_ids': self.es_vpc_config and self.es_vpc_config.security_groups_ids,
+                'subnet_list_ids': self.es_vpc_config and self.es_vpc_config.subnet_list_ids}

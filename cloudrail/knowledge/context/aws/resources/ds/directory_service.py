@@ -4,6 +4,7 @@ from cloudrail.knowledge.context.aws.resources.ec2.security_group import Securit
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class DirectoryService(NetworkEntity):
@@ -18,6 +19,7 @@ class DirectoryService(NetworkEntity):
                 may be Cloudrail-generated in case only the rules are defined and
                 no specific SG is configured.
     """
+
     def __init__(self,
                  account: str,
                  region: str,
@@ -66,3 +68,12 @@ class DirectoryService(NetworkEntity):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'name': self.name,
+                'vpc_id': self.vpc_id,
+                'directory_type': self.directory_type,
+                'assign_public_ip': self.vpc_config and self.vpc_config.assign_public_ip,
+                'security_groups_ids': self.vpc_config and self.vpc_config.security_groups_ids,
+                'subnet_list_ids': self.vpc_config and self.vpc_config.subnet_list_ids}

@@ -3,6 +3,7 @@ from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class SnsTopic(AwsResource):
@@ -14,6 +15,7 @@ class SnsTopic(AwsResource):
             kms_key: The ID of the KMS Key used to encrypt the topic, if any is used.
             kms_data: A reference to KmsKey based on the kms_key provided.
     """
+
     def __init__(self,
                  sns_arn: str,
                  sns_name: str,
@@ -43,9 +45,15 @@ class SnsTopic(AwsResource):
             return 'SNS topics'
 
     def get_cloud_resource_url(self) -> str:
-        return '{0}sns/v3/home?region={1}#/topic/{2}'\
+        return '{0}sns/v3/home?region={1}#/topic/{2}' \
             .format(self.AWS_CONSOLE_URL, self.region, self.sns_arn)
 
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'sns_name': self.sns_name,
+                'encrypted_at_rest': self.encrypted_at_rest,
+                'kms_key': self.kms_key}

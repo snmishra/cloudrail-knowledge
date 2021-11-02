@@ -4,6 +4,7 @@ from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceNam
 from cloudrail.knowledge.context.connection import ConnectionInstance
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.rds.rds_instance import RdsInstance
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class RdsCluster(ConnectionInstance, AwsResource):
@@ -80,3 +81,15 @@ class RdsCluster(ConnectionInstance, AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'port': self.port,
+                'db_subnet_group_name': self.db_subnet_group_name,
+                'security_group_ids': self.security_group_ids,
+                'encrypted_at_rest': self.encrypted_at_rest,
+                'backup_retention_period': self.backup_retention_period,
+                'engine_type': self.engine_type,
+                'engine_version': self.engine_version,
+                'iam_database_authentication_enabled': self.iam_database_authentication_enabled,
+                'cloudwatch_logs_exports': self.cloudwatch_logs_exports}

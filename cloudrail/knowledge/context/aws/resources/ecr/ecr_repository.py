@@ -3,6 +3,7 @@ from typing import List, Optional
 from cloudrail.knowledge.context.aws.resources.aws_policied_resource import PoliciedResource
 from cloudrail.knowledge.context.aws.resources.kms.kms_key import KmsKey
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class EcrRepository(PoliciedResource):
@@ -16,6 +17,7 @@ class EcrRepository(PoliciedResource):
             image_tag_mutability: Image tag mutability setting for the ECR repository.
             is_image_scan_on_push: An indication whether images are scanned after being pushed to the ECR repository.
     """
+
     def __init__(self,
                  repo_name: str,
                  arn: str,
@@ -56,3 +58,10 @@ class EcrRepository(PoliciedResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'repo_name': self.repo_name,
+                'image_tag_mutability': self.image_tag_mutability,
+                'is_image_scan_on_push': self.is_image_scan_on_push,
+                'encryption_type': self.encryption_type,
+                'kms_key_id': self.kms_key_id}

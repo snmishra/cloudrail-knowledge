@@ -5,6 +5,7 @@ from cloudrail.knowledge.context.aws.resources.networking_config.inetwork_config
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class NeptuneInstance(NetworkEntity, INetworkConfiguration):
@@ -19,6 +20,7 @@ class NeptuneInstance(NetworkEntity, INetworkConfiguration):
             security_group_allowing_public_access: A security group that allows access from the internet.
                 This value will be None when this resource is not accessible from the internet.
     """
+
     def __init__(self,
                  account: str,
                  region: str,
@@ -62,3 +64,10 @@ class NeptuneInstance(NetworkEntity, INetworkConfiguration):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'name': self.name,
+                'port': self.port,
+                'cluster_identifier': self.cluster_identifier,
+                'publicly_accessible': self.network_configuration.assign_public_ip}

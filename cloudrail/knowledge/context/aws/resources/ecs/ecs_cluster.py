@@ -9,6 +9,7 @@ from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
 from cloudrail.knowledge.context.aws.resources.ec2.network_interface import NetworkInterface
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class EcsCluster(AwsResource):
@@ -23,6 +24,7 @@ class EcsCluster(AwsResource):
             is_container_insights_enabled: Indication if Container Insights enabled for this cluster or not.
 
     """
+
     def __init__(self,
                  account: str,
                  region: str,
@@ -91,3 +93,7 @@ class EcsCluster(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'cluster_name': self.cluster_name,
+                'is_container_insights_enabled': self.is_container_insights_enabled}

@@ -8,6 +8,7 @@ from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceNam
 from cloudrail.knowledge.context.aws.resources.networking_config.inetwork_configuration import INetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_configuration import NetworkConfiguration
 from cloudrail.knowledge.context.aws.resources.networking_config.network_entity import NetworkEntity
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class RedshiftCluster(NetworkEntity, INetworkConfiguration):
@@ -79,3 +80,12 @@ class RedshiftCluster(NetworkEntity, INetworkConfiguration):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'db_name': self.db_name,
+                'port': self.port,
+                'subnet_group_name': self.subnet_group_name,
+                'security_group_ids': self.network_configuration.security_groups,
+                'assign_public_ip': self.network_configuration.assign_public_ip,
+                'encrypted': self.encrypted}

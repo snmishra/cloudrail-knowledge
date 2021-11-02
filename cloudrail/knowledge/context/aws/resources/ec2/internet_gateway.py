@@ -3,6 +3,7 @@ from typing import List
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.ec2.igw_type import IgwType
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class InternetGateway(AwsResource):
@@ -12,6 +13,7 @@ class InternetGateway(AwsResource):
             igw_id: The ID of the IGW.
             igw_type: The type of the IGW.
     """
+
     def __init__(self, account: str, region: str, vpc_id: str, igw_id: str, igw_type: IgwType,
                  tf_resource_type: AwsServiceName = AwsServiceName.AWS_INTERNET_GATEWAY):
         super().__init__(account, region, tf_resource_type)
@@ -45,3 +47,8 @@ class InternetGateway(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags),
+                'vpc_id': self.vpc_id,
+                'igw_type': self.igw_type.value}

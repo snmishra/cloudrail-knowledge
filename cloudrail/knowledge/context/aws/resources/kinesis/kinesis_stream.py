@@ -2,6 +2,7 @@ from typing import List
 
 from cloudrail.knowledge.context.aws.resources.service_name import AwsServiceName
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.utils.tags_utils import filter_tags
 
 
 class KinesisStream(AwsResource):
@@ -11,6 +12,7 @@ class KinesisStream(AwsResource):
             stream_arn: The ARN of the Kinesis Stream.
             encrypted_at_rest: True if the stream is set to be encrypted at rest.
     """
+
     def __init__(self,
                  stream_name: str,
                  stream_arn: str,
@@ -44,3 +46,7 @@ class KinesisStream(AwsResource):
     @property
     def is_tagable(self) -> bool:
         return True
+
+    def to_drift_detection_object(self) -> dict:
+        return {'tags': filter_tags(self.tags), 'stream_name': self.stream_name,
+                'encrypted_at_rest': self.encrypted_at_rest}
