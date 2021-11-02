@@ -57,7 +57,7 @@ def get_after_raw_resources_by_type(raw_data,
                 for key in after_unknown:
                     full_address = '{}.{}'.format(address, key)
                     after_att[key] = after_att.get(key, full_address)
-                    assign_inner_addresses(full_address, after_att[key], resource['change']['after_unknown'][key])
+                    assign_inner_addresses(full_address, after_att[key], after_unknown[key])
             after_att['tf_address'] = address
 
         metadata = resources_metadata.get(address.split('[')[0])
