@@ -1,8 +1,8 @@
 from typing import List
-from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance import GcpComputeInstance, GcpComputeInstanceNetworkInterface, \
-        GcpComputeInstanceNetIntfAccessCfg, GcpComputeInstanceNetIntfAliasIpRange, GcpComputeInstanceNetIntfNicType, GcpComputeInstanceServiceAcount, \
-            GcpComputeInstanceShieldInstCfg
 
+from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance import GcpComputeInstance, GcpComputeInstanceNetworkInterface, \
+    GcpComputeInstanceNetIntfAccessCfg, GcpComputeInstanceNetIntfAliasIpRange, GcpComputeInstanceNetIntfNicType, GcpComputeInstanceServiceAcount, \
+    GcpComputeInstanceShieldInstCfg
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.base_gcp_scanner_builder import BaseGcpScannerBuilder
 
 
@@ -23,9 +23,9 @@ class ComputeInstanceBuilder(BaseGcpScannerBuilder):
 
             access_config_list: List[GcpComputeInstanceNetIntfAccessCfg] = []
             for access_config in interface.get('accessConfigs', []):
-                access_config_list.append(GcpComputeInstanceNetIntfAccessCfg(nat_ip = access_config.get('natIP'),
-                                                                             public_ptr_domain_name = access_config.get('publicPtrDomainName'),
-                                                                             network_tier = access_config.get('networkTier')))
+                access_config_list.append(GcpComputeInstanceNetIntfAccessCfg(nat_ip=access_config.get('natIP'),
+                                                                             public_ptr_domain_name=access_config.get('publicPtrDomainName'),
+                                                                             network_tier=access_config.get('networkTier')))
 
             aliases_ip_range: List[GcpComputeInstanceNetIntfAliasIpRange] = []
             for ip in interface.get('aliasIpRanges', []):
