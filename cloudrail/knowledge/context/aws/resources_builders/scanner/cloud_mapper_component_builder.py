@@ -206,7 +206,7 @@ def build_subnet(raw_data: dict) -> Subnet:
     name = extract_name_from_tags(raw_data)
     availability_zone = raw_data['AvailabilityZone']
     region = raw_data['AvailabilityZone'][:-1]
-    map_public_ip_on_launch = raw_data['MapPublicIpOnLaunch']
+    map_public_ip_on_launch = bool(raw_data['MapPublicIpOnLaunch'])
     is_az_default = raw_data["DefaultForAz"]
     return Subnet(subnet_id=subnet_id, vpc_id=vpc_id, cidr_block=cidr_block, name=name, availability_zone=availability_zone,
                   map_public_ip_on_launch=map_public_ip_on_launch, region=region, is_default=is_az_default, account=raw_data['Account'])
