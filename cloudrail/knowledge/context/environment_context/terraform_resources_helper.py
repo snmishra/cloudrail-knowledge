@@ -53,8 +53,8 @@ def get_after_raw_resources_by_type(raw_data,
         if before_att:
             before_att['tf_address'] = address
         if after_att is not None:
-            if resource['change']['after_unknown']:
-                for key in resource['change']['after_unknown']:
+            if after_unknown := resource['change'].get('after_unknown'):
+                for key in after_unknown:
                     full_address = '{}.{}'.format(address, key)
                     after_att[key] = after_att.get(key, full_address)
                     assign_inner_addresses(full_address, after_att[key], resource['change']['after_unknown'][key])
