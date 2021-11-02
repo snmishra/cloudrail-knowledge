@@ -10,6 +10,7 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dms.cloud
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_instance_profile_builder import CloudformationIamInstanceProfileBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_builder import CloudformationDocumentDbClusterBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_parameter_group_builder import CloudformationDocDbClusterParameterGroupBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.kms.cloudformation_kms_key_policy_builder import CloudformationKmsKeyPolicyBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.nat_gw.cloudformation_nat_gw_builder import CloudformationNatGatewayBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dynamodb.cloudformation_dynamodb_table_builder import CloudformationDynamoDbTableBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.codebuild.cloudformation_codebuild_project_builder import CloudformationCodeBuildProjectBuilder
@@ -205,6 +206,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             docdb_cluster=CloudformationDocumentDbClusterBuilder(cfn_by_type_map).build(),
             docdb_cluster_parameter_groups=CloudformationDocDbClusterParameterGroupBuilder(cfn_by_type_map).build(),
             kms_aliases=CloudformationKmsAliasBuilder(cfn_by_type_map).build(),
+            kms_keys_policies=CloudformationKmsKeyPolicyBuilder(cfn_by_type_map).build(),
         )
 
     @staticmethod

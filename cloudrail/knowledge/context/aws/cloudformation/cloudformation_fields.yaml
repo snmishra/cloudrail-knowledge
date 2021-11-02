@@ -342,3 +342,8 @@ AWS::KMS::Alias:
         pass:
             - AliasName
             - TargetKeyId
+
+AWS::KMS::Key:
+    known_fields:
+        pass:
+            - KeyPolicy
