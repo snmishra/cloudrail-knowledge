@@ -94,6 +94,7 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscali
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_launch_template_builder import CloudformationLaunchTemplateBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dax.cloudformation_dax_cluster_builder import CloudformationDaxClusterBuilder
 from cloudrail.knowledge.context.environment_context.iac_context_builder import IacContextBuilder
+from knowledge.context.aws.aws_relations_assigner import AwsRelationsAssigner
 
 
 class AwsCloudformationContextBuilder(IacContextBuilder):
@@ -116,6 +117,8 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             raise Exception('missing \'region\' parameter')
 
         if scanner_environment_context:
+            AwsRelationsAssigner(scanner_environment_context).run()
+            scanner_environment_context.clear_cache()
             if account := scanner_environment_context.accounts.get(account_id):
                 if not account_id:
                     account_id = account.account
