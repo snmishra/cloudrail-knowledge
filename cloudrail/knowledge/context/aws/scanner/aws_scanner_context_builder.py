@@ -195,6 +195,7 @@ class AwsScannerContextBuilder(ScannerContextBuilder):
                 route_tables=AliasesDict(*[rt for rt in RouteTableBuilder(account_data_dir, salt).build() if rt.is_main_route_table]),
                 network_acls=AliasesDict(*[nacl for nacl in NetworkAclBuilder(account_data_dir, salt).build() if nacl.is_default]),
                 main_route_table_associations=MainRouteTableAssociationBuilder(account_data_dir, salt).build(),
+                cfn_resources_info=CloudformationResourceInfoBuilder(account_data_dir, salt).build()
             )
 
         accounts = AccountBuilder(account_data_dir, salt).build()
