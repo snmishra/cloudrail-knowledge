@@ -94,7 +94,7 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscali
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_launch_template_builder import CloudformationLaunchTemplateBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dax.cloudformation_dax_cluster_builder import CloudformationDaxClusterBuilder
 from cloudrail.knowledge.context.environment_context.iac_context_builder import IacContextBuilder
-from knowledge.context.aws.aws_relations_assigner import AwsRelationsAssigner
+from cloudrail.knowledge.context.aws.aws_relations_assigner import AwsRelationsAssigner
 
 
 class AwsCloudformationContextBuilder(IacContextBuilder):
