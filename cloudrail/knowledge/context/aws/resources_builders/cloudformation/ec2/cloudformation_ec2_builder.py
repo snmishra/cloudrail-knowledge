@@ -25,7 +25,7 @@ class CloudformationEc2Builder(BaseCloudformationBuilder):
             or security_group_ids_from_enis if check_array_has_value(security_group_ids_from_enis) else self.CFN_PSEUDO_LIST
         associate_public_ip_address_data = [ni.get('AssociatePublicIpAddress') for ni in network_interfaces if ni.get('DeviceIndex') == '0']
         associate_public_ip_address = AssociatePublicIpAddress.convert_from_optional_boolean(associate_public_ip_address_data[0]
-                                                                                             if check_array_has_value(associate_public_ip_address_data) 
+                                                                                             if check_array_has_value(associate_public_ip_address_data)
                                                                                              else None)
         subnet_id_from_resource = self.get_property(properties, 'SubnetId')
         subnet_ids_from_enis = [ni.get('SubnetId') for ni in network_interfaces]
