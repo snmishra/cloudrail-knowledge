@@ -7,7 +7,7 @@ import random
 import uuid
 from functools import reduce
 from multiprocessing.pool import Pool
-from typing import List, Callable, Iterator, Optional, Tuple
+from typing import List, Callable, Iterator, Optional, Tuple, Union
 from pathlib import Path
 
 from netaddr import IPNetwork, IPSet, AddrFormatError, valid_ipv4, valid_ipv6
@@ -137,6 +137,8 @@ def flat_list(list_of_lists: List[list]) -> list:
 def hash_list(data: list) -> int:
     return hash(str(data))
 
+def check_array_has_value(array: Union[list, set]) -> bool:
+    return all(x for x in array)
 
 # --- NETWORKING UTILS
 def compare_prefix_length(cidr1: str, cidr2: str) -> int:
