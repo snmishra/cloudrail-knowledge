@@ -23,7 +23,7 @@ class CloudformationEc2Builder(BaseCloudformationBuilder):
         security_group_ids_from_enis = set(sg for sg in security_group_ids_from_enis)
         security_groups_ids_from_resource = self.get_property(properties, 'SecurityGroupIds')
         security_groups_ids_from_resource = security_groups_ids_from_resource \
-            if check_array_has_value(security_groups_ids_from_resource) and all('.' not in x for x in security_groups_ids_from_resource) else None
+            if check_array_has_value(security_groups_ids_from_resource) and any('.' not in x for x in security_groups_ids_from_resource) else None
         security_groups_ids = security_groups_ids_from_resource \
             or (security_group_ids_from_enis if check_array_has_value(security_group_ids_from_enis) else None)
         associate_public_ip_address_data = [ni.get('AssociatePublicIpAddress') for ni in network_interfaces if ni.get('DeviceIndex') == '0']
