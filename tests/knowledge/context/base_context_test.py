@@ -235,9 +235,7 @@ class BaseContextTest(unittest.TestCase):
             if not os.path.isfile(cloudformation_template):
                 return
             if not os.path.isfile(account_data_for_drift_path + '.zip'):
-                account_data_for_drift_path = os.path.join(working_dir, 'account-data-for-drift-cloudformation')
-                if not os.path.isfile(account_data_for_drift_path + '.zip'):
-                    raise Exception(f'missing account-data-for-drift-cloudformation.zip for {scenario_folder}')
+                raise Exception(f'missing account-data-for-drift-cfn.zip for {scenario_folder}')
             shutil.unpack_archive(account_data_for_drift_path + '.zip', extract_dir=account_data_for_drift_path, format='zip')
             result = self._find_drifts(account_data_for_drift_path, cloudformation_template, self.DUMMY_ACCOUNT_ID, IacType.CLOUDFORMATION,
                                        cfn_template_params, 'testCfnStack').drifts
