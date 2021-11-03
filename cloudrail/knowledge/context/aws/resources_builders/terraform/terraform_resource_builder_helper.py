@@ -165,7 +165,7 @@ from cloudrail.knowledge.context.aws.resources.xray.xray_encryption import XrayE
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
 from cloudrail.knowledge.utils import hash_utils
 
-from cloudrail.knowledge.utils.arn_utils import build_arn
+from cloudrail.knowledge.utils.arn_utils import build_arn, is_valid_arn
 from cloudrail.knowledge.utils.port_utils import get_port_by_engine
 from cloudrail.knowledge.utils.utils import build_lambda_function_integration_endpoint_uri, safe_json_loads
 
@@ -1414,6 +1414,8 @@ def build_athena_workgroup(attributes: dict) -> AthenaWorkgroup:
     if encryption_config:
         encryption_option = encryption_config[0].get('encryption_option')
         kms_key = encryption_config[0].get('kms_key_arn') if encryption_config[0].get('kms_key_arn') else None
+        if is_valid_arn(kms_key):
+            kms_key = kms_key.split('/')[1]
 
     return AthenaWorkgroup(attributes['name'],
                            attributes['state'],
