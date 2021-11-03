@@ -19,7 +19,7 @@ class CloudformationAthenaWorkgroupBuilder(BaseCloudformationBuilder):
 
         return AthenaWorkgroup(self.get_property(properties, 'Name'),
                                self.get_property(properties, 'State', 'ENABLED'),
-                               encryption_config,
+                               bool(encryption_config),
                                self.get_property(workgroup_configuration, 'EnforceWorkGroupConfiguration', False),
                                encryption_option,
                                None,
