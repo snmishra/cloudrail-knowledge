@@ -21,7 +21,7 @@ class CloudformationEc2Builder(BaseCloudformationBuilder):
         network_interface_ids = network_interface_ids if check_iterable_has_value(network_interface_ids) else self.CFN_PSEUDO_LIST
         security_group_ids_from_enis = flat_list([ni.get('GroupSet') for ni in network_interfaces])
         security_group_ids_from_enis = set(sg for sg in security_group_ids_from_enis)
-        security_groups_ids_from_resource = self._return_valid_sg_id_from_list(self.get_property(properties, 'SecurityGroupIds', []))
+        security_groups_ids_from_resource = [sg_id for sg_id in self.get_property(properties, 'SecurityGroupIds', []) if '.' not in sg_id]
         security_groups_ids_from_resource = security_groups_ids_from_resource if check_iterable_has_value(security_groups_ids_from_resource) else None
         security_groups_ids = security_groups_ids_from_resource \
             or (security_group_ids_from_enis if check_iterable_has_value(security_group_ids_from_enis) else None)
@@ -55,11 +55,3 @@ class CloudformationEc2Builder(BaseCloudformationBuilder):
                            ipv6_addresses=ipv6_addresses,
                            security_groups_ids=security_groups_ids,
                            associate_public_ip_address=associate_public_ip_address)
-
-    @staticmethod
-    def _return_valid_sg_id_from_list(sg_ids_list: list) -> list:
-        sg_ids = []
-        for sg_id in sg_ids_list:
-            if '.' not in sg_id:
-                sg_ids.append(sg_id)
-        return sg_ids

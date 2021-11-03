@@ -3,7 +3,7 @@ import unittest
 from cloudrail.knowledge.utils.utils import check_iterable_has_value
 
 
-class TestListUtils(unittest.TestCase):
+class TestCheckIterableHasValue(unittest.TestCase):
 
     def test_empty_list(self):
         # Arrange
