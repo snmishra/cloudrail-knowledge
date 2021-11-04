@@ -1728,10 +1728,12 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     @staticmethod
     def _assign_keys_data_to_athena_workgroup(athena_workgroup: AthenaWorkgroup, keys_data: List[KmsKey]):
+        # The last check, meant for TF before apply.
         def get_kms_data():
             if athena_workgroup.encryption_config and (athena_workgroup.kms_key_arn or athena_workgroup.kms_key_id):
                 kms_data = next((kms_keys_data for kms_keys_data in keys_data if (athena_workgroup.kms_key_id == kms_keys_data.key_id or
-                                                                                  athena_workgroup.kms_key_arn == kms_keys_data.arn)), None)
+                                                                                  athena_workgroup.kms_key_arn == kms_keys_data.arn or
+                                                                                  athena_workgroup.kms_key_arn.split('/')[1] == kms_keys_data.arn)), None)
                 return kms_data
             return None
 

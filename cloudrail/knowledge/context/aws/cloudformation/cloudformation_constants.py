@@ -52,3 +52,4 @@ class CloudformationResourceType(str, Enum):
     CODEBUILD_PROJECT = 'AWS::CodeBuild::Project'
     DOCDB_CLUSTER = 'AWS::DocDB::DBCluster'
     DOCDB_CLUSTER_PARAMETER_GROUP = 'AWS::DocDB::DBClusterParameterGroup'
+    KINESIS_STREAM = 'AWS::Kinesis::Stream'

@@ -92,6 +92,7 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.s3_bucket
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_auto_scaling_group_builder import CloudformationAutoScalingGroupBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_launch_configuration_builder import CloudformationLaunchConfigurationBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_launch_template_builder import CloudformationLaunchTemplateBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.kinesis.cloudformation_kinesis_stream_builder import CloudformationKinesisStreamBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dax.cloudformation_dax_cluster_builder import CloudformationDaxClusterBuilder
 from cloudrail.knowledge.context.environment_context.iac_context_builder import IacContextBuilder
 from cloudrail.knowledge.context.aws.aws_relations_assigner import AwsRelationsAssigner
@@ -206,6 +207,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             codebuild_projects=CloudformationCodeBuildProjectBuilder(cfn_by_type_map).build(),
             docdb_cluster=CloudformationDocumentDbClusterBuilder(cfn_by_type_map).build(),
             docdb_cluster_parameter_groups=CloudformationDocDbClusterParameterGroupBuilder(cfn_by_type_map).build(),
+            kinesis_streams=CloudformationKinesisStreamBuilder(cfn_by_type_map).build(),
         )
 
     @staticmethod
