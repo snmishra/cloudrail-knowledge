@@ -16,7 +16,8 @@ class CloudformationSecurityGroupBuilder(BaseCloudformationBuilder):
         security_group: SecurityGroup = SecurityGroup(security_group_id=self.get_resource_id(cfn_res_attr),
                                                       region=cfn_res_attr['region'],
                                                       account=cfn_res_attr['account_id'],
-                                                      name=self.get_property(properties, 'GroupName') or self.get_name_tag(properties),
+                                                      name=self.get_property(properties, 'GroupName', self.get_name_tag(properties) or
+                                                                             self.create_random_pseudo_identifier()),
                                                       vpc_id=self.get_property(properties, 'VpcId'),
                                                       is_default=False,
                                                       has_description=bool(self.get_property(properties, 'GroupDescription')))

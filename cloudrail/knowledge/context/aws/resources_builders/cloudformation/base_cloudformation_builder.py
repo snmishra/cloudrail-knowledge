@@ -29,14 +29,15 @@ class BaseCloudformationBuilder:
     def build(self) -> list:
         aws_resources_list: List[AwsResource] = []
         for cfn_resource in self._resources.values():
-            if 'Properties' not in cfn_resource:
-                cfn_resource['Properties'] = {}
+            if cfn_resource['iac_action'] != IacActionType.DELETE:
+                if 'Properties' not in cfn_resource:
+                    cfn_resource['Properties'] = {}
 
-            build_result = self.parse_resource(cfn_resource)
-            for aws_resource in build_result if isinstance(build_result, list) else [build_result]:
-                if aws_resource:
-                    self._set_common_attributes(aws_resource, cfn_resource)
-                    aws_resources_list.append(aws_resource)
+                build_result = self.parse_resource(cfn_resource)
+                for aws_resource in build_result if isinstance(build_result, list) else [build_result]:
+                    if aws_resource:
+                        self._set_common_attributes(aws_resource, cfn_resource)
+                        aws_resources_list.append(aws_resource)
         return aws_resources_list
 
     @abstractmethod
