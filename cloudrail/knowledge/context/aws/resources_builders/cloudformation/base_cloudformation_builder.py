@@ -1,6 +1,10 @@
 from abc import abstractmethod
 from typing import List, Dict, Union, Optional
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
+from cloudrail.knowledge.context.aws.resources.codebuild.codebuild_project import CodeBuildProject
+from cloudrail.knowledge.context.aws.resources.codebuild.codebuild_report_group import CodeBuildReportGroup
+from cloudrail.knowledge.context.aws.resources.dynamodb.dynamodb_table import DynamoDbTable
+from cloudrail.knowledge.context.aws.resources.docdb.docdb_cluster import DocumentDbCluster
 from cloudrail.knowledge.context.iac_resource_metadata import IacResourceMetadata
 from cloudrail.knowledge.context.iac_state import IacState
 from cloudrail.knowledge.context.iac_action_type import IacActionType
@@ -10,6 +14,7 @@ from cloudrail.knowledge.context.aws.cloudformation.intrinsic_functions.cloudfor
 from cloudrail.knowledge.context.iac_type import IacType
 from cloudrail.knowledge.utils.string_utils import generate_random_string
 from cloudrail.knowledge.utils.tags_utils import get_aws_tags
+from cloudrail.knowledge.utils.arn_utils import is_valid_arn, build_arn
 
 
 class BaseCloudformationBuilder:
@@ -53,6 +58,18 @@ class BaseCloudformationBuilder:
             return default
         else:
             return prop_value
+
+    @staticmethod
+    def get_encryption_key_arn(encryption_key: Optional[str], account: str, region: str, resource: object) -> Optional[str]:
+        if encryption_key and not is_valid_arn(encryption_key) and not 'alias' in encryption_key:
+            encryption_key = build_arn('kms', region, account,'key', None, encryption_key)
+        if (resource in (CodeBuildProject, CodeBuildReportGroup) and not encryption_key) or encryption_key == 'alias/aws/s3':
+            encryption_key = build_arn('kms', region, account,'alias', None, 'aws/s3')
+        if resource == DynamoDbTable and not encryption_key:
+            encryption_key = 'alias/aws/dynamodb'
+        if resource == DocumentDbCluster and not encryption_key:
+            encryption_key = 'alias/aws/rds'
+        return encryption_key
 
     @classmethod
     def get_name_tag(cls, properties: dict) -> str:

@@ -1652,11 +1652,17 @@ def build_cloud_watch_log_groups(attributes: dict) -> CloudWatchLogGroup:
 
 
 def build_kms_key(attributes: dict) -> KmsKey:
-    return KmsKey(attributes.get('key_id'),
-                  attributes['arn'],
+    kms_key_id = attributes.get('key_id')
+    account = attributes['account_id']
+    region = attributes['region']
+    kms_key_arn = attributes['arn']
+    if not is_valid_arn(kms_key_arn):
+        kms_key_arn = build_arn('kms', region, account,'key', None, kms_key_arn)
+    return KmsKey(kms_key_id,
+                  kms_key_arn,
                   KeyManager('CUSTOMER'),
-                  attributes['region'],
-                  attributes['account_id'])
+                  region,
+                  account)
 
 
 def build_vpc_endpoint_route_table_association(attributes: dict) -> VpcEndpointRouteTableAssociation:

@@ -160,7 +160,7 @@ from cloudrail.knowledge.context.aws.resources.xray.xray_encryption import XrayE
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
 from cloudrail.knowledge.context.mergeable import EntityOrigin, Mergeable
-from cloudrail.knowledge.utils.arn_utils import get_arn_resource
+from cloudrail.knowledge.utils.arn_utils import build_arn, get_arn_resource, is_valid_arn
 from cloudrail.knowledge.utils.utils import flat_list, hash_list
 
 from cloudrail.knowledge.context.aws.parallel.create_iam_entity_to_esc_actions_task import CreateIamEntityToEscActionsMapTask
@@ -367,9 +367,16 @@ class AwsRelationsAssigner(DependencyInvocation):
                              [self._assign_api_gateway_stage_method_settings]),
             IterFunctionData(self._assign_api_gateway_stage_method_settings, ctx.rest_api_stages, (ctx.api_gateway_method_settings,)),
             ### CodeBuild
+            IterFunctionData(self._assign_kms_key_from_alias_to_codebuild_project_cfn,
+                             [code_build for code_build in ctx.codebuild_projects if code_build.origin == EntityOrigin.CLOUDFORMATION],
+                             (ctx.kms_aliases,)),
+            IterFunctionData(self._assign_kms_key_from_alias_to_codebuild_report_group_cfn,
+                             [code_build for code_build in ctx.codebuild_report_groups if code_build.origin == EntityOrigin.CLOUDFORMATION],
+                             (ctx.kms_aliases,)),
             IterFunctionData(self._assign_keys_data_to_code_build_project, ctx.codebuild_projects, (ctx.kms_keys,),
-                             [self._assign_policy_data_to_kms_keys]),
-            IterFunctionData(self._assign_keys_data_to_codebuild_report_group, ctx.codebuild_report_groups, (ctx.kms_keys,)),
+                             [self._assign_policy_data_to_kms_keys, self._assign_kms_key_from_alias_to_codebuild_project_cfn]),
+            IterFunctionData(self._assign_keys_data_to_codebuild_report_group, ctx.codebuild_report_groups, (ctx.kms_keys,),
+                             [self._assign_kms_key_from_alias_to_codebuild_report_group_cfn]),
             IterFunctionData(self._assign_eni_to_codebuild_project, ctx.codebuild_projects, (ctx.subnets,)),
             ### AthenaWorkgroups
             IterFunctionData(self._assign_keys_data_to_athena_workgroup, ctx.athena_workgroups, (ctx.kms_keys,),
@@ -423,7 +430,11 @@ class AwsRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_keys_data_to_secrets_manager, ctx.secrets_manager_secrets, (ctx.kms_keys,)),
             ### DocDB Cluster
             IterFunctionData(self._assign_docdb_parameter_group_name, ctx.docdb_cluster, (ctx.docdb_cluster_parameter_groups,)),
-            IterFunctionData(self._assign_kms_key_manager_to_docdb_cluster, ctx.docdb_cluster, (ctx.kms_keys,)),
+            IterFunctionData(self._assign_kms_key_from_alias_to_docdb_cluster_cfn,
+                             [cluster for cluster in ctx.docdb_cluster if cluster.origin == EntityOrigin.CLOUDFORMATION],
+                             (ctx.kms_aliases,)),
+            IterFunctionData(self._assign_kms_key_manager_to_docdb_cluster, ctx.docdb_cluster, (ctx.kms_keys,),
+                             [self._assign_kms_key_from_alias_to_docdb_cluster_cfn]),
             ### Neptune Cluster
             IterFunctionData(self._assign_keys_data_to_neptune_cluster, ctx.neptune_clusters, (ctx.kms_keys,)),
             IterFunctionData(self._assign_network_data_from_neptune_cluster, ctx.neptune_cluster_instances, (ctx.neptune_clusters,)),
@@ -483,8 +494,11 @@ class AwsRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_eni_to_directory, ctx.cloud_directories, (ctx.subnets,),
                              [self._assign_security_group_controller_to_directory]),
             ### DynamoDB table
+            IterFunctionData(self._assign_kms_key_from_alias_to_dynamodb_table_cfn,
+                             [dynamo_table for dynamo_table in ctx.dynamodb_table_list if dynamo_table.origin == EntityOrigin.CLOUDFORMATION],
+                             (ctx.kms_aliases,)),
             IterFunctionData(self._assign_keys_data_to_dynamodb_table, ctx.dynamodb_table_list, (ctx.kms_keys,),
-                             [self._assign_alias_data_to_kms_keys]),
+                             [self._assign_alias_data_to_kms_keys, self._assign_kms_key_from_alias_to_dynamodb_table_cfn]),
             ### Batch Compute Environment
             IterFunctionData(self._assign_eni_to_batch_compute, ctx.batch_compute_environments, (ctx.subnets,)),
             ### MQ Broker
@@ -1649,6 +1663,29 @@ class AwsRelationsAssigner(DependencyInvocation):
         s3_bucket.versioning_data = ResourceInvalidator.get_by_logic(get_versioning_data, False)
 
     @staticmethod
+    def _get_encryption_key_from_alias(encryption_key: str, region: str, account: str, kms_aliases: List[KmsAlias]):
+        kms_alias = next((alias for alias in kms_aliases if alias.alias_name == encryption_key), None)
+        if kms_alias:
+            return build_arn('kms', region, account,'key', None, kms_alias.target_key_id)
+        return None
+
+    def _assign_kms_key_from_alias_to_codebuild_project_cfn(self, codebuild: CodeBuildProject, kms_aliases: List[KmsAlias]):
+        if 'alias' in codebuild.encryption_key and not is_valid_arn(codebuild.encryption_key):
+            codebuild.encryption_key = self._get_encryption_key_from_alias(codebuild.encryption_key,
+                                                                           codebuild.region,
+                                                                           codebuild.account,
+                                                                           kms_aliases)
+
+    def _assign_kms_key_from_alias_to_codebuild_report_group_cfn(self, codebuild: CodeBuildReportGroup, kms_aliases: List[KmsAlias]):
+        if 'alias' in codebuild.export_config_s3_destination_encryption_key \
+            and not is_valid_arn(codebuild.export_config_s3_destination_encryption_key):
+            codebuild.export_config_s3_destination_encryption_key \
+                = self._get_encryption_key_from_alias(codebuild.export_config_s3_destination_encryption_key,
+                                                      codebuild.region,
+                                                      codebuild.account,
+                                                      kms_aliases)
+
+    @staticmethod
     def _assign_keys_data_to_code_build_project(code_build: CodeBuildProject, keys_data: List[KmsKey]):
         def get_kms_data():
             kms_data = next((kms_keys_data for kms_keys_data in keys_data if code_build.encryption_key in kms_keys_data.arn), None)
@@ -1728,12 +1765,10 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     @staticmethod
     def _assign_keys_data_to_athena_workgroup(athena_workgroup: AthenaWorkgroup, keys_data: List[KmsKey]):
-        # The last check, meant for TF before apply.
         def get_kms_data():
             if athena_workgroup.encryption_config and (athena_workgroup.kms_key_arn or athena_workgroup.kms_key_id):
                 kms_data = next((kms_keys_data for kms_keys_data in keys_data if (athena_workgroup.kms_key_id == kms_keys_data.key_id or
-                                                                                  athena_workgroup.kms_key_arn == kms_keys_data.arn or
-                                                                                  athena_workgroup.kms_key_arn.split('/')[1] == kms_keys_data.arn)), None)
+                                                                                  athena_workgroup.kms_key_arn == kms_keys_data.arn)), None)
                 return kms_data
             return None
 
@@ -1928,6 +1963,13 @@ class AwsRelationsAssigner(DependencyInvocation):
             return None
 
         sqs_queue.kms_data = ResourceInvalidator.get_by_logic(get_kms_data, False)
+
+    def _assign_kms_key_from_alias_to_docdb_cluster_cfn(self, docdb_cluster: DocumentDbCluster, kms_aliases: List[KmsAlias]):
+        if docdb_cluster.kms_key_id and 'alias' in docdb_cluster.kms_key_id and not is_valid_arn(docdb_cluster.kms_key_id):
+            docdb_cluster.kms_key_id = self._get_encryption_key_from_alias(docdb_cluster.kms_key_id,
+                                                                           docdb_cluster.region,
+                                                                           docdb_cluster.account,
+                                                                           kms_aliases)
 
     @staticmethod
     def _assign_kms_key_manager_to_docdb_cluster(docdb_cluster: DocumentDbCluster, keys_data: List[KmsKey]):
@@ -2494,6 +2536,13 @@ class AwsRelationsAssigner(DependencyInvocation):
         rules_list = os.path.join(current_path + '/pseudo_docs/', data_path)
         with open(rules_list, 'r') as data:
             return json.load(data)
+
+    def _assign_kms_key_from_alias_to_dynamodb_table_cfn(self, db_table: DynamoDbTable, kms_aliases: List[KmsAlias]):
+        if db_table.server_side_encryption and 'alias' in db_table.kms_key_id and not is_valid_arn(db_table.kms_key_id):
+            db_table.kms_key_id = self._get_encryption_key_from_alias(db_table.kms_key_id,
+                                                                      db_table.region,
+                                                                      db_table.account,
+                                                                      kms_aliases)
 
     def _assign_keys_data_to_dynamodb_table(self, db_table: DynamoDbTable, keys_data: List[KmsKey]):
         def get_kms_data():
