@@ -3,6 +3,7 @@ from unittest import skip
 from cloudrail.knowledge.context.aws.resources.ec2.network_interface import NetworkInterface
 from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.aws.resources.ec2.security_group_rule import SecurityGroupRulePropertyType
+from cloudrail.knowledge.context.mergeable import EntityOrigin
 
 from tests.knowledge.context.aws_context_test import AwsContextTest
 from tests.knowledge.context.test_context_annotation import TestOptions, context
@@ -21,9 +22,12 @@ class TestSecurityGroup(AwsContextTest):
         self.assertIsNotNone(security_group)
         self.assertTrue(security_group.vpc.is_default)
         self.assertTrue(security_group.has_description)
-        self.assertEqual(len(security_group.inbound_permissions), 0)
-        self.assertEqual(len(security_group.outbound_permissions), 0)
         self.assertFalse(security_group.tags)
+        self.assertEqual(len(security_group.inbound_permissions), 0)
+        if security_group.origin != EntityOrigin.CLOUDFORMATION:
+            self.assertEqual(len(security_group.outbound_permissions), 0)
+        else:
+            self.assertEqual(len(security_group.outbound_permissions), 1)
 
     @context(module_path="description_on_sg_and_rule")
     def test_description_on_sg_and_rule(self, ctx: AwsEnvironmentContext):

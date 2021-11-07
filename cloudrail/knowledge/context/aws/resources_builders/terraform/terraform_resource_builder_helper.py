@@ -189,7 +189,11 @@ def build_ec2(attributes: dict) -> Ec2Instance:
     network_interface_ids = [ni['network_interface_id'] for ni in network_interfaces]
     primary_network_interface_id = _get_known_value(attributes, 'primary_network_interface_id') \
                                    or _get_known_value(attributes, 'network_interface_id')
-    security_groups_ids = _get_known_value(attributes, 'security_groups') or _get_known_value(attributes, 'vpc_security_group_ids')
+    security_groups_ids_classic = _get_known_value(attributes, 'vpc_security_group_ids')
+    security_groups_ids_standard = _get_known_value(attributes, 'security_groups')
+    security_groups_ids = security_groups_ids_standard \
+        if (security_groups_ids_standard and security_groups_ids_standard != ['default']) \
+            else security_groups_ids_classic
     if primary_network_interface_id:
         network_interface_ids.append(primary_network_interface_id)
     associate_public_ip_address = AssociatePublicIpAddress.convert_from_optional_boolean(_get_known_value(attributes, 'associate_public_ip_address'))

@@ -13,12 +13,16 @@ class CloudformationSecurityGroupBuilder(BaseCloudformationBuilder):
 
     def parse_resource(self, cfn_res_attr: dict) -> SecurityGroup:
         properties: dict = cfn_res_attr['Properties']
-        security_group: SecurityGroup = SecurityGroup(security_group_id=self.get_resource_id(cfn_res_attr),
+        vpc_id = self.get_property(properties, 'VpcId')
+        security_group_id = self.get_resource_id(cfn_res_attr) if vpc_id else None
+        name = (self.get_property(properties, 'GroupName', self.get_name_tag(properties)
+                                  or self.create_random_pseudo_identifier())) \
+                                      if vpc_id else self.get_resource_id(cfn_res_attr)
+        security_group: SecurityGroup = SecurityGroup(security_group_id=security_group_id,
                                                       region=cfn_res_attr['region'],
                                                       account=cfn_res_attr['account_id'],
-                                                      name=self.get_property(properties, 'GroupName', self.get_name_tag(properties) or
-                                                                             self.create_random_pseudo_identifier()),
-                                                      vpc_id=self.get_property(properties, 'VpcId'),
+                                                      name=name,
+                                                      vpc_id=vpc_id,
                                                       is_default=False,
                                                       has_description=bool(self.get_property(properties, 'GroupDescription')))
 
