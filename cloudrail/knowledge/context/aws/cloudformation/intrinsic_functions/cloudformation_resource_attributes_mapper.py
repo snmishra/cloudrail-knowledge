@@ -1,6 +1,7 @@
 from typing import Dict, Callable, Optional, Type
 
 from cloudrail.knowledge.context.aws.resources.apigatewayv2.api_gateway_v2 import ApiGateway
+from cloudrail.knowledge.context.aws.resources.cloudfront.origin_access_identity import OriginAccessIdentity
 from cloudrail.knowledge.context.aws.resources.dax.dax_cluster import DaxCluster
 from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template import LaunchTemplate
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
@@ -233,6 +234,14 @@ class CloudformationAttributesCallableStore:
             return kinesis_stream.get_arn()
         return None
 
+    @staticmethod
+    def get_cloudfront_origin_access_idenity_attribute(origin_access_id: OriginAccessIdentity, attribute_name: str):
+        if attribute_name == "Id":
+            return origin_access_id.get_id()
+        if attribute_name == "S3CanonicalUserId":
+            return origin_access_id.s3_canonical_user_id
+        return None
+
 class CloudformationResourceAttributesMapper:
 
     _RESOURCE_ATTRIBUTES_MAP: Dict[Type[AwsResource], Callable] = {
@@ -262,6 +271,7 @@ class CloudformationResourceAttributesMapper:
         TransitGatewayVpcAttachment: CloudformationAttributesCallableStore.get_transit_gateway_attribute,
         RouteTable: CloudformationAttributesCallableStore.get_route_table_attribute,
         KinesisStream: CloudformationAttributesCallableStore.get_kinesis_stream_attribute,
+        OriginAccessIdentity: CloudformationAttributesCallableStore.get_cloudfront_origin_access_idenity_attribute,
     }
 
     @classmethod

@@ -73,6 +73,8 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.ec2.cloud
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.ec2.cloudformation_subnet_builder import CloudformationSubnetBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.ec2.cloudformation_subnet_route_table_association_builder import \
     CloudformationSubnetRouteTableAssociationBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.cloudfront.cloudformation_cloudfront_origin_access_identity_builder import \
+    CloudformationCloudfrontOriginAccessIdentityBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.ec2.cloudformation_vpc_builder import CloudformationVpcBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.ec2.cloudformation_vpc_gateway_attachment_builder import \
     CloudformationVpcGatewayAttachmentBuilder
@@ -208,6 +210,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             docdb_cluster=CloudformationDocumentDbClusterBuilder(cfn_by_type_map).build(),
             docdb_cluster_parameter_groups=CloudformationDocDbClusterParameterGroupBuilder(cfn_by_type_map).build(),
             kinesis_streams=CloudformationKinesisStreamBuilder(cfn_by_type_map).build(),
+            origin_access_identity_list=CloudformationCloudfrontOriginAccessIdentityBuilder(cfn_by_type_map).build(),
         )
 
     @staticmethod

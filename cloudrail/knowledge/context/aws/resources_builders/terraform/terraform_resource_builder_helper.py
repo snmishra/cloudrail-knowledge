@@ -192,7 +192,7 @@ def build_ec2(attributes: dict) -> Ec2Instance:
     security_groups_ids_classic = _get_known_value(attributes, 'vpc_security_group_ids')
     security_groups_ids_standard = _get_known_value(attributes, 'security_groups')
     security_groups_ids = security_groups_ids_standard \
-        if (security_groups_ids_standard and security_groups_ids_standard != ['default']) \
+        if (security_groups_ids_standard and any(sg_id != 'default' for sg_id in security_groups_ids_standard)) \
             else security_groups_ids_classic
     if primary_network_interface_id:
         network_interface_ids.append(primary_network_interface_id)
