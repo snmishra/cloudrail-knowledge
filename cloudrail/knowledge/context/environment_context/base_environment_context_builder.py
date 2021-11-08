@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from typing import Optional, Type
 
+from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 from cloudrail.knowledge.context.environment_context.environment_context_merger import EnvironmentContextMerger
 from cloudrail.knowledge.context.environment_context.environment_context_defaults_merger import EnvironmentContextDefaultsMerger
@@ -32,6 +33,8 @@ class BaseEnvironmentContextBuilder:
         defaults_merger = cls.get_defaults_merger_type()
         if defaults_merger and account_data_dir_path:
             defaults_merger.merge_defaults(scanner_context, iac_context)
+        if extra_args.get('stack_name'):
+            cls.basic_enrich_before_merge(scanner_context, iac_context)
         merged_context = EnvironmentContextMerger.merge(scanner_context, iac_context)
         cls.get_context_enrichment_type().enrich(merged_context, **extra_args)
         return merged_context
@@ -59,4 +62,8 @@ class BaseEnvironmentContextBuilder:
     @classmethod
     @abstractmethod
     def get_context_enrichment_type(cls) -> Type[EnvironmentContextEnrichment]:
+        pass
+
+    @classmethod
+    def basic_enrich_before_merge(cls, scanner_ctx: AwsEnvironmentContext, iac_ctx: AwsEnvironmentContext):
         pass

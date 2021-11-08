@@ -248,13 +248,8 @@ class AwsRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_ec2_data_to_iam_profile, ctx.iam_instance_profiles, (ctx.ec2s,)),
             IterFunctionData(self._assign_roles_last_used_data, ctx.roles, (ctx.roles_last_used,)),
             ### Security Group ###
-            IterFunctionData(self._assign_security_group_vpc, ctx.security_groups, (ctx.vpcs,),
-                             [self._assign_security_group_data_cfn]),
-            IterFunctionData(self._assign_security_group_rules, ctx.security_groups, (ctx.security_group_rules,),
-                             [self._assign_security_group_data_cfn]),
-            IterFunctionData(self._assign_security_group_data_cfn,
-                             [sg for sg in ctx.security_groups if sg.origin == EntityOrigin.CLOUDFORMATION and not sg.vpc_id],
-                             (ctx.resources_tagging_list, ctx.vpcs)),
+            IterFunctionData(self._assign_security_group_vpc, ctx.security_groups, (ctx.vpcs,)),
+            IterFunctionData(self._assign_security_group_rules, ctx.security_groups, (ctx.security_group_rules,)),
             ### Route Table ###
             IterFunctionData(self._assign_route_table_routes, ctx.route_tables, (ctx.routes, ctx.vpcs)),
             IterFunctionData(self._assign_route_vpc_peering, ctx.routes, (ctx.peering_connections,)),
@@ -669,27 +664,6 @@ class AwsRelationsAssigner(DependencyInvocation):
                      if sgr.security_group_id in security_group.aliases
                      and sgr.connection_type == ConnectionType.OUTBOUND],
             False))
-
-    @staticmethod
-    def _assign_security_group_data_cfn(security_group: SecurityGroup,
-                                        resources_tags: List[ResourceTagMappingList], vpcs: AliasesDict[Vpc]):
-        resource_tag_arn = next((tag_resource.resource_arn for tag_resource in resources_tags
-                             if tag_resource.tags.get('aws:cloudformation:logical-id') == security_group.iac_state.address), None)
-        if resource_tag_arn:
-            security_group.security_group_id = resource_tag_arn.split('/')[1]
-        default_vpc = ResourceInvalidator.get_by_logic(
-                    lambda: ResourcesAssignerUtil.get_default_vpc(vpcs, security_group.account, security_group.region),
-                    True,
-                    security_group,
-                    f'Could not find default vpc in the region {security_group.region} for account {security_group.account}')
-        security_group.vpc_id = default_vpc.vpc_id
-        security_group.outbound_permissions.append(SecurityGroupRule(0, 65535, IpProtocol('-1'),
-                                                                     SecurityGroupRulePropertyType.IP_RANGES,
-                                                                     '0.0.0.0/0', False,
-                                                                     ConnectionType.OUTBOUND,
-                                                                     security_group.security_group_id,
-                                                                     security_group.region,
-                                                                     security_group.account))
 
     @staticmethod
     def _assign_network_interface_security_groups(network_interface: NetworkInterface,
