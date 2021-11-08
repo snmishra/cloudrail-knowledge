@@ -14,6 +14,7 @@ from cloudrail.knowledge.drift_detection.environment_context_drift_detector_fact
 from cloudrail.knowledge.utils.file_utils import write_to_file
 from cloudrail.knowledge.utils.iac_fields_store import IacFieldsStore
 from cloudrail.knowledge.utils.terraform_show_output_transformer import TerraformShowOutputTransformer
+from cloudrail.knowledge.utils.utils import get_account_id
 
 
 class BaseDriftTest(unittest.TestCase):
@@ -29,7 +30,7 @@ class BaseDriftTest(unittest.TestCase):
         pass
 
     @abstractmethod
-    def get_account_id_from_account_data(self, account_data):
+    def get_account_id_from_account_data(self, account_data: str, from_live_env: bool = False):
         pass
 
     @abstractmethod
@@ -77,7 +78,7 @@ class BaseDriftTest(unittest.TestCase):
                                                 iac_file_before=output_path,
                                                 iac_file_after=output_path,
                                                 salt=customer_id,
-                                                account_id=self.get_account_id_from_account_data(account_data_for_drift_path),
+                                                account_id=self.get_account_id_from_account_data(account_data_for_drift_path, from_live_env),
                                                 iac_url_template=iac_url_template,
                                                 workspace_id='workspace')
             json.dumps([dataclasses.asdict(r) for r in result.drifts])
@@ -109,7 +110,9 @@ class BaseAwsDriftTest(BaseDriftTest, ABC):
     def get_supported_services(self):
         return IacFieldsStore.get_terraform_aws_supported_services()
 
-    def get_account_id_from_account_data(self, account_data):
+    def get_account_id_from_account_data(self, account_data: str, from_live_env: bool = False):
+        if from_live_env:
+            return get_account_id(account_data)
         return '000000000000'
 
 
@@ -121,5 +124,5 @@ class BaseAzureDriftTest(BaseDriftTest, ABC):
     def get_supported_services(self):
         return IacFieldsStore.get_azure_supported_services()
 
-    def get_account_id_from_account_data(self, account_data):
+    def get_account_id_from_account_data(self, account_data: str, from_live_env: bool = False):
         return None
