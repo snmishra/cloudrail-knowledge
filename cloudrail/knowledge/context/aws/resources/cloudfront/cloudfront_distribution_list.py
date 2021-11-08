@@ -25,8 +25,7 @@ class OriginConfig:
         self.origin_access_identity_list = origin_access_identity_list or []
 
     def to_drift_detection_object(self):
-        return {'domain_name': self.domain_name,
-                'oai_path': self.oai_path}
+        return {'domain_name': self.domain_name}
 
 
 @dataclass
