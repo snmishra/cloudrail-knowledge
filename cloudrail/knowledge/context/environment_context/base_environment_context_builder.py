@@ -2,7 +2,6 @@ from abc import abstractmethod
 from typing import Optional, Type
 
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
-
 from cloudrail.knowledge.context.environment_context.environment_context_merger import EnvironmentContextMerger
 from cloudrail.knowledge.context.environment_context.environment_context_defaults_merger import EnvironmentContextDefaultsMerger
 from cloudrail.knowledge.context.environment_context.environment_context_enrichment import EnvironmentContextEnrichment

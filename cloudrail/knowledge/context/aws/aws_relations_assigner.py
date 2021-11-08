@@ -248,8 +248,10 @@ class AwsRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_ec2_data_to_iam_profile, ctx.iam_instance_profiles, (ctx.ec2s,)),
             IterFunctionData(self._assign_roles_last_used_data, ctx.roles, (ctx.roles_last_used,)),
             ### Security Group ###
-            IterFunctionData(self._assign_security_group_vpc, ctx.security_groups, (ctx.vpcs,)),
-            IterFunctionData(self._assign_security_group_rules, ctx.security_groups, (ctx.security_group_rules,)),
+            IterFunctionData(self._assign_security_group_vpc, ctx.security_groups, (ctx.vpcs,),
+                             [self._assign_security_group_data_cfn]),
+            IterFunctionData(self._assign_security_group_rules, ctx.security_groups, (ctx.security_group_rules,),
+                             [self._assign_security_group_data_cfn]),
             IterFunctionData(self._assign_security_group_data_cfn,
                              [sg for sg in ctx.security_groups if sg.origin == EntityOrigin.CLOUDFORMATION and not sg.vpc_id],
                              (ctx.resources_tagging_list, ctx.vpcs)),
@@ -657,16 +659,16 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     @staticmethod
     def _assign_security_group_rules(security_group: SecurityGroup, security_group_rules: List[SecurityGroupRule]):
-        security_group.inbound_permissions = ResourceInvalidator.get_by_logic(
+        security_group.inbound_permissions.extend(ResourceInvalidator.get_by_logic(
             lambda: [sgr for sgr in security_group_rules
                      if sgr.security_group_id in security_group.aliases
                      and sgr.connection_type == ConnectionType.INBOUND],
-            False)
-        security_group.outbound_permissions = ResourceInvalidator.get_by_logic(
+            False))
+        security_group.outbound_permissions.extend(ResourceInvalidator.get_by_logic(
             lambda: [sgr for sgr in security_group_rules
                      if sgr.security_group_id in security_group.aliases
                      and sgr.connection_type == ConnectionType.OUTBOUND],
-            False)
+            False))
 
     @staticmethod
     def _assign_security_group_data_cfn(security_group: SecurityGroup,

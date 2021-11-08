@@ -51,7 +51,7 @@ class SecurityGroup(AwsResource):
         self._used_by.add(resource)
 
     def get_keys(self) -> List[str]:
-        return [self.security_group_id]
+        return [self.account, self.region, self.name]
 
     def get_name(self) -> str:
         return self.name
