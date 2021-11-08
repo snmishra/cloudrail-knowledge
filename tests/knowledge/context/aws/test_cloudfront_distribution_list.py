@@ -25,7 +25,7 @@ class TestCloudFrontDistributionList(AwsContextTest):
             self.assertEqual(distribution.name, 'aws_cloudfront_distribution.s3_distribution.domain_name')
             self.assertTrue(distribution.distribution_id, 'aws_cloudfront_distribution.s3_distribution.id')
         elif distribution.origin == EntityOrigin.CLOUDFORMATION:
-            self.assertEqual(distribution.arn, 'arn:aws:cloudfront:us-east-1:111111111111:distribution/S3Distribution')
+            self.assertEqual(distribution.arn, 'arn:aws:cloudfront::111111111111:distribution/S3Distribution')
             self.assertTrue(distribution.distribution_id, 'S3Distribution')
         elif distribution.origin == EntityOrigin.LIVE_ENV:
             self.assertEqual(distribution.arn, 'arn:aws:cloudfront::111111111111:distribution/E1IT85M7RP5KK4')
