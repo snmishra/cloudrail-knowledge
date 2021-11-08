@@ -52,8 +52,7 @@ class TestCloudFrontDistributionList(AwsContextTest):
         self.assertTrue(distribution.get_default_behavior().field_level_encryption_id)
         self.assertTrue(len(distribution.get_ordered_behavior_list()) == 2)
 
-    # drifts caused by bug CR-3448. after fixed should be run drift detection
-    @context(module_path="aoi-restrict-public-access-v1", test_options=TestOptions(run_drift_detection=False))
+    @context(module_path="aoi-restrict-public-access")
     def test_aoi_restrict_public_access(self, ctx: AwsEnvironmentContext):
         self.assert_aoi_restrict_access(ctx.cloudfront_distribution_list)
         cloudfront: CloudFrontDistribution = ctx.cloudfront_distribution_list[0]
