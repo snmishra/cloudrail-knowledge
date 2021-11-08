@@ -89,8 +89,8 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.load_bala
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.load_balancer.cloudformation_load_balancer_target_group_builder import \
     CloudformationLoadBalancerTargetGroupBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.s3_bucket.cloudformation_s3_bucket_builder import \
-    CloudformationS3BucketBuilder, \
-    CloudformationS3BucketEncryptionBuilder, CloudformationS3BucketVersioningBuilder, CloudformationS3BucketLoggingBuilder
+    CloudformationS3BucketBuilder, CloudformationS3BucketEncryptionBuilder, CloudformationS3BucketVersioningBuilder, \
+        CloudformationS3BucketLoggingBuilder, CloudformationS3BucketAclBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_auto_scaling_group_builder import CloudformationAutoScalingGroupBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_launch_configuration_builder import CloudformationLaunchConfigurationBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.autoscaling.cloudformation_launch_template_builder import CloudformationLaunchTemplateBuilder
@@ -211,6 +211,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             docdb_cluster_parameter_groups=CloudformationDocDbClusterParameterGroupBuilder(cfn_by_type_map).build(),
             kinesis_streams=CloudformationKinesisStreamBuilder(cfn_by_type_map).build(),
             origin_access_identity_list=CloudformationCloudfrontOriginAccessIdentityBuilder(cfn_by_type_map).build(),
+            s3_bucket_acls=CloudformationS3BucketAclBuilder(cfn_by_type_map).build(),
         )
 
     @staticmethod

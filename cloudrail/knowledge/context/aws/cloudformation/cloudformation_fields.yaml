@@ -31,6 +31,7 @@ AWS::S3::Bucket:
             - BucketName
             - BucketEncryption
             - VersioningConfiguration
+            - AccessControl
 
 AWS::ApiGatewayV2::Api:
     known_fields:
