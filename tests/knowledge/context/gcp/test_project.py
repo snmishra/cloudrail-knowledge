@@ -1,0 +1,18 @@
+from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
+from tests.knowledge.context.gcp_context_test import GcpContextTest
+from tests.knowledge.context.test_context_annotation import context
+
+
+class TestProject(GcpContextTest):
+    def get_component(self):
+        return 'project'
+
+    @context(module_path="basic")
+    def test_basic_project(self, ctx: GcpEnvironmentContext):
+        project = next((project for project in ctx.projects if project.project_name == 'My Project'), None)
+        self.assertIsNotNone(project)
+        self.assertEqual(project.gcp_project_id, 'your-project-id')
+        if not project.is_managed_by_iac:
+            self.assertEqual(project.project_number, '556062258574')
+        else:
+            self.assertIsNone(project.project_number)
