@@ -23,6 +23,7 @@ from cloudrail.knowledge.context.aws.resources.autoscaling.launch_configuration 
 from cloudrail.knowledge.context.aws.resources.autoscaling.launch_template import LaunchTemplate
 from cloudrail.knowledge.context.aws.resources.ec2.network_acl_association import NetworkAclAssociation
 from cloudrail.knowledge.context.aws.resources.fsx.fsx_windows_file_system import FsxWindowsFileSystem
+from cloudrail.knowledge.context.aws.resources.iam.principal import PrincipalType
 from cloudrail.knowledge.context.aws.resources.lambda_.lambda_policy import LambdaPolicy
 from cloudrail.knowledge.context.connection import PolicyEvaluation
 from cloudrail.knowledge.context.aws.resources.aws_resource import AwsResource
@@ -220,7 +221,10 @@ class AwsRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_s3_bucket_region, ctx.s3_buckets, (bucket_name_to_region_map,)),
             IterFunctionData(self._assign_s3_bucket_acls, ctx.s3_buckets, (ctx.s3_bucket_acls,)),
             IterFunctionData(self._assign_s3_bucket_access_points, ctx.s3_buckets, (ctx.s3_bucket_access_points,)),
-            IterFunctionData(self._assign_s3_bucket_policy, ctx.s3_buckets, (ctx.s3_bucket_policies,)),
+            IterFunctionData(self._update_s3_bucket_policies_canonical, [policy for policy in  ctx.s3_bucket_policies if policy.is_managed_by_iac],
+                             (ctx.origin_access_identity_list,)),
+            IterFunctionData(self._assign_s3_bucket_policy, ctx.s3_buckets, (ctx.s3_bucket_policies,),
+                             [self._update_s3_bucket_policies_canonical]),
             IterFunctionData(self._assign_s3_access_point_policy, ctx.s3_bucket_access_points, (ctx.s3_bucket_access_points_policies,)),
             IterFunctionData(self._assign_s3_access_block_settings, ctx.s3_buckets, (ctx.s3_public_access_block_settings_list,)),
             IterFunctionData(self._assign_encryption_data_to_s3_bucket, ctx.s3_buckets, (ctx.s3_bucket_encryption,)),
@@ -796,6 +800,17 @@ class AwsRelationsAssigner(DependencyInvocation):
                           if policy.bucket_name in bucket.aliases), bucket.resource_based_policy),
             False
         )
+
+    @staticmethod
+    def _update_s3_bucket_policies_canonical(s3_policy: S3Policy, oai_list: List[OriginAccessIdentity]):
+        for statement in s3_policy.statements:
+            if statement.principal.principal_type == PrincipalType.CANONICAL_USER:
+                oai = next((oai for oai in oai_list if oai.s3_canonical_user_id in statement.principal.principal_values), None)
+                if oai:
+                    statement.principal.principal_type = PrincipalType.AWS
+                    for index, value in enumerate(statement.principal.principal_values):
+                        if value == oai.s3_canonical_user_id:
+                            statement.principal.principal_values[index] = oai.iam_arn
 
     @staticmethod
     def _assign_s3_access_point_policy(access_point: S3BucketAccessPoint, policies: List[S3AccessPointPolicy]):

@@ -43,7 +43,7 @@ class CloudformationCloudfrontDistributionListBuilder(BaseCloudformationBuilder)
 
         origin_config_list: List[OriginConfig] = []
         for origin_dict in self.get_property(dist_config, 'Origins', []):
-            s3_origin_config_data = self.get_property(dist_config, 'S3OriginConfig', {})
+            s3_origin_config_data = self.get_property(origin_dict, 'S3OriginConfig', {})
             oai_path: str = self.get_property(s3_origin_config_data, 'OriginAccessIdentity')
             origin_config: OriginConfig = OriginConfig(domain_name=self.get_property(origin_dict, 'DomainName'),
                                                        origin_id=self.get_property(origin_dict, 'Id'),
