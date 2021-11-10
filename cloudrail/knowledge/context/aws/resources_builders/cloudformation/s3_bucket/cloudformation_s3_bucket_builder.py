@@ -72,22 +72,14 @@ class CloudformationS3BucketAclBuilder(CloudformationS3BucketBuilder):
             bucket_name = self._get_bucket_name(cfn_res_attr)
             region = cfn_res_attr['region']
             account = cfn_res_attr['account_id']
-            if canned_acl == 'Private':
-                return [S3ACL(S3Permission['FULL_CONTROL'], GranteeTypes.CANONICAL_USER, None, bucket_name, account, region)]
             if canned_acl == 'PublicRead':
-                return [S3ACL(S3Permission['FULL_CONTROL'], GranteeTypes.CANONICAL_USER, None, bucket_name, account, region),
-                        S3ACL(S3Permission['READ'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region)]
+                return [S3ACL(S3Permission['READ'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region)]
             if canned_acl == 'PublicReadWrite':
-                return [S3ACL(S3Permission['FULL_CONTROL'], GranteeTypes.CANONICAL_USER, None, bucket_name, account, region),
-                        S3ACL(S3Permission['READ'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region),
+                return [S3ACL(S3Permission['READ'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region),
                         S3ACL(S3Permission['WRITE'], GranteeTypes.GROUP, S3PredefinedGroups.ALL_USERS.value, bucket_name, account, region)]
             if canned_acl == 'AuthenticatedRead':
-                return [S3ACL(S3Permission['FULL_CONTROL'], GranteeTypes.CANONICAL_USER, None, bucket_name, account, region),
-                        S3ACL(S3Permission['READ'], GranteeTypes.GROUP, S3PredefinedGroups.AUTHENTICATED_USERS.value, bucket_name, account, region)]
+                return [S3ACL(S3Permission['READ'], GranteeTypes.GROUP, S3PredefinedGroups.AUTHENTICATED_USERS.value, bucket_name, account, region)]
             if canned_acl == 'LogDeliveryWrite':
                 return [S3ACL(S3Permission['WRITE'], GranteeTypes.GROUP, S3PredefinedGroups.LOG_DELIVERY.value, bucket_name, account, region),
                         S3ACL(S3Permission['READ_ACP'], GranteeTypes.GROUP, S3PredefinedGroups.LOG_DELIVERY.value, bucket_name, account, region)]
-            if canned_acl == 'AwsExecRead':
-                return [S3ACL(S3Permission['FULL_CONTROL'], GranteeTypes.CANONICAL_USER, None, bucket_name, account, region),
-                        S3ACL(S3Permission['READ'], GranteeTypes.CANONICAL_USER, None, bucket_name, account, region)]
         return []
