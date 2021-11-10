@@ -15,9 +15,9 @@ class TestSecurityGroup(AwsContextTest):
     def get_component(self):
         return "security_group"
 
-    # Not running CFN test, as we do not support a scenario in which no VPC specificied in the yaml.
+    # Not running CFN and drift tests, as we do not support a scenario in which no VPC specificied in the yaml.
     # Without VPC ID, the SG-ID will not be reported by AWS.
-    @context(module_path="sg-no-vpc-id", test_options=TestOptions(run_cloudformation=False))
+    @context(module_path="sg-no-vpc-id", test_options=TestOptions(run_cloudformation=False, run_drift_detection=False))
     def test_sg_no_vpc_id(self, ctx: AwsEnvironmentContext):
         security_group = next((sg for sg in ctx.security_groups
                                if sg.name == 'distinct_name'), None)
