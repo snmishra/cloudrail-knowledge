@@ -2,7 +2,6 @@ from typing import Dict
 from cloudrail.knowledge.context.aws.resources.kms.kms_alias import KmsAlias
 from cloudrail.knowledge.context.aws.cloudformation.cloudformation_constants import CloudformationResourceType
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.base_cloudformation_builder import BaseCloudformationBuilder
-from cloudrail.knowledge.utils.arn_utils import build_arn
 
 
 class CloudformationKmsAliasBuilder(BaseCloudformationBuilder):
