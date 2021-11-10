@@ -649,12 +649,14 @@ def build_inline_security_group_rules(attributes: dict) -> List[SecurityGroupRul
 def build_security_group_rule(attributes: dict) -> List[SecurityGroupRule]:
     security_group_id = attributes['security_group_id']
     ip_protocol = IpProtocol(attributes['protocol'])
+    from_port: int
+    to_port: int
     if ip_protocol == IpProtocol.ALL:
         from_port = 0
         to_port = 65535
     else:
-        from_port = attributes.get('from_port')
-        to_port = attributes.get('to_port')
+        from_port = int(attributes.get('from_port'))
+        to_port = int(attributes.get('to_port'))
     region = attributes['region']
     account = attributes['account_id']
     connection_type = ConnectionType.INBOUND if attributes['type'] == 'ingress' else ConnectionType.OUTBOUND
