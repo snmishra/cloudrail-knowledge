@@ -40,7 +40,7 @@ class CloudformationEc2Builder(BaseCloudformationBuilder):
                            instance_id=self.get_resource_id(cfn_res_attr),
                            name=self.get_name_tag(properties),
                            network_interfaces_ids=network_interface_ids,
-                           state=None,
+                           state='running',
                            image_id=self.get_property(properties, 'ImageId'),
                            iam_profile_name=self.get_property(properties, 'IamInstanceProfile'),
                            http_tokens=http_tokens,
