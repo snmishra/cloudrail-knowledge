@@ -10,6 +10,7 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dms.cloud
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_instance_profile_builder import CloudformationIamInstanceProfileBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_builder import CloudformationDocumentDbClusterBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_parameter_group_builder import CloudformationDocDbClusterParameterGroupBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.kms.cloudformation_kms_key_policy_builder import CloudformationKmsKeyPolicyBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.nat_gw.cloudformation_nat_gw_builder import CloudformationNatGatewayBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dynamodb.cloudformation_dynamodb_table_builder import CloudformationDynamoDbTableBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.codebuild.cloudformation_codebuild_project_builder import CloudformationCodeBuildProjectBuilder
@@ -42,6 +43,7 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.api_gatew
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.athena.cloudformation_athena_workgroup_builder import \
     CloudformationAthenaWorkgroupBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.kms.cloudformation_kms_key_builder import CloudformationKmsKeyBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.kms.cloudformation_kms_alias_builder import CloudformationKmsAliasBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.batch.cloudformation_batch_compute_environment_builder import \
     CloudformationBatchComputeEnvironmentBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.cloudtrail.cloudfromation_cloudtrail_builder import \
@@ -209,6 +211,8 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             codebuild_projects=CloudformationCodeBuildProjectBuilder(cfn_by_type_map).build(),
             docdb_cluster=CloudformationDocumentDbClusterBuilder(cfn_by_type_map).build(),
             docdb_cluster_parameter_groups=CloudformationDocDbClusterParameterGroupBuilder(cfn_by_type_map).build(),
+            kms_aliases=CloudformationKmsAliasBuilder(cfn_by_type_map).build(),
+            kms_keys_policies=CloudformationKmsKeyPolicyBuilder(cfn_by_type_map).build(),
             kinesis_streams=CloudformationKinesisStreamBuilder(cfn_by_type_map).build(),
             origin_access_identity_list=CloudformationCloudfrontOriginAccessIdentityBuilder(cfn_by_type_map).build(),
             s3_bucket_acls=CloudformationS3BucketAclBuilder(cfn_by_type_map).build(),
