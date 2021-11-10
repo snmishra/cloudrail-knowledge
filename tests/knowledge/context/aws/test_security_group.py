@@ -15,7 +15,9 @@ class TestSecurityGroup(AwsContextTest):
     def get_component(self):
         return "security_group"
 
-    @context(module_path="sg-no-vpc-id")
+    # Not running CFN test, as we do not support a scenario in which no VPC specificied in the yaml.
+    # Without VPC ID, the SG-ID will not be reported by AWS.
+    @context(module_path="sg-no-vpc-id", test_options=TestOptions(run_cloudformation=False))
     def test_sg_no_vpc_id(self, ctx: AwsEnvironmentContext):
         security_group = next((sg for sg in ctx.security_groups
                                if sg.name == 'distinct_name'), None)
@@ -24,10 +26,7 @@ class TestSecurityGroup(AwsContextTest):
         self.assertTrue(security_group.has_description)
         self.assertFalse(security_group.tags)
         self.assertEqual(len(security_group.inbound_permissions), 0)
-        if security_group.origin != EntityOrigin.CLOUDFORMATION:
-            self.assertEqual(len(security_group.outbound_permissions), 0)
-        else:
-            self.assertEqual(len(security_group.outbound_permissions), 1)
+        self.assertEqual(len(security_group.outbound_permissions), 0)
 
     @context(module_path="description_on_sg_and_rule")
     def test_description_on_sg_and_rule(self, ctx: AwsEnvironmentContext):
