@@ -3,6 +3,8 @@ from cloudrail.knowledge.context.aws.resources.apigateway.rest_api_gw_mapping im
 from cloudrail.knowledge.context.aws.resources.athena.athena_database import AthenaDatabase
 from cloudrail.knowledge.context.aws.resources.cloudhsmv2.cloudhsm_v2_cluster import CloudHsmV2Cluster
 from cloudrail.knowledge.context.aws.resources.cloudhsmv2.cloudhsm_v2_hsm import CloudHsmV2Hsm
+from cloudrail.knowledge.context.aws.resources.ec2.transit_gateway_route import TransitGatewayRoute
+from cloudrail.knowledge.context.aws.resources.ec2.transit_gateway_route_table import TransitGatewayRouteTable
 from cloudrail.knowledge.context.aws.resources.ec2.transit_gateway_route_table_propagation import TransitGatewayRouteTablePropagation
 from cloudrail.knowledge.context.aws.resources.ec2.vpc_endpoint_route_table_association import VpcEndpointRouteTableAssociation
 from cloudrail.knowledge.context.aws.resources.glue.glue_connection import GlueConnection
@@ -23,4 +25,4 @@ class AwsEnvironmentContextDriftDetector(BaseEnvironmentContextDriftDetector):
                                            S3OutpostEndpoint, CloudHsmV2Hsm, CloudHsmV2Cluster,
                                            S3BucketObject, TransitGatewayRouteTablePropagation, IamGroupMembership,
                                            VpcEndpointRouteTableAssociation, IamPolicyAttachment, RestApiGwDomain,
-                                           RestApiGwMapping)))
+                                           RestApiGwMapping, TransitGatewayRoute, TransitGatewayRouteTable)))
