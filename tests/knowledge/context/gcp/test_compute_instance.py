@@ -81,4 +81,4 @@ class TestComputeInstance(GcpContextTest):
         self.assertIsNotNone(compute)
         self.assertTrue(compute.service_account)
         self.assertEqual(compute.service_account.email, '37924132841-compute@developer.gserviceaccount.com')
-        self.assertTrue(any('cloud-platform' in scope for scope in compute.service_account.scopes))
+        self.assertEqual(compute.service_account.scopes, ['https://www.googleapis.com/auth/cloud-platform'])
