@@ -15,7 +15,7 @@ class CloudformationKmsAliasBuilder(BaseCloudformationBuilder):
         region = cfn_res_attr['region']
         account = cfn_res_attr['account_id']
         alias_name = self.get_property(properties, 'AliasName')
-        alias_arn = build_arn('kms', region, account, 'alias', None, alias_name)
+        alias_arn = f'arn:aws:kms:{region}:{account}:{alias_name}'
         target_key_id = self.get_property(properties, 'TargetKeyId')
         return KmsAlias(alias_name=alias_name,
                         alias_arn=alias_arn,
