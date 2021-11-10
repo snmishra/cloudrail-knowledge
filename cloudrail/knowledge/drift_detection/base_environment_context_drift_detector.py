@@ -85,7 +85,7 @@ class BaseEnvironmentContextDriftDetector:
                     region: str = None,
                     cfn_template_params: dict = None,
                     stack_name: str = None
-                    ):
+                    ) -> DriftDetectionResult:
         cfn_template_params = cfn_template_params or {}
         environment_context_builder = EnvironmentContextBuilderFactory.get(provider, iac_type)
         scanner_context = environment_context_builder.build(account_data,
