@@ -12,6 +12,7 @@ class TestProject(GcpContextTest):
         project = next((project for project in ctx.projects if project.project_name == 'My Project'), None)
         self.assertIsNotNone(project)
         self.assertEqual(project.gcp_project_id, 'your-project-id')
+        self.assertTrue(any(key in ('environment_hashcode', 'Name') for key in project.tags.keys()))
         if not project.is_managed_by_iac:
             self.assertEqual(project.project_number, '556062258574')
         else:

@@ -19,7 +19,7 @@ class GcpScannerContextBuilder(ScannerContextBuilder):
         if not os.path.exists(account_data_dir):
             logging.warning('scanner working dir does not exists: {}'.format(account_data_dir))
             return GcpEnvironmentContext()
-        builder_args = (account_data_dir, account_id)
+        builder_args = (account_data_dir, account_id, salt)
         context: GcpEnvironmentContext = GcpEnvironmentContext()
         context.sql_database_instances = SqlDatabaseInstanceBuilder(*builder_args).build()
         context.compute_instances = ComputeInstanceBuilder(*builder_args).build()

@@ -8,8 +8,6 @@ class ProjectBuilder(BaseGcpScannerBuilder):
         return 'cloudresourcemanager-v1-projects-list.json'
 
     def do_build(self, attributes: dict) -> Project:
-        project = Project(attributes.get('name'),
-                          attributes['projectNumber'],
-                          attributes['projectId'])
-        project.tags = attributes.get('labels')
-        return project
+        return Project(attributes.get('name'),
+                       attributes['projectNumber'],
+                       attributes['projectId'])

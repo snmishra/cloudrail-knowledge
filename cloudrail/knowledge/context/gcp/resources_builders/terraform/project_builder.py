@@ -6,11 +6,9 @@ from cloudrail.knowledge.context.gcp.resources_builders.terraform.base_gcp_terra
 class ProjectBuilder(BaseGcpTerraformBuilder):
 
     def do_build(self, attributes: dict) -> Project:
-        project = Project(attributes['name'],
-                          self._get_known_value(attributes, 'number'),
-                          attributes['project_id'])
-        project.tags = attributes.get('labels')
-        return project
+        return Project(attributes['name'],
+                       self._get_known_value(attributes, 'number'),
+                       attributes['project_id'])
 
     def get_service_name(self) -> GcpResourceType:
         return GcpResourceType.GOOGLE_PROJECT

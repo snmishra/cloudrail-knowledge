@@ -37,7 +37,7 @@ class BaseGcpTerraformBuilder(BaseTerraformBuilder):
             return
 
         resource.project_id = attributes['_project_id']
-        resource.tags = attributes.get('tags')
+        resource.tags = attributes.get('tags', attributes.get('labels'))
 
         if not resource.get_id() and (_id := attributes.get('id')):
             resource.set_id(_id)
