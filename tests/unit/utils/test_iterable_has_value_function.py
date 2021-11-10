@@ -63,7 +63,7 @@ class TestCheckIterableHasValue(unittest.TestCase):
 
     def test_simple_set(self):
         # Arrange
-        testing_set = ('value_1', 'value_2')
+        testing_set = {'value_1', 'value_2'}
         # Act
         bool_value = is_iterable_with_values(testing_set)
         # Assert
@@ -71,7 +71,7 @@ class TestCheckIterableHasValue(unittest.TestCase):
 
     def test_set_with_none_value(self):
         # Arrange
-        testing_set = (None)
+        testing_set = {None}
         # Act
         bool_value = is_iterable_with_values(testing_set)
         # Assert
@@ -79,7 +79,7 @@ class TestCheckIterableHasValue(unittest.TestCase):
 
     def test_set_with_one_none_value(self):
         # Arrange
-        testing_set = (None, 'value')
+        testing_set = {None, 'value'}
         # Act
         bool_value = is_iterable_with_values(testing_set)
         # Assert
@@ -87,7 +87,7 @@ class TestCheckIterableHasValue(unittest.TestCase):
 
     def test_set_with_multiple_none_values(self):
         # Arrange
-        testing_set = (None, None)
+        testing_set = {None, None}
         # Act
         bool_value = is_iterable_with_values(testing_set)
         # Assert
@@ -95,7 +95,7 @@ class TestCheckIterableHasValue(unittest.TestCase):
 
     def test_set_with_none_value_and_bool_value_1(self):
         # Arrange
-        testing_set = (None, False)
+        testing_set = {None, False}
         # Act
         bool_value = is_iterable_with_values(testing_set)
         # Assert
@@ -103,7 +103,7 @@ class TestCheckIterableHasValue(unittest.TestCase):
 
     def test_set_with_none_value_and_bool_value_2(self):
         # Arrange
-        testing_set = (None, True)
+        testing_set = {None, True}
         # Act
         bool_value = is_iterable_with_values(testing_set)
         # Assert
