@@ -1,9 +1,3 @@
-provider "google" {
-  credentials = file("../../account.json")
-  project     = "dev-joe-coniglio"
-  region      = "us-west1"
-}
-
 resource "google_compute_address" "static1" {
   name = "ipv4-address1"
 }

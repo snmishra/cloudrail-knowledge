@@ -1,9 +1,3 @@
-provider "google" {
-  credentials = file("../../account.json")
-  project     = "dev-joe-coniglio"
-  region      = "us-west1"
-}
-
 resource "google_compute_instance" "gce-no-pub-01" {
   name         = "gce-no-pub-01"
   machine_type = "n1-standard-1"
