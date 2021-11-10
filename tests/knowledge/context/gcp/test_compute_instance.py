@@ -73,3 +73,12 @@ class TestComputeInstance(GcpContextTest):
         self.assertTrue(compute.shielded_instance_config.enable_secure_boot)
         self.assertFalse(compute.shielded_instance_config.enable_integrity_monitoring)
         self.assertTrue(compute.shielded_instance_config.enable_vtpm)
+
+    @context(module_path="with_service_account")
+    def test_with_service_account(self, ctx: GcpEnvironmentContext):
+        self.assertTrue(len(ctx.compute_instances), 2)
+        compute = next((compute for compute in ctx.compute_instances if compute.name == 'gce-def-01'), None)
+        self.assertIsNotNone(compute)
+        self.assertTrue(compute.service_account)
+        self.assertEqual(compute.service_account.email, '37924132841-compute@developer.gserviceaccount.com')
+        self.assertTrue(any('cloud-platform' in scope for scope in compute.service_account.scopes))
