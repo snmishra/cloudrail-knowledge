@@ -6,17 +6,17 @@ from cloudrail.knowledge.rules.gcp.gcp_base_rule import GcpBaseRule
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
 
 
-class SqlDatabaseSslRequiredRule(GcpBaseRule):
+class SqlDatabaseBackupConfigurationEnabledRule(GcpBaseRule):
     def get_id(self) -> str:
-        return 'non_car_gcp_sql_database_ssl_required'
+        return 'non_car_cloud_sql_database_instance_no_public_ip'
 
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for sql_db_instance in env_context.sql_database_instances:
-            if not sql_db_instance.settings.ip_configuration.require_ssl:
+            if not sql_db_instance.settings.backup_configuration.enabled:
                 issues.append(
                     Issue(
-                        f"The {sql_db_instance.get_type()} `{sql_db_instance.get_friendly_name()}` is not enforcing SSL connections",
+                        f"The Google Cloud database instance {sql_db_instance.get_type()} `{sql_db_instance.get_friendly_name()}` has backup_configured enabled flag not set.",
                         sql_db_instance,
                         sql_db_instance))
         return issues

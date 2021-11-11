@@ -89,3 +89,23 @@ rules_metadata:
       - compute
     supported_iac_types:
       - terraform
+  - rule_id: non_car_cloud_sql_enable_backup
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+          - '6.7'
+    name: Ensure that all Cloud SQL database instances have backup configuration enabled
+    severity: medium
+    description: Backups provide a way to restore a Cloud SQL instance to recover lost data or recover from a problem with that instance.
+      Automated backups need to be set for any instance that contains data that should be protected from loss or damage.
+    human_readable_logic: Cloudrail will review the database instance configuration within your GCP subscription and Terraform plan to ensure that database connections has backup_configured set to enabled with a specified start time.
+    remediation_steps:
+      terraform: For the google_sql_database_instance resources, ensure that backup_configuration option is set to enabled with start_time configured in 24 hr format in UTC.
+      console: Follow the guide at <https://cloud.google.com/sql/docs/mysql/create-instance#>  in order to ensure that automated backups are set to enabled and backup time is mentioned.
+    rule_type: non_context_aware
+    security_layer: storage
+    resource_type:
+      - database
+    supported_iac_types:
+      - terraform
