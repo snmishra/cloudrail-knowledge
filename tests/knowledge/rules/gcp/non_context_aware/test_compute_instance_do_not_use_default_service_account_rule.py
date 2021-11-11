@@ -14,7 +14,7 @@ class TestComputeInstanceDoNotUseDefaultServiceAccountRule(TestCase):
 
     @parameterized.expand(
         [
-            ["default_service_account_used", '37924132841-compute@developer.gserviceaccount.com', True,],
+            ["default_service_account_used", '37924132841-compute@developer.gserviceaccount.com', True],
             ["no_service_account", None, True],
             ["custom_service_account", 'non-default-svc-001@dev-for-tests.iam.gserviceaccount.com', False],
         ]

@@ -77,20 +77,20 @@ class TestComputeInstance(GcpContextTest):
     @context(module_path="default_service_account")
     def test_default_service_account(self, ctx: GcpEnvironmentContext):
         self.assertTrue(len(ctx.compute_instances), 2)
-        compute = next((compute for compute in ctx.compute_instances if compute.name == 'gce-def-01'), None)
-        self.assertIsNotNone(compute)
-        self.assertTrue(compute.service_account)
-        self.assertEqual(compute.service_account.email, '37924132841-compute@developer.gserviceaccount.com')
-        self.assertEqual(compute.service_account.scopes, ['https://www.googleapis.com/auth/cloud-platform'])
+        for compute in ctx.compute_instances:
+            self.assertTrue(compute.name in ('gce-def-01', 'gce-def-02'))
+            self.assertTrue(compute.service_account)
+            self.assertEqual(compute.service_account.email, '37924132841-compute@developer.gserviceaccount.com')
+            self.assertEqual(compute.service_account.scopes, ['https://www.googleapis.com/auth/cloud-platform'])
 
     @context(module_path="default_service_account_no_email")
     def test_default_service_account_no_email(self, ctx: GcpEnvironmentContext):
         self.assertTrue(len(ctx.compute_instances), 2)
-        compute = next((compute for compute in ctx.compute_instances if compute.name == 'gce-def-01'), None)
-        self.assertIsNotNone(compute)
-        self.assertTrue(compute.service_account)
-        self.assertEqual(compute.service_account.scopes, ['https://www.googleapis.com/auth/cloud-platform'])
-        if compute.is_managed_by_iac:
-            self.assertFalse(compute.service_account.email)
-        else:
-            self.assertEqual(compute.service_account.email, '37924132841-compute@developer.gserviceaccount.com')
+        for compute in ctx.compute_instances:
+            self.assertTrue(compute.name in ('gce-def-01', 'gce-def-02'))
+            self.assertTrue(compute.service_account)
+            self.assertEqual(compute.service_account.scopes, ['https://www.googleapis.com/auth/cloud-platform'])
+            if compute.is_managed_by_iac:
+                self.assertFalse(compute.service_account.email)
+            else:
+                self.assertEqual(compute.service_account.email, '37924132841-compute@developer.gserviceaccount.com')
