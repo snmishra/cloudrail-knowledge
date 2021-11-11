@@ -21,7 +21,7 @@ class TestSqlDatabaseBackupConfigurationEnabledRule(TestCase):
         ]
     )
 
-    def test_cloud_sql_restrict_trusted_ip(self, unused_name: str, enables: List[bool], issuses: int, should_alert: bool):
+    def test_cloud_sql_backup_configuration_enabled(self, unused_name: str, enables: List[bool], issuses: int, should_alert: bool):
         # Arrange
         sqls = []
         for i, enabled in enumerate(enables, 1):
