@@ -7,7 +7,7 @@ from cloudrail.knowledge.context.mergeable import Mergeable
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.iac_action_type import IacActionType
 from cloudrail.knowledge.utils.utils import is_first_octet_in_range, PUBLIC_IP_MAX_FIRST_OCTET, PUBLIC_IP_MIN_FIRST_OCTET
-from knowledge.utils.log_utils import log_cloudrail_error
+from cloudrail.knowledge.utils.log_utils import log_cloudrail_error
 
 
 class EnvironmentContextMerger:
