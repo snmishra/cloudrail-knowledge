@@ -6,7 +6,7 @@ from typing import Dict, List
 
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
 from cloudrail.knowledge.utils.utils import get_account_names, load_as_json
-from cloudrail.knowledge.utils.tags_utils import get_gcp_tags
+from cloudrail.knowledge.utils.tags_utils import get_gcp_labels
 
 from cloudrail.knowledge.context.base_context_builders.base_scanner_builder import BaseScannerBuilder
 
@@ -58,7 +58,8 @@ class BaseGcpScannerBuilder(BaseScannerBuilder):
             return
 
         resource.project_id = self.project_id
-        resource.tags = get_gcp_tags(attributes)
+        resource.tags = attributes.get('tags', {}).get('items')
+        resource.labels = get_gcp_labels(attributes)
 
         if not resource.get_id() and (_id := attributes.get('id')):
             resource.set_id(_id)
