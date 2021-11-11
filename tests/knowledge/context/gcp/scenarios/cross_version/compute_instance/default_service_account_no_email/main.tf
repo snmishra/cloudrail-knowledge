@@ -3,8 +3,6 @@ resource "google_compute_instance" "gce-def-01" {
   project     = "dev-for-tests"
 
   service_account {
-    # Default service account email address for project numerical id 37924132841
-    email  = "37924132841-compute@developer.gserviceaccount.com"
     scopes = ["cloud-platform"]
   }
 
@@ -32,8 +30,6 @@ resource "google_compute_instance" "gce-def-02" {
   project     = "dev-for-tests"
 
   service_account {
-    # Default service account email address for project numerical id 37924132841
-    email  = "37924132841-compute@developer.gserviceaccount.com"
     scopes = ["cloud-platform"]
   }
 

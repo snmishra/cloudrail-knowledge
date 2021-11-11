@@ -102,7 +102,7 @@ rules_metadata:
     human_readable_logic: Cloudrail will review the compute instances configuration within your GCP subscription and Terraform plan to ensure that the instances do not use default service account.
     remediation_steps:
       terraform: For the google_compute_instance resource ensure the service_account block has attribute email doesn’t use default service account [project_number]- compute@developer.gserviceaccount.com.
-      console: Follow the guides at <https://cloud.google.com/compute/docs/access/service-accounts>  and <https://cloud.google.com/compute/docs/access/create-enable-service-accounts-> for-instances in order to ensure default service account is not used. VMs created by GKE should be excluded. 
+      console: Follow the guides at <https://cloud.google.com/compute/docs/access/service-accounts>  and <https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances> in order to ensure default service account is not used. VMs created by GKE should be excluded. 
     rule_type: non_context_aware
     security_layer: networking
     resource_type:
