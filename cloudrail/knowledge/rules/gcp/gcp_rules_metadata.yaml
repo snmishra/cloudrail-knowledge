@@ -89,3 +89,31 @@ rules_metadata:
       - compute
     supported_iac_types:
       - terraform
+
+  - rule_id: non_car_cloud_sql_contained_database_authentication_off
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '6.3.2'
+    name: Ensure SQL database ‘contained database authentication’ flag is set to ‘off’
+    severity: medium
+    description: Contained databases have some unique threats that should be understood and mitigated by
+      SQL Server Database Engine administrators. Most of the threats are related to the USER WITH PASSWORD authentication
+      process, which moves the authentication boundary from the Database Engine level to the database level,
+      hence it is recommended to disable ‘contained database authentication’ flag.
+      This recommendation is applicable to SQL Server database instances. 
+    human_readable_logic: Cloudrail will review the database instance configuration within your GCP subscription and
+      Terraform plan to ensure that SQL Server database instances have ‘contained database authentication’
+      database flag set to off.
+    remediation_steps:
+      terraform: For the google_sql_database_instance resources, ensure that ‘contained database authentication’
+        database flag is set to off for SQL Server databases.
+      console: Follow the guide at https://cloud.google.com/sql/docs/sqlserver/flags  in order to ensure that
+        ‘contained database authentication’ database flag is set to off.
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - database
+    supported_iac_types:
+      - terraform

@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 from cloudrail.knowledge.rules.base_rule import BaseRule
+from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_authentication_disable_rule import SqlDatabaseAuthenticationDisableRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_instance_no_public_ip_rule import \
     SqlDatabaseNoPublicIpRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_ssl_required_rule import SqlDatabaseSslRequiredRule
@@ -19,5 +20,6 @@ class GcpRulesLoader(AbstractRulesLoader):
             SqlDatabaseNoPublicIpRule(),
             ComputeInstanceNoSerialPortConnectionRule(),
             ComputeInstanceLaunchWithVmShieldRule(),
+            SqlDatabaseAuthenticationDisableRule()
         ]
         return {rule.get_id(): rule for rule in rules}
