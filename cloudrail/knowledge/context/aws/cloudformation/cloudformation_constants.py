@@ -21,6 +21,7 @@ class CloudformationResourceType(str, Enum):
     IAM_ROLE = 'AWS::IAM::Role'
     ATHENA_WORKGROUP = 'AWS::Athena::WorkGroup'
     KMS_KEY = 'AWS::KMS::Key'
+    KMS_KEY_ALIAS = 'AWS::KMS::Alias'
     CLOUDTRAIL = 'AWS::CloudTrail::Trail'
     CODEBUILD_REPORTGROUP = 'AWS::CodeBuild::ReportGroup'
     ELASTIC_LOAD_BALANCER = 'AWS::ElasticLoadBalancingV2::LoadBalancer'

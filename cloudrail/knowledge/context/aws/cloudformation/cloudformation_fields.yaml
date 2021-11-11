@@ -339,6 +339,17 @@ AWS::DocDB::DBClusterParameterGroup:
             - Name
             - Parameters
 
+AWS::KMS::Alias:
+    known_fields:
+        pass:
+            - AliasName
+            - TargetKeyId
+
+AWS::KMS::Key:
+    known_fields:
+        pass:
+            - KeyPolicy
+
 AWS::Kinesis::Stream:
     known_fields:
         pass:
