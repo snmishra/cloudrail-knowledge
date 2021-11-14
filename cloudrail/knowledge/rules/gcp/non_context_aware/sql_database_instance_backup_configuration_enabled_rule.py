@@ -8,7 +8,7 @@ from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterT
 
 class SqlDatabaseBackupConfigurationEnabledRule(GcpBaseRule):
     def get_id(self) -> str:
-        return 'non_car_cloud_sql_database_instance_no_public_ip'
+        return 'non_car_cloud_sql_enable_backup'
 
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
