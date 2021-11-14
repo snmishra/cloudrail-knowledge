@@ -3,16 +3,18 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall impo
 from cloudrail.knowledge.context.mergeable import EntityOrigin
 
 from tests.knowledge.context.gcp_context_test import GcpContextTest
-from tests.knowledge.context.test_context_annotation import context
+from tests.knowledge.context.test_context_annotation import TestOptions, context
 
 
 class TestComputeFirewall(GcpContextTest):
     def get_component(self):
         return 'compute_firewall'
 
-    @context(module_path="basic")
+    @context(module_path="basic", test_options=TestOptions(run_drift_detection=False))
     def test_basic(self, ctx: GcpEnvironmentContext):
-        for firewall in ctx.compute_firewalls:
+        self.assertEqual(len(ctx.compute_firewalls), 6)
+        firewalls = [firewall for firewall in ctx.compute_firewalls if firewall.name in ('crtestfirewall1', 'crtestfirewall2')]
+        for firewall in firewalls:
             if firewall.origin == EntityOrigin.TERRAFORM:
                 self.assertEqual(firewall.network, 'crtest-vpc')
             else:
@@ -27,11 +29,11 @@ class TestComputeFirewall(GcpContextTest):
                 self.assertEqual(firewall.destination_ranges, ["8.8.8.8"])
                 self.assertEqual(firewall.direction, GcpComputeFirewallDirection.EGRESS)
                 self.assertIsNone(firewall.source_ranges)
-            else:
+            elif firewall.name == 'crtestfirewall2':
                 self.assertTrue(firewall.deny)
-                self.assertEqual(firewall.allow[0].action, FirewallRuleAction.DENY)
-                self.assertEqual(firewall.allow[0].protocol, 'ESP')
-                self.assertFalse(firewall.allow[0].ports)
+                self.assertEqual(firewall.deny[0].action, FirewallRuleAction.DENY)
+                self.assertEqual(firewall.deny[0].protocol, 'ESP')
+                self.assertEqual(firewall.deny[0].ports, 'ANY')
                 self.assertFalse(firewall.allow)
                 self.assertIsNone(firewall.destination_ranges)
                 self.assertEqual(firewall.direction, GcpComputeFirewallDirection.INGRESS)

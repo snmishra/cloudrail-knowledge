@@ -35,7 +35,7 @@ class ComputeFirewallBuilder(BaseGcpScannerBuilder):
                                   deny=deny_actions,
                                   destination_ranges=attributes.get('destinationRanges'),
                                   direction=direction,
-                                  source_ranges=attributes.get('source_ranges'))
+                                  source_ranges=attributes.get('sourceRanges'))
 
     @staticmethod
     def get_action_block_data(attributes: dict) -> dict:

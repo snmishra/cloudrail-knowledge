@@ -6,8 +6,8 @@ from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type impor
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
 
 class GcpComputeFirewallDirection(str, Enum):
-    INGRESS  = 'ingress'
-    EGRESS = 'egress'
+    INGRESS  = 'INGRESS'
+    EGRESS = 'EGRESS'
 
 class FirewallRuleAction(str, Enum):
     ALLOW = 'allow'
