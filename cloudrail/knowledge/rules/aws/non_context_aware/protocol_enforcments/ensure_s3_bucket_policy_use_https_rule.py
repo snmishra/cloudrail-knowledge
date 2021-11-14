@@ -27,9 +27,14 @@ class EnsureS3BucketsPolicyUseHttpsRule(AwsBaseRule):
     def _check_conditions(s3_bucket_conditions: List[StatementCondition]) -> List:
         condition_list = []
         for condition in s3_bucket_conditions:
+            condition_values = False
+            if isinstance(condition.values, list):
+                condition_values = condition.values == ['false']
+            elif isinstance(condition.values, bool):
+                condition_values = not condition.values
             if condition.operator.lower() == 'bool' \
                     and condition.key == 'aws:SecureTransport' \
-                    and condition.values == ['false']:
+                    and condition_values:
                 condition_list.append(condition)
         return condition_list
 
