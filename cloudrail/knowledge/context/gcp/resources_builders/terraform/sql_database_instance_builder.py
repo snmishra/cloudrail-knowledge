@@ -1,3 +1,5 @@
+import logging
+
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.base_gcp_terraform_builder import BaseGcpTerraformBuilder
 from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDBInstanceVersion, GcpSqlDBInstanceSettingsDBFlags, GcpSqlDBInstanceSettingsBackupRetention, \
@@ -47,7 +49,8 @@ class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
             start_time = datetime.strptime(start_time_str, "%H:%M")
         except Exception as ex:
             message = f'Error while parse datetime for {start_time_str} string (should be in format: %H:%M). {ex}'
-            raise Exception(message)
+            logging.warning(message)
+            start_time = None
         point_in_time_recovery_enabled = self._get_known_value(backup_configuration, "point_in_time_recovery_enabled")
         location = self._get_known_value(backup_configuration, "location")
         transaction_log_retention_days = self._get_known_value(backup_configuration, "transaction_log_retention_days", 7)
@@ -79,8 +82,9 @@ class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
             try:
                 expiration_time = datetime.strptime(expiration_time_str, '%Y-%m-%dT%H:%M:%S')
             except Exception as ex:
-                message = f'Error while parse datetime for {expiration_time_str} string (should be in format: %H:%M). {ex}'
-                raise Exception(message)
+                message = f'Error while parse datetime for {expiration_time_str} string (should be in format: %Y-%m-%dT%H:%M:%S). {ex}'
+                logging.warning(message)
+                expiration_time = None
 
         return GcpSqlDBInstanceIPConfigAuthNetworks(expiration_time,
                                                     self._get_known_value(authorized_network, "name"),
