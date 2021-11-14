@@ -54,7 +54,7 @@ class ComputeInstanceBuilder(BaseGcpTerraformBuilder):
             metadata = [{key: metadata_attributes[key]} for key in metadata_attributes]
 
         if metadata_startup_script := self._get_known_value(attributes, 'metadata_startup_script'):
-            metadata.append({'startup-script': attributes['metadata_startup_script']})
+            metadata.append({'startup-script': metadata_startup_script})
         return GcpComputeInstance(name=attributes['name'],
                                   zone=self._get_known_value(attributes, 'zone'),
                                   network_interfaces=network_interfaces,
