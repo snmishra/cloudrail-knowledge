@@ -1,11 +1,8 @@
-import logging
-
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.base_gcp_terraform_builder import BaseGcpTerraformBuilder
 from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDBInstanceVersion, GcpSqlDBInstanceSettingsDBFlags, GcpSqlDBInstanceSettingsBackupRetention, \
     GcpSqlDBInstanceSettingsBackupConfig, GcpSqlDBInstanceIPConfigAuthNetworks, GcpSqlDBInstanceSettingsIPConfig, GcpSqlDBInstanceSettings, GcpSqlDatabaseInstance
-
-from datetime import datetime
+from cloudrail.knowledge.utils.datetime_util import build_datetime
 
 
 class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
@@ -39,18 +36,13 @@ class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
         return None
 
     def build_backup_configuration(self, settings: dict):
-        backup_configuration_block = self._get_known_value(settings, "backup_configuration", [{}])
-        backup_configuration = backup_configuration_block[0]
+        backup_configuration_block = self._get_known_value(settings, "backup_configuration", [])
+        backup_configuration = backup_configuration_block[0] if backup_configuration_block else {}
 
         binary_log_enabled = self._get_known_value(backup_configuration, "binary_log_enabled")
         enabled = self._get_known_value(backup_configuration, "enabled", False)
         start_time_str = self._get_known_value(backup_configuration, "start_time", "16:00")
-        try:
-            start_time = datetime.strptime(start_time_str, "%H:%M")
-        except Exception as ex:
-            message = f'Error while parse datetime for {start_time_str} string (should be in format: %H:%M). {ex}'
-            logging.warning(message)
-            start_time = None
+        start_time = build_datetime(start_time_str, "%H:%M")
         point_in_time_recovery_enabled = self._get_known_value(backup_configuration, "point_in_time_recovery_enabled")
         location = self._get_known_value(backup_configuration, "location")
         transaction_log_retention_days = self._get_known_value(backup_configuration, "transaction_log_retention_days", 7)
@@ -62,8 +54,8 @@ class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
                                                     location, transaction_log_retention_days, backup_retention_settings)
 
     def build_ip_configuration(self, settings: dict):
-        ip_configuration_block = self._get_known_value(settings, "ip_configuration", [{}])
-        ip_configuration = ip_configuration_block[0]
+        ip_configuration_block = self._get_known_value(settings, "ip_configuration", [])
+        ip_configuration = ip_configuration_block[0] if ip_configuration_block else {}
 
         ipv4_enabled = self._get_known_value(ip_configuration, "ipv4_enabled", True)
         private_network = ip_configuration.get("private_network")
@@ -79,12 +71,7 @@ class SqlDatabaseInstanceBuilder(BaseGcpTerraformBuilder):
         if expiration_time_str := self._get_known_value(authorized_network, "expiration_time"):
             expiration_time_str_list = expiration_time_str.split(".")
             expiration_time_str = expiration_time_str_list[0] if len(expiration_time_str_list) > 1 else expiration_time_str_list[0][:-1]
-            try:
-                expiration_time = datetime.strptime(expiration_time_str, '%Y-%m-%dT%H:%M:%S')
-            except Exception as ex:
-                message = f'Error while parse datetime for {expiration_time_str} string (should be in format: %Y-%m-%dT%H:%M:%S). {ex}'
-                logging.warning(message)
-                expiration_time = None
+            expiration_time = build_datetime(expiration_time_str, '%Y-%m-%dT%H:%M:%S')
 
         return GcpSqlDBInstanceIPConfigAuthNetworks(expiration_time,
                                                     self._get_known_value(authorized_network, "name"),

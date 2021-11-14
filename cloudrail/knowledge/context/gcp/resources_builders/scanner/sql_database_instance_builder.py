@@ -53,9 +53,9 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
         point_in_time_recovery_enabled = backup_configuration.get("pointInTimeRecoveryEnabled")
         location = backup_configuration.get("location")
         transaction_log_retention_days = backup_configuration.get("transactionLogRetentionDays")
-        backup_retention_settings = backup_configuration.get("backupRetentionSettings", {})
-        backup_retention_settings = GcpSqlDBInstanceSettingsBackupRetention(backup_retention_settings.get("retainedBackups"),
-                                                                            backup_retention_settings.get("retentionUnit"))
+        backup_retention_settings_dict = backup_configuration.get("backupRetentionSettings", {})
+        backup_retention_settings = GcpSqlDBInstanceSettingsBackupRetention(backup_retention_settings_dict.get("retainedBackups"),
+                                                                            backup_retention_settings_dict.get("retentionUnit"))
 
         return GcpSqlDBInstanceSettingsBackupConfig(binary_log_enabled, enabled, start_time, point_in_time_recovery_enabled,
                                                     location, transaction_log_retention_days, backup_retention_settings)
