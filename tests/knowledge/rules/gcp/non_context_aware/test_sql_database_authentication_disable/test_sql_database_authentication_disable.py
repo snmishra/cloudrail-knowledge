@@ -8,6 +8,11 @@ class TestQqlDatabaseAuthenticationDisable(GcpBaseRuleTest):
     def get_rule(self):
         return SqlDatabaseAuthenticationDisableRule()
 
-    @rule_test('auth_disabled', should_alert=True)
+    @rule_test('sql_server_db_auth_enabled', should_alert=True)
     def test_sql_db_auth_disabled(self, rule_result: RuleResponse):
         pass
+
+    @rule_test('sql_server_db_auth_disabled', should_alert=False)
+    def test_sql_db_auth_disabled(self, rule_result: RuleResponse):
+        pass
+

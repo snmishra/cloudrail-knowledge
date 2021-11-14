@@ -11,10 +11,6 @@ resource "google_sql_database_instance" "test-073" {
 
   settings {
     tier = "db-custom-1-3840"
-    database_flags {
-      name = "contained database authentication"
-      value = "on"
-    }
   }
   deletion_protection = false
 }
