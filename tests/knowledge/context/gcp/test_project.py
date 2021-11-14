@@ -1,13 +1,14 @@
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
 from tests.knowledge.context.gcp_context_test import GcpContextTest
-from tests.knowledge.context.test_context_annotation import context
+from tests.knowledge.context.test_context_annotation import TestOptions, context
 
 
 class TestProject(GcpContextTest):
     def get_component(self):
         return 'project'
 
-    @context(module_path="basic")
+    # Not running drift detection: no permission to create new project.
+    @context(module_path="basic", test_options=TestOptions(run_drift_detection=False))
     def test_basic_project(self, ctx: GcpEnvironmentContext):
         project = next((project for project in ctx.projects if project.project_name == 'My Project'), None)
         self.assertIsNotNone(project)

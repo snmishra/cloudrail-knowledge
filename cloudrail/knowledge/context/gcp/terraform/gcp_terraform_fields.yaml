@@ -82,6 +82,7 @@ google_compute_instance:
     - confidential_instance_config
     - advanced_machine_features
     - network_performance_config
+    - instance_id
 
 google_project:
   known_fields:
