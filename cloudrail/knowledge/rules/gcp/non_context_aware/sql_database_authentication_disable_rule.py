@@ -2,18 +2,17 @@ from typing import Dict, List
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
 from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.gcp.gcp_base_rule import GcpBaseRule
+from cloudrail.knowledge.rules.gcp.non_context_aware.base_database_flag_on_rule import BaseDatabaseFlagOnRule
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
 
 
-class SqlDatabaseAuthenticationDisableRule(GcpBaseRule):
+class SqlDatabaseAuthenticationDisableRule(BaseDatabaseFlagOnRule):
 
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for sql_db in env_context.sql_database_instances:
             if sql_db.database_version and 'SQLSERVER' in sql_db.database_version.value and \
-                    sql_db.settings and sql_db.settings.database_flags and \
-                    any(db_flag.name == 'contained database authentication' and db_flag.value == 'on'
-                        for db_flag in sql_db.settings.database_flags):
+                    self.is_flag_on(sql_db, 'contained database authentication'):
                 issues.append(
                     Issue(
                         f"The Google Cloud database instance `{sql_db.get_friendly_name()}` "
