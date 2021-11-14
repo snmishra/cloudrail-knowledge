@@ -11,7 +11,7 @@ class SqlDatabaseAuthenticationDisableRule(BaseDatabaseFlagOnRule):
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for sql_db in env_context.sql_database_instances:
-            if sql_db.database_version and 'SQLSERVER' in sql_db.database_version.value and \
+            if self.is_version_contains(sql_db, 'SQLSERVER') and \
                     self.is_flag_on(sql_db, 'contained database authentication'):
                 issues.append(
                     Issue(

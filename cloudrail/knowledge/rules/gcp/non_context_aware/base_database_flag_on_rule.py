@@ -14,6 +14,10 @@ class BaseDatabaseFlagOnRule(GcpBaseRule):
         pass
 
     @staticmethod
+    def is_version_contains(db_instance: GcpSqlDatabaseInstance, version_prefix: str):
+        return db_instance.database_version and version_prefix in db_instance.database_version.value
+
+    @staticmethod
     def is_flag_on(db_instance: GcpSqlDatabaseInstance, flag_name: str) -> bool:
         return db_instance.settings and db_instance.settings.database_flags and \
                any(db_flag.name == flag_name and db_flag.value == 'on'
@@ -23,6 +27,5 @@ class BaseDatabaseFlagOnRule(GcpBaseRule):
     def get_id(self) -> str:
         pass
 
-    @abstractmethod
     def should_run_rule(self, environment_context: GcpEnvironmentContext) -> bool:
-        pass
+        return bool(environment_context.sql_database_instances)
