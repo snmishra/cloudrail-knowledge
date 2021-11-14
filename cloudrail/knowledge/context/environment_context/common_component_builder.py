@@ -32,7 +32,7 @@ def build_condition(statement_dict: dict) -> List[StatementCondition]:
                 if isinstance(cond_value, str):
                     values_list = [cond_value]
                 elif isinstance(cond_value, bool):
-                    values_list = ['false'] if not cond_value else []
+                    values_list = ['false'] if not cond_value else ['true']
                 else:
                     values_list = cond_value
                 condition_list.append(StatementCondition(operator, cond_key, values_list))
