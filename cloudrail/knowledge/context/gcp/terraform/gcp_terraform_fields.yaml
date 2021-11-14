@@ -78,3 +78,14 @@ google_compute_instance:
     - advanced_machine_features
     - network_performance_config
     - instance_id
+
+google_compute_firewall:
+  known_fields:
+    pass:
+      - name
+      - network
+      - allow
+      - deny
+      - destination_ranges
+      - direction
+      - source_ranges

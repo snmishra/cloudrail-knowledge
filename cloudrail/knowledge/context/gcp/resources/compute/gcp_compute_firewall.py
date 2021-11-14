@@ -5,33 +5,25 @@ from dataclasses import dataclass
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
 
-class GcpComputeFirewallLogCfgMetaData(Enum):
-    EXCLUDE_ALL_METADATA  = 'exclude_all_metadata'
-    INCLUDE_ALL_METADATA = 'include_all_metadata'
-
-class GcpComputeFirewallDirection(Enum):
+class GcpComputeFirewallDirection(str, Enum):
     INGRESS  = 'ingress'
     EGRESS = 'egress'
 
-@dataclass
-class GcpComputeFirewallAllow:
-    """
-        Attributes:
-	       protocol: (Required) The IP protocol to which this rule applies.
-	       ports: (Optional) An optional list of ports to which this rule applies. This field is only applicable for UDP or TCP protocol.
-    """
-    protocol: str
-    ports: Optional[List[int]]
+class FirewallRuleAction(str, Enum):
+    ALLOW = 'allow'
+    DENY = 'deny'
 
 @dataclass
-class GcpComputeFirewallDeny:
+class GcpComputeFirewallAction:
     """
         Attributes:
 	        protocol: (Required) The IP protocol to which this rule applies.
 	        ports: (Optional) An optional list of ports to which this rule applies. This field is only applicable for UDP or TCP protocol.
+            action: Rule action (allow or deny)
     """
     protocol: str
     ports: Optional[List[int]]
+    action: FirewallRuleAction
 
 class GcpComputeFirewall(GcpResource):
     """
@@ -48,8 +40,8 @@ class GcpComputeFirewall(GcpResource):
     def __init__(self,
                  name: str,
                  network: str,
-                 allow: Optional[List[GcpComputeFirewallAllow]],
-                 deny: Optional[List[GcpComputeFirewallDeny]],
+                 allow: Optional[List[GcpComputeFirewallAction]],
+                 deny: Optional[List[GcpComputeFirewallAction]],
 		         destination_ranges: Optional[List[str]],
 		         direction: Optional[GcpComputeFirewallDirection],
 		         source_ranges: Optional[List[str]]):
@@ -57,8 +49,8 @@ class GcpComputeFirewall(GcpResource):
         super().__init__(GcpResourceType.GOOGLE_COMPUTE_FIREWALL)
         self.name: str = name
         self.network: str = network
-        self.allow: Optional[List[GcpComputeFirewallAllow]] = allow
-        self.deny: Optional[List[GcpComputeFirewallDeny]] = deny
+        self.allow: Optional[List[GcpComputeFirewallAction]] = allow
+        self.deny: Optional[List[GcpComputeFirewallAction]] = deny
         self.destination_ranges: Optional[List[str]] = destination_ranges
         self.direction: Optional[GcpComputeFirewallDirection] = direction
         self.source_ranges: Optional[List[str]] = source_ranges
@@ -69,6 +61,9 @@ class GcpComputeFirewall(GcpResource):
     @property
     def is_tagable(self) -> bool:
         return False
+
+    def get_name(self) -> Optional[str]:
+        return self.name
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'{self._BASE_URL}/networking/firewalls/details/{self.name}?project={self.project_id}'
