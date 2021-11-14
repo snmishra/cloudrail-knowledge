@@ -16,7 +16,7 @@ class SqlDatabaseBackupConfigurationEnabledRule(GcpBaseRule):
             if not sql_db_instance.settings.backup_configuration.enabled:
                 issues.append(
                     Issue(
-                        f"The Google Cloud database instance {sql_db_instance.get_type()} `{sql_db_instance.get_friendly_name()}` has backup_configured enabled flag not set.",
+                        f"The Google Cloud {sql_db_instance.get_type()} `{sql_db_instance.get_friendly_name()}` has backup_configured enabled flag not set.",
                         sql_db_instance,
                         sql_db_instance))
         return issues
