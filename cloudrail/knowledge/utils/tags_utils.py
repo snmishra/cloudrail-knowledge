@@ -57,15 +57,15 @@ def _hash_tags(dictionary: dict, salt: str, allowed_tags: list) -> dict:
 
     return result
 
-def _hash_gcp_tags_dict(dictionary: dict, salt: str) -> dict:
+def _hash_gcp_labels_dict(dictionary: dict, salt: str) -> dict:
     allowed_tags = IacFieldsStore.get_terraform_gcp_supported_services()['common'] \
         .known_fields.pass_values['labels'].known_fields.pass_values.keys()
 
     return _hash_tags(dictionary, salt, allowed_tags)
 
 def get_gcp_labels(raw_gcp_data: dict) -> Optional[dict]:
-    gcp_raw_tags = raw_gcp_data.get('labels')
-    if gcp_raw_tags and isinstance(gcp_raw_tags, dict):
-        return _hash_gcp_tags_dict(gcp_raw_tags, raw_gcp_data['salt'])
+    gcp_raw_labels = raw_gcp_data.get('labels')
+    if gcp_raw_labels and isinstance(gcp_raw_labels, dict):
+        return _hash_gcp_labels_dict(gcp_raw_labels, raw_gcp_data['salt'])
     else:
         return None

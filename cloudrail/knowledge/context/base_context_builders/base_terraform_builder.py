@@ -58,7 +58,7 @@ class BaseTerraformBuilder(ABC):
             if instance.is_tagable and attributes and attributes.get(tag_key):
                 if isinstance(attributes.get(tag_key), dict):
                     instance.tags = attributes[tag_key] or {}
-                if isinstance(attributes.get(tag_key), list):
+                elif isinstance(attributes.get(tag_key), list):
                     instance.tags = attributes[tag_key] or None
                 break
 
