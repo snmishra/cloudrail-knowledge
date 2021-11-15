@@ -40,5 +40,9 @@ class Project(GcpResource):
     def is_labeled(self) -> bool:
         return True
 
+    @property
+    def is_tagable(self) -> bool:
+        return False
+
     def to_drift_detection_object(self) -> dict:
         return {'labels': self.labels}

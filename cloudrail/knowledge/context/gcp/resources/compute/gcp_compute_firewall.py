@@ -62,6 +62,10 @@ class GcpComputeFirewall(GcpResource):
     def is_labeled(self) -> bool:
         return True
 
+    @property
+    def is_tagable(self) -> bool:
+        return False
+
     def get_name(self) -> Optional[str]:
         return self.name
 
@@ -76,4 +80,5 @@ class GcpComputeFirewall(GcpResource):
 
     def to_drift_detection_object(self) -> dict:
         return {'destination_ranges': self.destination_ranges,
-                'source_ranges': self.source_ranges}
+                'source_ranges': self.source_ranges,
+                'labels': self.labels}

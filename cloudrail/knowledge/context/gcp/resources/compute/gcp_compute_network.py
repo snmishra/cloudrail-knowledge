@@ -34,6 +34,14 @@ class GcpComputeNetwork(GcpResource):
     def get_name(self) -> str:
         return self.name
 
+    @property
+    def is_labeled(self) -> bool:
+        return False
+
+    @property
+    def is_tagable(self) -> bool:
+        return False
+
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'{self._BASE_URL}/networking/networks/details/{self.name}?project={self.project_id}'
 

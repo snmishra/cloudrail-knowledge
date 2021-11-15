@@ -27,9 +27,9 @@ class GcpResource(Mergeable):
     @property
     @abstractmethod
     def is_tagable(self) -> bool:
-        return False
+        pass
 
     @property
     @abstractmethod
     def is_labeled(self) -> bool:
-        return False
+        pass

@@ -150,6 +150,10 @@ class GcpSqlDatabaseInstance(GcpResource):
     def is_labeled(self) -> bool:
         return True
 
+    @property
+    def is_tagable(self) -> bool:
+        return False
+
     def get_id(self) -> str:
         return self.name
 
