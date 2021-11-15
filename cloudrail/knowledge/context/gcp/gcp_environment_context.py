@@ -1,4 +1,5 @@
 from typing import List, Dict
+from cloudrail.knowledge.context.aliases_dict import AliasesDict
 
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall import GcpComputeFirewall
@@ -16,11 +17,11 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
                  compute_instances: List[GcpComputeInstance] = None,
                  compute_firewalls: List[GcpComputeFirewall] = None,
                  compute_networks: List[GcpComputeNetwork] = None,
-                 projects: List[Project] = None):
+                 projects: AliasesDict[Project] = None):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
         self.sql_database_instances: List[GcpSqlDatabaseInstance] = sql_database_instances or []
         self.compute_instances: List[GcpComputeInstance] = compute_instances or []
         self.compute_firewalls: List[GcpComputeFirewall] = compute_firewalls or []
         self.compute_networks: List[GcpComputeNetwork] = compute_networks or []
-        self.projects: List[Project] = projects or []
+        self.projects: AliasesDict[Project] = projects or AliasesDict()

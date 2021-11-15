@@ -20,6 +20,7 @@ class Project(GcpResource):
         self.project_name: Optional[str] = project_name
         self.project_number: Optional[int] = project_number
         self.gcp_project_id: str = gcp_project_id
+        self.with_aliases(self.gcp_project_id)
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]
