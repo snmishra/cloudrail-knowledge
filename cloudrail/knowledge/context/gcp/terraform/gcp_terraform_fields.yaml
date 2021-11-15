@@ -84,6 +84,14 @@ google_compute_instance:
     - network_performance_config
     - instance_id
 
+google_compute_network:
+  known_fields:
+    pass:
+      - name
+      - auto_create_subnetworks
+      - routing_mode
+      - delete_default_routes_on_create
+
 google_project:
   known_fields:
     pass:
