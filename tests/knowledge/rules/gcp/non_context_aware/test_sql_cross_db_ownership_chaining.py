@@ -5,13 +5,13 @@ from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironme
 from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDatabaseInstance, GcpSqlDBInstanceSettings, \
     GcpSqlDBInstanceSettingsDBFlags, GcpSqlDBInstanceVersion
 from cloudrail.knowledge.rules.base_rule import RuleResultType
-from cloudrail.knowledge.rules.gcp.non_context_aware.sql_cross_databases_ownership_chaining_off_rule import SqlCrossDatabasesOwnershipChainingOffRule
+from cloudrail.knowledge.rules.gcp.non_context_aware.sql_cross_databases_ownership_chaining_rule import SqlCrossDatabasesOwnershipChainingRule
 
 
 class TestSqlDatabaseSslRequired(unittest.TestCase):
 
     def setUp(self):
-        self.rule = SqlCrossDatabasesOwnershipChainingOffRule()
+        self.rule = SqlCrossDatabasesOwnershipChainingRule()
 
     @parameterized.expand([
             ["on", RuleResultType.FAILED, 1],

@@ -1,5 +1,4 @@
 provider "google" {
-  project     = "dev-tomer"
   region      = "us-west1"
 }
 

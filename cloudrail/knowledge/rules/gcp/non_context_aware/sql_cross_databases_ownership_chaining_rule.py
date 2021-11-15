@@ -6,7 +6,7 @@ from cloudrail.knowledge.rules.gcp.non_context_aware.base_database_flag_on_rule 
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
 
 
-class SqlCrossDatabasesOwnershipChainingOffRule(BaseDatabaseFlagOnRule):
+class SqlCrossDatabasesOwnershipChainingRule(BaseDatabaseFlagOnRule):
 
     def get_id(self) -> str:
         return 'non_car_cloud_sql_crossdb_ownership_chaining_on'
