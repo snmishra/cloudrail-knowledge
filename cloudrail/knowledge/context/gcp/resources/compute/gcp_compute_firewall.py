@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
+from cloudrail.knowledge.utils.port_set import PortSet
 
 class GcpComputeFirewallDirection(str, Enum):
     INGRESS  = 'INGRESS'
@@ -22,7 +23,7 @@ class GcpComputeFirewallAction:
             action: Rule action (allow or deny)
     """
     protocol: str
-    ports: Optional[List[int]]
+    ports: PortSet
     action: FirewallRuleAction
 
 class GcpComputeFirewall(GcpResource):

@@ -1,6 +1,7 @@
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.base_gcp_scanner_builder import BaseGcpScannerBuilder
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall import GcpComputeFirewall, GcpComputeFirewallAction, FirewallRuleAction, GcpComputeFirewallDirection
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
+from cloudrail.knowledge.utils.port_set import PortSet
 
 
 class ComputeFirewallBuilder(BaseGcpScannerBuilder):
@@ -43,5 +44,5 @@ class ComputeFirewallBuilder(BaseGcpScannerBuilder):
         if protocol not in ('TCP', 'UDP'):
             ports = None
         else:
-            ports = attributes.get('ports', ['-1'])
+            ports = PortSet(attributes.get('ports', ['-1']))
         return {'protocol': protocol, 'ports': ports}

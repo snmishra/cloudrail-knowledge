@@ -24,7 +24,7 @@ class TestComputeFirewall(GcpContextTest):
                 self.assertTrue(firewall.allow)
                 self.assertEqual(firewall.allow[0].action, FirewallRuleAction.ALLOW)
                 self.assertEqual(firewall.allow[0].protocol, 'TCP')
-                self.assertEqual(firewall.allow[0].ports, ["80", "8080", "1000-2000"])
+                self.assertEqual(firewall.allow[0].ports.port_ranges, [(80, 80), (8080, 8080), (1000, 2000)])
                 self.assertFalse(firewall.deny)
                 self.assertEqual(firewall.destination_ranges, ["8.8.8.8"])
                 self.assertEqual(firewall.direction, GcpComputeFirewallDirection.EGRESS)

@@ -2,6 +2,7 @@ from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type impor
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall import GcpComputeFirewall, GcpComputeFirewallAction, FirewallRuleAction, GcpComputeFirewallDirection
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.base_gcp_terraform_builder import BaseGcpTerraformBuilder
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
+from cloudrail.knowledge.utils.port_set import PortSet
 
 
 class ComputeFirewallBuilder(BaseGcpTerraformBuilder):
@@ -45,5 +46,5 @@ class ComputeFirewallBuilder(BaseGcpTerraformBuilder):
         if protocol not in ('TCP', 'UDP'):
             ports = None
         else:
-            ports = attributes.get('ports', ['-1'])
+            ports = PortSet(attributes.get('ports', ['-1']))
         return {'protocol': protocol, 'ports': ports}
