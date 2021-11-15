@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 from cloudrail.knowledge.rules.base_rule import BaseRule
+from cloudrail.knowledge.rules.gcp.non_context_aware.sql_cross_databases_ownership_chaining_off_rule import SqlCrossDatabasesOwnershipChainingOffRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_authentication_disable_rule import SqlDatabaseAuthenticationDisableRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_instance_no_public_ip_rule import \
     SqlDatabaseNoPublicIpRule
@@ -20,6 +21,7 @@ class GcpRulesLoader(AbstractRulesLoader):
             SqlDatabaseNoPublicIpRule(),
             ComputeInstanceNoSerialPortConnectionRule(),
             ComputeInstanceLaunchWithVmShieldRule(),
-            SqlDatabaseAuthenticationDisableRule()
+            SqlDatabaseAuthenticationDisableRule(),
+            SqlCrossDatabasesOwnershipChainingOffRule()
         ]
         return {rule.get_id(): rule for rule in rules}
