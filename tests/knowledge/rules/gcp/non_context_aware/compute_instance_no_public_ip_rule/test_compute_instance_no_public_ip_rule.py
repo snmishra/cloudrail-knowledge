@@ -7,14 +7,14 @@ class TestComputeInstanceNoPublicIpRule(GcpBaseRuleTest):
     def get_rule(self):
         return ComputeInstanceNoPublicIpRule()
 
-    @rule_test('both_pub_ip', should_alert=True, number_of_issue_items=2)
+    @rule_test('both_public_ip', should_alert=True, number_of_issue_items=2)
     def test_both_public_ip(self, rule_result: RuleResponse):
         pass
 
-    @rule_test('one_pub_ip', should_alert=True)
+    @rule_test('one_public_ip', should_alert=True)
     def test_one_public_ip(self, rule_result: RuleResponse):
         pass
 
-    @rule_test('no_pub_ip', should_alert=False)
+    @rule_test('no_public_ip', should_alert=False)
     def test_no_public_ip(self, rule_result: RuleResponse):
         pass

@@ -40,8 +40,12 @@ class ComputeInstanceBuilder(BaseGcpTerraformBuilder):
         ## Service Account ##
         service_account = None
         if service_account_data := self._get_known_value(attributes, 'service_account'):
-            service_account = GcpComputeInstanceServiceAcount(email=service_account_data[0].get('email'),
-                                                              scopes=service_account_data[0]['scopes'])
+            scopes = service_account_data[0]['scopes']
+            for scope in scopes:
+                if 'https://' not in scope:
+                    scope = f'https://www.googleapis.com/auth/{scope}'
+            service_account = GcpComputeInstanceServiceAcount(email=self._get_known_value(service_account_data[0], 'email'),
+                                                              scopes=scopes)
 
         ## Shielded Instance Config ##
         shielded_instance_config = None
@@ -52,6 +56,9 @@ class ComputeInstanceBuilder(BaseGcpTerraformBuilder):
         metadata = []
         if metadata_attributes := self._get_known_value(attributes, 'metadata', []):
             metadata = [{key: metadata_attributes[key]} for key in metadata_attributes]
+
+        if metadata_startup_script := self._get_known_value(attributes, 'metadata_startup_script'):
+            metadata.append({'startup-script': metadata_startup_script})
         return GcpComputeInstance(name=attributes['name'],
                                   zone=self._get_known_value(attributes, 'zone'),
                                   network_interfaces=network_interfaces,
@@ -59,7 +66,8 @@ class ComputeInstanceBuilder(BaseGcpTerraformBuilder):
                                   hostname=self._get_known_value(attributes, 'hostname'),
                                   metadata=metadata,
                                   service_account=service_account,
-                                  shielded_instance_config=shielded_instance_config)
+                                  shielded_instance_config=shielded_instance_config,
+                                  instance_id=attributes['instance_id'])
 
     def get_service_name(self) -> GcpResourceType:
         return GcpResourceType.GOOGLE_COMPUTE_INSTANCE
