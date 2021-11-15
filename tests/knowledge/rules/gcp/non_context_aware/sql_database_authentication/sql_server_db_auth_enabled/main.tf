@@ -1,7 +1,7 @@
-//provider "google" {
-//  project     = "dev-tomer"
-//  region      = "us-west1"
-//}
+provider "google" {
+  project     = "dev-tomer"
+  region      = "us-west1"
+}
 
 resource "google_sql_database_instance" "test-073" {
   name             = "test-instance-073"

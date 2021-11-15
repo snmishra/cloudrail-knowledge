@@ -1,7 +1,6 @@
 from typing import Dict, List
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
 from cloudrail.knowledge.rules.base_rule import Issue
-from cloudrail.knowledge.rules.gcp.gcp_base_rule import GcpBaseRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.base_database_flag_on_rule import BaseDatabaseFlagOnRule
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
 
@@ -23,6 +22,3 @@ class SqlDatabaseAuthenticationDisableRule(BaseDatabaseFlagOnRule):
 
     def get_id(self) -> str:
         return 'non_car_cloud_sql_contained_database_authentication_off'
-
-    def should_run_rule(self, environment_context: GcpEnvironmentContext) -> bool:
-        return bool(environment_context.sql_database_instances)

@@ -109,7 +109,7 @@ rules_metadata:
     remediation_steps:
       terraform: For the google_sql_database_instance resources, ensure that ‘contained database authentication’
         database flag is set to off for SQL Server databases.
-      console: Follow the guide at https://cloud.google.com/sql/docs/sqlserver/flags  in order to ensure that
+      console: Follow the guide at <https://cloud.google.com/sql/docs/sqlserver/flags>  in order to ensure that
         ‘contained database authentication’ database flag is set to off.
     rule_type: non_context_aware
     security_layer: networking
