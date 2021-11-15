@@ -24,6 +24,9 @@ class Project(GcpResource):
     def get_keys(self) -> List[str]:
         return [self.get_id()]
 
+    def get_id(self) -> str:
+        return self.gcp_project_id
+
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'{self._BASE_URL}iam-admin/settings?project={self.gcp_project_id}'
 
@@ -38,4 +41,4 @@ class Project(GcpResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.tags}
+        return {'tags': self.labels}
