@@ -13,7 +13,7 @@ class SqlDatabaseBackupConfigurationEnabledRule(GcpBaseRule):
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for sql_db_instance in env_context.sql_database_instances:
-            if not sql_db_instance.settings.backup_configuration.enabled:
+            if sql_db_instance.settings and not sql_db_instance.settings.backup_configuration.enabled:
                 issues.append(
                     Issue(
                         f"The Google Cloud {sql_db_instance.get_type()} `{sql_db_instance.get_friendly_name()}` has backup_configured enabled flag not set.",

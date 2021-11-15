@@ -13,7 +13,7 @@ class SqlDatabaseSslRequiredRule(GcpBaseRule):
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for sql_db_instance in env_context.sql_database_instances:
-            if not sql_db_instance.settings.ip_configuration.require_ssl:
+            if sql_db_instance.settings and not sql_db_instance.settings.ip_configuration.require_ssl:
                 issues.append(
                     Issue(
                         f"The {sql_db_instance.get_type()} `{sql_db_instance.get_friendly_name()}` is not enforcing SSL connections",
