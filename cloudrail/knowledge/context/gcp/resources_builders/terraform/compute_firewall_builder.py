@@ -45,5 +45,5 @@ class ComputeFirewallBuilder(BaseGcpTerraformBuilder):
         if protocol not in ('TCP', 'UDP'):
             ports = None
         else:
-            ports = attributes.get('ports') or ['-1']
+            ports = attributes.get('ports', ['-1'])
         return {'protocol': protocol, 'ports': ports}
