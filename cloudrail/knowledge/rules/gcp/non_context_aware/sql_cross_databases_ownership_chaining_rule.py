@@ -19,7 +19,7 @@ class SqlCrossDatabasesOwnershipChainingRule(BaseDatabaseFlagOnRule):
                 issues.append(
                     Issue(
                         f"The Google Cloud database instance `{sql_db.get_friendly_name()}` has database"
-                        f" flag ‘cross db ownership chaining’ set to on.",
+                        f" flag `cross db ownership chaining` set to on.",
                         sql_db,
                         sql_db))
         return issues
