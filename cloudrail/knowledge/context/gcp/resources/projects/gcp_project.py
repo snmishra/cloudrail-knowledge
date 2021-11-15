@@ -41,4 +41,4 @@ class Project(GcpResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'tags': self.labels}
+        return {'labels': self.labels}

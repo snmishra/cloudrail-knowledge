@@ -8,6 +8,7 @@ from cloudrail.knowledge.utils.terraform_output_validator import TerraformOutput
 from cloudrail.knowledge.context.environment_context.terraform_resources_helper import get_raw_resources_by_type
 from cloudrail.knowledge.context.environment_context.terraform_resources_metadata_parser import TerraformResourcesMetadataParser
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.sql_database_instance_builder import SqlDatabaseInstanceBuilder
+from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_network_builder import ComputeNetworkBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_instance_builder import ComputeInstanceBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_firewall_builder import ComputeFirewallBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.project_builder import ProjectBuilder
@@ -43,5 +44,6 @@ class GcpTerraformContextBuilder(IacContextBuilder):
             context.sql_database_instances = SqlDatabaseInstanceBuilder(resources).build()
             context.compute_instances = ComputeInstanceBuilder(resources).build()
             context.compute_firewalls = ComputeFirewallBuilder(resources).build()
+            context.compute_networks = ComputeNetworkBuilder(resources).build()
             context.projects = ProjectBuilder(resources).build()
             return context
