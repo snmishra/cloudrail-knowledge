@@ -14,7 +14,7 @@ class SqlDatabaseAuthenticationDisableRule(BaseDatabaseFlagOnRule):
                     self.is_flag_on(sql_db, 'contained database authentication'):
                 issues.append(
                     Issue(
-                        f"The Google Cloud database instance `{sql_db.get_friendly_name()}` "
+                        f"The Google Cloud {sql_db.get_type()} `{sql_db.get_friendly_name()}` "
                         f"has database flag ‘contained database authentication’ set to off.",
                         sql_db,
                         sql_db))
