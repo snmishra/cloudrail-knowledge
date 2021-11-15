@@ -49,8 +49,8 @@ class GcpComputeFirewall(GcpResource):
         super().__init__(GcpResourceType.GOOGLE_COMPUTE_FIREWALL)
         self.name: str = name
         self.network: str = network
-        self.allow: Optional[List[GcpComputeFirewallAction]] = allow
-        self.deny: Optional[List[GcpComputeFirewallAction]] = deny
+        self.allow: List[GcpComputeFirewallAction] = allow
+        self.deny: List[GcpComputeFirewallAction] = deny
         self.destination_ranges: Optional[List[str]] = destination_ranges
         self.direction: Optional[GcpComputeFirewallDirection] = direction
         self.source_ranges: Optional[List[str]] = source_ranges
