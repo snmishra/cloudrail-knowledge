@@ -18,7 +18,7 @@ class ComputeInstanceNoPublicIpRule(GcpBaseRule):
                     if network_interface.access_config:
                         issues.append(
                             Issue(
-                                f"The {compute_instance.get_type()} `{compute_instance.get_friendly_name()}` has access_config sub block present",
+                                f"The {compute_instance.get_type()} `{compute_instance.get_friendly_name()}` have public IP addresses",
                                 compute_instance,
                                 compute_instance))
         return issues
