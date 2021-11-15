@@ -13,7 +13,8 @@ class PseudoBuilder:
         self.ctx = merged_ctx
 
     def create_default_firewalls(self):
-        if not any(firewall.origin == EntityOrigin.LIVE_ENV for firewall in self.ctx.compute_firewalls):
+        if len(self.ctx.compute_firewalls) > 0 \
+            and not any(firewall.origin == EntityOrigin.LIVE_ENV for firewall in self.ctx.compute_firewalls):
             current_path = os.path.dirname(os.path.abspath(__file__))
             firewalls_raw_data = os.path.join(current_path + '/pseudo_docs/', 'default_firewalls.json')
             with open(firewalls_raw_data, 'r') as data:
