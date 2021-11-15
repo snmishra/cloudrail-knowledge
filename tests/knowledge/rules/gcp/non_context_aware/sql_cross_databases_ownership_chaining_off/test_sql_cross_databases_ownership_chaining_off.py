@@ -12,6 +12,6 @@ class TestSqlCrossDatabasesOwnershipChainingOffRule(GcpBaseRuleTest):
     def test_cross_db_chaining_on(self, rule_result: RuleResponse):
         pass
 
-    @rule_test('', should_alert=False)
-    def test_(self, rule_result: RuleResponse):
+    @rule_test('cross_db_chaining_off', should_alert=False)
+    def test_cross_db_chaining_off(self, rule_result: RuleResponse):
         pass
