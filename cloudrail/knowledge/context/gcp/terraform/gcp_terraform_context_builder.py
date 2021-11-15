@@ -10,6 +10,7 @@ from cloudrail.knowledge.context.environment_context.terraform_resources_metadat
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.sql_database_instance_builder import SqlDatabaseInstanceBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_instance_builder import ComputeInstanceBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_firewall_builder import ComputeFirewallBuilder
+from cloudrail.knowledge.context.gcp.resources_builders.terraform.project_builder import ProjectBuilder
 from cloudrail.knowledge.context.environment_context.iac_context_builder import IacContextBuilder
 from cloudrail.knowledge.utils.checkov_utils import to_checkov_results
 
@@ -42,4 +43,5 @@ class GcpTerraformContextBuilder(IacContextBuilder):
             context.sql_database_instances = SqlDatabaseInstanceBuilder(resources).build()
             context.compute_instances = ComputeInstanceBuilder(resources).build()
             context.compute_firewalls = ComputeFirewallBuilder(resources).build()
+            context.projects = ProjectBuilder(resources).build()
             return context
