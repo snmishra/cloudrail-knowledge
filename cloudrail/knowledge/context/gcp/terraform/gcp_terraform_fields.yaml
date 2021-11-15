@@ -20,6 +20,11 @@ google_sql_database_instance:
         known_fields:
           pass:
             - tier
+            - user_labels:
+                known_fields:
+                  pass:
+                    - name
+                unknown_fields_action: hash
             - backup_configuration:
                 known_fields:
                   pass:

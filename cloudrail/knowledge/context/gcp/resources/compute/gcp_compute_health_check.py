@@ -109,10 +109,6 @@ class GcpComputeHealthCheck(GcpResource):
         else:
             return 'Compute Health Checks'
 
-    @property
-    def is_tagable(self) -> bool:
-        return False
-
     def to_drift_detection_object(self) -> dict:
         return {'name': self.name,
                 'health_check_type': self.health_check_type.value,

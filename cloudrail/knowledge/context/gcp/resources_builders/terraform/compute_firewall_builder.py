@@ -42,5 +42,8 @@ class ComputeFirewallBuilder(BaseGcpTerraformBuilder):
     @staticmethod
     def get_action_block_data(attributes: dict) -> dict:
         protocol = IpProtocol(attributes['protocol'])
-        ports = attributes.get('ports') or 'ANY'
+        if protocol not in ('TCP', 'UDP'):
+            ports = None
+        else:
+            ports = attributes.get('ports') or ['-1']
         return {'protocol': protocol, 'ports': ports}

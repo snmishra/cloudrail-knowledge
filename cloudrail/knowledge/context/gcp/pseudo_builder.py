@@ -16,7 +16,7 @@ class PseudoBuilder:
         if len(self.ctx.compute_firewalls) > 0 \
             and not any(firewall.origin == EntityOrigin.LIVE_ENV for firewall in self.ctx.compute_firewalls):
             current_path = os.path.dirname(os.path.abspath(__file__))
-            firewalls = file_to_json(os.path.join(current_path + '/pseudo_docs/', 'default_firewalls.json'))
+            firewalls = file_to_json(os.path.join(current_path + '/pseudo_docs', 'default_firewalls.json'))
             firewalls_list: List[GcpComputeFirewall] = []
             project_id = self.ctx.compute_firewalls[0].project_id
             for firewall in firewalls['value']:

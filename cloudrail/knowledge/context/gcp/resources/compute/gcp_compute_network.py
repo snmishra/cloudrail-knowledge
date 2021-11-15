@@ -31,10 +31,6 @@ class GcpComputeNetwork(GcpResource):
     def get_keys(self) -> List[str]:
         return [self.name, self.project_id]
 
-    @property
-    def is_tagable(self) -> bool:
-        return False
-
     def get_name(self) -> str:
         return self.name
 

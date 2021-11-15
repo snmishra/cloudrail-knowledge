@@ -147,8 +147,8 @@ class GcpSqlDatabaseInstance(GcpResource):
         return [self.name, self.project_id]
 
     @property
-    def is_tagable(self) -> bool:
-        return False
+    def is_labeled(self) -> bool:
+        return True
 
     def get_id(self) -> str:
         return self.name
@@ -164,4 +164,5 @@ class GcpSqlDatabaseInstance(GcpResource):
 
     def to_drift_detection_object(self) -> dict:
         return {'name': self.name,
-                'settings': self.settings and dataclasses.asdict(self.settings)}  # TODO: check drift detection on this resource
+                'settings': self.settings and dataclasses.asdict(self.settings),
+                'labels': self.labels}

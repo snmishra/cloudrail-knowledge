@@ -40,8 +40,8 @@ class GcpComputeFirewall(GcpResource):
     def __init__(self,
                  name: str,
                  network: str,
-                 allow: Optional[List[GcpComputeFirewallAction]],
-                 deny: Optional[List[GcpComputeFirewallAction]],
+                 allow: List[GcpComputeFirewallAction],
+                 deny: List[GcpComputeFirewallAction],
 		         destination_ranges: Optional[List[str]],
 		         direction: Optional[GcpComputeFirewallDirection],
 		         source_ranges: Optional[List[str]]):
@@ -59,8 +59,8 @@ class GcpComputeFirewall(GcpResource):
         return [self.name, self.project_id]
 
     @property
-    def is_tagable(self) -> bool:
-        return False
+    def is_labeled(self) -> bool:
+        return True
 
     def get_name(self) -> Optional[str]:
         return self.name
@@ -70,9 +70,9 @@ class GcpComputeFirewall(GcpResource):
 
     def get_type(self, is_plural: bool = False) -> str:
         if not is_plural:
-            return 'Compute Firewall Details'
+            return 'Compute Firewall'
         else:
-            return 'Compute Firewall Details'
+            return 'Compute Firewalls'
 
     def to_drift_detection_object(self) -> dict:
         return {'destination_ranges': self.destination_ranges,

@@ -20,10 +20,13 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
             settings = self.build_settings_block(attributes)
             database_version = GcpSqlDBInstanceVersion(attributes["databaseVersion"])
 
-            return GcpSqlDatabaseInstance(name=attributes["name"],
-                                          region=attributes["region"],
-                                          settings=settings,
-                                          database_version=database_version)
+            sql_instance = GcpSqlDatabaseInstance(name=attributes["name"],
+                                                  region=attributes["region"],
+                                                  settings=settings,
+                                                  database_version=database_version)
+            if sql_instance.settings:
+                sql_instance.labels = attributes['settings'].get('userLabels')
+            return sql_instance
 
         return None
 
