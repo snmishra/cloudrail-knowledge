@@ -3,14 +3,14 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall impo
 from cloudrail.knowledge.context.mergeable import EntityOrigin
 
 from tests.knowledge.context.gcp_context_test import GcpContextTest
-from tests.knowledge.context.test_context_annotation import TestOptions, context
+from tests.knowledge.context.test_context_annotation import context
 
 
 class TestComputeFirewall(GcpContextTest):
     def get_component(self):
         return 'compute_firewall'
 
-    @context(module_path="basic", test_options=TestOptions(run_drift_detection=False))
+    @context(module_path="basic")
     def test_basic(self, ctx: GcpEnvironmentContext):
         self.assertEqual(len(ctx.compute_firewalls), 6)
         firewalls = [firewall for firewall in ctx.compute_firewalls if firewall.name in ('crtestfirewall1', 'crtestfirewall2')]
