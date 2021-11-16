@@ -2,6 +2,7 @@ from typing import Dict, List
 
 from cloudrail.knowledge.rules.base_rule import BaseRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_database_temp_log_files_zero_rule import PostgresDatabaseTempLogFilesZeroRule
+from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_log_lock_waits_on_rule import PostgresLogLockWaitsOnRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_instance_backup_configuration_enabled_rule import SqlDatabaseBackupConfigurationEnabledRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_do_not_use_default_service_account_rule import ComputeInstanceDoNotUseDefaultServiceAccountRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_cross_databases_ownership_chaining_rule import SqlCrossDatabasesOwnershipChainingRule
@@ -30,6 +31,7 @@ class GcpRulesLoader(AbstractRulesLoader):
             SqlDatabaseAuthenticationDisableRule(),
             SqlCrossDatabasesOwnershipChainingRule(),
             SqlLogMinimumDurationDisableRule(),
-            PostgresDatabaseTempLogFilesZeroRule()
+            PostgresDatabaseTempLogFilesZeroRule(),
+            PostgresLogLockWaitsOnRule()
         ]
         return {rule.get_id(): rule for rule in rules}

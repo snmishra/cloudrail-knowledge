@@ -42,7 +42,6 @@ class TestSqlDatabaseFlagsModes(TestCase):
                 'non_car_cloud_sql_log_min_duration_disable', 'log_min_duration_statement', '-1',
                 GcpSqlDBInstanceVersion.POSTGRES10, RuleResultType.SUCCESS, 0
             ],
-
             [
                 'non_car_cloud_sql_log_temp_files_zero', 'log_temp_files', '1',
                 GcpSqlDBInstanceVersion.POSTGRES10, RuleResultType.FAILED, 1
@@ -50,6 +49,14 @@ class TestSqlDatabaseFlagsModes(TestCase):
             [
                 'non_car_cloud_sql_log_temp_files_zero', 'log_temp_files', '0',
                 GcpSqlDBInstanceVersion.POSTGRES10, RuleResultType.SUCCESS, 0
+            ],
+            [
+                'non_car_cloud_sql_log_lock_waits_on', 'log_lock_waits', 'off',
+                GcpSqlDBInstanceVersion.POSTGRES11, RuleResultType.FAILED, 1
+            ],
+            [
+                'non_car_cloud_sql_log_lock_waits_on', 'log_lock_waits', 'on',
+                GcpSqlDBInstanceVersion.POSTGRES11, RuleResultType.SUCCESS, 0
             ],
         ])
     def test_sql_db_flag_mode(self, rule_id: str, flag_name: str, flag_value: str, db_version: GcpSqlDBInstanceVersion,
