@@ -294,3 +294,29 @@ rules_metadata:
       - database
     supported_iac_types:
       - terraform
+
+  - rule_id: non_car_cloud_sql_log_connections_on
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '6.2.2'
+    name:  Ensure PostgreSQL database ‘log_connections’ flag is set to ‘on’
+    severity: medium
+    description: PostgreSQL does not log attempted connections by default. Enabling the log_connections setting will
+      create log entries for each attempted connection as well as successful completion of client authentication which
+      can be useful in troubleshooting issues and to determine any unusual connection attempts to the server.
+      This recommendation is applicable to PostgreSQL database instances.
+    human_readable_logic: Cloudrail will review the database instance configuration within your GCP subscription and
+      Terraform plan to ensure that PostgreSQL database instances have log_connections database flag set to on.
+    remediation_steps:
+      terraform: For the google_sql_database_instance resources, ensure that log_connections database flag is
+        set to on for PostgreSQL databases.
+      console: Follow the guide at <https://cloud.google.com/sql/docs/postgres/flags#setting_a_database_flag> in order
+        to ensure that log_connections database flag is set to on.
+    rule_type: non_context_aware
+    security_layer: logging
+    resource_type:
+      - database
+    supported_iac_types:
+      - terraform

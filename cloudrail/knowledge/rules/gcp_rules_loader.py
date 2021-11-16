@@ -2,6 +2,7 @@ from typing import Dict, List
 
 from cloudrail.knowledge.rules.base_rule import BaseRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_database_temp_log_files_zero_rule import PostgresDatabaseTempLogFilesZeroRule
+from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_log_connections_rule import PostgresLogConnectionsRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_log_disconnections_rule import PostgresLogDisconnectionsRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_log_lock_waits_on_rule import PostgresLogLockWaitsOnRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_instance_backup_configuration_enabled_rule import SqlDatabaseBackupConfigurationEnabledRule
@@ -34,6 +35,7 @@ class GcpRulesLoader(AbstractRulesLoader):
             SqlLogMinimumDurationDisableRule(),
             PostgresDatabaseTempLogFilesZeroRule(),
             PostgresLogLockWaitsOnRule(),
-            PostgresLogDisconnectionsRule()
+            PostgresLogDisconnectionsRule(),
+            PostgresLogConnectionsRule()
         ]
         return {rule.get_id(): rule for rule in rules}
