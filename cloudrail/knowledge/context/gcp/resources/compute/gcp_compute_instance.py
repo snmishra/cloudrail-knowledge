@@ -142,6 +142,6 @@ class GcpComputeInstance(GcpResource):
 
     @property
     def is_using_default_service_account(self) -> bool:
-        return self.service_account and (not self.service_account.email) \
-            or (self.service_account.email.split('-')[0].isnumeric() \
-                and self.service_account.email.split('-')[1] == 'compute@developer.gserviceaccount.com')
+        return self.service_account and (not self.service_account.email \
+            or ('-' in self.service_account.email and self.service_account.email.split('-')[0].isnumeric() \
+                and self.service_account.email.split('-')[1] == 'compute@developer.gserviceaccount.com'))
