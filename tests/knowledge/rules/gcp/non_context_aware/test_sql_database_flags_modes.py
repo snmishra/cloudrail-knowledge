@@ -73,6 +73,14 @@ class TestSqlDatabaseFlagsModes(TestCase):
             [
                 'non_car_cloud_sql_log_connections_on', 'log_connections', 'off',
                 GcpSqlDBInstanceVersion.POSTGRES11, RuleResultType.FAILED, 1
+            ],
+            [
+                'non_car_cloud_sql_log_checkpoints_on', 'log_checkpoints', 'on',
+                GcpSqlDBInstanceVersion.POSTGRES11, RuleResultType.SUCCESS, 0
+            ],
+            [
+                'non_car_cloud_sql_log_checkpoints_on', 'log_checkpoints', 'off',
+                GcpSqlDBInstanceVersion.POSTGRES11, RuleResultType.FAILED, 1
             ]
         ])
     def test_sql_db_flag_mode(self, rule_id: str, flag_name: str, flag_value: str, db_version: GcpSqlDBInstanceVersion,
