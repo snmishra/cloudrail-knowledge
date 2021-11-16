@@ -139,3 +139,9 @@ class GcpComputeInstance(GcpResource):
                 'service_account': self.service_account,
                 'shielded_instance_config': self.shielded_instance_config,
                 'labels': self.labels}
+
+    @property
+    def is_using_default_service_account(self) -> bool:
+        return self.service_account and (not self.service_account.email) \
+            or (self.service_account.email.split('-')[0].isnumeric() \
+                and self.service_account.email.split('-')[1] == 'compute@developer.gserviceaccount.com')
