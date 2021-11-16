@@ -268,3 +268,29 @@ rules_metadata:
       - database
     supported_iac_types:
       - terraform
+
+  - rule_id: non_car_cloud_sql_log_disconnections_on
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '6.2.3'
+    name: Ensure PostgreSQL database ‘log_disconnections’ flag is set to ‘on’
+    severity: medium
+    description: PostgreSQL does not log session details such as duration and session end by default.
+      Enabling the log_disconnections setting will create log entries at the end of each session which can be useful in
+      troubleshooting issues and determine any unusual activity across a time period.
+      This recommendation is applicable to PostgreSQL database instances.
+    human_readable_logic: Cloudrail will review the database instance configuration within your GCP subscription and
+      Terraform plan to ensure that PostgreSQL database instances have log_disconnections database flag set to on.
+    remediation_steps:
+      terraform: For the google_sql_database_instance resources, ensure that log_disconnections database flag is set
+        to on for PostgreSQL databases.
+      console: Follow the guide at <https://cloud.google.com/sql/docs/postgres/flags#setting_a_database_flag>
+        in order to ensure that log_disconnections database flag is set to on.
+    rule_type: non_context_aware
+    security_layer: logging
+    resource_type:
+      - database
+    supported_iac_types:
+      - terraform
