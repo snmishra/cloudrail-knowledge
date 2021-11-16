@@ -186,7 +186,7 @@ rules_metadata:
     supported_iac_types:
       - terraform
 
-- rule_id: non_car_cloud_sql_log_min_duration_disable
+  - rule_id: non_car_cloud_sql_log_min_duration_disable
     cloud_provider: google_cloud_provider
     compliance:
       CIS:
@@ -208,6 +208,33 @@ rules_metadata:
         ensure that log_min_duration_statement database flag is set to -1 for PostgreSQL databases.
       console: Follow the guide at <https://cloud.google.com/sql/docs/postgres/flags#setting_a_database_flag>
         in order to ensure that log_min_duration_statement database flag is set to -1.
+    rule_type: non_context_aware
+    security_layer: logging
+    resource_type:
+      - database
+    supported_iac_types:
+      - terraform
+
+  - rule_id: non_car_cloud_sql_log_temp_files_zero
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '6.2.6'
+    name: Ensure PostgreSQL database ‘log_temp_files’ flag is set to 0
+    severity: medium
+    description: PostgreSQL can create a temporary file for actions such as sorting, hashing and temporary query
+      results when these operations exceed work_mem.
+      Configuring log_temp_files to 0 causes all temporary file information to be logged.
+      If all temporary files are not logged, it may be difficult to identify potential performance issues that may be
+      due to either poor application coding or deliberate resource starvation attempts.
+    human_readable_logic: Cloudrail will review the database instance configuration within your GCP subscription and
+      Terraform plan to ensure that PostgreSQL database instances have log_temp_files database flag set to 0.
+    remediation_steps:
+      terraform: For the google_sql_database_instance resources,
+        ensure that log_temp_files database flag is set to 0 for PostgreSQL databases.
+      console: Follow the guide at <https://cloud.google.com/sql/docs/postgres/flags#setting_a_database_flag>
+        in order to ensure that log_temp_files database flag is set to 0.
     rule_type: non_context_aware
     security_layer: logging
     resource_type:

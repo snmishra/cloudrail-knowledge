@@ -34,14 +34,21 @@ class TestSqlDatabaseFlagsModes(TestCase):
                 'non_car_cloud_sql_crossdb_ownership_chaining_on', 'cross db ownership chaining', 'off',
                 GcpSqlDBInstanceVersion.SQLSERVER_2017_STANDARD, RuleResultType.SUCCESS, 0
             ],
-
-
             [
                 'non_car_cloud_sql_log_min_duration_disable', 'log_min_duration_statement', '0',
                 GcpSqlDBInstanceVersion.POSTGRES10, RuleResultType.FAILED, 1
             ],
             [
                 'non_car_cloud_sql_log_min_duration_disable', 'log_min_duration_statement', '-1',
+                GcpSqlDBInstanceVersion.POSTGRES10, RuleResultType.SUCCESS, 0
+            ],
+
+            [
+                'non_car_cloud_sql_log_temp_files_zero', 'log_temp_files', '1',
+                GcpSqlDBInstanceVersion.POSTGRES10, RuleResultType.FAILED, 1
+            ],
+            [
+                'non_car_cloud_sql_log_temp_files_zero', 'log_temp_files', '0',
                 GcpSqlDBInstanceVersion.POSTGRES10, RuleResultType.SUCCESS, 0
             ],
         ])
