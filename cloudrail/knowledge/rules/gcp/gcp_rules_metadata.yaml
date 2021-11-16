@@ -207,7 +207,7 @@ rules_metadata:
     supported_iac_types:
       - terraform
 
-- rule_id: non_car_cloud_sql_log_min_duration_disable
+  - rule_id: non_car_cloud_sql_log_min_duration_disable
     cloud_provider: google_cloud_provider
     compliance:
       CIS:
