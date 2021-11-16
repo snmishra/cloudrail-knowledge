@@ -178,3 +178,52 @@ rules_metadata:
       - database
     supported_iac_types:
       - terraform
+
+  - rule_id: non_car_cloud_sql_crossdb_ownership_chaining_on
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '6.3.1'
+    name: Ensure SQL database ‘cross db ownership chaining’ flag is set to ‘on'
+    severity: medium
+    description: The ‘cross db ownership chaining’ database flag allows the admins to control cross-database ownership
+      chaining at the database level or to allow cross-database ownership chaining for all databases.
+      Enabling cross db ownership is not recommended unless all of the databases hosted by the instance of SQL Server
+      must participate in cross- database ownership chaining.
+      This recommendation is applicable to SQL Server database instances.
+    human_readable_logic: Cloudrail will review the database instance configuration within your GCP subscription and
+      Terraform plan to ensure that SQL Server database instances have ‘cross db ownership chaining’
+      database flag set to off.
+    remediation_steps:
+      terraform: For the google_sql_database_instance resources, ensure that ‘cross db ownership chaining’
+        database flag is set to off for SQL Server databases.
+      console: Follow the guide at <https://cloud.google.com/sql/docs/sqlserver/flags> in order to ensure that
+        ‘cross db ownership chaining’ database flag is set to off.
+    rule_type: non_context_aware
+    security_layer: iam
+    resource_type:
+      - database
+    supported_iac_types:
+      - terraform
+
+  - rule_id: non_car_compute_instance_no_default_service_account_full_access_api
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '4.2'
+    name: Ensure that instances are not configured to use the default service account with full access to all Cloud APIs
+    severity: medium
+    description:
+      To ensure the principle of least privileges are followed and to prevent potential privilege escalation, the Compute Engine instances should not be configured to use the default service account with the Cloud API access scope set to "Allow full access to all Cloud APIs". 
+    human_readable_logic: Cloudrail will review the compute instances configuration within your GCP subscription and Terraform plan to ensure that the instances do not use default service account with scope Allow full access to all Cloud APIs.
+    remediation_steps:
+      terraform: For the google_compute_instance resource ensure the service_account block has attribute email doesn’t use default service account [project_number]- compute@developer.gserviceaccount.com and the scope is not set to https://www.googleapis.com/auth/cloud-platform.
+      console: Follow the guides at <https://cloud.google.com/compute/docs/access/service-accounts> and <https://cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances> in order to ensure default service account with scope Allow full access to all Cloud APIs is not being used. VMs created by GKE should be excluded.
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - compute
+    supported_iac_types:
+      - terraform
