@@ -8,6 +8,7 @@ from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_log_disconnections
 from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_log_lock_waits_on_rule import PostgresLogLockWaitsOnRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_instance_backup_configuration_enabled_rule import SqlDatabaseBackupConfigurationEnabledRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_do_not_use_default_service_account_rule import ComputeInstanceDoNotUseDefaultServiceAccountRule
+from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_do_not_use_default_service_account_full_access_scope_rule import ComputeInstanceDoNotUseDefaultServiceAccountFullAccessScopeRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_cross_databases_ownership_chaining_rule import SqlCrossDatabasesOwnershipChainingRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_authentication_disable_rule import SqlDatabaseAuthenticationDisableRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_instance_no_public_ip_rule import \
@@ -32,6 +33,7 @@ class GcpRulesLoader(AbstractRulesLoader):
             SqlDatabaseBackupConfigurationEnabledRule(),
             ComputeInstanceDoNotUseDefaultServiceAccountRule(),
             SqlDatabaseAuthenticationDisableRule(),
+            ComputeInstanceDoNotUseDefaultServiceAccountFullAccessScopeRule(),
             SqlCrossDatabasesOwnershipChainingRule(),
             SqlLogMinimumDurationDisableRule(),
             PostgresDatabaseTempLogFilesZeroRule(),
