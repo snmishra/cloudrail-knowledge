@@ -20,6 +20,11 @@ google_sql_database_instance:
         known_fields:
           pass:
             - tier
+            - user_labels:
+                known_fields:
+                  pass:
+                    - name
+                unknown_fields_action: hash
             - backup_configuration:
                 known_fields:
                   pass:
@@ -67,7 +72,6 @@ google_compute_instance:
     - deletion_protection
     - hostname
     - guest_accelerator
-    - labels
     - metadata
     - metadata_startup_script
     - min_cpu_platform
@@ -98,3 +102,14 @@ google_project:
       - name
       - number
       - project_id
+
+google_compute_firewall:
+  known_fields:
+    pass:
+      - name
+      - network
+      - allow
+      - deny
+      - destination_ranges
+      - direction
+      - source_ranges
