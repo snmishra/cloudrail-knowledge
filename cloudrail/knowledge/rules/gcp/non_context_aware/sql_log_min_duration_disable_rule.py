@@ -11,7 +11,7 @@ class SqlLogMinimumDurationDisableRule(BaseDatabaseFlagOnRule):
         issues: List[Issue] = []
         for sql_db in env_context.sql_database_instances:
             if self.is_version_contains(sql_db, 'POSTGRES') and \
-                    self.is_flag_mode(sql_db, 'log_min_duration_statement', '-1'):
+                    not self.is_flag_mode(sql_db, 'log_min_duration_statement', '-1'):
                 issues.append(
                     Issue(
                         f"The Google Cloud {sql_db.get_type()} `{sql_db.get_friendly_name()}` has database flag "
