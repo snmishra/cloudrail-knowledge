@@ -9,3 +9,4 @@ class GcpResourceType(Enum):
     GOOGLE_COMPUTE_FIREWALL = 'google_compute_firewall'
     GOOGLE_COMPUTE_NETWORK = 'google_compute_network'
     GOOGLE_PROJECT = 'google_project'
+    GOOGLE_CONTAINER_CLUSTER = 'google_container_cluster'

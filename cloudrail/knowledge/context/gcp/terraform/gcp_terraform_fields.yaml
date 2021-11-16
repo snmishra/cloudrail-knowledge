@@ -113,3 +113,13 @@ google_compute_firewall:
       - destination_ranges
       - direction
       - source_ranges
+
+google_container_cluster:
+  known_fields:
+    pass:
+      - name
+      - location
+      - cluster_ipv4_cidr
+      - enable_shielded_nodes
+      - master_authorized_networks_config
+      - authenticator_groups_config
