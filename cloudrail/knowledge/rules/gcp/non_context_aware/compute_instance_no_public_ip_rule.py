@@ -13,14 +13,13 @@ class ComputeInstanceNoPublicIpRule(GcpBaseRule):
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for compute_instance in env_context.compute_instances:
-            if network_interfaces_list := compute_instance.network_interfaces:
-                for network_interface in network_interfaces_list:
-                    if network_interface.access_config:
-                        issues.append(
-                            Issue(
-                                f"The {compute_instance.get_type()} `{compute_instance.get_friendly_name()}` has public ip address attached.",
-                                compute_instance,
-                                compute_instance))
+            for network_interface in compute_instance.network_interfaces or []:
+                if network_interface.access_config:
+                    issues.append(
+                        Issue(
+                            f"The {compute_instance.get_type()} `{compute_instance.get_friendly_name()}` has public ip address attached.",
+                            compute_instance,
+                            compute_instance))
         return issues
 
     def should_run_rule(self, environment_context: GcpEnvironmentContext) -> bool:
