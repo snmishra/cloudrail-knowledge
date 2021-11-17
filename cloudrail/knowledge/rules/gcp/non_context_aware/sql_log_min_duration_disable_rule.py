@@ -15,7 +15,7 @@ class SqlLogMinimumDurationDisableRule(BaseDatabaseFlagOnRule):
                 issues.append(
                     Issue(
                         f"The Google Cloud {sql_db.get_type()} `{sql_db.get_friendly_name()}` has database flag "
-                        f"`log_min_duration_statement` set to -1.",
+                        f"`log_min_duration_statement` set other than -1.",
                         sql_db,
                         sql_db))
         return issues

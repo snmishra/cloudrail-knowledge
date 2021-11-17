@@ -3,7 +3,7 @@ from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_log_connections_ru
 from tests.knowledge.rules.base_rule_test import GcpBaseRuleTest, rule_test
 
 
-class TestPostgresLogDisconnections(GcpBaseRuleTest):
+class TestPostgresLogConnections(GcpBaseRuleTest):
 
     def get_rule(self):
         return PostgresLogConnectionsRule()
