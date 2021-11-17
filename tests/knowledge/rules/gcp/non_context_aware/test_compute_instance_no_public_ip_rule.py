@@ -1,3 +1,4 @@
+from typing import List
 from unittest import TestCase
 from parameterized import parameterized
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
@@ -13,31 +14,26 @@ class TestComputeInstanceNoPublicIpRule(TestCase):
 
     @parameterized.expand(
         [
-            ["One public ip", "1.1.1.1", None, 1, True],
-            ["Both public ip", "1.1.1.1", "2.2.2.2", 2, True],
-            ["No public ip", None, None, 0, False],
+            ["One public ip", ["1.1.1.1"], 1, RuleResultType.FAILED],
+            ["Both public ip", ["1.1.1.1", "2.2.2.2"], 2, RuleResultType.FAILED],
+            ["No public ip", [], 0, RuleResultType.SUCCESS],
         ]
     )
 
-    def test_compute_instance_public_ip(self, unused_name: str, public_ip_1: str, public_ip_2: str, isusses: int, should_alert: bool):
+    def test_compute_instance_public_ip(self, unused_name: str, public_ips: dict, total_issues: int, rule_status: RuleResultType):
         # Arrange
-        compute_instance_1 = create_empty_entity(GcpComputeInstance)
-        compute_instance_2 = create_empty_entity(GcpComputeInstance)
-        if public_ip_1:
-            compute_instance_1.network_interfaces = [create_empty_entity(GcpComputeInstanceNetworkInterface)]
-            compute_instance_1.network_interfaces[0].access_config = [create_empty_entity(GcpComputeInstanceNetIntfAccessCfg)]
-            compute_instance_1.network_interfaces[0].access_config[0].nat_ip = public_ip_1
-        if public_ip_2:
-            compute_instance_2.network_interfaces = [create_empty_entity(GcpComputeInstanceNetworkInterface)]
-            compute_instance_2.network_interfaces[0].access_config = [create_empty_entity(GcpComputeInstanceNetIntfAccessCfg)]
-            compute_instance_2.network_interfaces[0].access_config[0].nat_ip = public_ip_2
-        context = GcpEnvironmentContext(compute_instances=[compute_instance_1, compute_instance_2])
+        compute_instances: List[GcpComputeInstance] = []
+        for i in range(2):
+            compute_instances.append(create_empty_entity(GcpComputeInstance))
+
+        for i, public_ip in enumerate(public_ips):
+            compute_instances[i].network_interfaces = [create_empty_entity(GcpComputeInstanceNetworkInterface)]
+            compute_instances[i].network_interfaces[0].access_config = [create_empty_entity(GcpComputeInstanceNetIntfAccessCfg)]
+            compute_instances[i].network_interfaces[0].access_config[0].nat_ip = public_ip
+
+        context = GcpEnvironmentContext(compute_instances=compute_instances)
         # Act
         result = self.rule.run(context, {})
         # Assert
-        if should_alert:
-            self.assertEqual(RuleResultType.FAILED, result.status)
-            self.assertEqual(isusses, len(result.issues))
-        else:
-            self.assertEqual(RuleResultType.SUCCESS, result.status)
-            self.assertEqual(0, len(result.issues))
+        self.assertEqual(rule_status, result.status)
+        self.assertEqual(total_issues, len(result.issues))
