@@ -85,4 +85,6 @@ class GcpContainerCluster(GcpResource):
             return 'Container Clusters'
 
     def to_drift_detection_object(self) -> dict:
-        return {}  # TODO: complete
+        return {'enable_shielded_nodes': self.enable_shielded_nodes,
+                'master_authorized_networks_config': self.master_authorized_networks_config,
+                'authenticator_groups_config': self.authenticator_groups_config}

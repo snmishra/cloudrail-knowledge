@@ -2,12 +2,9 @@ from typing import List, Dict
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult
-<<<<<<< HEAD
 from cloudrail.knowledge.context.gcp.resources.cluster.gcp_container_cluster import GcpContainerCluster
-=======
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_global_forwarding_rule import \
     GcpComputeGlobalForwardingRule
->>>>>>> main
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall import GcpComputeFirewall
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_network import GcpComputeNetwork
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_http_proxy import GcpComputeTargetHttpProxy
