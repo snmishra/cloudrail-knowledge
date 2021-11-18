@@ -6,7 +6,7 @@ from cloudrail.knowledge.rules.gcp.gcp_base_rule import GcpBaseRule
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
 
 
-class ContainerClusterEnsureNoPublicIptRule(GcpBaseRule):
+class ContainerClusterIsNotPublictRule(GcpBaseRule):
     def get_id(self) -> str:
         return 'non_car_gke_control_plane_ensure_not_public'
 
