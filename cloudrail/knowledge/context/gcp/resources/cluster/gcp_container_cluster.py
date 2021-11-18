@@ -72,7 +72,7 @@ class GcpContainerCluster(GcpResource):
     def is_labeled(self) -> bool:
         return False
 
-    def get_id(self) -> str:
+    def get_name(self) -> Optional[str]:
         return self.name
 
     def get_cloud_resource_url(self) -> Optional[str]:
