@@ -35,7 +35,8 @@ class ComputeFirewallBuilder(BaseGcpTerraformBuilder):
                                   deny=deny_actions,
                                   destination_ranges=self._get_known_value(attributes, 'destination_ranges'),
                                   direction=direction,
-                                  source_ranges=self._get_known_value(attributes, 'source_ranges'))
+                                  source_ranges=self._get_known_value(attributes, 'source_ranges'),
+                                  priority=self._get_known_value(attributes, 'priority', 1000))
 
     def get_service_name(self) -> GcpResourceType:
         return GcpResourceType.GOOGLE_COMPUTE_FIREWALL
@@ -43,8 +44,5 @@ class ComputeFirewallBuilder(BaseGcpTerraformBuilder):
     @staticmethod
     def get_action_block_data(attributes: dict) -> dict:
         protocol = IpProtocol(attributes['protocol'])
-        if protocol not in ('TCP', 'UDP'):
-            ports = None
-        else:
-            ports = PortSet(attributes.get('ports', ['-1']))
+        ports = PortSet(attributes.get('ports', ['0-65535']))
         return {'protocol': protocol, 'ports': ports}

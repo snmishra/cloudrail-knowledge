@@ -26,11 +26,14 @@ class ComputeInstanceBuilder(BaseGcpTerraformBuilder):
                                                                              network_tier=self._get_known_value(access_config, 'network_tier', 'PREMIUM')))
 
             aliases_ip_range: List[GcpComputeInstanceNetIntfAliasIpRange] = []
+            network = self._get_known_value(interface, 'network')
+            subnetwork = self._get_known_value(interface, 'subnetwork')
+            network = subnetwork if not network else network
             for ip in self._get_known_value(interface, 'alias_ip_range', []):
                 aliases_ip_range.append(GcpComputeInstanceNetIntfAliasIpRange(ip_cidr_range=self._get_known_value(ip, 'ip_cidr_range'),
                                                                               subnetwork_range_name=self._get_known_value(ip, 'subnetwork_range_name')))
 
-            network_interfaces.append(GcpComputeInstanceNetworkInterface(network=interface.get('network'), subnetwork=self._get_known_value(interface, 'subnetwork'),
+            network_interfaces.append(GcpComputeInstanceNetworkInterface(network=network, subnetwork=subnetwork,
                                                                          subnetwork_project=self._get_known_value(interface, 'subnetwork_project'),
                                                                          network_ip=self._get_known_value(interface, 'network_ip'),
                                                                          access_config=access_config_list,

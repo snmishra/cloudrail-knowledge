@@ -91,3 +91,8 @@ def extract_attribute_from_file_path(path: str, strings_to_remove: list):
     for string in strings_to_remove:
         attribute = attribute.replace(string, '')
     return attribute.replace('.json', '')
+
+def extract_name_from_gcp_link(gcp_link: str) -> str:
+    if gcp_link and 'http' in gcp_link:
+        return gcp_link.split('/')[-1]
+    return gcp_link

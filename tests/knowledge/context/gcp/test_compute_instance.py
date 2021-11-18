@@ -1,6 +1,7 @@
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
+from cloudrail.knowledge.context.ip_protocol import IpProtocol
 from cloudrail.knowledge.context.mergeable import EntityOrigin
-
+from cloudrail.knowledge.context.connection import PortConnectionProperty
 from tests.knowledge.context.gcp_context_test import GcpContextTest
 from tests.knowledge.context.test_context_annotation import context
 
@@ -103,3 +104,12 @@ class TestComputeInstance(GcpContextTest):
         compute = next((compute for compute in ctx.compute_instances if compute.name == 'gce-def-01'), None)
         self.assertIsNotNone(compute)
         self.assertTrue(key in ('Test_hashcode', 'Name') for key in compute.labels.keys())
+
+    @context(module_path="unrestricted_and_pub_ip", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
+    def test_unrestricted_and_pub_ip(self, ctx: GcpEnvironmentContext):
+        compute = next((compute for compute in ctx.compute_instances
+                        if compute.name == 'unrestricted-gce'), None)
+        self.assertIsNotNone(compute)
+        self.assertEqual(len(compute.inbound_connections), 4)
+        self.assertTrue(any(conn_prop.connection_property == PortConnectionProperty([(22, 22)], '0.0.0.0/0', IpProtocol('TCP'))
+                             for conn_prop in compute.inbound_connections))

@@ -1,9 +1,9 @@
 from typing import List, Optional
 from enum import Enum
 from dataclasses import dataclass
-
-from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
-from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
+from cloudrail.knowledge.utils.utils import is_iterable_with_values
+from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_network import GcpComputeNetwork
+from cloudrail.knowledge.context.gcp.resources.networking_config.network_entity import NetworkEntity
 
 class GcpComputeInstanceNetIntfNicType(Enum):
     GVNIC  = 'gvnic'
@@ -74,7 +74,7 @@ class GcpComputeInstanceShieldInstCfg:
     enable_vtpm: Optional[bool] = True
     enable_integrity_monitoring: Optional[bool] = True
 
-class GcpComputeInstance(GcpResource):
+class GcpComputeInstance(NetworkEntity):
     """
         Attributes:
             name: A unique name for the compute instance.
@@ -89,7 +89,7 @@ class GcpComputeInstance(GcpResource):
     def __init__(self,
                  name: str,
                  zone: str,
-                 network_interfaces: Optional[List[GcpComputeInstanceNetworkInterface]],
+                 network_interfaces: List[GcpComputeInstanceNetworkInterface],
                  can_ip_forward: Optional[bool],
                  hostname: Optional[str],
                  metadata: Optional[List[str]],
@@ -97,16 +97,17 @@ class GcpComputeInstance(GcpResource):
                  shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg],
                  instance_id: Optional[str]):
 
-        super().__init__(GcpResourceType.GOOGLE_COMPUTE_INSTANCE)
+        NetworkEntity.__init__(self)
         self.name: str = name
         self.zone: str = zone
-        self.network_interfaces: Optional[List[GcpComputeInstanceNetworkInterface]] = network_interfaces
+        self.network_interfaces: List[GcpComputeInstanceNetworkInterface] = network_interfaces
         self.can_ip_forward: bool = can_ip_forward
         self.hostname: str = hostname
         self.metadata: List[str] = metadata
         self.service_account: Optional[GcpComputeInstanceServiceAcount] = service_account
         self.shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg] = shielded_instance_config
         self.instance_id: Optional[str] = instance_id
+        self.vpc_networks: List[GcpComputeNetwork] = None
 
     def get_keys(self) -> List[str]:
         return [self.instance_id]
@@ -145,3 +146,12 @@ class GcpComputeInstance(GcpResource):
         return self.service_account and (not self.service_account.email \
             or ('-' in self.service_account.email and self.service_account.email.split('-')[0].isnumeric() \
                 and self.service_account.email.split('-')[1] == 'compute@developer.gserviceaccount.com'))
+
+    def fill_network_info(self):
+        if self.vpc_networks:
+            self.network_info.vpc_networks = self.vpc_networks
+            self.network_info.private_ip_addresses = [interface.network_ip for interface in self.network_interfaces]
+            alias_ranges = [alias_range.ip_cidr_range for interface in self.network_interfaces
+                            for alias_range in interface.alias_ip_range if alias_range.ip_cidr_range]
+            public_nat_ips = [config.nat_ip for interface in self.network_interfaces for config in interface.access_config if config.nat_ip]
+            self.network_info.public_ip_addresses = (alias_ranges + public_nat_ips) if is_iterable_with_values(public_nat_ips) else alias_ranges

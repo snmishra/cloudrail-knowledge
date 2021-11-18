@@ -275,7 +275,8 @@ class GcpBaseRuleTest(BaseRuleTest, ABC):
                                                                                                 self.account_id)
 
     def get_default_account_data_path(self):
-        return None
+        current_path = os.path.dirname(os.path.abspath(__file__))
+        return os.path.join(current_path, '../', 'testing-accounts-data', 'account-data-gcp-default-vpc-network.zip')
 
     def get_supported_service(self):
         return IacFieldsStore.get_terraform_gcp_supported_services()

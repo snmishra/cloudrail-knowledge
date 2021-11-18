@@ -15,12 +15,24 @@ class PseudoBuilder:
     def create_default_firewalls(self):
         if len(self.ctx.compute_firewalls) > 0 \
             and not any(firewall.origin == EntityOrigin.LIVE_ENV for firewall in self.ctx.compute_firewalls):
-            current_path = os.path.dirname(os.path.abspath(__file__))
-            firewalls = file_to_json(os.path.join(current_path, 'pseudo_docs', 'default_firewalls.json'))
-            firewalls_list: List[GcpComputeFirewall] = []
+            firewalls = self._get_firewalls_from_file('default_firewalls.json')
             project_id = self.ctx.compute_firewalls[0].project_id
-            for firewall in firewalls['value']:
-                firewall = ComputeFirewallBuilder.do_build(ComputeFirewallBuilder, firewall)
+            for firewall in firewalls:
                 firewall.network.replace('dev-for-tests', project_id)
-                firewalls_list.append(firewall)
-            self.ctx.compute_firewalls.extend(firewalls_list)
+            self.ctx.compute_firewalls.extend(firewalls)
+
+    def get_implied_firewalls(self):
+        firewalls = self._get_firewalls_from_file('implied_firewalls.json')
+        for firewall in firewalls:
+            firewall.is_implied_rule = True
+        return firewalls
+
+    @staticmethod
+    def _get_firewalls_from_file(file_name: str) -> List[GcpComputeFirewall]:
+        current_path = os.path.dirname(os.path.abspath(__file__))
+        firewalls = file_to_json(os.path.join(current_path, 'pseudo_docs', file_name))
+        firewalls_list: List[GcpComputeFirewall] = []
+        for firewall in firewalls['value']:
+            firewall = ComputeFirewallBuilder.do_build(ComputeFirewallBuilder, firewall)
+            firewalls_list.append(firewall)
+        return firewalls_list

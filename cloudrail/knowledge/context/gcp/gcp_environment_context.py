@@ -1,4 +1,5 @@
-from typing import List, Dict
+import functools
+from typing import Callable, List, Dict, Set
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult
@@ -10,6 +11,7 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_http_p
 from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDatabaseInstance
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance import GcpComputeInstance
 from cloudrail.knowledge.context.gcp.resources.projects.gcp_project import Project
+from cloudrail.knowledge.context.gcp.resources.networking_config.network_entity import NetworkEntity
 
 
 class GcpEnvironmentContext(BaseEnvironmentContext):
@@ -32,3 +34,8 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
         self.compute_global_forwarding_rule: List[GcpComputeGlobalForwardingRule] = compute_global_forwarding_rule or []
         self.projects: AliasesDict[Project] = projects or AliasesDict()
         self.compute_target_http_proxy: List[GcpComputeTargetHttpProxy] = compute_target_http_proxy or []
+
+    @functools.lru_cache(maxsize=None)
+    def get_all_network_entities(self) -> Set[NetworkEntity]:
+        condition: Callable = lambda resource: isinstance(resource, NetworkEntity)
+        return self.get_all_mergeable_resources(condition)

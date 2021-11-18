@@ -3,6 +3,7 @@ from enum import Enum
 
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
+from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall import GcpComputeFirewall
 
 
 class GcpComputeNetworkRoutingMode(Enum):
@@ -27,6 +28,8 @@ class GcpComputeNetwork(GcpResource):
         self.name: str = name
         self.auto_create_subnetworks: Optional[bool] = auto_create_subnetworks
         self.routing_mode: Optional[GcpComputeNetworkRoutingMode] = routing_mode
+        self.firewalls: List[GcpComputeFirewall] = []
+        self.self_link: str = f'https://www.googleapis.com/compute/v1/projects/{self.project_id}/global/networks/{self.name}'
 
     def get_keys(self) -> List[str]:
         return [self.name, self.project_id]
