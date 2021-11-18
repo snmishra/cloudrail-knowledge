@@ -1,19 +1,15 @@
-provider "google" {
-  project     = "dev-tomer"
-  region      = "us-central-1"
-}
 resource "google_container_cluster" "cluster" {
     name = "kuber"
     network = "default"
     remove_default_node_pool = true
     location = "us-central1-a"
-    project = "dev-tomer"
-master_authorized_networks_config {
-  cidr_blocks {
-    cidr_block = "0.0.0.0/0"
-    display_name = "office" 
-  }
-}
+    project = "dev-for-tests"
+    master_authorized_networks_config {
+      cidr_blocks {
+        cidr_block = "0.0.0.0/0"
+        display_name = "office"
+      }
+    }
     enable_shielded_nodes = true
     initial_node_count = 2
     authenticator_groups_config {

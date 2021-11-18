@@ -8,6 +8,7 @@ from cloudrail.knowledge.context.gcp.resources_builders.scanner.sql_database_ins
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.compute_instance_builder import ComputeInstanceBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.compute_firewall_builder import ComputeFirewallBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.project_builder import ProjectBuilder
+from cloudrail.knowledge.context.gcp.resources_builders.scanner.container_cluster_builder import ContainerClusterBuilder
 from cloudrail.knowledge.context.environment_context.scanner_context_builder import ScannerContextBuilder
 
 
@@ -27,4 +28,5 @@ class GcpScannerContextBuilder(ScannerContextBuilder):
         context.compute_firewalls = ComputeFirewallBuilder(*builder_args).build()
         context.compute_networks = ComputeNetworkBuilder(*builder_args).build()
         context.projects = ProjectBuilder(*builder_args).build()
+        context.container_cluster = ContainerClusterBuilder(*builder_args).build()
         return context

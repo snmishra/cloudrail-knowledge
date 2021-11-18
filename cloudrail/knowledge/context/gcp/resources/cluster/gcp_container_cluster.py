@@ -47,8 +47,8 @@ class GcpContainerCluster(GcpResource):
 
     def __init__(self,
                  name: str,
-                 location: Optional[str],
-                 cluster_ipv4_cidr: Optional[str],
+                 location: str,
+                 cluster_ipv4_cidr: str,
                  enable_shielded_nodes: bool,
                  master_authorized_networks_config: Optional[GcpContainerMasterAuthNetConfig],
                  authenticator_groups_config: Optional[GcpContainerClusterAuthGrpConfig]):
@@ -68,6 +68,10 @@ class GcpContainerCluster(GcpResource):
     def is_tagable(self) -> bool:
         return False
 
+    @property
+    def is_labeled(self) -> bool:
+        return False
+
     def get_id(self) -> str:
         return self.name
 
@@ -79,3 +83,6 @@ class GcpContainerCluster(GcpResource):
             return 'Container Cluster'
         else:
             return 'Container Clusters'
+
+    def to_drift_detection_object(self) -> dict:
+        return {}  # TODO: complete
