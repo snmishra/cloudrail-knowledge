@@ -3,6 +3,7 @@ common:
     pass:
     - id
     - tags
+    - self_link
     - labels:
         known_fields:
           pass:
@@ -126,3 +127,17 @@ google_compute_global_forwarding_rule:
     pass:
       - name
       - target
+
+google_compute_target_pool:
+  known_fields:
+    pass:
+      - name
+      - instances
+      - region
+
+google_compute_forwarding_rule:
+  known_fields:
+    pass:
+      - name
+      - target
+      - port_range

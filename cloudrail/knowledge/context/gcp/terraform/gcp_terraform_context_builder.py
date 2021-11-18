@@ -3,6 +3,7 @@ from typing import Optional
 
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
+from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_forwarding_rule_builder import ComputeForwardingRuleBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_target_http_proxy_builder import \
     ComputeTargetHttpProxyBuilder
 
@@ -17,6 +18,7 @@ from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_networ
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_instance_builder import ComputeInstanceBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_firewall_builder import ComputeFirewallBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.project_builder import ProjectBuilder
+from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_target_pool_builder import ComputeTargetPoolBuilder
 from cloudrail.knowledge.context.environment_context.iac_context_builder import IacContextBuilder
 from cloudrail.knowledge.utils.checkov_utils import to_checkov_results
 
@@ -53,4 +55,6 @@ class GcpTerraformContextBuilder(IacContextBuilder):
             context.projects = ProjectBuilder(resources).build()
             context.compute_target_http_proxy = ComputeTargetHttpProxyBuilder(resources).build()
             context.compute_global_forwarding_rule = ComputeGlobalForwardingRuleBuilder(resources).build()
+            context.compute_target_pools = ComputeTargetPoolBuilder(resources).build()
+            context.compute_forwarding_rules = ComputeForwardingRuleBuilder(resources).build()
             return context

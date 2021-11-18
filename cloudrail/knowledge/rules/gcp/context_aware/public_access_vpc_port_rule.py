@@ -27,7 +27,8 @@ class PublicAccessVpcPortRule(GcpBaseRule):
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for network_entity in env_context.get_all_network_entities():
-            if connection := self.conn_accesible_on_port(network_entity, self.port):
+            if connection := self.conn_accessible_on_port(network_entity, self.port):
+                if network_entity.network_info.public_ip_addresses and network_entity.network_info.forwarding_rules
                 issues.append(
                     Issue(
                         f"The {network_entity.get_type()} `{network_entity.get_friendly_name()}` "
@@ -38,7 +39,7 @@ class PublicAccessVpcPortRule(GcpBaseRule):
         return issues
 
     @staticmethod
-    def conn_accesible_on_port(network_resource: NetworkEntity, port: int) -> GcpConnection:
+    def conn_accessible_on_port(network_resource: NetworkEntity, port: int) -> GcpConnection:
         return next((conn for conn in network_resource.inbound_connections if any(conn.connection_type == ConnectionType.PUBLIC \
                    and isinstance(conn.connection_property, PortConnectionProperty) \
                        and any(is_port_in_range(ports, port) for ports in conn.connection_property.ports) \

@@ -5,8 +5,10 @@ from cloudrail.knowledge.context.environment_context.business_logic.dependency_i
 from cloudrail.knowledge.context.environment_context.business_logic.resource_invalidator import ResourceInvalidator
 from cloudrail.knowledge.context.gcp.pseudo_builder import PseudoBuilder
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall import GcpComputeFirewall
+from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_forwarding_rule import GcpComputeForwardingRule
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance import GcpComputeInstance
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_network import GcpComputeNetwork
+from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_pool import GcpComputeTargetPool
 
 
 class GcpRelationsAssigner(DependencyInvocation):
@@ -21,6 +23,9 @@ class GcpRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_firewalls_to_vpcs, ctx.compute_networks, (ctx.compute_firewalls,), [self._assign_implied_firewalls_to_vpcs]),
             ### Compute Instance
             IterFunctionData(self._assign_vpcs_to_instance, ctx.compute_instances, (ctx.compute_networks,), [self._assign_firewalls_to_vpcs]),
+            IterFunctionData(self._assign_forward_rule_to_instance, ctx.compute_instances, (ctx.compute_forwarding_rules,), [self._assign_targets_to_forward_rule]),
+            ### Compute Forwarding Rule
+            IterFunctionData(self._assign_targets_to_forward_rule, ctx.compute_forwarding_rules, (ctx.compute_target_pools,)),
         ]
 
         super().__init__(function_pool, context=ctx)
@@ -48,4 +53,21 @@ class GcpRelationsAssigner(DependencyInvocation):
             instance_vpcs = [vpc for vpc in vpcs if any(extract_name_from_gcp_link(interface.network) == vpc.name for interface in instance.network_interfaces)]
             return instance_vpcs
 
-        instance.vpc_networks = ResourceInvalidator.get_by_logic(get_instance_vpcs, True, instance, 'Unable to find interface related VPC network')
+        instance.network_info.vpc_networks.extend(ResourceInvalidator.get_by_logic(get_instance_vpcs, True, instance, 'Unable to find interface related VPC network'))
+
+    @staticmethod
+    def _assign_targets_to_forward_rule(forward_rule: GcpComputeForwardingRule, target_pools: List[GcpComputeTargetPool]):
+        def get_target():
+            target = next((target for target in target_pools if target.self_link == forward_rule.target), None)
+            return target
+
+        forward_rule.target_pool = ResourceInvalidator.get_by_logic(get_target, True, forward_rule, 'Unable to find forward rule target')
+
+    @staticmethod
+    def _assign_forward_rule_to_instance(compute_instance: GcpComputeInstance, forwarding_rules: List[GcpComputeForwardingRule]):
+        if any(rule.target_pool for rule in forwarding_rules):
+            def get_forwarding_rules():
+                forwarding_rules_list = [rule for rule in forwarding_rules if compute_instance.self_link in rule.target_pool.instances]
+                return forwarding_rules_list
+
+            compute_instance.network_info.forwarding_rules.extend(ResourceInvalidator.get_by_logic(get_forwarding_rules, False))

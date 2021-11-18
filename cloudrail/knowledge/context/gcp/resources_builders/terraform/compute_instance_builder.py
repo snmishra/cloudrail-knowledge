@@ -70,7 +70,8 @@ class ComputeInstanceBuilder(BaseGcpTerraformBuilder):
                                   metadata=metadata,
                                   service_account=service_account,
                                   shielded_instance_config=shielded_instance_config,
-                                  instance_id=attributes['instance_id'])
+                                  instance_id=attributes['instance_id'],
+                                  self_link=attributes['self_link'])
 
     def get_service_name(self) -> GcpResourceType:
         return GcpResourceType.GOOGLE_COMPUTE_INSTANCE

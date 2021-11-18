@@ -66,4 +66,5 @@ class ComputeInstanceBuilder(BaseGcpScannerBuilder):
                                   metadata=metadata,
                                   service_account=service_account,
                                   shielded_instance_config=shielded_instance_config,
-                                  instance_id=attributes['id'])
+                                  instance_id=attributes['id'],
+                                  self_link=attributes['selfLink'])

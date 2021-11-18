@@ -85,6 +85,7 @@ class GcpComputeInstance(NetworkEntity):
             metadata: (Optional) Metadata key/value pairs to make available from within the instance.
             service_account: (Optional) Service account to attach to the instance.
             shielded_instance_config: (Optional) Enable Shielded VM on this instance.
+            self_link: The self_link URL used for this resource.
     """
     def __init__(self,
                  name: str,
@@ -95,7 +96,8 @@ class GcpComputeInstance(NetworkEntity):
                  metadata: Optional[List[str]],
                  service_account: Optional[GcpComputeInstanceServiceAcount],
                  shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg],
-                 instance_id: Optional[str]):
+                 instance_id: Optional[str],
+                 self_link: str):
 
         NetworkEntity.__init__(self)
         self.name: str = name
@@ -107,6 +109,7 @@ class GcpComputeInstance(NetworkEntity):
         self.service_account: Optional[GcpComputeInstanceServiceAcount] = service_account
         self.shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg] = shielded_instance_config
         self.instance_id: Optional[str] = instance_id
+        self.self_link: str = self_link
         self.vpc_networks: List[GcpComputeNetwork] = None
 
     def get_keys(self) -> List[str]:
@@ -148,10 +151,8 @@ class GcpComputeInstance(NetworkEntity):
                 and self.service_account.email.split('-')[1] == 'compute@developer.gserviceaccount.com'))
 
     def fill_network_info(self):
-        if self.vpc_networks:
-            self.network_info.vpc_networks = self.vpc_networks
-            self.network_info.private_ip_addresses = [interface.network_ip for interface in self.network_interfaces]
-            alias_ranges = [alias_range.ip_cidr_range for interface in self.network_interfaces
-                            for alias_range in interface.alias_ip_range if alias_range.ip_cidr_range]
-            public_nat_ips = [config.nat_ip for interface in self.network_interfaces for config in interface.access_config if config.nat_ip]
-            self.network_info.public_ip_addresses = (alias_ranges + public_nat_ips) if is_iterable_with_values(public_nat_ips) else alias_ranges
+        self.network_info.private_ip_addresses = [interface.network_ip for interface in self.network_interfaces]
+        alias_ranges = [alias_range.ip_cidr_range for interface in self.network_interfaces
+                        for alias_range in interface.alias_ip_range if alias_range.ip_cidr_range]
+        public_nat_ips = [config.nat_ip for interface in self.network_interfaces for config in interface.access_config if config.nat_ip]
+        self.network_info.public_ip_addresses = (alias_ranges + public_nat_ips) if is_iterable_with_values(public_nat_ips) else alias_ranges
