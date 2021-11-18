@@ -13,12 +13,10 @@ class ComputeInstanceDoNotUseDefaultServiceAccountRule(GcpBaseRule):
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for compute_instance in env_context.compute_instances:
-            if compute_instance.service_account \
-                and (not compute_instance.service_account.email or compute_instance.service_account.email.split('-')[0].isnumeric()):
+            if compute_instance.is_using_default_service_account:
                 issues.append(
                     Issue(
-                        f"The {compute_instance.get_type()} `{compute_instance.get_friendly_name()}` uses default service account ([project_number]"
-                        f"-compute@developer.gserviceaccount.com)",
+                        f"The {compute_instance.get_type()} `{compute_instance.get_friendly_name()}` uses default service account",
                         compute_instance,
                         compute_instance))
         return issues
