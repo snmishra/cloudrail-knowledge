@@ -1,10 +1,9 @@
 from typing import List, Optional
 from enum import Enum
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
-from cloudrail.knowledge.context.mergeable import DriftDetectionResource
 
 
 class GcpComputeInstanceNetIntfNicType(Enum):
@@ -13,7 +12,7 @@ class GcpComputeInstanceNetIntfNicType(Enum):
 
 
 @dataclass
-class GcpComputeInstanceNetIntfAliasIpRange(DriftDetectionResource):
+class GcpComputeInstanceNetIntfAliasIpRange:
     """
         Attributes:
             ip_cidr_range: The IP CIDR range represented by this alias IP range.
@@ -29,7 +28,7 @@ class GcpComputeInstanceNetIntfAliasIpRange(DriftDetectionResource):
 
 
 @dataclass
-class GcpComputeInstanceNetIntfAccessCfg(DriftDetectionResource):
+class GcpComputeInstanceNetIntfAccessCfg:
     """
         Attributes:
             nat_ip: (Optional) The IP address that will be 1:1 mapped to the instance's network ip.
@@ -40,15 +39,9 @@ class GcpComputeInstanceNetIntfAccessCfg(DriftDetectionResource):
     public_ptr_domain_name: Optional[str]
     network_tier: Optional[str] = 'PREMIUM'
 
-    def to_drift_detection_object(self) -> dict:
-        return {'nat_ip': self.nat_ip,
-                'public_ptr_domain_name': self.public_ptr_domain_name,
-                'network_tier': self.network_tier
-                }
-
 
 @dataclass
-class GcpComputeInstanceNetworkInterface(DriftDetectionResource):
+class GcpComputeInstanceNetworkInterface:
     """
         Attributes:
             network: (Optional) The name or self_link of the network to attach this interface to.
@@ -68,20 +61,9 @@ class GcpComputeInstanceNetworkInterface(DriftDetectionResource):
     alias_ip_range: Optional[List[GcpComputeInstanceNetIntfAliasIpRange]]
     nic_type: Optional[GcpComputeInstanceNetIntfNicType]
 
-    def to_drift_detection_object(self) -> dict:
-        return {'network': self.network,
-                'subnetwork': self.subnetwork,
-                'subnetwork_project': self.network_ip,
-                'network_ip': self.access_config,
-                'access_config': self.access_config and
-                                      [dd_obj.to_drift_detection_object() for dd_obj in self.access_config],
-                'alias_ip_range': self.alias_ip_range and
-                                      [dd_obj.to_drift_detection_object() for dd_obj in self.alias_ip_range],
-                'nic_type': self.nic_type}
-
 
 @dataclass
-class GcpComputeInstanceServiceAcount(DriftDetectionResource):
+class GcpComputeInstanceServiceAccount:
     """
         Attributes:
             email: (Optional) The service account e-mail address. If not given, the default Google Compute Engine service account is used.
@@ -90,15 +72,9 @@ class GcpComputeInstanceServiceAcount(DriftDetectionResource):
     email: Optional[str]
     scopes: str
 
-    def to_drift_detection_object(self) -> dict:
-        return {
-            'email': self.email,
-            'scopes': self.scopes
-        }
-
 
 @dataclass
-class GcpComputeInstanceShieldInstCfg(DriftDetectionResource):
+class GcpComputeInstanceShieldInstCfg:
     """
         Attributes:
             enable_secure_boot: (Optional) Verify the digital signature of all boot components, and halt the boot process on failure.
@@ -108,13 +84,6 @@ class GcpComputeInstanceShieldInstCfg(DriftDetectionResource):
     enable_secure_boot: Optional[bool] = False
     enable_vtpm: Optional[bool] = True
     enable_integrity_monitoring: Optional[bool] = True
-
-    def to_drift_detection_object(self) -> dict:
-        return {
-            'enable_secure_boot': self.enable_secure_boot,
-            'enable_vtpm': self.enable_vtpm,
-            'enable_integrity_monitoring': self.enable_integrity_monitoring
-        }
 
 
 class GcpComputeInstance(GcpResource):
@@ -136,7 +105,7 @@ class GcpComputeInstance(GcpResource):
                  can_ip_forward: Optional[bool],
                  hostname: Optional[str],
                  metadata: Optional[List[str]],
-                 service_account: Optional[GcpComputeInstanceServiceAcount],
+                 service_account: Optional[GcpComputeInstanceServiceAccount],
                  shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg],
                  instance_id: Optional[str]):
 
@@ -147,7 +116,7 @@ class GcpComputeInstance(GcpResource):
         self.can_ip_forward: bool = can_ip_forward
         self.hostname: str = hostname
         self.metadata: List[str] = metadata
-        self.service_account: Optional[GcpComputeInstanceServiceAcount] = service_account
+        self.service_account: Optional[GcpComputeInstanceServiceAccount] = service_account
         self.shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg] = shielded_instance_config
         self.instance_id: Optional[str] = instance_id
 
@@ -176,13 +145,13 @@ class GcpComputeInstance(GcpResource):
 
     def to_drift_detection_object(self) -> dict:
         return {'network_interfaces': self.network_interfaces and
-                                      [dd_obj.to_drift_detection_object() for dd_obj in self.network_interfaces],
+                                      [asdict(dd_obj) for dd_obj in self.network_interfaces],
                 'can_ip_forward': self.can_ip_forward,
                 'hostname': self.hostname,
                 'metadata': self.metadata,
-                'service_account': self.service_account and self.service_account.to_drift_detection_object(),
+                'service_account': self.service_account and asdict(self.service_account),
                 'shielded_instance_config': self.shielded_instance_config and
-                                            self.shielded_instance_config.to_drift_detection_object(),
+                                            asdict(self.shielded_instance_config),
                 'labels': self.labels}
 
     @property

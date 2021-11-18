@@ -16,14 +16,7 @@ class EntityOrigin(str, Enum):
     CLOUDFORMATION = 'cloudformation'
 
 
-class DriftDetectionResource:
-
-    @abstractmethod
-    def to_drift_detection_object(self) -> dict:
-        pass
-
-
-class Mergeable(DriftDetectionResource):
+class Mergeable:
 
     def __init__(self):
         self._aliases: Set[str] = set()
