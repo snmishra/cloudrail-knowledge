@@ -76,7 +76,7 @@ class GcpContainerCluster(GcpResource):
         return self.name
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        return f'{self._BASE_URL}/kubernetes/clusters/details/{self.location}/{self.name}/details?project={self.project}'
+        return f'{self._BASE_URL}/kubernetes/clusters/details/{self.location}/{self.name}/details?project={self.project_id}'
 
     def get_type(self, is_plural: bool = False) -> str:
         if not is_plural:

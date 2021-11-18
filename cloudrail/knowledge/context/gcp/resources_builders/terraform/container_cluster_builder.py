@@ -26,5 +26,3 @@ class ContainerClusterBuilder(BaseGcpTerraformBuilder):
         cidr_blocks = [GcpContainerMasterAuthNetConfigCidrBlk(cidr_block.get("cidr_block"), cidr_block.get("display_name")) for cidr_block in cidr_blocks_list]
 
         return GcpContainerMasterAuthNetConfig(cidr_blocks)
-
-
