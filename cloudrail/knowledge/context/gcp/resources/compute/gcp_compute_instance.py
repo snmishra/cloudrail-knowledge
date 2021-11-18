@@ -21,11 +21,6 @@ class GcpComputeInstanceNetIntfAliasIpRange:
     ip_cidr_range: str
     subnetwork_range_name: Optional[str]
 
-    def to_drift_detection_object(self) -> dict:
-        return {'ip_cidr_range': self.ip_cidr_range,
-                'subnetwork_range_name': self.subnetwork_range_name
-                }
-
 
 @dataclass
 class GcpComputeInstanceNetIntfAccessCfg:
