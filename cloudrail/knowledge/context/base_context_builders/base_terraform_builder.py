@@ -57,9 +57,11 @@ class BaseTerraformBuilder(ABC):
         for tag_key in ('tags_all', 'tags', 'tag'):
             if instance.is_tagable and attributes and attributes.get(tag_key):
                 if isinstance(attributes.get(tag_key), dict):
-                    instance.tags = attributes[tag_key] or {}
+                    instance.tags = instance.tags or {}
+                    instance.tags.update(attributes[tag_key])
                 elif isinstance(attributes.get(tag_key), list):
-                    instance.tags = attributes[tag_key] or None
+                    instance.tags = instance.tags or []
+                    instance.tags.extend(attributes[tag_key])
                 break
 
     @abstractmethod
