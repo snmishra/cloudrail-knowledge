@@ -20,7 +20,7 @@ class TestContainerClusterIsNotPublictRule(TestCase):
         ]
     )
 
-    def test_container_cluster_is_not_public(self, unused_name: str, cidr_blocks: dict, total_issues: int, rule_status: RuleResultType):
+    def test_container_cluster_is_not_public(self, unused_name: str, cidr_blocks: List[str], total_issues: int, rule_status: RuleResultType):
         # Arrange
         container_clusters: List[GcpContainerCluster] = []
         for cidr_block in cidr_blocks:
