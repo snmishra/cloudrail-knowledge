@@ -1,6 +1,6 @@
 from typing import List, Optional
 from dataclasses import dataclass
-
+import dataclasses
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
 
