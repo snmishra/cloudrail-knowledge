@@ -1,3 +1,4 @@
+from typing import Callable
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall import GcpComputeFirewall, GcpComputeFirewallAction, FirewallRuleAction, GcpComputeFirewallDirection
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.base_gcp_terraform_builder import BaseGcpTerraformBuilder
@@ -12,7 +13,7 @@ class ComputeFirewallBuilder(BaseGcpTerraformBuilder):
         allow_actions = []
         if firewall_actions := self._get_known_value(attributes, 'allow'):
             for action in firewall_actions:
-                firewall_action_data = self.get_action_block_data(action)
+                firewall_action_data = self.get_action_block_data(action, self._get_known_value)
                 allow_actions.append(GcpComputeFirewallAction(firewall_action_data['protocol'],
                                                               firewall_action_data['ports'],
                                                               FirewallRuleAction.ALLOW))
@@ -21,7 +22,7 @@ class ComputeFirewallBuilder(BaseGcpTerraformBuilder):
         deny_actions = []
         if firewall_actions := self._get_known_value(attributes, 'deny'):
             for action in firewall_actions:
-                firewall_action_data = self.get_action_block_data(action)
+                firewall_action_data = self.get_action_block_data(action, self._get_known_value)
                 deny_actions.append(GcpComputeFirewallAction(firewall_action_data['protocol'],
                                                              firewall_action_data['ports'],
                                                              FirewallRuleAction.DENY))
@@ -42,7 +43,7 @@ class ComputeFirewallBuilder(BaseGcpTerraformBuilder):
         return GcpResourceType.GOOGLE_COMPUTE_FIREWALL
 
     @staticmethod
-    def get_action_block_data(attributes: dict) -> dict:
+    def get_action_block_data(attributes: dict, function: Callable) -> dict:
         protocol = IpProtocol(attributes['protocol'])
-        ports = PortSet(attributes.get('ports', ['0-65535']))
+        ports = PortSet(function(attributes, 'ports', ['0-65535']))
         return {'protocol': protocol, 'ports': ports}

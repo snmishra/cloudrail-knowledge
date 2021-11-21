@@ -31,6 +31,7 @@ class GcpScannerContextBuilder(ScannerContextBuilder):
             return context
         elif extra_args.get('default_resources_only'):
             context.projects = ProjectBuilder(*builder_args).build()
+            context.compute_networks = [network for network in ComputeNetworkBuilder(*builder_args).build() if network.get_name() == 'default']
             return context
 
         context.sql_database_instances = SqlDatabaseInstanceBuilder(*builder_args).build()
