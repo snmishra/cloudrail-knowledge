@@ -9,4 +9,18 @@ class TestPublicAccessVpcSshPortRule(GcpBaseRuleTest):
 
     @rule_test('unrestricted_and_pub_ip', should_alert=True)
     def test_unrestricted_and_pub_ip(self, rule_result: RuleResponse):
+        self.assertEqual(len(rule_result.issues), 1)
+        self.assertTrue('with one of the public IP addresses' in rule_result.issues[0].evidence)
+        self.assertEqual(rule_result.issues[0].exposed.get_type(), 'Virtual Machine Instance')
+        self.assertEqual(rule_result.issues[0].violating.get_type(), 'Compute Firewall')
+
+    @rule_test('unrestricted_priv_ip_with_lb', should_alert=True)
+    def test_unrestricted_priv_ip_with_lb(self, rule_result: RuleResponse):
+        self.assertEqual(len(rule_result.issues), 1)
+        self.assertTrue('exposed via load balancer' in rule_result.issues[0].evidence)
+        self.assertEqual(rule_result.issues[0].exposed.get_type(), 'Virtual Machine Instance')
+        self.assertEqual(rule_result.issues[0].violating.get_type(), 'Compute Firewall')
+
+    @rule_test('restricted_ssh', should_alert=False)
+    def test_restricted_ssh(self, rule_result: RuleResponse):
         pass
