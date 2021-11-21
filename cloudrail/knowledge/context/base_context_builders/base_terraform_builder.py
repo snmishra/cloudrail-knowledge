@@ -62,7 +62,6 @@ class BaseTerraformBuilder(ABC):
                 elif isinstance(attributes.get(tag_key), list):
                     instance.tags = instance.tags or []
                     instance.tags.extend(attributes[tag_key])
-                break
 
     @abstractmethod
     def do_build(self, attributes: dict):
