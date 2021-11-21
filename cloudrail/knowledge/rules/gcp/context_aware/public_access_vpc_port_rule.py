@@ -31,11 +31,11 @@ class PublicAccessVpcPortRule(GcpBaseRule):
         for network_entity in env_context.get_all_network_entities():
             if connection := self.conn_allowed_by_firewall_on_port(network_entity, self.port):
                 forward_rule = self.conn_forwarding_on_port(network_entity, self.port)
-                if network_entity.network_info.public_ip_addresses:
+                if public_ip_addresses := network_entity.network_info.public_ip_addresses:
                     issues.append(
                         Issue(
                             f"The {network_entity.get_type()} `{network_entity.get_friendly_name()}` "
-                            f"with one of the public IP addresses `{', ' .join([x for x in network_entity.network_info.public_ip_addresses])}` "
+                            f"with one of the public IP addresses `{', ' .join(map(str,public_ip_addresses))}` "
                             f"is reachable from the Internet via SSH port",
                             network_entity,
                             connection.firewall))
