@@ -14,8 +14,8 @@ class TestContainerClusterIsNotPublictRule(TestCase):
 
     @parameterized.expand(
         [
-            ["One cluster is public", ["10.0.0.0/8"], 1, RuleResultType.FAILED],
-            ["Both clusters are public", [""], 2, RuleResultType.FAILED],
+            ["One cluster is public", ["10.0.0.0/8", ""], 1, RuleResultType.FAILED],
+            ["Both clusters are public", ["", ""], 2, RuleResultType.FAILED],
             ["Both clusters are private", ["10.0.0.0/8", "10.0.0.0/8"], 0, RuleResultType.SUCCESS],
         ]
     )
@@ -23,13 +23,13 @@ class TestContainerClusterIsNotPublictRule(TestCase):
     def test_container_cluster_is_not_public(self, unused_name: str, cidr_blocks: dict, total_issues: int, rule_status: RuleResultType):
         # Arrange
         container_clusters: List[GcpContainerCluster] = []
-        for i in range(2):
-            container_clusters.append(create_empty_entity(GcpContainerCluster))
-
-        for i, cidr_block in enumerate(cidr_blocks):
-            container_clusters[i].master_authorized_networks_config = create_empty_entity(GcpContainerMasterAuthNetConfig)
-            container_clusters[i].master_authorized_networks_config.cidr_blocks = [create_empty_entity(GcpContainerMasterAuthNetConfigCidrBlk)]
-            container_clusters[i].master_authorized_networks_config.cidr_blocks[0].cidr_block = cidr_block
+        for cidr_block in cidr_blocks:
+            container_cluster = create_empty_entity(GcpContainerCluster)
+            if cidr_block:
+                container_cluster.master_authorized_networks_config = create_empty_entity(GcpContainerMasterAuthNetConfig)
+                container_cluster.master_authorized_networks_config.cidr_blocks = [create_empty_entity(GcpContainerMasterAuthNetConfigCidrBlk)]
+                container_cluster.master_authorized_networks_config.cidr_blocks[0].cidr_block = cidr_block
+            container_clusters.append(container_cluster)
 
         context = GcpEnvironmentContext(container_cluster=container_clusters)
         # Act

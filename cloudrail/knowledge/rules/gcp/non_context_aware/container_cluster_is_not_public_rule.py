@@ -13,12 +13,8 @@ class ContainerClusterIsNotPublictRule(GcpBaseRule):
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for container_cluster in env_context.container_cluster:
-            should_alert = True
-            if container_cluster.master_authorized_networks_config:
-                for cidr_obj in container_cluster.master_authorized_networks_config.cidr_blocks:
-                    if cidr_obj.cidr_block:
-                        should_alert = False
-            if should_alert:
+            if not container_cluster.master_authorized_networks_config or\
+                    any(not cidr_obj.cidr_block for cidr_obj in container_cluster.master_authorized_networks_config.cidr_blocks):
                 issues.append(
                     Issue(
                         f"The {container_cluster.get_type()} `{container_cluster.get_friendly_name()}` control plane is publicly accessible",
