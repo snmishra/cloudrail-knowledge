@@ -70,7 +70,7 @@ class GcpContainerCluster(GcpResource):
 
     @property
     def is_labeled(self) -> bool:
-        return False
+        return True
 
     def get_name(self) -> Optional[str]:
         return self.name
@@ -86,5 +86,6 @@ class GcpContainerCluster(GcpResource):
 
     def to_drift_detection_object(self) -> dict:
         return {'enable_shielded_nodes': self.enable_shielded_nodes,
-                'master_authorized_networks_config': self.master_authorized_networks_config,
-                'authenticator_groups_config': self.authenticator_groups_config}
+                'master_authorized_networks_config':self.master_authorized_networks_config and dataclasses.asdict(self.master_authorized_networks_config),
+                'authenticator_groups_config':self.authenticator_groups_config and dataclasses.asdict(self.authenticator_groups_config),
+                'labels': self.labels}
