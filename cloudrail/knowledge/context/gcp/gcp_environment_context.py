@@ -3,6 +3,7 @@ from typing import Callable, List, Dict, Set
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult
+from cloudrail.knowledge.context.gcp.resources.cluster.gcp_container_cluster import GcpContainerCluster
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_global_forwarding_rule import \
     GcpComputeGlobalForwardingRule
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_forwarding_rule import GcpComputeForwardingRule
@@ -25,6 +26,7 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
                  compute_firewalls: List[GcpComputeFirewall] = None,
                  compute_networks: List[GcpComputeNetwork] = None,
                  projects: AliasesDict[Project] = None,
+                 container_cluster: List[GcpContainerCluster] = None,
                  compute_target_http_proxy: List[GcpComputeTargetHttpProxy] = None,
                  compute_global_forwarding_rule: List[GcpComputeGlobalForwardingRule] = None,
                  compute_target_pools: List[GcpComputeTargetPool] = None,
@@ -37,6 +39,7 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
         self.compute_networks: List[GcpComputeNetwork] = compute_networks or []
         self.compute_global_forwarding_rule: List[GcpComputeGlobalForwardingRule] = compute_global_forwarding_rule or []
         self.projects: AliasesDict[Project] = projects or AliasesDict()
+        self.container_cluster: List[GcpContainerCluster] = container_cluster or []
         self.compute_target_http_proxy: List[GcpComputeTargetHttpProxy] = compute_target_http_proxy or []
         self.compute_target_pools: List[GcpComputeTargetPool] = compute_target_pools or []
         self.compute_forwarding_rules: List[GcpComputeForwardingRule] = compute_forwarding_rules or []
