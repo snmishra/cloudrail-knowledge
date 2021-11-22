@@ -135,3 +135,11 @@ google_compute_global_forwarding_rule:
     pass:
       - name
       - target
+
+google_compute_ssl_policy:
+  known_fields:
+    pass:
+      - name
+      - min_tls_version
+      - profile
+      - custom_features
