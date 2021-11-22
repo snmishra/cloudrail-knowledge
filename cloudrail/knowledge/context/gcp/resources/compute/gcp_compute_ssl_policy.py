@@ -1,4 +1,3 @@
-from enum import Enum
 from typing import List, Optional
 
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
@@ -10,6 +9,9 @@ class GcpComputeSslPolicy(GcpResource):
         Attributes:
             name: (Required) A unique name of the resource.
             min_tls_version: (Optional) The minimum version of SSL protocol that can be used by the clients to establish a connection with the load balancer.
+                                        Default value is TLS_1_0
+            profile: (Optional) Profile specifies the set of SSL features that can be used by the load balancer when negotiating SSL with clients
+            custom_features: (Optional) the set of SSL features. if CUSTOM profile is used this attribute must be set.
     """
 
     def __init__(self,
@@ -48,4 +50,6 @@ class GcpComputeSslPolicy(GcpResource):
             return 'Compute SSL Policy Details'
 
     def to_drift_detection_object(self) -> dict:
-        return {}  # TODO: complete
+        return {"min_tls_version": self.min_tls_version,
+                "profile": self.profile,
+                "custom_features": self.custom_features}
