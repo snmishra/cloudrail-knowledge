@@ -2,8 +2,9 @@ from typing import List
 
 from cloudrail.knowledge.rules.aws.non_context_aware.policy_wildcard_violation.abstract_policy_wildcard_violation_rule \
     import AbstractPolicyWildcardViolationRule
-from knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
-from knowledge.context.aws.resources.aws_policied_resource import PoliciedResource
+from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironmentContext
+from cloudrail.knowledge.context.aws.resources.aws_policied_resource import PoliciedResource
+from cloudrail.knowledge.context.aws.resources.kms.kms_key_manager import KeyManager
 
 
 class EnsureCloudWatchLogDestinationPolicyNotUseWildcard(AbstractPolicyWildcardViolationRule):
@@ -115,7 +116,7 @@ class EnsureKmsKeyPolicyNotUseWildcard(AbstractPolicyWildcardViolationRule):
         return ['kms:*']
 
     def _get_context_policy_resources(self, env_context: AwsEnvironmentContext) -> List[PoliciedResource]:
-        return env_context.kms_keys
+        return [kms_key for kms_key in env_context.kms_keys if kms_key.key_manager == KeyManager.CUSTOMER]
 
     def get_id(self) -> str:
         return "non_car_aws_kms_key_policy_wildcard"
