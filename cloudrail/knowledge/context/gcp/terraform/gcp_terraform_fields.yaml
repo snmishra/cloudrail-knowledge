@@ -135,3 +135,11 @@ google_compute_global_forwarding_rule:
     pass:
       - name
       - target
+
+google_storage_bucket:
+  known_fields:
+    pass:
+      - name
+      - storage_class
+      - uniform_bucket_level_access
+      - location

@@ -30,9 +30,6 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
 
         return None
 
-    def get_service_name(self) -> GcpResourceType:
-        return GcpResourceType.GOOGLE_SQL_DATABASE_INSTANCE
-
     def build_settings_block(self, attributes: dict):
         if settings := attributes.get("settings"):
             tier = settings.get("tier")

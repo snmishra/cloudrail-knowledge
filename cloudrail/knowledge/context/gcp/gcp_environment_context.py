@@ -11,6 +11,7 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_http_p
 from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDatabaseInstance
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance import GcpComputeInstance
 from cloudrail.knowledge.context.gcp.resources.projects.gcp_project import Project
+from cloudrail.knowledge.context.gcp.resources.storage.gcp_storage_bucket import GcpStorageBucket
 
 
 class GcpEnvironmentContext(BaseEnvironmentContext):
@@ -24,7 +25,8 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
                  projects: AliasesDict[Project] = None,
                  container_cluster: List[GcpContainerCluster] = None,
                  compute_target_http_proxy: List[GcpComputeTargetHttpProxy] = None,
-                 compute_global_forwarding_rule: List[GcpComputeGlobalForwardingRule] = None):
+                 compute_global_forwarding_rule: List[GcpComputeGlobalForwardingRule] = None,
+                 storage_buckets: AliasesDict[GcpStorageBucket] = None):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
         self.sql_database_instances: List[GcpSqlDatabaseInstance] = sql_database_instances or []
@@ -35,3 +37,4 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
         self.projects: AliasesDict[Project] = projects or AliasesDict()
         self.container_cluster: List[GcpContainerCluster] = container_cluster or []
         self.compute_target_http_proxy: List[GcpComputeTargetHttpProxy] = compute_target_http_proxy or []
+        self.storage_buckets: AliasesDict[GcpStorageBucket] = storage_buckets or AliasesDict()
