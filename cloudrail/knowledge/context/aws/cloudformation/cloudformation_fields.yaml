@@ -262,18 +262,18 @@ AWS::Lambda::Function:
             - Handler
             - Runtime
 
-AWS::AWS::EC2::NetworkAcl:
+AWS::EC2::NetworkAcl:
     known_fields:
         pass:
             - VpcId
 
-AWS::AWS::EC2::SubnetNetworkAclAssociation:
+AWS::EC2::SubnetNetworkAclAssociation:
     known_fields:
         pass:
             - NetworkAclId
             - SubnetId
 
-AWS::AWS::EC2::NetworkAclEntry:
+AWS::EC2::NetworkAclEntry:
     known_fields:
         pass:
             - NetworkAclId
