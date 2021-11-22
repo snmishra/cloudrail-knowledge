@@ -3,6 +3,7 @@ from cloudrail.knowledge.context.gcp.resources.cluster.gcp_container_cluster imp
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.base_gcp_scanner_builder import BaseGcpScannerBuilder
 from cloudrail.knowledge.utils.tags_utils import get_gcp_labels
 
+
 class ContainerClusterBuilder(BaseGcpScannerBuilder):
 
     def get_file_name(self) -> str:
