@@ -9,7 +9,7 @@ class ComputeSslPolicyBuilder(BaseGcpTerraformBuilder):
         name = attributes["name"]
         min_tls_version = self._get_known_value(attributes, "min_tls_version", "TLS_1_0")
         profile = self._get_known_value(attributes, "profile", "COMPATIBLE")
-        custom_features = self._get_known_value(attributes, "custom_features") if profile == 'CUSTOM' else None
+        custom_features = self._get_known_value(attributes, "custom_features")
         return GcpComputeSslPolicy(name, min_tls_version, profile, custom_features)
 
     def get_service_name(self) -> GcpResourceType:
