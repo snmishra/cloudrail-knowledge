@@ -19,6 +19,7 @@ class GcpStorageBucket(GcpResource):
             name: The name of the bucket.
             storage_class: (Optional, Default = 'STANDARD') The Storage Class of the new bucket. Supported values are STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE.
             uniform_bucket_level_access: ((Optional, Default = false) Enables Uniform bucket-level access access to a bucket.
+            region: bucket region (geographic location)
     """
 
     def __init__(self,
@@ -29,7 +30,7 @@ class GcpStorageBucket(GcpResource):
 
         super().__init__(GcpResourceType.GOOGLE_STORAGE_BUCKET)
         self.name: str = name
-        self.storage_class: Optional[GcpStorageBucketStorageClass] = storage_class
+        self.storage_class: GcpStorageBucketStorageClass = storage_class
         self.uniform_bucket_level_access: bool = uniform_bucket_level_access
         self.region: str = region
         self.with_aliases(name)
