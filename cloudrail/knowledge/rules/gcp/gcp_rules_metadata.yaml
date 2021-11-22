@@ -409,3 +409,25 @@ rules_metadata:
       - database
     supported_iac_types:
       - terraform
+
+  - rule_id: non_car_storage_bucket_ensure_logging_enabled
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.0.0:
+        - '5.3'
+    name: Ensure that logging is enabled for cloud storage buckets
+    severity: medium
+    description: It is recommended that storage access logs and storage logs are enabled for every storage bucket.
+    human_readable_logic: Cloudrail will review the storage bucket resources configuration within your GCP subscription
+      and Terraform plan to ensure that logging is enabled.
+    remediation_steps:
+      terraform: For the resource google_storage_bucket ensure that the optional attribute block “logging” is configured.
+      console: Follow the guides at <https://cloud.google.com/storage/docs/access-logs>
+        in order to ensure cloud storage logs are enabled for every storage bucket.
+    rule_type: non_context_aware
+    security_layer: logging
+    resource_type:
+      - storage
+    supported_iac_types:
+      - terraform

@@ -20,19 +20,22 @@ class GcpStorageBucket(GcpResource):
             storage_class: (Optional, Default = 'STANDARD') The Storage Class of the new bucket. Supported values are STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE.
             uniform_bucket_level_access: ((Optional, Default = false) Enables Uniform bucket-level access access to a bucket.
             region: bucket region (geographic location)
+            logging_enable: enable storage bucket daily logs
     """
 
     def __init__(self,
                  name: str,
                  storage_class: GcpStorageBucketStorageClass,
                  uniform_bucket_level_access: bool,
-                 region: str):
+                 region: str,
+                 logging_enable: bool):
 
         super().__init__(GcpResourceType.GOOGLE_STORAGE_BUCKET)
         self.name: str = name
         self.storage_class: GcpStorageBucketStorageClass = storage_class
         self.uniform_bucket_level_access: bool = uniform_bucket_level_access
         self.region: str = region
+        self.logging_enable: bool = logging_enable
         self.with_aliases(name)
 
     def get_keys(self) -> List[str]:

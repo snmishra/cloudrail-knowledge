@@ -22,6 +22,7 @@ from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_no_serial_
 from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_launch_with_vm_shield_rule import ComputeInstanceLaunchWithVmShieldRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_no_public_ip_rule import ComputeInstanceNoPublicIpRule
 from cloudrail.knowledge.rules.abstract_rules_loader import AbstractRulesLoader
+from cloudrail.knowledge.rules.gcp.non_context_aware.storage_bucket_logging_enabled_rule import StorageBucketLoggingEnabledRule
 
 
 class GcpRulesLoader(AbstractRulesLoader):
@@ -45,6 +46,7 @@ class GcpRulesLoader(AbstractRulesLoader):
             PostgresLogLockWaitsOnRule(),
             PostgresLogDisconnectionsRule(),
             PostgresLogConnectionsRule(),
-            PostgresLogCheckpointsRule()
+            PostgresLogCheckpointsRule(),
+            StorageBucketLoggingEnabledRule()
         ]
         return {rule.get_id(): rule for rule in rules}
