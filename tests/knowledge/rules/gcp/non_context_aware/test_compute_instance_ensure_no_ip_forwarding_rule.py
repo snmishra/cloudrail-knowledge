@@ -1,4 +1,3 @@
-from typing import Optional
 from unittest import TestCase
 from parameterized import parameterized
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
