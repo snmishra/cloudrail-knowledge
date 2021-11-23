@@ -45,6 +45,9 @@ class GcpStorageBucket(GcpResource):
     def get_id(self) -> str:
         return self.name
 
+    def get_name(self) -> Optional[str]:
+        return self.name
+
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'{self._BASE_URL}/storage/browser/{self.name}?project={self.project_id}'
 
@@ -59,4 +62,9 @@ class GcpStorageBucket(GcpResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {}
+        return {
+            'name': self.name,
+            'storage_class': self.storage_class,
+            'uniform_bucket_level_access': self.uniform_bucket_level_access,
+            'region': self.region
+        }
