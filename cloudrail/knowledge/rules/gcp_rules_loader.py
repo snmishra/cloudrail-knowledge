@@ -3,11 +3,13 @@ from typing import Dict, List
 from cloudrail.knowledge.rules.base_rule import BaseRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_ensure_no_ip_forwarding_rule import \
     ComputeInstanceEnsureNoIpForwardingRule
+from cloudrail.knowledge.rules.gcp.non_context_aware.container_cluster_is_not_public_rule import ContainerClusterIsNotPublictRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_database_temp_log_files_zero_rule import PostgresDatabaseTempLogFilesZeroRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_log_checkpoints_rule import PostgresLogCheckpointsRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_log_connections_rule import PostgresLogConnectionsRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_log_disconnections_rule import PostgresLogDisconnectionsRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_log_lock_waits_on_rule import PostgresLogLockWaitsOnRule
+from cloudrail.knowledge.rules.gcp.non_context_aware.postgres_log_minimum_error_rule import PostgresLogMinimumErrorRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.sql_database_instance_backup_configuration_enabled_rule import SqlDatabaseBackupConfigurationEnabledRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_do_not_use_default_service_account_rule import ComputeInstanceDoNotUseDefaultServiceAccountRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_do_not_use_default_service_account_full_access_scope_rule import ComputeInstanceDoNotUseDefaultServiceAccountFullAccessScopeRule
@@ -46,7 +48,9 @@ class GcpRulesLoader(AbstractRulesLoader):
             PostgresLogLockWaitsOnRule(),
             PostgresLogDisconnectionsRule(),
             PostgresLogConnectionsRule(),
+            ContainerClusterIsNotPublictRule(),
             PostgresLogCheckpointsRule(),
+            PostgresLogMinimumErrorRule(),
             StorageBucketLoggingEnabledRule()
         ]
         return {rule.get_id(): rule for rule in rules}
