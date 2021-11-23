@@ -150,3 +150,11 @@ google_compute_ssl_policy:
       - min_tls_version
       - profile
       - custom_features
+
+google_storage_bucket:
+  known_fields:
+    pass:
+      - name
+      - storage_class
+      - uniform_bucket_level_access
+      - location

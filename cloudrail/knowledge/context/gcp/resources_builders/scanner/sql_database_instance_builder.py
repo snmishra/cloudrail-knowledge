@@ -1,5 +1,4 @@
 # pylint: disable=consider-using-in
-from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.base_gcp_scanner_builder import BaseGcpScannerBuilder
 from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDBInstanceType, GcpSqlDBInstanceVersion, GcpSqlDBInstanceSettingsDBFlags, \
     GcpSqlDBInstanceSettingsBackupRetention, GcpSqlDBInstanceSettingsBackupConfig, GcpSqlDBInstanceIPConfigAuthNetworks, GcpSqlDBInstanceSettingsIPConfig, \
@@ -29,9 +28,6 @@ class SqlDatabaseInstanceBuilder(BaseGcpScannerBuilder):
             return sql_instance
 
         return None
-
-    def get_service_name(self) -> GcpResourceType:
-        return GcpResourceType.GOOGLE_SQL_DATABASE_INSTANCE
 
     def build_settings_block(self, attributes: dict):
         if settings := attributes.get("settings"):
