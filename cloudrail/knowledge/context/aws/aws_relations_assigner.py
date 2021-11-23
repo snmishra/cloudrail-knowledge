@@ -280,8 +280,7 @@ class AwsRelationsAssigner(DependencyInvocation):
                              ({role.role_name: role for role in ctx.roles},
                               {profile.iam_instance_profile_name: profile for profile in ctx.iam_instance_profiles}),
                              [self._add_auto_scale_ec2s]),
-            IterFunctionData(self._assign_ec2_network_interfaces, ctx.ec2s, (ctx.network_interfaces, ctx.subnets, ctx.vpcs),
-                             [self._assign_eni_to_vpc_endpoint]),
+            IterFunctionData(self._assign_ec2_network_interfaces, ctx.ec2s, (ctx.network_interfaces, ctx.subnets, ctx.vpcs)),
             IterFunctionData(self._assign_ec2_images_data, ctx.ec2s, (ctx.ec2_images,)),
             ### Auto-Scale ###
             FunctionData(self._remove_deleted_auto_scale_ec2s, (ctx.ec2s, ctx.auto_scaling_groups,)),
@@ -307,8 +306,7 @@ class AwsRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_load_balancer_target_group_targets, ctx.load_balancer_target_groups, (ctx.load_balancer_targets,)),
             IterFunctionData(self._assign_load_balancer_attributes, ctx.load_balancers, (ctx.load_balancers_attributes,)),
             ### Network Interface ###
-            IterFunctionData(self._assign_network_interface_subnets, ctx.network_interfaces, (ctx.subnets,),
-                             [self._assign_ecs_host_eni, self._assign_subnet_network_acl]),
+            IterFunctionData(self._assign_network_interface_subnets, ctx.network_interfaces, (ctx.subnets,), [self._assign_ecs_host_eni]),
             IterFunctionData(self._assign_network_interface_security_groups, ctx.network_interfaces, (ctx.security_groups,),
                              [self._assign_vpc_default_security_group, self._assign_network_interface_subnets]),
             IterFunctionData(self._assign_eni_to_vpc_endpoint, [vpce_inet for vpce_inet in ctx.vpc_endpoints
