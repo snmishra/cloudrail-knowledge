@@ -208,7 +208,8 @@ class BaseRuleTest(unittest.TestCase):
         if should_alert:
             self.assertEqual(RuleResultType.FAILED, rule_result.status)
             self.assertEqual(number_of_issue_items, len(rule_result.issues), rule_result.issues)
-            self._assert_evidence(rule_result.issues[0].evidence)
+            for issue in rule_result.issues:
+                self._assert_evidence(issue.evidence)
         else:
             self.assertNotEqual(RuleResultType.FAILED, rule_result.status,
                                 f'rule result failed and it shouldn\'t have: {rule_result.issues}')
