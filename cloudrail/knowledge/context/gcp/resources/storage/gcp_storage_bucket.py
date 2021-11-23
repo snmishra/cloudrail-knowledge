@@ -18,7 +18,7 @@ class GcpStorageBucket(GcpResource):
         Attributes:
             name: The name of the bucket.
             storage_class: (Optional, Default = 'STANDARD') The Storage Class of the new bucket. Supported values are STANDARD, MULTI_REGIONAL, REGIONAL, NEARLINE, COLDLINE, ARCHIVE.
-            uniform_bucket_level_access: ((Optional, Default = false) Enables Uniform bucket-level access access to a bucket.
+            uniform_bucket_level_access: (Optional, Default = false) Enables Uniform bucket-level access access to a bucket.
             region: bucket region (geographic location)
     """
 
