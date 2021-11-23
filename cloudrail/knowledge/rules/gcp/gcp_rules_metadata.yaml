@@ -89,6 +89,28 @@ rules_metadata:
       - compute
     supported_iac_types:
       - terraform
+  - rule_id: non_car_compute_instance_ensure_no_public_ip
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '4.9'
+    name: Ensure that Compute instances do not have public IP addresses
+    severity: major
+    description: To reduce your attack surface, it is highly recommended that compute instances should not have public IP addresses.
+      Instead, instances should be configured behind load balancers, to minimize the instance's exposure to the internet.
+      Instances created by GKE should be excluded because some of them have external IP addresses
+      and cannot be changed by editing the instance settings.
+    human_readable_logic: Cloudrail will review the compute instances configuration within your GCP subscription and Terraform plan to ensure that they do not have external IP address.
+    remediation_steps:
+      terraform: For the google_compute_instance resource ensure the access_config sub block under network_interface is removed.
+      console: Follow the guides at <https://cloud.google.com/compute/docs/ip-addresses/reserve-static-external-ip-address#disableexternalip> in order to disable external IP address of the compute VM instances.
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - compute
+    supported_iac_types:
+      - terraform
   - rule_id: non_car_cloud_sql_enable_backup
     cloud_provider: google_cloud_provider
     compliance:
@@ -114,7 +136,7 @@ rules_metadata:
     compliance:
       CIS:
         1.1.0:
-        - '4.1'
+          - '4.1'
     name: Ensure that instances are not configured to use the default service account
     severity: medium
     description:
@@ -129,7 +151,6 @@ rules_metadata:
       - compute
     supported_iac_types:
       - terraform
-
   - rule_id: non_car_cloud_sql_contained_database_authentication_off
     cloud_provider: google_cloud_provider
     compliance:
@@ -206,6 +227,28 @@ rules_metadata:
       - compute
     supported_iac_types:
       - terraform
+
+  - rule_id: non_car_compute_instance_ensure_no_ip_forwarding
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+            - '4.6'
+    name: Ensure that IP forwarding is not enabled on Instances
+    severity: medium
+    description:
+      Compute instances with ip forwarding enabled can perform the functions of routing or forwarding packets and hence it should be disabled to prevent data loss or information disclosure.  Instances created by GKE should be excluded because they need to have IP forwarding enabled and cannot be changed.
+    human_readable_logic: Cloudrail will review the compute instances configuration within your GCP subscription and Terraform plan to ensure that ip forwarding is disabled.
+    remediation_steps:
+      terraform: For the google_compute_instance resource ensure the attribute can_ip_forward is not set to true.
+      console:  Follow the guides at <https://cloud.google.com/vpc/docs/using-routes#canipforward>  in order to disable ip forwarding feature of the compute VM instances.
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - compute
+    supported_iac_types:
+      - terraform
+
 
   - rule_id: non_car_cloud_sql_log_min_duration_disable
     cloud_provider: google_cloud_provider
@@ -313,6 +356,31 @@ rules_metadata:
     security_layer: logging
     resource_type:
       - database
+    supported_iac_types:
+      - terraform
+
+  - rule_id: non_car_gke_control_plane_ensure_not_public
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '5.6.3'
+    name:  Ensure GKE Control Plane is not public
+    severity: major
+    description: Enable master authorized networks to restrict access to the GKE cluster's control plane to only an allow list of authorized IPs.
+      Restricting access to an authorized network provides additional security benefits for the container cluster,
+      such as better protection from outsider and insider attacks.
+    human_readable_logic: Cloudrail will review the GKE container cluster resources
+      configuration within your GCP subscription and Terraform plan to ensure that the control plane is not publicly accessible.
+    remediation_steps:
+      terraform: For the resource google_container_cluster ensure the attribute block
+        master_authorized_networks_config is configured with cidr ip address blocks.
+      console: Follow the guides at <https://cloud.google.com/kubernetes-engine/docs/how-to/authorized-networks>
+        in order to ensure GKE control plane is not publicly
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - kubernetes
     supported_iac_types:
       - terraform
 
