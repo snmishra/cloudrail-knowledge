@@ -66,5 +66,6 @@ class GcpStorageBucket(GcpResource):
             'name': self.name,
             'storage_class': self.storage_class,
             'uniform_bucket_level_access': self.uniform_bucket_level_access,
-            'region': self.region
+            'region': self.region,
+            'labels': self.labels
         }
