@@ -289,7 +289,7 @@ class AwsRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._add_auto_scale_ec2s, ctx.auto_scaling_groups, (ctx.load_balancers, ctx.load_balancer_target_groups,
                                                                                   ctx.ec2s, ctx.subnets, ctx.vpcs),
                              [self._assign_subnet_vpc, self._assign_load_balancer_target_groups, self._assign_auto_scaling_group_launch_template,
-                              self._assign_auto_scaling_group_launch_configuration]),
+                              self._assign_auto_scaling_group_launch_configuration, self._assign_network_interface_subnets]),
             ### Launch Template ###
             IterFunctionData(self._assign_launch_template_security_groups, ctx.launch_templates, (ctx.security_groups,),
                              [self._assign_vpc_default_security_group]),
