@@ -49,7 +49,6 @@ class GcpRulesLoader(AbstractRulesLoader):
             PostgresLogConnectionsRule(),
             ContainerClusterIsNotPublictRule(),
             PostgresLogCheckpointsRule(),
-            PostgresLogCheckpointsRule(),
             PostgresLogMinimumErrorRule()
         ]
         return {rule.get_id(): rule for rule in rules}
