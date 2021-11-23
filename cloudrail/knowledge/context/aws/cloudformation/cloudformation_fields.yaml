@@ -355,3 +355,39 @@ AWS::Kinesis::Stream:
         pass:
             - Name
             - StreamEncryption
+
+AWS::EC2::Instance:
+    known_fields:
+        pass:
+            - PrivateIpAddress
+            - PublicIp
+            - Ipv6Addresses
+            - NetworkInterfaces
+            - SecurityGroupIds
+            - SubnetId
+            - EbsOptimized
+            - ImageId
+            - IamInstanceProfile
+            - AvailabilityZone
+            - InstanceType
+            - Monitoring
+
+AWS::ElasticLoadBalancingV2::TargetGroup:
+    known_fields:
+        pass:
+            - Targets
+            - Port
+            - Protocol
+            - VpcId
+            - TargetType
+
+AWS::EC2::EIP:
+    known_fields:
+        pass:
+            - PublicIpv4Pool
+
+AWS::EC2::RouteTable:
+    known_fields:
+        pass:
+            - VpcId
+
