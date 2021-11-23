@@ -158,3 +158,4 @@ google_storage_bucket:
       - storage_class
       - uniform_bucket_level_access
       - location
+      - logging
