@@ -643,8 +643,7 @@ class AwsRelationsAssigner(DependencyInvocation):
             nacl.inbound_rules.append(NetworkAclRule(nacl.region, nacl.account, nacl.network_acl_id, '::/0',
                                                      0, 65535, RuleAction.DENY, 32768, RuleType.INBOUND, IpProtocol('ALL')))
 
-    @staticmethod
-    def _assign_network_interface_subnets(network_interface: NetworkInterface, subnets: AliasesDict[Subnet]):
+    def _assign_network_interface_subnets(self, network_interface: NetworkInterface, subnets: AliasesDict[Subnet]):
         network_interface.subnet = ResourceInvalidator.get_by_id(subnets, network_interface.subnet_id, True, network_interface)
         if not network_interface.primary_ip_address:
             network_interface.primary_ip_address = network_interface.subnet.cidr_block
@@ -652,8 +651,14 @@ class AwsRelationsAssigner(DependencyInvocation):
             network_interface.vpc_id = network_interface.subnet.vpc_id
             network_interface.vpc = network_interface.subnet.vpc
         should_associate_public_ip = network_interface.subnet.map_public_ip_on_launch
-        if not network_interface.is_pseudo and not network_interface.public_ip_address and should_associate_public_ip:
+        if self._should_associate_public_ip(network_interface, should_associate_public_ip):
             network_interface.public_ip_address = '0.0.0.0'
+
+    @staticmethod
+    def _should_associate_public_ip(network_interface: NetworkInterface, map_public_ip_on_launch: bool):
+        if isinstance(network_interface.owner, Ec2Instance):
+            map_public_ip_on_launch = network_interface.owner.raw_data.associate_public_ip_address
+        return not network_interface.is_pseudo and map_public_ip_on_launch and not network_interface.public_ip_address
 
     @staticmethod
     def _assign_security_group_rules(security_group: SecurityGroup, security_group_rules: List[SecurityGroupRule]):
