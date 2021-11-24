@@ -120,7 +120,6 @@ class NetworkInterface(ConnectionInstance, AwsResource):
                 'subnet_id': self.subnet_id,
                 'primary_ip_address': self.primary_ip_address,
                 'secondary_ip_addresses': self.secondary_ip_addresses,
-                'public_ip_address': self.public_ip_address,
                 'security_groups_ids': self.security_groups_ids,
                 'description': self.description,
                 'is_primary': self.is_primary,

@@ -651,6 +651,8 @@ class AwsRelationsAssigner(DependencyInvocation):
         if not network_interface.vpc_id:
             network_interface.vpc_id = network_interface.subnet.vpc_id
             network_interface.vpc = network_interface.subnet.vpc
+        if not network_interface.availability_zone:
+            network_interface.availability_zone = network_interface.subnet.availability_zone
         if self._should_associate_public_ip(network_interface, network_interface.subnet.map_public_ip_on_launch):
             network_interface.public_ip_address = '0.0.0.0'
 
