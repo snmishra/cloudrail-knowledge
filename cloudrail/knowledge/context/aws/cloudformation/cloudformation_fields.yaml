@@ -47,6 +47,7 @@ AWS::ApiGatewayV2::Integration:
             - IntegrationMethod
             - IntegrationType
             - IntegrationUri
+
 AWS::ApiGatewayV2::VpcLink:
     known_fields:
         pass:
@@ -80,6 +81,7 @@ AWS::EC2::SecurityGroup:
             - GroupName
             - SecurityGroupEgress
             - SecurityGroupIngress
+            - GroupDescription
 
 AWS::EC2::SecurityGroupEgress:
     known_fields:
@@ -110,7 +112,6 @@ AWS::EC2::SecurityGroupIngress:
 AWS::EC2::Subnet:
     known_fields:
         pass:
-            - GroupId
             - AvailabilityZone
             - MapPublicIpOnLaunch
 
