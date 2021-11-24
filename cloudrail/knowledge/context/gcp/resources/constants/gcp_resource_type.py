@@ -14,3 +14,5 @@ class GcpResourceType(Enum):
     GOOGLE_COMPUTE_GLOBAL_FORWARDING_RULE = 'google_compute_global_forwarding_rule'
     GOOGLE_COMPUTE_TARGET_POOL = 'google_compute_target_pool'
     GOOGLE_COMPUTE_FORWARDING_RULE = 'google_compute_forwarding_rule'
+    GOOGLE_COMPUTE_SSL_POLICY = 'google_compute_ssl_policy'
+    GOOGLE_STORAGE_BUCKET = 'google_storage_bucket'
