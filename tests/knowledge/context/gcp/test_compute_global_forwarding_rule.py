@@ -21,3 +21,9 @@ class TestComputeGlobalForwardingRule(GcpContextTest):
         self.assertTrue(compute.target in ['google_compute_global_forwarding_rule.ssl-forwarding.target',
                                            'https://www.googleapis.com/compute/v1/projects/dev-for-tests/global/targetSslProxies/test-ssl-proxy'])
 
+    @context(module_path="with_targets")
+    def test_with_targets(self, ctx: GcpEnvironmentContext):
+        compute = next((compute for compute in ctx.compute_global_forwarding_rule if
+                        compute.name == 'test-global-forwarding-rule'), None)
+        self.assertIsNotNone(compute)
+        self.assertIsNotNone(compute.target_obj)
