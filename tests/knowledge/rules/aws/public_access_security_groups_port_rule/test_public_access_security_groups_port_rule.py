@@ -114,3 +114,9 @@ class TestPublicAccessSecurityGroupsPortRule(AwsBaseRuleTest):
     @rule_test('neptune_cluster_public_access_test_exclude', False)
     def test_neptune_cluster_public_access_test_exclude(self, rule_result: RuleResponse):
         pass
+
+    @rule_test('ec2_external_interface_public_ip', True)
+    def test_ec2_external_interface_public_ip(self, rule_result: RuleResponse):
+        self.assertIsNotNone(rule_result)
+        self.assertTrue("allows port `22`." in rule_result.issues[0].evidence)
+        self.assertEqual(rule_result.issues[0].exposed.get_type(), 'EC2 Instance')
