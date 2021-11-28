@@ -14,9 +14,8 @@ class CloudDnsNoRsasha1UsedRule(GcpBaseRule):
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for cloud_dns in env_context.dns_managed_zones:
-            if cloud_dns.dnssec_config \
-            and cloud_dns.dnssec_config.state == 'on' \
-                and any(default_key.algorithm == DnsDefKeyAlgorithm.RSASHA1 for default_key in cloud_dns.dnssec_config.default_key_specs):
+            if cloud_dns.dnssec_config and cloud_dns.dnssec_config.state == 'on' and \
+            any(default_key.algorithm == DnsDefKeyAlgorithm.RSASHA1 for default_key in cloud_dns.dnssec_config.default_key_specs):
                 issues.append(
                     Issue(
                         f"The {cloud_dns.get_type()} `{cloud_dns.get_friendly_name()}` has rsasha1 enabled for zone-signing and key-signing keys",

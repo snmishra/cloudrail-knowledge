@@ -13,11 +13,12 @@ class GcpDnsManagedZoneBuilder(BaseGcpTerraformBuilder):
         if dnssec_config_data := self._get_known_value(attributes, 'dnssec_config'):
             ## Default Key Specs config
             default_key_specs: List[GcpDnsManagedZoneDnsSecCfgDefKeySpecs] = []
-            if not self._get_known_value(dnssec_config_data[0], 'default_key_specs'):
+            default_key_specs_data_list = self._get_known_value(dnssec_config_data[0], 'default_key_specs')
+            if not default_key_specs_data_list:
                 default_key_specs.extend([GcpDnsManagedZoneDnsSecCfgDefKeySpecs(DnsDefKeyAlgorithm('rsasha256'), 2048, DnsDefKeyType('keySigning'), 'dns#dnsKeySpec'),
                                           GcpDnsManagedZoneDnsSecCfgDefKeySpecs(DnsDefKeyAlgorithm('rsasha256'), 1024, DnsDefKeyType('zoneSigning'), 'dns#dnsKeySpec')])
             else:
-                for default_key_specs_data in self._get_known_value(dnssec_config_data[0], 'default_key_specs', []):
+                for default_key_specs_data in default_key_specs_data_list:
                     key_type = DnsDefKeyType(self._get_known_value(default_key_specs_data, 'key_type'))
                     key_length = self._get_known_value(default_key_specs_data, 'key_length')
                     if key_type == DnsDefKeyType.KEYSIGNING:

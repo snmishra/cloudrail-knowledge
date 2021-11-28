@@ -23,7 +23,7 @@ class TestGcpDnsManagedZone(GcpContextTest):
         for default_key in dns.dnssec_config.default_key_specs:
             self.assertEqual(default_key.kind, 'dns#dnsKeySpec')
             self.assertEqual(default_key.key_length, 2048)
-            if default_key.key_type == DnsDefKeyType.ZONESIGNING:
-                self.assertEqual(default_key.algorithm, DnsDefKeyAlgorithm.RSASHA256)
-            else:
-                self.assertEqual(default_key.algorithm, DnsDefKeyAlgorithm.RSASHA512)
+        zone_sign_key = next((key for key in dns.dnssec_config.default_key_specs if key.key_type == DnsDefKeyType.ZONESIGNING), None)
+        self.assertEqual(zone_sign_key.algorithm, DnsDefKeyAlgorithm.RSASHA256)
+        key_sign_type = next((key for key in dns.dnssec_config.default_key_specs if key.key_type == DnsDefKeyType.KEYSIGNING), None)
+        self.assertEqual(key_sign_type.algorithm, DnsDefKeyAlgorithm.RSASHA512)
