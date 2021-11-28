@@ -30,7 +30,7 @@ class GcpDnsManagedZoneDnsSecCfgDefKeySpecs:
     """
     algorithm: DnsDefKeyAlgorithm
     key_length: int
-    key_type: str
+    key_type: DnsDefKeyType
     kind: str
 
 
