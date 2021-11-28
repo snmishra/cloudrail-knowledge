@@ -10,6 +10,7 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_network impor
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_ssl_policy import GcpComputeSslPolicy
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_http_proxy import GcpComputeTargetHttpProxy
 from cloudrail.knowledge.context.gcp.resources.dns.gcp_dns_managed_zone import GcpDnsManagedZone
+from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_https_proxy import GcpComputeTargetHttpsProxy
 from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDatabaseInstance
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance import GcpComputeInstance
 from cloudrail.knowledge.context.gcp.resources.projects.gcp_project import Project
@@ -27,6 +28,7 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
                  projects: AliasesDict[Project] = None,
                  container_cluster: List[GcpContainerCluster] = None,
                  compute_target_http_proxy: List[GcpComputeTargetHttpProxy] = None,
+                 compute_target_https_proxy: List[GcpComputeTargetHttpsProxy] = None,
                  compute_global_forwarding_rule: List[GcpComputeGlobalForwardingRule] = None,
                  compute_ssl_policy: List[GcpComputeSslPolicy] = None,
                  storage_buckets: AliasesDict[GcpStorageBucket] = None,
@@ -41,6 +43,7 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
         self.projects: AliasesDict[Project] = projects or AliasesDict()
         self.container_cluster: List[GcpContainerCluster] = container_cluster or []
         self.compute_target_http_proxy: List[GcpComputeTargetHttpProxy] = compute_target_http_proxy or []
+        self.compute_target_https_proxy: List[GcpComputeTargetHttpsProxy] = compute_target_https_proxy or []
         self.compute_ssl_policy: List[GcpComputeSslPolicy] = compute_ssl_policy or []
         self.storage_buckets: AliasesDict[GcpStorageBucket] = storage_buckets or AliasesDict()
         self.dns_managed_zones: List[GcpDnsManagedZone] = dns_managed_zones or []
