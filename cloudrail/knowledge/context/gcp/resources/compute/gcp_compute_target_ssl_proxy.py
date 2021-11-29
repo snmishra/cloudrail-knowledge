@@ -23,8 +23,7 @@ class GcpComputeTargetSslProxy(GcpComputeTargetProxy):
                  backend_service: str,
                  ssl_certificates: List[str],
                  ssl_policy: Optional[str]):
-        super().__init__(name, GcpResourceType.GOOGLE_COMPUTE_TARGET_SSL_PROXY)
-        self.self_link: str = self_link
+        super().__init__(name, self_link, GcpResourceType.GOOGLE_COMPUTE_TARGET_SSL_PROXY)
         self.target_id: str = target_id
         self.backend_service: str = backend_service
         self.ssl_certificates: List[str] = ssl_certificates

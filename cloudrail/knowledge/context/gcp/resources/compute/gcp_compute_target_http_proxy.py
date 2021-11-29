@@ -19,9 +19,8 @@ class GcpComputeTargetHttpProxy(GcpComputeTargetProxy):
                  self_link: str,
                  url_map: str):
 
-        super().__init__(name, GcpResourceType.GOOGLE_COMPUTE_TARGET_HTTP_PROXY)
+        super().__init__(name, self_link, GcpResourceType.GOOGLE_COMPUTE_TARGET_HTTP_PROXY)
         self.target_id: str = target_id
-        self.self_link = self_link
         self.url_map: str = url_map
 
     def get_keys(self) -> List[str]:

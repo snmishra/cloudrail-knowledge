@@ -4,6 +4,10 @@ from typing import List, Optional
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
 
+"""
+    A parent resource for all target proxy resources
+"""
+
 
 class GcpComputeTargetProxy(GcpResource):
     """
@@ -13,10 +17,12 @@ class GcpComputeTargetProxy(GcpResource):
 
     def __init__(self,
                  name: str,
+                 self_link: str,
                  resource_type: GcpResourceType):
 
         super().__init__(resource_type)
         self.name: str = name
+        self.self_link: str = self_link
 
     @abstractmethod
     def get_keys(self) -> List[str]:
@@ -33,6 +39,9 @@ class GcpComputeTargetProxy(GcpResource):
     def is_labeled(self) -> bool:
         return False
 
+    """
+        True if the target protocol is secure (e.g ssl, https)
+    """
     @property
     @abstractmethod
     def is_encrypted(self) -> bool:

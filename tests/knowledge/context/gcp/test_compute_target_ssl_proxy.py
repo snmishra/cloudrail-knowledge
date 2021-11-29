@@ -2,7 +2,7 @@ from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironme
 from cloudrail.knowledge.context.mergeable import EntityOrigin
 
 from tests.knowledge.context.gcp_context_test import GcpContextTest
-from tests.knowledge.context.test_context_annotation import context
+from tests.knowledge.context.test_context_annotation import context, TestOptions
 
 
 class TestComputeTargetSslProxy(GcpContextTest):
@@ -12,6 +12,8 @@ class TestComputeTargetSslProxy(GcpContextTest):
     @context(module_path="basic")
     def test_basic(self, ctx: GcpEnvironmentContext):
         compute = next((compute for compute in ctx.compute_target_ssl_proxy if compute.name == 'test-proxy'), None)
+        self.assertIsNotNone(compute)
+        self.assertIsNotNone(compute.ssl_policy)
         self.assertIsNotNone(compute.ssl_policy_obj)
         if compute.origin == EntityOrigin.LIVE_ENV:
             self.assertEqual(compute.backend_service, "https://www.googleapis.com/compute/v1/projects/dev-for-tests/global/backendServices/backend-service")
@@ -25,6 +27,7 @@ class TestComputeTargetSslProxy(GcpContextTest):
     @context(module_path="ssl_policy_none")
     def test_ssl_policy_none(self, ctx: GcpEnvironmentContext):
         compute = next((compute for compute in ctx.compute_target_ssl_proxy if compute.name == 'test-proxy'), None)
+        self.assertIsNotNone(compute)
         self.assertIsNone(compute.ssl_policy)
         self.assertIsNone(compute.ssl_policy_obj)
         if compute.origin == EntityOrigin.LIVE_ENV:

@@ -27,22 +27,26 @@ class GcpRelationsAssigner(DependencyInvocation):
 
         super().__init__(function_pool, context=ctx)
 
-    def _assign_ssl_policy(self, target_ssl_proxy: GcpComputeTargetSslProxy, ssl_policies: List[GcpComputeSslPolicy]):
+    @staticmethod
+    def _assign_ssl_policy(target_ssl_proxy: GcpComputeTargetSslProxy, ssl_policies: List[GcpComputeSslPolicy]):
         def get_ssl_policy():
-            ssl_policy = self._get_resource_by_keys(ssl_policies, target_ssl_proxy.ssl_policy, target_ssl_proxy.project_id)
+            ssl_policy = next((ssl_policy for ssl_policy in ssl_policies if
+                               target_ssl_proxy.ssl_policy and
+                              (target_ssl_proxy.ssl_policy in [ssl_policy.get_name(), ssl_policy.get_id()], ssl_policy.self_link) and
+                              target_ssl_proxy.project_id == ssl_policy.project_id), None)
             return ssl_policy
 
-        target_ssl_proxy.ssl_policy_obj = ResourceInvalidator.get_by_logic(get_ssl_policy, False)
-
-    def _assign_target_proxy(self, global_forwarding_rule: GcpComputeGlobalForwardingRule, targets: List[GcpComputeTargetProxy]):
-        def get_target():
-            target = self._get_resource_by_keys(targets, global_forwarding_rule.target, global_forwarding_rule.project_id)
-            return target
-
-        global_forwarding_rule.target_obj = ResourceInvalidator.get_by_logic(get_target, False)
+        if not target_ssl_proxy.ssl_policy_obj:
+            target_ssl_proxy.ssl_policy_obj = ResourceInvalidator.get_by_logic(get_ssl_policy, False)
 
     @staticmethod
-    def _get_resource_by_keys(resources: List[GcpResource], key: str, project_id: str):
-        return next((resource for resource in resources if
-                    (key in resource.get_keys() or key == resource.get_name()) and
-                    project_id == resource.project_id), None)
+    def _assign_target_proxy(global_forwarding_rule: GcpComputeGlobalForwardingRule, targets: List[GcpComputeTargetProxy]):
+        def get_target():
+            target = next((target for target in targets if
+                           global_forwarding_rule.target and
+                           (global_forwarding_rule.target in [target.get_name(), target.get_id(), target.self_link]) and
+                           global_forwarding_rule.project_id == target.project_id), None)
+            return target
+
+        if not global_forwarding_rule.target_obj:
+            global_forwarding_rule.target_obj = ResourceInvalidator.get_by_logic(get_target, False)
