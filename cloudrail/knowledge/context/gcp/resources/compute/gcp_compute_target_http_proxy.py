@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_proxy import GcpComputeTargetProxy
+from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_proxy import GcpComputeTargetProxy, TargetTypes
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 
 
@@ -19,12 +19,13 @@ class GcpComputeTargetHttpProxy(GcpComputeTargetProxy):
                  self_link: str,
                  url_map: str):
 
-        super().__init__(name, self_link, GcpResourceType.GOOGLE_COMPUTE_TARGET_HTTP_PROXY)
+        super().__init__(name, self_link, TargetTypes.HTTP, GcpResourceType.GOOGLE_COMPUTE_TARGET_HTTP_PROXY)
         self.target_id: str = target_id
         self.url_map: str = url_map
+        self.with_aliases(name, target_id, self_link)
 
     def get_keys(self) -> List[str]:
-        return [self.self_link, self.target_id, self.project_id]
+        return [self.self_link]
 
     def get_id(self) -> str:
         return self.target_id

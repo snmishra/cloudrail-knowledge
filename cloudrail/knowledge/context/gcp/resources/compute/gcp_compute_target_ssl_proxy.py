@@ -1,7 +1,7 @@
 from typing import List, Optional
 
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_ssl_policy import GcpComputeSslPolicy
-from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_proxy import GcpComputeTargetProxy
+from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_proxy import GcpComputeTargetProxy, TargetTypes
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 
 
@@ -23,15 +23,16 @@ class GcpComputeTargetSslProxy(GcpComputeTargetProxy):
                  backend_service: str,
                  ssl_certificates: List[str],
                  ssl_policy: Optional[str]):
-        super().__init__(name, self_link, GcpResourceType.GOOGLE_COMPUTE_TARGET_SSL_PROXY)
+        super().__init__(name, self_link, TargetTypes.SSL, GcpResourceType.GOOGLE_COMPUTE_TARGET_SSL_PROXY)
         self.target_id: str = target_id
         self.backend_service: str = backend_service
         self.ssl_certificates: List[str] = ssl_certificates
         self.ssl_policy: Optional[str] = ssl_policy
         self.ssl_policy_obj: Optional[GcpComputeSslPolicy] = None
+        self.with_aliases(name, target_id, self_link)
 
     def get_keys(self) -> List[str]:
-        return [self.target_id, self.self_link, self.project_id]
+        return [self.self_link]
 
     def get_id(self) -> str:
         return self.target_id
@@ -47,4 +48,5 @@ class GcpComputeTargetSslProxy(GcpComputeTargetProxy):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {}
+        return {"ssl_certificates": self.ssl_certificates,
+                "backend_service": self.backend_service}

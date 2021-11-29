@@ -1,9 +1,16 @@
 # pylint: disable=W0107
 from abc import abstractmethod
+from enum import Enum
 from typing import List, Optional
 
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
+
+
+class TargetTypes(Enum):
+    HTTP = "HTTP"
+    HTTPS = "HTTPS"
+    SSL = "SSL"
 
 
 class GcpComputeTargetProxy(GcpResource):
@@ -12,16 +19,19 @@ class GcpComputeTargetProxy(GcpResource):
 
         Attributes:
             name: (Required) A unique name of the resource.
+            self_link: (Optional) The URI of the created resource.
     """
 
     def __init__(self,
                  name: str,
                  self_link: str,
+                 target_type: TargetTypes,
                  resource_type: GcpResourceType):
 
         super().__init__(resource_type)
         self.name: str = name
         self.self_link: str = self_link
+        self.target_type: TargetTypes = target_type
 
     @abstractmethod
     def get_keys(self) -> List[str]:

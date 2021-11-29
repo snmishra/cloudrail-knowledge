@@ -5,7 +5,7 @@ from cloudrail.knowledge.context.gcp.resources_builders.scanner.base_gcp_scanner
 class ComputeTargetSslProxyBuilder(BaseGcpScannerBuilder):
 
     def get_file_name(self) -> str:
-        return  'compute-v1-targetSslProxies-list.json'
+        return 'compute-v1-targetSslProxies-list.json'
 
     def do_build(self, attributes: dict) -> GcpComputeTargetSslProxy:
         name = attributes["name"]
