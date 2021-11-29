@@ -8,7 +8,6 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_global_forwar
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_ssl_policy import GcpComputeSslPolicy
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_proxy import GcpComputeTargetProxy
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_ssl_proxy import GcpComputeTargetSslProxy
-from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
 
 
 class GcpRelationsAssigner(DependencyInvocation):
