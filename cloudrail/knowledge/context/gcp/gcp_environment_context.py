@@ -10,6 +10,7 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_network impor
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_ssl_policy import GcpComputeSslPolicy
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_http_proxy import GcpComputeTargetHttpProxy
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_ssl_proxy import GcpComputeTargetSslProxy
+from cloudrail.knowledge.context.gcp.resources.dns.gcp_dns_managed_zone import GcpDnsManagedZone
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_https_proxy import GcpComputeTargetHttpsProxy
 from cloudrail.knowledge.context.gcp.resources.sql.gcp_sql_database_instance import GcpSqlDatabaseInstance
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance import GcpComputeInstance
@@ -32,7 +33,8 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
                  compute_target_https_proxy: List[GcpComputeTargetHttpsProxy] = None,
                  compute_global_forwarding_rule: List[GcpComputeGlobalForwardingRule] = None,
                  compute_ssl_policy: List[GcpComputeSslPolicy] = None,
-                 storage_buckets: AliasesDict[GcpStorageBucket] = None):
+                 storage_buckets: AliasesDict[GcpStorageBucket] = None,
+                 dns_managed_zones: List[GcpDnsManagedZone] = None):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
         self.sql_database_instances: List[GcpSqlDatabaseInstance] = sql_database_instances or []
@@ -47,3 +49,4 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
         self.compute_target_https_proxy: List[GcpComputeTargetHttpsProxy] = compute_target_https_proxy or []
         self.compute_ssl_policy: List[GcpComputeSslPolicy] = compute_ssl_policy or []
         self.storage_buckets: AliasesDict[GcpStorageBucket] = storage_buckets or AliasesDict()
+        self.dns_managed_zones: List[GcpDnsManagedZone] = dns_managed_zones or []

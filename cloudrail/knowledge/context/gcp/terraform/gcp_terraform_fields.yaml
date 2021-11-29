@@ -171,6 +171,7 @@ google_storage_bucket:
       - location
       - logging
 
+
 google_compute_target_ssl_proxy:
   known_fields:
     pass:
@@ -179,3 +180,11 @@ google_compute_target_ssl_proxy:
       - ssl_certificates
       - ssl_policy
       - self_link
+
+google_dns_managed_zone:
+  known_fields:
+    pass:
+      - name
+      - dns_name
+      - description
+      - dnssec_config
