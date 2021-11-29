@@ -1,3 +1,4 @@
+# pylint: disable=W0107
 from abc import abstractmethod
 from typing import List, Optional
 
