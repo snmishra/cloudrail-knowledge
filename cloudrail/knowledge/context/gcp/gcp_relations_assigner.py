@@ -31,8 +31,7 @@ class GcpRelationsAssigner(DependencyInvocation):
     def _assign_ssl_policy(target_ssl_proxy: GcpComputeTargetSslProxy, ssl_policies: List[GcpComputeSslPolicy]):
         def get_ssl_policy():
             ssl_policy = next((ssl_policy for ssl_policy in ssl_policies if
-                               target_ssl_proxy.ssl_policy and
-                              (target_ssl_proxy.ssl_policy in [ssl_policy.get_name(), ssl_policy.get_id()], ssl_policy.self_link) and
+                              (target_ssl_proxy.ssl_policy in [ssl_policy.get_name(), ssl_policy.get_id(), ssl_policy.self_link]) and
                               target_ssl_proxy.project_id == ssl_policy.project_id), None)
             return ssl_policy
 
@@ -43,7 +42,6 @@ class GcpRelationsAssigner(DependencyInvocation):
     def _assign_target_proxy(global_forwarding_rule: GcpComputeGlobalForwardingRule, targets: List[GcpComputeTargetProxy]):
         def get_target():
             target = next((target for target in targets if
-                           global_forwarding_rule.target and
                            (global_forwarding_rule.target in [target.get_name(), target.get_id(), target.self_link]) and
                            global_forwarding_rule.project_id == target.project_id), None)
             return target

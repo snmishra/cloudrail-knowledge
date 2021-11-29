@@ -1,7 +1,7 @@
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
 
 from tests.knowledge.context.gcp_context_test import GcpContextTest
-from tests.knowledge.context.test_context_annotation import context, TestOptions
+from tests.knowledge.context.test_context_annotation import context
 
 
 class TestComputeGlobalForwardingRule(GcpContextTest):
@@ -21,7 +21,7 @@ class TestComputeGlobalForwardingRule(GcpContextTest):
         self.assertTrue(compute.target in ['google_compute_global_forwarding_rule.ssl-forwarding.target',
                                            'https://www.googleapis.com/compute/v1/projects/dev-for-tests/global/targetSslProxies/test-ssl-proxy'])
 
-    @context(module_path="with_targets", test_options=TestOptions(run_cloudformation=False, run_drift_detection=False, run_terraform=False))
+    @context(module_path="with_targets")
     def test_with_targets(self, ctx: GcpEnvironmentContext):
         compute = next((compute for compute in ctx.compute_global_forwarding_rule if
                         compute.name == 'test-global-forwarding-rule'), None)
