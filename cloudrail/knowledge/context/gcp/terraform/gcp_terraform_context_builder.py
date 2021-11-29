@@ -4,6 +4,8 @@ from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_forwarding_rule_builder import ComputeForwardingRuleBuilder
+from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_target_https_proxy_builder import \
+    ComputeTargetHttpsProxyBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.container_cluster_builder import ContainerClusterBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.terraform.compute_target_http_proxy_builder import \
     ComputeTargetHttpProxyBuilder
@@ -56,6 +58,7 @@ class GcpTerraformContextBuilder(IacContextBuilder):
             context.projects = ProjectBuilder(resources).build()
             context.container_cluster = ContainerClusterBuilder(resources).build()
             context.compute_target_http_proxy = ComputeTargetHttpProxyBuilder(resources).build()
+            context.compute_target_https_proxy = ComputeTargetHttpsProxyBuilder(resources).build()
             context.compute_global_forwarding_rule = ComputeGlobalForwardingRuleBuilder(resources).build()
             context.compute_target_pools = ComputeTargetPoolBuilder(resources).build()
             context.compute_forwarding_rules = ComputeForwardingRuleBuilder(resources).build()
