@@ -27,25 +27,26 @@ class GcpRelationsAssigner(DependencyInvocation):
     @staticmethod
     def _assign_ssl_policy(target_proxy: GcpComputeTargetProxy, ssl_policies: AliasesDict[GcpComputeSslPolicy]):
         def get_ssl_policy():
-            ssl_policy = ResourceInvalidator.get_by_id(ssl_policies, target_proxy.ssl_policy, False)
+            ssl_policy = ResourceInvalidator.get_by_id(ssl_policies, target_proxy.ssl_policy_identifier, False)
             if not ssl_policy:
                 ssl_policy = next((ssl_policy for ssl_policy in ssl_policies if
                                   target_proxy.project_id == ssl_policy.project_id and
-                                  target_proxy.ssl_policy == ssl_policy.name), None)
+                                  target_proxy.ssl_policy_identifier == ssl_policy.name), None)
             return ssl_policy
 
-        if target_proxy.is_encrypted and not target_proxy.ssl_policy_obj:
-            target_proxy.ssl_policy_obj = ResourceInvalidator.get_by_logic(get_ssl_policy, False)
+        # only is_encrypted resources have ssl_policy
+        if target_proxy.is_encrypted and not target_proxy.ssl_policy:
+            target_proxy.ssl_policy = ResourceInvalidator.get_by_logic(get_ssl_policy, False)
 
     @staticmethod
     def _assign_target_proxy(global_forwarding_rule: GcpComputeGlobalForwardingRule, targets: AliasesDict[GcpComputeTargetProxy]):
         def get_target():
-            target = ResourceInvalidator.get_by_id(targets, global_forwarding_rule.target, False)
+            target = ResourceInvalidator.get_by_id(targets, global_forwarding_rule.target_identifier, False)
             if not target:
                 target = next((target for target in targets if
                                global_forwarding_rule.project_id == target.project_id and
-                               global_forwarding_rule.target == target.name), None)
+                               global_forwarding_rule.target_identifier == target.name), None)
             return target
 
-        if not global_forwarding_rule.target_obj:
-            global_forwarding_rule.target_obj = ResourceInvalidator.get_by_logic(get_target, False)
+        if not global_forwarding_rule.target:
+            global_forwarding_rule.target = ResourceInvalidator.get_by_logic(get_target, False)

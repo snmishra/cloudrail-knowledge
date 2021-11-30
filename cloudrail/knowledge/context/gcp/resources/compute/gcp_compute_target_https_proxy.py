@@ -12,7 +12,7 @@ class GcpComputeTargetHttpsProxy(GcpComputeTargetProxy):
             self_link: (Optional) The URI of the created resource.
             ssl_certificates: A list of SslCertificate resources that are used to authenticate connections between users and the load balancer. At least one SSL certificate must be specified.
             url_map: A reference to the UrlMap resource that defines the mapping from URL to the BackendService.
-            ssl_policy: (Optional) A reference to the SslPolicy resource that will be associated with the TargetSslProxy resource.
+            ssl_policy_identifier: (Optional) A reference to the SslPolicy resource that will be associated with the TargetSslProxy resource.
     """
 
     def __init__(self,
@@ -21,14 +21,14 @@ class GcpComputeTargetHttpsProxy(GcpComputeTargetProxy):
                  self_link: str,
                  url_map: str,
                  ssl_certificates: List[str],
-                 ssl_policy: Optional[str]):
+                 ssl_policy_identifier: Optional[str]):
 
         super().__init__(name, self_link, TargetTypes.HTTPS, GcpResourceType.GOOGLE_COMPUTE_TARGET_HTTPS_PROXY)
         self.target_id: str = target_id
         self.url_map: str = url_map
         self.ssl_certificates: List[str] = ssl_certificates
-        self.ssl_policy: Optional[str] = ssl_policy
-        self.ssl_policy_obj: Optional[GcpComputeTargetProxy] = None
+        self.ssl_policy_identifier: Optional[str] = ssl_policy_identifier
+        self.ssl_policy: Optional[GcpComputeTargetProxy] = None
         self.with_aliases(target_id, self_link)
 
     def get_keys(self) -> List[str]:

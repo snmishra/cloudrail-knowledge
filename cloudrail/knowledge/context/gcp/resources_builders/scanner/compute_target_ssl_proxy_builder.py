@@ -13,5 +13,5 @@ class ComputeTargetSslProxyBuilder(BaseGcpScannerBuilder):
         self_link = attributes["selfLink"]
         backend_service = attributes["service"]
         ssl_certificates = attributes["sslCertificates"]
-        ssl_policy = attributes.get("sslPolicy")
-        return GcpComputeTargetSslProxy(name, target_id, self_link, backend_service, ssl_certificates, ssl_policy)
+        ssl_policy_identifier = attributes.get("sslPolicy")
+        return GcpComputeTargetSslProxy(name, target_id, self_link, backend_service, ssl_certificates, ssl_policy_identifier)

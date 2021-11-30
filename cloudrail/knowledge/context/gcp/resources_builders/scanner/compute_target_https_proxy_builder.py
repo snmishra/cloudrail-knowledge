@@ -13,4 +13,4 @@ class ComputeTargetHttpsProxyBuilder(BaseGcpScannerBuilder):
                                           self_link=attributes['selfLink'],
                                           url_map=attributes['urlMap'],
                                           ssl_certificates=attributes['sslCertificates'],
-                                          ssl_policy=attributes.get('sslPolicy'))
+                                          ssl_policy_identifier=attributes.get('sslPolicy'))
