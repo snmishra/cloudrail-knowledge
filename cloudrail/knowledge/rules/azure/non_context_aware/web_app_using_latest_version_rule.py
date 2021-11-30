@@ -1,9 +1,8 @@
 from abc import abstractmethod
 from functools import lru_cache
 from typing import List, Dict, Union, Optional
-
-from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from pkg_resources import parse_version
+from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import AzureAppService
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
@@ -35,7 +34,7 @@ class AbstractWebAppUsingLatestVersionRule(AzureBaseRule):
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         latest_web_app_stack: WebAppStack = self._get_web_app_stack_latest_major_version(env_context)
-        self.latest_version = (latest_web_app_stack and latest_web_app_stack.get_latest_version()) or self.latest_version
+        self.latest_version = latest_web_app_stack.get_latest_version() if latest_web_app_stack else self.latest_version
         for web_app in self.get_web_app_resources(env_context):
             code_lang, version = self._get_version(web_app.app_service_config.linux_fx_version)
             if code_lang and version and code_lang.upper() == self.code_lang.upper() and \
