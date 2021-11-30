@@ -19,6 +19,7 @@ from cloudrail.knowledge.context.gcp.resources_builders.scanner.compute_target_p
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.compute_ssl_policy_builder import ComputeSslPolicyBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.project_builder import ProjectBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.container_cluster_builder import ContainerClusterBuilder
+from cloudrail.knowledge.context.gcp.resources_builders.scanner.dns_managed_zone_builder import GcpDnsManagedZoneBuilder
 from cloudrail.knowledge.context.environment_context.scanner_context_builder import ScannerContextBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.storage_bucket_builder import StorageBucketBuilder
 
@@ -52,4 +53,5 @@ class GcpScannerContextBuilder(ScannerContextBuilder):
         context.compute_forwarding_rules = ComputeForwardingRuleBuilder(*builder_args).build()
         context.compute_ssl_policy = ComputeSslPolicyBuilder(*builder_args).build()
         context.storage_buckets = AliasesDict(*StorageBucketBuilder(*builder_args).build())
+        context.dns_managed_zones = GcpDnsManagedZoneBuilder(*builder_args).build()
         return context

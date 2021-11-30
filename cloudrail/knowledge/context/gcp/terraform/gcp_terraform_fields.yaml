@@ -183,3 +183,11 @@ google_storage_bucket:
       - uniform_bucket_level_access
       - location
       - logging
+
+google_dns_managed_zone:
+  known_fields:
+    pass:
+      - name
+      - dns_name
+      - description
+      - dnssec_config
