@@ -57,4 +57,4 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
     @functools.lru_cache(maxsize=None)
     def get_all_targets_proxy(self) -> AliasesDict[GcpComputeTargetProxy]:
         condition: Callable = lambda resource: isinstance(resource, GcpComputeTargetProxy)
-        return AliasesDict(*list(self.get_all_mergeable_resources(condition)))
+        return AliasesDict(*self.get_all_mergeable_resources(condition))
