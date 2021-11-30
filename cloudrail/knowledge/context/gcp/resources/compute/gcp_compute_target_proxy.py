@@ -48,17 +48,16 @@ class GcpComputeTargetProxy(GcpResource):
     def is_labeled(self) -> bool:
         return False
 
-
     @property
     @abstractmethod
     def is_encrypted(self) -> bool:
+        """
+            True if the target protocol is secure (e.g ssl, https)
+        """
         pass
 
     @abstractmethod
     def get_cloud_resource_url(self) -> Optional[str]:
-        """
-            True if the target protocol is secure (e.g ssl, https)
-        """
         pass
 
     @abstractmethod
