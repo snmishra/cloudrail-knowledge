@@ -17,9 +17,7 @@ class GcpRelationsAssigner(DependencyInvocation):
         function_pool = [
             IterFunctionData(self._assign_ssl_policy, ctx.compute_target_ssl_proxy, (ctx.compute_ssl_policy,)),
             IterFunctionData(self._assign_ssl_policy, ctx.compute_target_https_proxy, (ctx.compute_ssl_policy,)),
-            IterFunctionData(self._assign_target_proxy, ctx.compute_global_forwarding_rule, (ctx.compute_target_http_proxy,)),
-            IterFunctionData(self._assign_target_proxy, ctx.compute_global_forwarding_rule, (ctx.compute_target_ssl_proxy,)),
-            IterFunctionData(self._assign_target_proxy, ctx.compute_global_forwarding_rule, (ctx.compute_target_https_proxy,)),
+            IterFunctionData(self._assign_target_proxy, ctx.compute_global_forwarding_rule, (ctx.get_all_targets_proxy(),)),
         ]
 
         super().__init__(function_pool, context=ctx)
@@ -48,5 +46,7 @@ class GcpRelationsAssigner(DependencyInvocation):
                                global_forwarding_rule.target_identifier == target.name), None)
             return target
 
+        global_forwarding_rule.target = ResourceInvalidator.get_by_logic(get_target, False)
+
         if not global_forwarding_rule.target:
-            global_forwarding_rule.target = ResourceInvalidator.get_by_logic(get_target, False)
+            global_forwarding_rule.add_invalidation("Could not associate target proxy")

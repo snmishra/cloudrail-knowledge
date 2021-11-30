@@ -1,4 +1,5 @@
-from typing import List, Dict
+from typing import List, Dict, Callable, Set
+import functools
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext, CheckovResult
@@ -9,6 +10,7 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall impo
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_network import GcpComputeNetwork
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_ssl_policy import GcpComputeSslPolicy
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_http_proxy import GcpComputeTargetHttpProxy
+from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_proxy import GcpComputeTargetProxy
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_ssl_proxy import GcpComputeTargetSslProxy
 from cloudrail.knowledge.context.gcp.resources.dns.gcp_dns_managed_zone import GcpDnsManagedZone
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_https_proxy import GcpComputeTargetHttpsProxy
@@ -50,3 +52,8 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
         self.compute_ssl_policy: AliasesDict[GcpComputeSslPolicy] = compute_ssl_policy or AliasesDict()
         self.storage_buckets: AliasesDict[GcpStorageBucket] = storage_buckets or AliasesDict()
         self.dns_managed_zones: List[GcpDnsManagedZone] = dns_managed_zones or []
+
+    @functools.lru_cache(maxsize=None)
+    def get_all_targets_proxy(self) -> AliasesDict[GcpComputeTargetProxy]:
+        condition: Callable = lambda resource: isinstance(resource, GcpComputeTargetProxy)
+        return AliasesDict(*[target for target in self.get_all_mergeable_resources(condition)])
