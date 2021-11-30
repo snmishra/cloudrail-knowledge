@@ -27,10 +27,11 @@ class GcpRelationsAssigner(DependencyInvocation):
     @staticmethod
     def _assign_ssl_policy(target_proxy: GcpComputeTargetProxy, ssl_policies: AliasesDict[GcpComputeSslPolicy]):
         def get_ssl_policy():
-            ssl_policy = next((ssl_policy for ssl_policy in ssl_policies if
-                               target_proxy.ssl_policy and
-                              target_proxy.ssl_policy in ssl_policy.aliases and
-                              target_proxy.project_id == ssl_policy.project_id), None)
+            ssl_policy = ResourceInvalidator.get_by_id(ssl_policies, target_proxy.ssl_policy, False)
+            if not ssl_policy:
+                ssl_policy = next((ssl_policy for ssl_policy in ssl_policies if
+                                  target_proxy.project_id == ssl_policy.project_id and
+                                  target_proxy.ssl_policy == ssl_policy.name), None)
             return ssl_policy
 
         if target_proxy.is_encrypted and not target_proxy.ssl_policy_obj:
@@ -39,10 +40,11 @@ class GcpRelationsAssigner(DependencyInvocation):
     @staticmethod
     def _assign_target_proxy(global_forwarding_rule: GcpComputeGlobalForwardingRule, targets: AliasesDict[GcpComputeTargetProxy]):
         def get_target():
-            target = next((target for target in targets if
-                           global_forwarding_rule.target and
-                           global_forwarding_rule.target in target.aliases and
-                           global_forwarding_rule.project_id == target.project_id), None)
+            target = ResourceInvalidator.get_by_id(targets, global_forwarding_rule.target, False)
+            if not target:
+                target = next((target for target in targets if
+                               global_forwarding_rule.project_id == target.project_id and
+                               global_forwarding_rule.target == target.name), None)
             return target
 
         if not global_forwarding_rule.target_obj:

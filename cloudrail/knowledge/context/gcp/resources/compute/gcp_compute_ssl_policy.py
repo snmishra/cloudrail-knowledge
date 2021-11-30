@@ -31,7 +31,7 @@ class GcpComputeSslPolicy(GcpResource):
         self.min_tls_version: Optional[str] = min_tls_version
         self.profile: Optional[str] = profile
         self.custom_features: Optional[List[str]] = custom_features
-        self.with_aliases(policy_id, name, self_link)
+        self.with_aliases(policy_id, self_link)
 
     def get_keys(self) -> List[str]:
         return [self.self_link]

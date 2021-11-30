@@ -29,7 +29,7 @@ class GcpComputeTargetSslProxy(GcpComputeTargetProxy):
         self.ssl_certificates: List[str] = ssl_certificates
         self.ssl_policy: Optional[str] = ssl_policy
         self.ssl_policy_obj: Optional[GcpComputeSslPolicy] = None
-        self.with_aliases(name, target_id, self_link)
+        self.with_aliases(target_id, self_link)
 
     def get_keys(self) -> List[str]:
         return [self.self_link]

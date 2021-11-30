@@ -22,7 +22,7 @@ class GcpComputeTargetHttpProxy(GcpComputeTargetProxy):
         super().__init__(name, self_link, TargetTypes.HTTP, GcpResourceType.GOOGLE_COMPUTE_TARGET_HTTP_PROXY)
         self.target_id: str = target_id
         self.url_map: str = url_map
-        self.with_aliases(name, target_id, self_link)
+        self.with_aliases(target_id, self_link)
 
     def get_keys(self) -> List[str]:
         return [self.self_link]
