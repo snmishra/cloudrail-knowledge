@@ -46,7 +46,4 @@ class GcpRelationsAssigner(DependencyInvocation):
                                global_forwarding_rule.target_identifier == target.name), None)
             return target
 
-        global_forwarding_rule.target = ResourceInvalidator.get_by_logic(get_target, False)
-
-        if not global_forwarding_rule.target:
-            global_forwarding_rule.add_invalidation("Could not associate target proxy")
+        global_forwarding_rule.target = ResourceInvalidator.get_by_logic(get_target, True, global_forwarding_rule, "Could not associate target proxy")

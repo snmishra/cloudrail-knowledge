@@ -1,4 +1,5 @@
-from typing import List, Dict, Callable, Set
+
+from typing import List, Dict, Callable
 import functools
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 
@@ -56,4 +57,4 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
     @functools.lru_cache(maxsize=None)
     def get_all_targets_proxy(self) -> AliasesDict[GcpComputeTargetProxy]:
         condition: Callable = lambda resource: isinstance(resource, GcpComputeTargetProxy)
-        return AliasesDict(*[target for target in self.get_all_mergeable_resources(condition)])
+        return AliasesDict(*list(self.get_all_mergeable_resources(condition)))
