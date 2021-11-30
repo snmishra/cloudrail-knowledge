@@ -114,11 +114,8 @@ google_compute_firewall:
       - destination_ranges
       - direction
       - source_ranges
-<<<<<<< HEAD
       - priority
-=======
       - source_tags
->>>>>>> main
 
 google_container_cluster:
   known_fields:

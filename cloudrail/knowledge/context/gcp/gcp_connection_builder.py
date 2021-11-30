@@ -11,8 +11,6 @@ class GcpConnectionBuilder(DependencyInvocation):
 
     def __init__(self, ctx: GcpEnvironmentContext):
         network_entities = ctx.get_all_network_entities()
-        for entity in network_entities:
-            entity.fill_network_info()
         function_pool = [
             IterFunctionData(self._assign_inbound_public_port_connections, network_entities, ()),
         ]
@@ -27,65 +25,37 @@ class GcpConnectionBuilder(DependencyInvocation):
 
     ## Evaluation of GCP connections, fowllowing GCP doc: https://cloud.google.com/vpc/docs/firewalls
     def _get_gcp_connections_set(self, network_entity: NetworkEntity) -> Set[GcpConnection]:
-        allowed_connections = set()
-        denied_connections = set()
-        for firewall in network_entity.network_info.firewalls:
+        allowed_denied_connections_set: Set[GcpConnection] = set()
+        for firewall in network_entity.firewalls:
             connection_direction = ConnectionDirectionType.INBOUND if firewall.direction == GcpComputeFirewallDirection.INGRESS else ConnectionDirectionType.OUTBOUND
             for cidr in firewall.firewall_ip_ranges:
                 connection_type = ConnectionType.PUBLIC if is_public_ip_range(cidr) else ConnectionType.PRIVATE
                 for rule in firewall.allow:
-                    allowed_connections.add(GcpConnection(connection_type=connection_type,
-                                                          connection_property=PortConnectionProperty(rule.ports.port_ranges, cidr, rule.protocol),
-                                                          connection_direction_type=connection_direction,
-                                                          firewall_action=FirewallRuleAction.ALLOW,
-                                                          priority=firewall.priority,
-                                                          firewall=firewall))
+                    allowed_denied_connections_set.add(GcpConnection(connection_type=connection_type,
+                                                                     connection_property=PortConnectionProperty(rule.ports.port_ranges, cidr, rule.protocol),
+                                                                     connection_direction_type=connection_direction,
+                                                                     firewall_action=FirewallRuleAction.ALLOW,
+                                                                     priority=firewall.priority,
+                                                                     firewall=firewall))
                 for rule in firewall.deny:
-                    denied_connections.add(GcpConnection(connection_type=connection_type,
-                                                         connection_property=PortConnectionProperty(rule.ports.port_ranges, cidr, rule.protocol),
-                                                         connection_direction_type=connection_direction,
-                                                         firewall_action=FirewallRuleAction.DENY,
-                                                         priority=firewall.priority,
-                                                         firewall=firewall))
-        allowed_connections_by_priority = self._filter_connections_by_priority(allowed_connections)
-        denied_connections_by_priority = self._filter_connections_by_priority(denied_connections)
-        connections_set = set.union(self._filter_connections_by_action(allowed_connections_by_priority, denied_connections_by_priority),
-                                    self._filter_connections_by_action(denied_connections_by_priority, allowed_connections_by_priority))
+                    allowed_denied_connections_set.add(GcpConnection(connection_type=connection_type,
+                                                                     connection_property=PortConnectionProperty(rule.ports.port_ranges, cidr, rule.protocol),
+                                                                     connection_direction_type=connection_direction,
+                                                                     firewall_action=FirewallRuleAction.DENY,
+                                                                     priority=firewall.priority,
+                                                                     firewall=firewall))
+        allowed_denied_connections_set = sorted(allowed_denied_connections_set, key=lambda rule: rule.priority)
+        connections_set = self._filter_conns_by_priority_and_action(allowed_denied_connections_set)
         return connections_set
 
-    def _filter_connections_by_priority(self, connections_list: Set[GcpConnection]) -> set:
-        connections_set = set()
+    @staticmethod
+    def _filter_conns_by_priority_and_action(connections_list: Set[GcpConnection]) -> Set[GcpConnection]:
+        connections_set: Set[GcpConnection] = set()
         for connection in connections_list:
-            lowest_priority_connection = next((gcp_connection for gcp_connection in connections_list
-                                               if self.are_connection_details_equal(gcp_connection, connection)
-                                               and connection.priority < gcp_connection.priority), None)
-            if lowest_priority_connection:
-                connections_set.add(lowest_priority_connection)
-            else:
-                connections_set.add(connection)
-        return connections_set
-
-    def _filter_connections_by_action(self, source_conn_set: Set[GcpConnection], dest_conn_set: Set[GcpConnection]) -> set:
-        connections_set = set()
-        for source_conn in source_conn_set:
-            for dest_conn in dest_conn_set:
-                if not self.are_connection_details_equal(source_conn, dest_conn):
-                    connections_set.add(source_conn)
-                elif dest_conn.firewall_action == FirewallRuleAction.DENY:
-                    self._add_to_connections_set(connections_set, dest_conn, source_conn)
+            if not any(connection.__eq__(list_con) for list_con in connections_set):
+                conns_with_same_priority = [list_con for list_con in connections_list if list_con.priority == connection.priority and connection.__eq__(list_con)]
+                if len(conns_with_same_priority) > 1:
+                    connections_set.add(next(conn for conn in conns_with_same_priority if conn.firewall_action == FirewallRuleAction.DENY))
                 else:
-                    self._add_to_connections_set(connections_set, source_conn, dest_conn)
+                    connections_set.add(connection)
         return connections_set
-
-    @staticmethod
-    def _add_to_connections_set(connections_set: set, deny_conn: GcpConnection, allow_conn: GcpConnection):
-        if (deny_conn.priority == allow_conn.priority) or (deny_conn.priority < allow_conn.priority):
-            connections_set.add(deny_conn)
-        else:
-            connections_set.add(allow_conn)
-
-    @staticmethod
-    def are_connection_details_equal(set_connection_1: GcpConnection, set_connection_2: GcpConnection) -> bool:
-        return set_connection_1.connection_property == set_connection_2.connection_property \
-            and set_connection_1.connection_type == set_connection_2.connection_type \
-                and set_connection_1.connection_direction_type == set_connection_2.connection_direction_type

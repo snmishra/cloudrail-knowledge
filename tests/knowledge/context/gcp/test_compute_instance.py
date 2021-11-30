@@ -19,26 +19,26 @@ class TestComputeInstance(GcpContextTest):
         self.assertIsNone(compute.service_account)
         self.assertIsNone(compute.shielded_instance_config)
         self.assertEqual(compute.zone, 'us-west1-a')
-        self.assertTrue(compute.network_interfaces)
-        self.assertTrue(compute.network_interfaces[0].access_config)
-        self.assertEqual(compute.network_interfaces[0].access_config[0].network_tier, 'PREMIUM')
-        self.assertIsNone(compute.network_interfaces[0].access_config[0].public_ptr_domain_name)
-        self.assertFalse(compute.network_interfaces[0].alias_ip_range)
-        self.assertIsNone(compute.network_interfaces[0].nic_type)
+        self.assertTrue(compute.compute_network_interfaces)
+        self.assertTrue(compute.compute_network_interfaces[0].access_config)
+        self.assertEqual(compute.compute_network_interfaces[0].access_config[0].network_tier, 'PREMIUM')
+        self.assertIsNone(compute.compute_network_interfaces[0].access_config[0].public_ptr_domain_name)
+        self.assertFalse(compute.compute_network_interfaces[0].alias_ip_range)
+        self.assertIsNone(compute.compute_network_interfaces[0].nic_type)
         if compute.origin == EntityOrigin.TERRAFORM:
-            self.assertIsNone(compute.network_interfaces[0].access_config[0].nat_ip)
-            self.assertIsNone(compute.network_interfaces[0].network_ip)
-            self.assertIsNone(compute.network_interfaces[0].subnetwork)
-            self.assertIsNone(compute.network_interfaces[0].subnetwork_project)
-            self.assertEqual(compute.network_interfaces[0].network, 'default')
+            self.assertIsNone(compute.compute_network_interfaces[0].access_config[0].nat_ip)
+            self.assertIsNone(compute.compute_network_interfaces[0].network_ip)
+            self.assertIsNone(compute.compute_network_interfaces[0].subnetwork)
+            self.assertIsNone(compute.compute_network_interfaces[0].subnetwork_project)
+            self.assertEqual(compute.compute_network_interfaces[0].network, 'default')
         elif compute.origin == EntityOrigin.LIVE_ENV:
-            self.assertEqual(compute.network_interfaces[0].access_config[0].nat_ip, '35.185.227.55')
-            self.assertEqual(compute.network_interfaces[0].network_ip, '10.138.0.49')
-            self.assertEqual(compute.network_interfaces[0].network,
+            self.assertEqual(compute.compute_network_interfaces[0].access_config[0].nat_ip, '35.185.227.55')
+            self.assertEqual(compute.compute_network_interfaces[0].network_ip, '10.138.0.49')
+            self.assertEqual(compute.compute_network_interfaces[0].network,
                              'https://www.googleapis.com/compute/v1/projects/dev-for-tests/global/networks/default')
-            self.assertEqual(compute.network_interfaces[0].subnetwork,
+            self.assertEqual(compute.compute_network_interfaces[0].subnetwork,
                              'https://www.googleapis.com/compute/v1/projects/dev-for-tests/regions/us-west1/subnetworks/default')
-            self.assertEqual(compute.network_interfaces[0].subnetwork_project, 'dev-for-tests')
+            self.assertEqual(compute.compute_network_interfaces[0].subnetwork_project, 'dev-for-tests')
 
     @context(module_path="serial_ports_one_enabled_one_disabled", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
     def test_serial_ports_one_enabled_one_disabled(self, ctx: GcpEnvironmentContext):

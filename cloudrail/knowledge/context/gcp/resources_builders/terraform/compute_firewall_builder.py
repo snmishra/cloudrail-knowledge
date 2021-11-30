@@ -44,7 +44,7 @@ class ComputeFirewallBuilder(BaseGcpTerraformBuilder):
         return GcpResourceType.GOOGLE_COMPUTE_FIREWALL
 
     @staticmethod
-    def get_action_block_data(attributes: dict, function: Callable) -> dict:
+    def get_action_block_data(attributes: dict, get_known_value_func: Callable) -> dict:
         protocol = IpProtocol(attributes['protocol'])
-        ports = PortSet(function(attributes, 'ports', ['0-65535']))
+        ports = PortSet(get_known_value_func(attributes, 'ports', ['0-65535']))
         return {'protocol': protocol, 'ports': ports}

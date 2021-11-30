@@ -22,7 +22,7 @@ class GcpRelationsAssigner(DependencyInvocation):
             FunctionData(self._assign_implied_firewalls_to_vpcs, (ctx.compute_networks,)),
             IterFunctionData(self._assign_firewalls_to_vpcs, ctx.compute_networks, (ctx.compute_firewalls,), [self._assign_implied_firewalls_to_vpcs]),
             ### Compute Instance
-            IterFunctionData(self._assign_vpcs_to_instance, ctx.compute_instances, (ctx.compute_networks,), [self._assign_firewalls_to_vpcs]),
+            IterFunctionData(self._assign_networking_info_to_network_interfaces, ctx.compute_instances, (ctx.compute_networks,), [self._assign_firewalls_to_vpcs]),
             IterFunctionData(self._assign_forward_rule_to_instance, ctx.compute_instances, (ctx.compute_forwarding_rules,), [self._assign_targets_to_forward_rule]),
             ### Compute Forwarding Rule
             IterFunctionData(self._assign_targets_to_forward_rule, ctx.compute_forwarding_rules, (ctx.compute_target_pools,)),
@@ -48,12 +48,15 @@ class GcpRelationsAssigner(DependencyInvocation):
         vpc.firewalls.extend(ResourceInvalidator.get_by_logic(get_firewalls_vpc, False))
 
     @staticmethod
-    def _assign_vpcs_to_instance(instance: GcpComputeInstance, vpcs: List[GcpComputeNetwork]):
+    def _assign_networking_info_to_network_interfaces(instance: GcpComputeInstance, vpcs: List[GcpComputeNetwork]):
         def get_instance_vpcs():
             instance_vpcs = [vpc for vpc in vpcs if any(extract_name_from_gcp_link(interface.network) == vpc.name for interface in instance.network_interfaces)]
             return instance_vpcs
-
-        instance.network_info.vpc_networks.extend(ResourceInvalidator.get_by_logic(get_instance_vpcs, True, instance, 'Unable to find interface related VPC network'))
+        if instance_vpcs := ResourceInvalidator.get_by_logic(get_instance_vpcs, True, instance, 'Unable to find interface related VPC network'):
+            for nic in instance.network_interfaces:
+                vpc_network = next((vpc for vpc in instance_vpcs if extract_name_from_gcp_link(nic.network) == vpc.name), None)
+                nic.vpc_network = vpc_network
+                nic.firewalls = vpc_network.firewalls
 
     @staticmethod
     def _assign_targets_to_forward_rule(forward_rule: GcpComputeForwardingRule, target_pools: List[GcpComputeTargetPool]):
@@ -70,4 +73,4 @@ class GcpRelationsAssigner(DependencyInvocation):
                 forwarding_rules_list = [rule for rule in forwarding_rules if compute_instance.self_link in rule.target_pool.instances]
                 return forwarding_rules_list
 
-            compute_instance.network_info.forwarding_rules.extend(ResourceInvalidator.get_by_logic(get_forwarding_rules, False))
+            compute_instance.forwarding_rules.extend(ResourceInvalidator.get_by_logic(get_forwarding_rules, False))

@@ -4,9 +4,10 @@ from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 from cloudrail.knowledge.context.connection import ConnectionDirectionType, ConnectionType, PortConnectionProperty
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall import GcpComputeFirewall, GcpComputeFirewallAction, FirewallRuleAction, GcpComputeFirewallDirection
-from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance import GcpComputeInstance, GcpComputeInstanceNetworkInterface, GcpComputeInstanceNetIntfAccessCfg
+from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance import GcpComputeInstance
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_network import GcpComputeNetwork
 from cloudrail.knowledge.context.gcp.resources.networking_config.network_entity import GcpConnection
+from cloudrail.knowledge.context.gcp.resources.networking_config.network_interface import GcpNetworkInterface
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 from cloudrail.knowledge.rules.gcp.context_aware.public_access_vpc_port_rule import PublicAccessVpcSshPortRule
@@ -19,25 +20,22 @@ class TestPublicAccessVpcSshPortRule(TestCase):
 
     @parameterized.expand(
         [
-            ["restrict_ssh_access", '0.0.0.0/0', True],
-            ["unrestrict_ssh_access", '10.11.20.5/24', False],
+            ["unrestrict_ssh_access", '0.0.0.0/0', True],
+            ["restrict_ssh_access", '10.11.20.5/24', False],
         ]
     )
 
     def test_public_access_vpc_port_rule(self, unused_name: str, source_range: list, should_alert: bool):
         # Arrange
-        compute_instance = create_empty_entity(GcpComputeInstance)
-        compute_instance_nic = create_empty_entity(GcpComputeInstanceNetworkInterface)
-        compute_instance_nic_access_config = create_empty_entity(GcpComputeInstanceNetIntfAccessCfg)
-        compute_instance_nic.network = 'vpc_network'
-        compute_instance_nic_access_config.nat_ip = '10.10.130.15/24'
-        compute_instance_nic.access_config = [compute_instance_nic_access_config]
-        compute_instance.network_interfaces = [compute_instance_nic]
-        firewall = create_empty_entity(GcpComputeFirewall)
-        network = create_empty_entity(GcpComputeNetwork)
-        gcp_connection = create_empty_entity(GcpConnection)
+        compute_instance = GcpComputeInstance(None, None, [], None, None, None, None, None, None, None)
+        compute_instance_nics: GcpNetworkInterface = create_empty_entity(GcpNetworkInterface)
+        compute_instance_nics.public_ips = ['10.10.130.15/24']
+        compute_instance.network_interfaces = [compute_instance_nics]
+        firewall: GcpComputeFirewall = create_empty_entity(GcpComputeFirewall)
+        network: GcpComputeNetwork = create_empty_entity(GcpComputeNetwork)
+        gcp_connection: GcpConnection = create_empty_entity(GcpConnection)
         network.name = 'vpc_network'
-        allow_firewall_rule = create_empty_entity(GcpComputeFirewallAction)
+        allow_firewall_rule: GcpComputeFirewallAction = create_empty_entity(GcpComputeFirewallAction)
         allow_firewall_rule.action = FirewallRuleAction.ALLOW
         allow_firewall_rule.ports = PortSet([22])
         allow_firewall_rule.protocol = IpProtocol('TCP')
@@ -46,8 +44,6 @@ class TestPublicAccessVpcSshPortRule(TestCase):
         firewall.direction = GcpComputeFirewallDirection.INGRESS
         firewall.network = network.name
         network.firewalls = [firewall]
-        compute_instance.network_info.public_ip_addresses = [compute_instance_nic_access_config.nat_ip]
-        compute_instance.network_info.vpc_networks = [network]
         gcp_connection.connection_direction_type = ConnectionDirectionType.INBOUND
         gcp_connection.connection_property = PortConnectionProperty(PortSet([22, 22]).port_ranges, source_range, IpProtocol('TCP'))
         gcp_connection.connection_type = ConnectionType.PUBLIC

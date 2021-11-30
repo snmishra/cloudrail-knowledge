@@ -2,11 +2,11 @@ from typing import List, Optional
 from enum import Enum
 from dataclasses import dataclass, asdict
 from cloudrail.knowledge.utils.utils import is_iterable_with_values
-from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_network import GcpComputeNetwork
 from cloudrail.knowledge.context.gcp.resources.networking_config.network_entity import NetworkEntity
+from cloudrail.knowledge.context.gcp.resources.networking_config.network_interface import GcpNetworkInterface
 
 
-class GcpComputeInstanceNetIntfNicType(Enum):
+class GcpComputeInstanceNetIntfNicType(str, Enum):
     GVNIC  = 'gvnic'
     VIRTIO_NET = 'virtio_net'
 
@@ -36,27 +36,36 @@ class GcpComputeInstanceNetIntfAccessCfg:
 
 
 @dataclass
-class GcpComputeInstanceNetworkInterface:
+class GcpComputeInstanceNetworkInterface(GcpNetworkInterface):
     """
         Attributes:
-            network: (Optional) The name or self_link of the network to attach this interface to.
             subnetwork: (Optional) The name or self_link of the subnetwork to attach this interface to.
             subnetwork_project: (Optional) The project in which the subnetwork belongs.
-            network_ip: (Optional) The private IP address to assign to the instance.
             access_config: (Optional) Access configurations, i.e. IPs via which this instance can be accessed via the Internet.
             alias_ip_range: (Optional) An array of alias IP ranges for this network interface.
-            nic_type: (Optional) The type of vNIC to be used on this interface. Possible values: GVNIC, VIRTIO_NET.
-
     """
-    network: Optional[str]
-    subnetwork: Optional[str]
-    subnetwork_project: Optional[str]
-    network_ip: Optional[str]
-    access_config: Optional[List[GcpComputeInstanceNetIntfAccessCfg]]
-    alias_ip_range: Optional[List[GcpComputeInstanceNetIntfAliasIpRange]]
-    nic_type: Optional[GcpComputeInstanceNetIntfNicType]
+    def __init__(self,
+                 network: str,
+                 subnetwork: Optional[str],
+                 subnetwork_project: Optional[str],
+                 network_ip: Optional[str],
+                 access_config: Optional[List[GcpComputeInstanceNetIntfAccessCfg]],
+                 alias_ip_range: Optional[List[GcpComputeInstanceNetIntfAliasIpRange]],
+                 nic_type: Optional[GcpComputeInstanceNetIntfNicType]):
+        self.network: str = network
+        self.subnetwork: Optional[str] = subnetwork
+        self.subnetwork_project: Optional[str] = subnetwork_project
+        self.network_ip: Optional[str] = network_ip
+        self.access_config: Optional[List[GcpComputeInstanceNetIntfAccessCfg]] = access_config
+        self.alias_ip_range: Optional[List[GcpComputeInstanceNetIntfAliasIpRange]] = alias_ip_range
+        self.nic_type: Optional[GcpComputeInstanceNetIntfNicType] = nic_type
+        alias_ranges = [alias_range.ip_cidr_range for alias_range in alias_ip_range if alias_range.ip_cidr_range]
+        public_nat_ips = [config.nat_ip for config in access_config if config.nat_ip]
+        self.public_ip_addresses = (alias_ranges + public_nat_ips) if is_iterable_with_values(public_nat_ips) else alias_ranges
+        super().__init__(network, network_ip, self.public_ip_addresses, nic_type)
 
-
+    def get_gcp_nic_info(self):
+        return GcpNetworkInterface(self.network, self.network_ip, self.public_ip_addresses, self.nic_type)
 @dataclass
 class GcpComputeInstanceServiceAccount:
     """
@@ -96,7 +105,7 @@ class GcpComputeInstance(NetworkEntity):
     def __init__(self,
                  name: str,
                  zone: str,
-                 network_interfaces: List[GcpComputeInstanceNetworkInterface],
+                 compute_network_interfaces: List[GcpComputeInstanceNetworkInterface],
                  can_ip_forward: Optional[bool],
                  hostname: Optional[str],
                  metadata: Optional[List[str]],
@@ -104,11 +113,9 @@ class GcpComputeInstance(NetworkEntity):
                  shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg],
                  instance_id: Optional[str],
                  self_link: str):
-
-        NetworkEntity.__init__(self)
         self.name: str = name
         self.zone: str = zone
-        self.network_interfaces: List[GcpComputeInstanceNetworkInterface] = network_interfaces
+        self.compute_network_interfaces: List[GcpComputeInstanceNetworkInterface] = compute_network_interfaces
         self.can_ip_forward: bool = can_ip_forward
         self.hostname: str = hostname
         self.metadata: List[str] = metadata
@@ -116,7 +123,8 @@ class GcpComputeInstance(NetworkEntity):
         self.shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg] = shielded_instance_config
         self.instance_id: Optional[str] = instance_id
         self.self_link: str = self_link
-        self.vpc_networks: List[GcpComputeNetwork] = None
+        self.network_interfaces: List[GcpNetworkInterface] = [nic.get_gcp_nic_info() for nic in self.compute_network_interfaces]
+        NetworkEntity.__init__(self, self.network_interfaces)
 
     def get_keys(self) -> List[str]:
         return [self.instance_id]
@@ -142,8 +150,8 @@ class GcpComputeInstance(NetworkEntity):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {'network_interfaces': self.network_interfaces and
-                                      [asdict(dd_obj) for dd_obj in self.network_interfaces],
+        return {'compute_network_interfaces': self.compute_network_interfaces and
+                                              [asdict(dd_obj) for dd_obj in self.compute_network_interfaces],
                 'can_ip_forward': self.can_ip_forward,
                 'hostname': self.hostname,
                 'metadata': self.metadata,
@@ -157,10 +165,3 @@ class GcpComputeInstance(NetworkEntity):
         return self.service_account and (not self.service_account.email \
             or ('-' in self.service_account.email and self.service_account.email.split('-')[0].isnumeric() \
                 and self.service_account.email.split('-')[1] == 'compute@developer.gserviceaccount.com'))
-
-    def fill_network_info(self):
-        self.network_info.private_ip_addresses = [interface.network_ip for interface in self.network_interfaces]
-        alias_ranges = [alias_range.ip_cidr_range for interface in self.network_interfaces
-                        for alias_range in interface.alias_ip_range if alias_range.ip_cidr_range]
-        public_nat_ips = [config.nat_ip for interface in self.network_interfaces for config in interface.access_config if config.nat_ip]
-        self.network_info.public_ip_addresses = (alias_ranges + public_nat_ips) if is_iterable_with_values(public_nat_ips) else alias_ranges

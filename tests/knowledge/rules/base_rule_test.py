@@ -219,7 +219,7 @@ class BaseRuleTest(unittest.TestCase):
         test_function(self, rule_result)
 
     def _assert_evidence(self, evidence_str: str):
-        self.assertRegexpMatches(evidence_str, r'^[A-Za-z0-9-_#?:\'".,\s`~/\\()\[\]*{}\$]+$', '')
+        self.assertRegex(evidence_str, r'^[A-Za-z0-9-_#?:\'".,\s`~/\\()\[\]*{}\$]+$', '')
 
 
 class AzureBaseRuleTest(BaseRuleTest, ABC):
