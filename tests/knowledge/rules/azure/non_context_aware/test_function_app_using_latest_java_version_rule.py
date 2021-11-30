@@ -17,11 +17,8 @@ class TestFunctionAppUseLatestJavaVersionRule(TestCase):
     @parameterized.expand(
         [
             ['java version linux is 11 the rule should alert', 'JAVA|11', None, False],
-            # ['java version win is 11 the rule should not alert', '', '11', False],
             ['java version linux is 1.8 the rule should alert', 'JAVA|8', '', True],
-            # ['java version win is 11 the rule should not alert', '', '1.8', True],
             ['java version win is 11 the rule should not alert', '', None, False],
-            # ['java version win is 11 the rule should not alert', '', '1.11', True],
             ['java version linux is 11 the rule should alert', 'PYTHON|11', None, False]
         ]
     )
