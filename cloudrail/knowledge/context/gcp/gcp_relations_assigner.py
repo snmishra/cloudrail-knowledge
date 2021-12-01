@@ -67,21 +67,17 @@ class GcpRelationsAssigner(DependencyInvocation):
                 nic.firewalls = vpc_network.firewalls
 
     @staticmethod
-    def _assign_targets_to_forward_rule(forward_rule: GcpComputeForwardingRule, target_pools: List[GcpComputeTargetPool]):
-        def get_target():
-            target = next((target for target in target_pools if target.self_link == forward_rule.target), None)
-            return target
-
-        forward_rule.target_pool = ResourceInvalidator.get_by_logic(get_target, True, forward_rule, 'Unable to find forward rule target')
+    def _assign_targets_to_forward_rule(forward_rule: GcpComputeForwardingRule, target_pools: AliasesDict[GcpComputeTargetPool]):
+        forward_rule.target_pool = ResourceInvalidator.get_by_id(target_pools, forward_rule.target, True, forward_rule)
 
     @staticmethod
     def _assign_forward_rule_to_instance(compute_instance: GcpComputeInstance, forwarding_rules: List[GcpComputeForwardingRule]):
-        if any(rule.target_pool for rule in forwarding_rules):
-            def get_forwarding_rules():
-                forwarding_rules_list = [rule for rule in forwarding_rules if compute_instance.self_link in rule.target_pool.instances]
-                return forwarding_rules_list
+        def get_forwarding_rules():
+            forwarding_rules_list = [rule for rule in forwarding_rules if rule.target_pool and compute_instance.self_link in rule.target_pool.instances]
+            return forwarding_rules_list
 
-            compute_instance.forwarding_rules.extend(ResourceInvalidator.get_by_logic(get_forwarding_rules, False))
+        compute_instance.forwarding_rules = (ResourceInvalidator.get_by_logic(get_forwarding_rules, False))
+
     @staticmethod
     def _assign_ssl_policy(target_proxy: GcpComputeTargetProxy, ssl_policies: AliasesDict[GcpComputeSslPolicy]):
         def get_ssl_policy():

@@ -40,7 +40,7 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
                  compute_ssl_policy: AliasesDict[GcpComputeSslPolicy] = None,
                  storage_buckets: AliasesDict[GcpStorageBucket] = None,
                  dns_managed_zones: List[GcpDnsManagedZone] = None,
-                 compute_target_pools: List[GcpComputeTargetPool] = None,
+                 compute_target_pools: AliasesDict[GcpComputeTargetPool] = None,
                  compute_forwarding_rules: List[GcpComputeForwardingRule] = None,):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -57,7 +57,7 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
         self.compute_ssl_policy: AliasesDict[GcpComputeSslPolicy] = compute_ssl_policy or AliasesDict()
         self.storage_buckets: AliasesDict[GcpStorageBucket] = storage_buckets or AliasesDict()
         self.dns_managed_zones: List[GcpDnsManagedZone] = dns_managed_zones or []
-        self.compute_target_pools: List[GcpComputeTargetPool] = compute_target_pools or []
+        self.compute_target_pools: AliasesDict[GcpComputeTargetPool] = compute_target_pools or AliasesDict()
         self.compute_forwarding_rules: List[GcpComputeForwardingRule] = compute_forwarding_rules or []
 
     @functools.lru_cache(maxsize=None)

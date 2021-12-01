@@ -28,6 +28,9 @@ class GcpComputeTargetPool(GcpResource):
     def get_keys(self) -> List[str]:
         return [self.name, self.project_id]
 
+    def get_id(self) -> str:
+        return self.self_link
+
     @property
     def is_tagable(self) -> bool:
         return False

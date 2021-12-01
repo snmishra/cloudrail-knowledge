@@ -11,10 +11,7 @@ class ComputeForwardingRuleBuilder(BaseGcpTerraformBuilder):
     def do_build(self, attributes: dict) -> GcpComputeForwardingRule:
         port_range = None
         if port_range := self._get_known_value(attributes, 'port_range'):
-            if ',' in port_range:
-                port_range = PortSet(port_range.split(','))
-            else:
-                port_range = PortSet([port_range, port_range])
+            port_range = PortSet([port_range])
         return GcpComputeForwardingRule(name=attributes['name'],
                                         target=self._formalize_target_link(self._get_known_value(attributes, 'target')),
                                         port_range=port_range)
