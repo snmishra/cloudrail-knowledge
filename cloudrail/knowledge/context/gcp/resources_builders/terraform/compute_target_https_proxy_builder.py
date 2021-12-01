@@ -12,7 +12,7 @@ class ComputeTargetHttpsProxyBuilder(BaseGcpTerraformBuilder):
                                           self_link=attributes['self_link'],
                                           url_map=attributes['url_map'],
                                           ssl_certificates=attributes['ssl_certificates'],
-                                          ssl_policy_identifier=self._get_known_value(attributes, 'ssl_policy'))
+                                          ssl_policy_identifier=attributes.get('ssl_policy'))
 
     def get_service_name(self) -> GcpResourceType:
         return GcpResourceType.GOOGLE_COMPUTE_TARGET_HTTPS_PROXY

@@ -20,16 +20,16 @@ class GcpComputeSslPolicy(GcpResource):
                  name: str,
                  policy_id: str,
                  self_link: str,
-                 min_tls_version: Optional[str],
-                 profile: Optional[str],
+                 min_tls_version: str,
+                 profile: str,
                  custom_features: Optional[List[str]]):
 
         super().__init__(GcpResourceType.GOOGLE_COMPUTE_SSL_POLICY)
         self.name: str = name
         self.policy_id: str = policy_id
         self.self_link: str = self_link
-        self.min_tls_version: Optional[str] = min_tls_version
-        self.profile: Optional[str] = profile
+        self.min_tls_version: str = min_tls_version
+        self.profile: str = profile
         self.custom_features: Optional[List[str]] = custom_features
         self.with_aliases(policy_id, self_link)
 

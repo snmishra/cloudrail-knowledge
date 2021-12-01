@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 from cloudrail.knowledge.rules.base_rule import BaseRule
+from cloudrail.knowledge.rules.gcp.context_aware.compute_ssl_policy_proxy_no_weak_ciphers_rule import ComputeSslPolicyProxyNoWeakCiphersRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.cloud_dns_no_rsasha1_used_rules import CloudDnsNoRsasha1UsedRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_ensure_no_ip_forwarding_rule import \
     ComputeInstanceEnsureNoIpForwardingRule
@@ -54,5 +55,6 @@ class GcpRulesLoader(AbstractRulesLoader):
             PostgresLogMinimumErrorRule(),
             StorageBucketLoggingEnabledRule(),
             CloudDnsNoRsasha1UsedRule(),
+            ComputeSslPolicyProxyNoWeakCiphersRule(),
         ]
         return {rule.get_id(): rule for rule in rules}
