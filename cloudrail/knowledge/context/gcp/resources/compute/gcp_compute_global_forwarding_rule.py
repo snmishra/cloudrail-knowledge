@@ -1,6 +1,5 @@
 from typing import List, Optional
 
-from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_proxy import GcpComputeTargetProxy
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
 
@@ -18,7 +17,6 @@ class GcpComputeGlobalForwardingRule(GcpResource):
         super().__init__(GcpResourceType.GOOGLE_COMPUTE_GLOBAL_FORWARDING_RULE)
         self.name: str = name
         self.target: str = target
-        self.target_obj: GcpComputeTargetProxy = None
 
     def get_keys(self) -> List[str]:
         return [self.name, self.project_id]
