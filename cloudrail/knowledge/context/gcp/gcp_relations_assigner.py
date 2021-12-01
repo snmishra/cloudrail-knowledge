@@ -10,10 +10,6 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_instance impo
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_network import GcpComputeNetwork
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_pool import GcpComputeTargetPool
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
-from cloudrail.knowledge.context.environment_context.business_logic.resource_invalidator import ResourceInvalidator
-from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
-from cloudrail.knowledge.context.environment_context.business_logic.dependency_invocation import DependencyInvocation, IterFunctionData
-from cloudrail.knowledge.context.gcp.pseudo_builder import PseudoBuilder
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_global_forwarding_rule import GcpComputeGlobalForwardingRule
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_ssl_policy import GcpComputeSslPolicy
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_proxy import GcpComputeTargetProxy
