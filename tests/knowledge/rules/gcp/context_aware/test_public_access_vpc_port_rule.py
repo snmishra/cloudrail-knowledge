@@ -27,7 +27,7 @@ class TestPublicAccessVpcSshPortRule(TestCase):
 
     def test_public_access_vpc_port_rule(self, unused_name: str, source_range: list, should_alert: bool):
         # Arrange
-        compute_instance = GcpComputeInstance(None, None, [], None, None, None, None, None, None, None)
+        compute_instance = create_empty_entity(GcpComputeInstance)
         compute_instance_nics: GcpNetworkInterface = create_empty_entity(GcpNetworkInterface)
         compute_instance_nics.public_ips = ['10.10.130.15/24']
         compute_instance.network_interfaces = [compute_instance_nics]

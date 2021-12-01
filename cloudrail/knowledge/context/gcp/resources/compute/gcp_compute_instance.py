@@ -64,8 +64,6 @@ class GcpComputeInstanceNetworkInterface(GcpNetworkInterface):
         self.public_ip_addresses = (alias_ranges + public_nat_ips) if is_iterable_with_values(public_nat_ips) else alias_ranges
         super().__init__(network, network_ip, self.public_ip_addresses, nic_type)
 
-    def get_gcp_nic_info(self):
-        return GcpNetworkInterface(self.network, self.network_ip, self.public_ip_addresses, self.nic_type)
 @dataclass
 class GcpComputeInstanceServiceAccount:
     """
@@ -123,8 +121,7 @@ class GcpComputeInstance(NetworkEntity):
         self.shielded_instance_config: Optional[GcpComputeInstanceShieldInstCfg] = shielded_instance_config
         self.instance_id: Optional[str] = instance_id
         self.self_link: str = self_link
-        self.network_interfaces: List[GcpNetworkInterface] = [nic.get_gcp_nic_info() for nic in self.compute_network_interfaces]
-        NetworkEntity.__init__(self, self.network_interfaces)
+        NetworkEntity.__init__(self, self.compute_network_interfaces)
 
     def get_keys(self) -> List[str]:
         return [self.instance_id]
