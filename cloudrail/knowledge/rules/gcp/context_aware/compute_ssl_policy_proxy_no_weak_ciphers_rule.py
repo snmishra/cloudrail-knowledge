@@ -23,8 +23,8 @@ class ComputeSslPolicyProxyNoWeakCiphersRule(GcpBaseRule):
                              all(custom_feature not in not_secure_ciphers for custom_feature in target_proxy.ssl_policy.custom_features)):
                             evidence_string = ""
                         else:
-                            evidence_string = f"The {global_forwarding_rule.get_type()} '{global_forwarding_rule.get_friendly_name()}' is using TLS version less that 1.2 in target {target_proxy.target_type} " \
-                                              f"proxy {target_proxy.get_friendly_name()} with a misconfigured SSL policy {target_proxy.ssl_policy.get_friendly_name()}"
+                            evidence_string = f"The {global_forwarding_rule.get_type()} '{global_forwarding_rule.get_friendly_name()}' is using TLS version less that 1.2 in target " \
+                                              f"{target_proxy.target_type} proxy {target_proxy.get_friendly_name()} with a misconfigured SSL policy {target_proxy.ssl_policy.get_friendly_name()}"
                     else:
                         evidence_string = f"The {global_forwarding_rule.get_type()} is using weak ciphers in target {target_proxy.target_type} " \
                                           f"proxy {target_proxy.get_friendly_name()} with a misconfigured SSL policy {target_proxy.ssl_policy.get_friendly_name()}"
