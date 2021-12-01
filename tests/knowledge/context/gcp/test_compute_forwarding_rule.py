@@ -13,7 +13,7 @@ class TestComputeForwardingRule(GcpContextTest):
     def test_basic(self, ctx: GcpEnvironmentContext):
         compute = next((compute for compute in ctx.compute_forwarding_rules if compute.name == 'ssh-forwarding'), None)
         self.assertIsNotNone(compute)
-        self.assertEqual(compute.port_range.port_ranges, [(22, 22), (22, 22)])
+        self.assertEqual(compute.port_range.port_ranges, [(22, 22)])
         if compute.origin == EntityOrigin.LIVE_ENV:
             self.assertEqual(compute.target, 'https://www.googleapis.com/compute/v1/projects/dev-for-tests/regions/us-west1/targetPools/default-tp')
         else:

@@ -64,6 +64,10 @@ class GcpComputeInstanceNetworkInterface(GcpNetworkInterface):
         self.public_ip_addresses = (alias_ranges + public_nat_ips) if is_iterable_with_values(public_nat_ips) else alias_ranges
         super().__init__(network, network_ip, self.public_ip_addresses, nic_type)
 
+    def to_drift_detection_object(self) -> dict:
+        return {'access_config': self.access_config and [asdict(conf) for conf in self.access_config],
+                'alias_ip_range': self.alias_ip_range and [asdict(alias) for alias in self.alias_ip_range],}
+
 @dataclass
 class GcpComputeInstanceServiceAccount:
     """
@@ -148,7 +152,7 @@ class GcpComputeInstance(NetworkEntity):
 
     def to_drift_detection_object(self) -> dict:
         return {'compute_network_interfaces': self.compute_network_interfaces and
-                                              [asdict(dd_obj) for dd_obj in self.compute_network_interfaces],
+                                              [dd_obj.to_drift_detection_object() for dd_obj in self.compute_network_interfaces],
                 'can_ip_forward': self.can_ip_forward,
                 'hostname': self.hostname,
                 'metadata': self.metadata,

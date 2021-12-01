@@ -11,4 +11,4 @@ class ComputeForwardingRuleBuilder(BaseGcpScannerBuilder):
     def do_build(self, attributes: dict) -> GcpComputeForwardingRule:
         return GcpComputeForwardingRule(name=attributes['name'],
                                         target=attributes['target'],
-                                        port_range=PortSet(attributes['portRange']))
+                                        port_range=PortSet([attributes['portRange']]))
