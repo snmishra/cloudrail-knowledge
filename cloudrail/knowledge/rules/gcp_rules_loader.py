@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 from cloudrail.knowledge.rules.base_rule import BaseRule
+from cloudrail.knowledge.rules.gcp.non_context_aware.cloud_dns_no_rsasha1_used_rules import CloudDnsNoRsasha1UsedRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_ensure_no_ip_forwarding_rule import \
     ComputeInstanceEnsureNoIpForwardingRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.container_cluster_is_not_public_rule import ContainerClusterIsNotPublictRule
@@ -24,6 +25,7 @@ from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_no_serial_
 from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_launch_with_vm_shield_rule import ComputeInstanceLaunchWithVmShieldRule
 from cloudrail.knowledge.rules.gcp.non_context_aware.compute_instance_no_public_ip_rule import ComputeInstanceNoPublicIpRule
 from cloudrail.knowledge.rules.abstract_rules_loader import AbstractRulesLoader
+from cloudrail.knowledge.rules.gcp.non_context_aware.storage_bucket_logging_enabled_rule import StorageBucketLoggingEnabledRule
 
 
 class GcpRulesLoader(AbstractRulesLoader):
@@ -49,6 +51,8 @@ class GcpRulesLoader(AbstractRulesLoader):
             PostgresLogConnectionsRule(),
             ContainerClusterIsNotPublictRule(),
             PostgresLogCheckpointsRule(),
-            PostgresLogMinimumErrorRule()
+            PostgresLogMinimumErrorRule(),
+            StorageBucketLoggingEnabledRule(),
+            CloudDnsNoRsasha1UsedRule(),
         ]
         return {rule.get_id(): rule for rule in rules}
