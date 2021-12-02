@@ -1,4 +1,3 @@
-from functools import lru_cache
 from typing import Optional, List
 from packaging.version import Version
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
