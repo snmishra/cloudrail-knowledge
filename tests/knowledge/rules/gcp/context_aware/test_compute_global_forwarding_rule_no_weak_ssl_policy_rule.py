@@ -4,7 +4,6 @@ from parameterized import parameterized
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
-from cloudrail.knowledge.context.gcp.resources.cluster.gcp_container_cluster import GcpContainerCluster, GcpContainerMasterAuthNetConfig, GcpContainerMasterAuthNetConfigCidrBlk
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_global_forwarding_rule import GcpComputeGlobalForwardingRule
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_ssl_policy import GcpComputeSslPolicy
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_https_proxy import GcpComputeTargetHttpsProxy
@@ -12,7 +11,6 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_proxy 
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_ssl_proxy import GcpComputeTargetSslProxy
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 from cloudrail.knowledge.rules.gcp.context_aware.compute_ssl_policy_proxy_no_weak_ciphers_rule import ComputeSslPolicyProxyNoWeakCiphersRule
-from cloudrail.knowledge.rules.gcp.non_context_aware.container_cluster_is_not_public_rule import ContainerClusterIsNotPublictRule
 
 
 class TestComputeGlobalForwardingRuleNoWeakSslPolicyRule(TestCase):
@@ -32,7 +30,8 @@ class TestComputeGlobalForwardingRuleNoWeakSslPolicyRule(TestCase):
         ]
     )
 
-    def test_global_forwarding_rule_no_weak_policy(self, unused_name: str, target_class: GcpComputeTargetProxy, profile: str, version: str, custom_features: List[str], total_issues: int, rule_status: RuleResultType):
+    def test_global_forwarding_rule_no_weak_policy(self, unused_name: str, target_class: GcpComputeTargetProxy, profile: str, version: str, custom_features: List[str],
+                                                   total_issues: int, rule_status: RuleResultType):
         # Arrange
         global_forwarding_rule: GcpComputeGlobalForwardingRule = create_empty_entity(GcpComputeGlobalForwardingRule)
         target_proxy = create_empty_entity(target_class)
