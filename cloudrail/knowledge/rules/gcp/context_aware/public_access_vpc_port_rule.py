@@ -1,17 +1,14 @@
 from abc import abstractmethod
-from typing import List, Dict, Optional
+from typing import List, Dict, Optional, Set
 from cloudrail.knowledge.context.gcp.resources.networking_config.network_entity import NetworkEntity
-from cloudrail.knowledge.context.connection import ConnectionType, PortConnectionProperty, ConnectionDirectionType
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
-from cloudrail.knowledge.context.gcp.gcp_connection_builder import GcpConnection
+from cloudrail.knowledge.context.gcp.gcp_connection_evaluator import GcpConnectionEvaluator
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_forwarding_rule import GcpComputeForwardingRule
-from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall import FirewallRuleAction
-from cloudrail.knowledge.context.ip_protocol import IpProtocol
+from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall import GcpComputeFirewall
 from cloudrail.knowledge.rules.gcp.gcp_base_rule import GcpBaseRule
 from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.constants.known_ports import KnownPorts
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
-from cloudrail.knowledge.utils.utils import is_port_in_range
 
 
 class PublicAccessVpcPortRule(GcpBaseRule):
@@ -29,11 +26,11 @@ class PublicAccessVpcPortRule(GcpBaseRule):
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for network_entity in env_context.get_all_network_entities():
-            connections: List[GcpConnection] = self.conns_allowed_by_firewall_on_port(network_entity, self.port)
-            if connections:
+            firewalls: Set[GcpComputeFirewall] = GcpConnectionEvaluator.firewalls_allowing_public_conns_on_port(network_entity, self.port)
+            if firewalls:
                 forwarding_rules = self.conns_forwarding_on_port(network_entity, self.port)
                 public_ip_addresses = network_entity.public_ip_addresses
-                for connection in connections:
+                for firewall in firewalls:
                     if public_ip_addresses and forwarding_rules:
                         for rule in forwarding_rules:
                             issues.append(
@@ -43,7 +40,7 @@ class PublicAccessVpcPortRule(GcpBaseRule):
                                     f"and via load balancer `{rule.get_friendly_name()}"
                                     f"is reachable from the Internet via SSH port",
                                     network_entity,
-                                    connection.firewall))
+                                    firewall))
                     elif public_ip_addresses and not forwarding_rules:
                         issues.append(
                                 Issue(
@@ -51,7 +48,7 @@ class PublicAccessVpcPortRule(GcpBaseRule):
                                     f"with one of the public IP addresses `{', ' .join(public_ip_addresses)}` "
                                     f"is reachable from the Internet via SSH port",
                                     network_entity,
-                                    connection.firewall))
+                                    firewall))
                     elif forwarding_rules and not public_ip_addresses:
                         for rule in forwarding_rules:
                             issues.append(
@@ -60,30 +57,8 @@ class PublicAccessVpcPortRule(GcpBaseRule):
                                     f"exposed via load balancer `{rule.get_friendly_name()}` "
                                     f"is reachable from the Internet via SSH port",
                                     network_entity,
-                                    connection.firewall))
+                                    firewall))
         return issues
-
-    def conns_allowed_by_firewall_on_port(self, network_resource: NetworkEntity, port: int) -> GcpConnection:
-        return [conn for conn in network_resource.inbound_connections
-                if conn.firewall_action == FirewallRuleAction.ALLOW
-                and self._is_effected_ip_protocol(conn, IpProtocol('TCP'))
-                and self._is_public_inbound_conn(conn)
-                and self._is_port_conn(conn)
-                and any(is_port_in_range(ports, port) for ports in conn.connection_property.ports)]
-
-    @staticmethod
-    def _is_public_inbound_conn(conn: GcpConnection) -> bool:
-        return conn.connection_type == ConnectionType.PUBLIC \
-            and conn.connection_direction_type == ConnectionDirectionType.INBOUND \
-                and conn.connection_property.cidr_block == '0.0.0.0/0'
-
-    @staticmethod
-    def _is_port_conn(conn: GcpConnection) -> bool:
-        return isinstance(conn.connection_property, PortConnectionProperty)
-
-    @staticmethod
-    def _is_effected_ip_protocol(conn: GcpConnection, ip_protocol: IpProtocol) -> bool:
-        return conn.connection_property.ip_protocol_type in (IpProtocol.ALL, ip_protocol)
 
     @staticmethod
     def conns_forwarding_on_port(network_resource: NetworkEntity, port: int) -> Optional[GcpComputeForwardingRule]:

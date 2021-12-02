@@ -44,8 +44,8 @@ class NetworkEntity(GcpResource, ConnectionInstance):
         ConnectionInstance.__init__(self)
         self.network_interfaces: List[GcpNetworkInterface] = network_interfaces
         self.forwarding_rules: List[GcpComputeForwardingRule] = []
-        self.inbound_connections: Set[GcpConnection] = set()
-        self.outbound_connections: Set[GcpConnection] = set()
+        self.inbound_connections: List[GcpConnection] = []
+        self.outbound_connections: List[GcpConnection] = []
 
     @abstractmethod
     def get_keys(self) -> List[str]:

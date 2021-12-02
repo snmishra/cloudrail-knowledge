@@ -38,7 +38,8 @@ class ComputeFirewallBuilder(BaseGcpTerraformBuilder):
                                   direction=direction,
                                   source_ranges=self._get_known_value(attributes, 'source_ranges'),
                                   priority=self._get_known_value(attributes, 'priority', 1000),
-                                  source_tags=self._get_known_value(attributes, 'source_tags'))
+                                  source_tags=self._get_known_value(attributes, 'source_tags'),
+                                  disabled=self._get_known_value(attributes, 'disabled', True))
 
     def get_service_name(self) -> GcpResourceType:
         return GcpResourceType.GOOGLE_COMPUTE_FIREWALL

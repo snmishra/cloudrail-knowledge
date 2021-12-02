@@ -42,6 +42,7 @@ class GcpComputeFirewall(GcpResource):
             direction: (Optional) Direction of traffic to which this firewall applies; default is INGRESS. Possible values are INGRESS and EGRESS.
             source_ranges: (Optional) If source ranges are specified, the firewall will apply only to traffic that has source IP address in these ranges.
             priority: (Optional) The priority set for the firewall rule.
+            disabled: An indication if the firewall rule is not enforced on the attached network.
     """
 
     def __init__(self,
@@ -53,7 +54,8 @@ class GcpComputeFirewall(GcpResource):
                  direction: Optional[GcpComputeFirewallDirection],
                  source_ranges: Optional[List[str]],
                  priority: int,
-                 source_tags: Optional[List[str]]):
+                 source_tags: Optional[List[str]],
+                 disabled: bool):
 
         super().__init__(GcpResourceType.GOOGLE_COMPUTE_FIREWALL)
         self.name: str = name
@@ -65,6 +67,7 @@ class GcpComputeFirewall(GcpResource):
         self.source_ranges: Optional[List[str]] = source_ranges
         self.priority: int = priority
         self.source_tags: Optional[List[str]] = source_tags
+        self.disabled: bool = disabled
         self.is_implied_rule: bool = False
 
     def get_keys(self) -> List[str]:
@@ -93,7 +96,8 @@ class GcpComputeFirewall(GcpResource):
     def to_drift_detection_object(self) -> dict:
         return {'destination_ranges': self.destination_ranges,
                 'source_ranges': self.source_ranges,
-                'source_tags': self.source_tags}
+                'source_tags': self.source_tags,
+                'disabled': self.disabled}
 
     @property
     def firewall_ip_ranges(self) -> set:

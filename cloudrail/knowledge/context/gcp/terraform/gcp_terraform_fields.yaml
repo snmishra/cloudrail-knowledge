@@ -116,6 +116,7 @@ google_compute_firewall:
       - source_ranges
       - priority
       - source_tags
+      - disabled
 
 google_container_cluster:
   known_fields:
