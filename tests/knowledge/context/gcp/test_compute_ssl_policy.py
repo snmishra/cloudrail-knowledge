@@ -12,14 +12,14 @@ class TestComputeSslPolicy(GcpContextTest):
         compute = self.find_compute_by_name(ctx, "production-ssl-policy")
         self.assertEqual(compute.min_tls_version, "TLS_1_0")
         self.assertEqual(compute.profile, "MODERN")
-        self.assertIsNone(compute.custom_features)
+        self.assertEqual(compute.custom_features, [])
 
     @context(module_path="basic")
     def test_compute_ssl_policy_no_prod(self, ctx: GcpEnvironmentContext):
         compute = self.find_compute_by_name(ctx, "nonprod-ssl-policy")
         self.assertEqual(compute.min_tls_version, "TLS_1_2")
         self.assertEqual(compute.profile, "MODERN")
-        self.assertIsNone(compute.custom_features)
+        self.assertEqual(compute.custom_features, [])
 
     @context(module_path="basic")
     def test_compute_ssl_policy_custom(self, ctx: GcpEnvironmentContext):
