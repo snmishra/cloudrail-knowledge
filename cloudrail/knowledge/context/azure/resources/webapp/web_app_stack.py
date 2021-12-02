@@ -37,7 +37,6 @@ class WebAppStack(AzureResource):
     def to_drift_detection_object(self) -> dict:
         return {}
 
-    @lru_cache(maxsize=1)
     def get_latest_version(self) -> str:
         latest_version: Version = self.minor_versions[0]
         for index in range(1, len(self.minor_versions)):

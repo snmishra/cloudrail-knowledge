@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from functools import lru_cache
-from typing import List, Dict, Union, Optional
+from typing import List, Dict, Union, Optional, Tuple
 from pkg_resources import parse_version
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
@@ -49,7 +49,7 @@ class AbstractWebAppUsingLatestVersionRule(AzureBaseRule):
         return issues
 
     @staticmethod
-    def _get_version(config: AzureAppServiceConfig):
+    def _get_version(config: AzureAppServiceConfig) -> Tuple[str, str]:
         code_lang = None
         version = None
         if config.linux_fx_version:
@@ -59,7 +59,6 @@ class AbstractWebAppUsingLatestVersionRule(AzureBaseRule):
             version = config.java_version
         return code_lang, version
 
-    @lru_cache
     def _get_web_app_stack_latest_major_version(self, env_context: AzureEnvironmentContext, preferred_os: str = 'linux') -> Optional[WebAppStack]:
         web_app_stack: Optional[WebAppStack] = None
         stacks: List[WebAppStack] = [stack for stack in env_context.web_app_stacks
