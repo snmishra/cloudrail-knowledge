@@ -9,7 +9,7 @@ from cloudrail.knowledge.rules.azure.non_context_aware.web_app_using_latest_vers
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 
 
-class TestFunctionAppUseLatestPythonVersionRule(TestCase):
+class TestAppServiceUseLatestPythonVersionRule(TestCase):
 
     def setUp(self):
         self.rule = AppServiceUsingLatestPythonVersionRule()
