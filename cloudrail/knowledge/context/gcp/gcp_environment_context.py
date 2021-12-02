@@ -28,7 +28,8 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
                  sql_database_instances: List[GcpSqlDatabaseInstance] = None,
                  compute_instances: List[GcpComputeInstance] = None,
                  compute_firewalls: List[GcpComputeFirewall] = None,
-                 compute_networks: List[GcpComputeNetwork] = None,
+                 compute_networks: AliasesDict[GcpComputeNetwork] = None,
+                 compute_subnetworks: AliasesDict[GcpComputeNetwork] = None,
                  projects: AliasesDict[Project] = None,
                  container_cluster: List[GcpContainerCluster] = None,
                  compute_target_http_proxy: AliasesDict[GcpComputeTargetHttpProxy] = None,
@@ -43,7 +44,7 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
         self.sql_database_instances: List[GcpSqlDatabaseInstance] = sql_database_instances or []
         self.compute_instances: List[GcpComputeInstance] = compute_instances or []
         self.compute_firewalls: List[GcpComputeFirewall] = compute_firewalls or []
-        self.compute_networks: List[GcpComputeNetwork] = compute_networks or []
+        self.compute_networks: AliasesDict[GcpComputeNetwork] = compute_networks or AliasesDict()
         self.compute_global_forwarding_rule: List[GcpComputeGlobalForwardingRule] = compute_global_forwarding_rule or []
         self.projects: AliasesDict[Project] = projects or AliasesDict()
         self.container_cluster: List[GcpContainerCluster] = container_cluster or []
