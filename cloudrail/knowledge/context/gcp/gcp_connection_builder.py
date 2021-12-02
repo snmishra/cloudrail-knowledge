@@ -40,20 +40,20 @@ class GcpConnectionBuilder(DependencyInvocation):
                                                                      priority=firewall.priority,
                                                                      firewall=firewall))
         connections_set = sorted(connections_set, key=lambda rule: rule.priority)
-        connections_set = self._filter_conns_by_priority_and_action(connections_set)
-        inbound_conns: List[GcpConnection] = [conn for conn in connections_set if conn.connection_direction_type == ConnectionDirectionType.INBOUND]
-        outbound_conns: List[GcpConnection] = [conn for conn in connections_set if conn.connection_direction_type == ConnectionDirectionType.OUTBOUND]
+        connections_list = self._filter_conns_by_priority_and_action(connections_set)
+        inbound_conns: List[GcpConnection] = [conn for conn in connections_list if conn.connection_direction_type == ConnectionDirectionType.INBOUND]
+        outbound_conns: List[GcpConnection] = [conn for conn in connections_list if conn.connection_direction_type == ConnectionDirectionType.OUTBOUND]
         network_entity.inbound_connections = sorted(inbound_conns, key=lambda conn: conn.priority)
         network_entity.outbound_connections = sorted(outbound_conns, key=lambda conn: conn.priority)
 
     @staticmethod
-    def _filter_conns_by_priority_and_action(connections_list: Set[GcpConnection]) -> Set[GcpConnection]:
-        connections_set: Set[GcpConnection] = set()
-        for connection in connections_list:
-            if not any(connection == list_con for list_con in connections_set):
-                conns_with_same_priority = [list_con for list_con in connections_list if list_con.priority == connection.priority and connection == list_con]
+    def _filter_conns_by_priority_and_action(connections_set: Set[GcpConnection]) -> List[GcpConnection]:
+        connections_list: List[GcpConnection] = []
+        for connection in connections_set:
+            if not any(connection == list_con for list_con in connections_list):
+                conns_with_same_priority = [list_con for list_con in connections_set if list_con.priority == connection.priority and connection == list_con]
                 if len(conns_with_same_priority) > 1:
-                    connections_set.add(next(conn for conn in conns_with_same_priority if conn.firewall_action == FirewallRuleAction.DENY))
+                    connections_list.extend(sorted(conns_with_same_priority, key=lambda conn: conn.firewall_action == FirewallRuleAction.DENY))
                 else:
-                    connections_set.add(connection)
-        return connections_set
+                    connections_list.append(connection)
+        return connections_list
