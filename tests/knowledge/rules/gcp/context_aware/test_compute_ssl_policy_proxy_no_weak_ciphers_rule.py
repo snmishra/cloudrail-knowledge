@@ -13,7 +13,7 @@ from cloudrail.knowledge.rules.base_rule import RuleResultType
 from cloudrail.knowledge.rules.gcp.context_aware.compute_ssl_policy_proxy_no_weak_ciphers_rule import ComputeSslPolicyProxyNoWeakCiphersRule
 
 
-class TestComputeGlobalForwardingRuleNoWeakSslPolicyRule(TestCase):
+class TestComputeSslPolicyProxyNoWeakCiphersRule(TestCase):
     def setUp(self):
         self.rule = ComputeSslPolicyProxyNoWeakCiphersRule()
 
@@ -44,9 +44,13 @@ class TestComputeGlobalForwardingRuleNoWeakSslPolicyRule(TestCase):
 
         context = GcpEnvironmentContext()
         if isinstance(target_proxy, GcpComputeTargetHttpsProxy):
-            context = GcpEnvironmentContext(compute_global_forwarding_rule=[global_forwarding_rule], compute_target_https_proxy=AliasesDict(target_proxy), compute_ssl_policy=AliasesDict(ssl_policy))
+            context = GcpEnvironmentContext(compute_global_forwarding_rule=[global_forwarding_rule],
+                                            compute_target_https_proxy=AliasesDict(target_proxy),
+                                            compute_ssl_policy=AliasesDict(ssl_policy))
         if isinstance(target_proxy, GcpComputeTargetSslProxy):
-            context = GcpEnvironmentContext(compute_global_forwarding_rule=[global_forwarding_rule], compute_target_ssl_proxy=AliasesDict(target_proxy), compute_ssl_policy=AliasesDict(ssl_policy))
+            context = GcpEnvironmentContext(compute_global_forwarding_rule=[global_forwarding_rule],
+                                            compute_target_ssl_proxy=AliasesDict(target_proxy),
+                                            compute_ssl_policy=AliasesDict(ssl_policy))
         # Act
         result = self.rule.run(context, {})
         # Assert

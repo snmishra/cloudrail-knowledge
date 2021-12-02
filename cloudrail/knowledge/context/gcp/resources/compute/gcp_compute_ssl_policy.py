@@ -50,6 +50,11 @@ class GcpComputeSslPolicy(GcpResource):
     def is_labeled(self) -> bool:
         return False
 
+    @property
+    def is_using_secure_ciphers(self) -> bool:
+        not_secure_ciphers = ["TLS_RSA_WITH_AES_128_GCM_SHA256", "TLS_RSA_WITH_AES_256_GCM_SHA384", "TLS_RSA_WITH_AES_128_CBC_SHA", "TLS_RSA_WITH_AES_256_CBC_SHA", "TLS_RSA_WITH_3DES_EDE_CBC_SHA"]
+        return all(custom_feature not in not_secure_ciphers for custom_feature in self.custom_features)
+
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'{self._BASE_URL}/net-security/sslpolicies/details/{self.name}?project={self.project_id}'
 

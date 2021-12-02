@@ -3,7 +3,7 @@ from cloudrail.knowledge.rules.gcp.context_aware.compute_ssl_policy_proxy_no_wea
 from tests.knowledge.rules.base_rule_test import GcpBaseRuleTest, rule_test
 
 
-class TestComputeGlobalForwardingRuleNoWeakSslPolicyRule(GcpBaseRuleTest):
+class TestComputeSslPolicyProxyNoWeakCiphersRule(GcpBaseRuleTest):
     def get_rule(self):
         return ComputeSslPolicyProxyNoWeakCiphersRule()
 
