@@ -14,29 +14,28 @@ class ComputeSslPolicyProxyNoWeakCiphersRule(GcpBaseRule):
         issues: List[Issue] = []
         for global_forwarding_rule in env_context.compute_global_forwarding_rule:
             if global_forwarding_rule.target.is_encrypted:
-                if global_forwarding_rule.target.ssl_policy:
-                    if global_forwarding_rule.target.ssl_policy.min_tls_version == "TLS_1_2":
-                        if global_forwarding_rule.target.ssl_policy.profile in ["MODERN", "RESTRICTED"] or \
-                                (global_forwarding_rule.target.ssl_policy.profile == "CUSTOM" and global_forwarding_rule.target.ssl_policy.is_using_secure_ciphers):
-                            evidence_string = ""
-                        else:
-                            evidence_string = f"The {global_forwarding_rule.get_type()} '{global_forwarding_rule.get_friendly_name()}' is using weak ciphers in target " \
-                                              f"{global_forwarding_rule.target.target_type} proxy {global_forwarding_rule.target.get_friendly_name()} with a misconfigured SSL policy " \
-                                              f"{global_forwarding_rule.target.ssl_policy.get_friendly_name()}"
-                    else:
-                        evidence_string = f"The {global_forwarding_rule.get_type()} '{global_forwarding_rule.get_friendly_name()}' is using TLS version less that 1.2 in target " \
-                                          f"{global_forwarding_rule.target.target_type} proxy {global_forwarding_rule.target.get_friendly_name()} " \
-                                          f"with a misconfigured SSL policy {global_forwarding_rule.target.ssl_policy.get_friendly_name()}"
-                    if evidence_string:
+                if ssl_policy := global_forwarding_rule.target.ssl_policy:
+                    if not ssl_policy.min_tls_version == "TLS_1_2":
                         issues.append(
                             Issue(
-                                evidence_string,
+                                f"The {global_forwarding_rule.get_type()} `{global_forwarding_rule.get_friendly_name()}` is using TLS version less that 1.2 in target "
+                                f"{global_forwarding_rule.target.target_type} proxy {global_forwarding_rule.target.get_friendly_name()} "
+                                f"with a misconfigured SSL policy {ssl_policy.get_friendly_name()}",
                                 global_forwarding_rule,
-                                global_forwarding_rule.target.ssl_policy))
+                                ssl_policy))
+                    elif (ssl_policy.profile == "CUSTOM" and not ssl_policy.is_using_secure_ciphers) or \
+                            ssl_policy.profile not in ["MODERN", "RESTRICTED", "CUSTOM"]:
+                        issues.append(
+                            Issue(
+                                f"The {global_forwarding_rule.get_type()} `{global_forwarding_rule.get_friendly_name()}` is using weak ciphers in target "
+                                f"{global_forwarding_rule.target.target_type} proxy {global_forwarding_rule.target.get_friendly_name()} with a misconfigured SSL policy "
+                                f"{ssl_policy.get_friendly_name()}",
+                                global_forwarding_rule,
+                                ssl_policy))
                 else:
                     issues.append(
                         Issue(
-                            f"The {global_forwarding_rule.get_type()} '{global_forwarding_rule.get_friendly_name()}' is missing SSL policy",
+                            f"The {global_forwarding_rule.get_type()} `{global_forwarding_rule.get_friendly_name()}` is missing SSL policy",
                             global_forwarding_rule,
                             global_forwarding_rule))
         return issues

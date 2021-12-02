@@ -13,5 +13,5 @@ class ComputeSslPolicyBuilder(BaseGcpScannerBuilder):
         self_link = attributes["selfLink"]
         min_tls_version = attributes["minTlsVersion"]
         profile = attributes["profile"]
-        custom_features = attributes.get("customFeatures")
+        custom_features = attributes.get("customFeatures", [])
         return GcpComputeSslPolicy(name, policy_id, self_link, min_tls_version, profile, custom_features)

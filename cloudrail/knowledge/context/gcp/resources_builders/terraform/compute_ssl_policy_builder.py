@@ -11,7 +11,7 @@ class ComputeSslPolicyBuilder(BaseGcpTerraformBuilder):
         self_link = attributes["self_link"]
         min_tls_version = self._get_known_value(attributes, "min_tls_version", "TLS_1_0")
         profile = self._get_known_value(attributes, "profile", "COMPATIBLE")
-        custom_features = self._get_known_value(attributes, "custom_features")
+        custom_features = self._get_known_value(attributes, "custom_features", [])
 
         return GcpComputeSslPolicy(name, policy_id, self_link, min_tls_version, profile, custom_features)
 
