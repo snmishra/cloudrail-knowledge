@@ -27,8 +27,9 @@ class ComputeSslPolicyProxyNoWeakCiphersRule(GcpBaseRule):
                                               f"{global_forwarding_rule.target.target_type} proxy {global_forwarding_rule.target.get_friendly_name()} " \
                                               f"with a misconfigured SSL policy {global_forwarding_rule.target.ssl_policy.get_friendly_name()}"
                     else:
-                        evidence_string = f"The {global_forwarding_rule.get_type()} is using weak ciphers in target {global_forwarding_rule.target.target_type} " \
-                                          f"proxy {global_forwarding_rule.target.get_friendly_name()} with a misconfigured SSL policy {global_forwarding_rule.target.ssl_policy.get_friendly_name()}"
+                        evidence_string = f"The {global_forwarding_rule.get_type()} '{global_forwarding_rule.get_friendly_name()}' is using weak ciphers in target " \
+                                          f"{global_forwarding_rule.target.target_type} proxy {global_forwarding_rule.target.get_friendly_name()} with a misconfigured SSL policy " \
+                                          f"{global_forwarding_rule.target.ssl_policy.get_friendly_name()}"
                     if evidence_string:
                         issues.append(
                             Issue(
