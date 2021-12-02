@@ -5,6 +5,7 @@ from pkg_resources import parse_version
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import AzureAppService
+from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
 from cloudrail.knowledge.context.azure.resources.webapp.web_app_stack import WebAppStack
 from cloudrail.knowledge.rules.azure.azure_base_rule import AzureBaseRule
@@ -36,7 +37,7 @@ class AbstractWebAppUsingLatestVersionRule(AzureBaseRule):
         latest_web_app_stack: WebAppStack = self._get_web_app_stack_latest_major_version(env_context)
         self.latest_version = latest_web_app_stack.get_latest_version() if latest_web_app_stack else self.latest_version
         for web_app in self.get_web_app_resources(env_context):
-            code_lang, version = self._get_version(web_app.app_service_config.linux_fx_version)
+            code_lang, version = self._get_version(web_app.app_service_config)
             if code_lang and version and code_lang.upper() == self.code_lang.upper() and \
                     parse_version(version) < parse_version(self.latest_version):
                 issues.append(
@@ -48,11 +49,14 @@ class AbstractWebAppUsingLatestVersionRule(AzureBaseRule):
         return issues
 
     @staticmethod
-    def _get_version(linux_fx_version):
+    def _get_version(config: AzureAppServiceConfig):
         code_lang = None
         version = None
-        if linux_fx_version:
-            code_lang, version = tuple(linux_fx_version.split('|'))
+        if config.linux_fx_version:
+            code_lang, version = tuple(config.linux_fx_version.split('|'))
+        elif config.java_version:
+            code_lang = 'JAVA'
+            version = config.java_version
         return code_lang, version
 
     @lru_cache
