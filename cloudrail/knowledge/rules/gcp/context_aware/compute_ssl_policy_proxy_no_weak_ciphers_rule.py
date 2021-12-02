@@ -16,7 +16,7 @@ class ComputeSslPolicyProxyNoWeakCiphersRule(GcpBaseRule):
             if global_forwarding_rule.target.is_encrypted:
                 if global_forwarding_rule.target.ssl_policy:
                     if global_forwarding_rule.target.ssl_policy.min_tls_version == "TLS_1_2":
-                        if global_forwarding_rule.target.ssl_policy.profile == "MODERN" or global_forwarding_rule.target.ssl_policy.profile == "RESTRICTED" or \
+                        if global_forwarding_rule.target.ssl_policy.profile in ["MODERN", "RESTRICTED"] or \
                                 (global_forwarding_rule.target.ssl_policy.profile == "CUSTOM" and global_forwarding_rule.target.ssl_policy.is_using_secure_ciphers):
                             evidence_string = ""
                         else:
