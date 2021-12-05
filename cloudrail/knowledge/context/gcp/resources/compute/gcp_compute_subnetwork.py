@@ -10,14 +10,14 @@ from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
 @dataclass
 class GcpComputeSubNetworkLogConfig:
     """
-            Attributes:
-            aggregation_interval: (Optional) Toggles the aggregation interval for collecting flow logs.
-            flow_sampling : (Optional) The value of the field must be in [0, 1]. Set the sampling rate of VPC flow logs within the subnetwork
-                                       where 1.0 means all collected logs are reported and 0.0 means no logs are reported.
-            metadata: (Optional) Configures whether metadata fields should be added to the reported VPC flow logs.
-            metadata_fields: (Optional) List of metadata fields that should be added to reported logs.
-            filter_expr : (Optional) Export filter used to define which VPC flow logs should be logged, as as CEL expression.
-        """
+        Attributes:
+        aggregation_interval: (Optional) Toggles the aggregation interval for collecting flow logs.
+        flow_sampling : (Optional) The value of the field must be in [0, 1]. Set the sampling rate of VPC flow logs within the subnetwork
+                                   where 1.0 means all collected logs are reported and 0.0 means no logs are reported.
+        metadata: (Optional) Configures whether metadata fields should be added to the reported VPC flow logs.
+        metadata_fields: (Optional) List of metadata fields that should be added to reported logs.
+        filter_expr : (Optional) Export filter used to define which VPC flow logs should be logged, as as CEL expression.
+    """
     aggregation_interval: str
     flow_sampling: int
     metadata: str

@@ -15,7 +15,7 @@ class ComputeSubNetworkBuilder(BaseGcpScannerBuilder):
         subnetwork_id = attributes["id"]
         self_link = attributes["selfLink"]
         region_link = attributes.get("region")
-        region = extract_name_from_gcp_link(region_link) if region_link else None
+        region = extract_name_from_gcp_link(region_link)
         network_identifier = attributes["network"]
         ip_cidr_range = attributes["ipCidrRange"]
         log_config = self.build_log_config_block(attributes)

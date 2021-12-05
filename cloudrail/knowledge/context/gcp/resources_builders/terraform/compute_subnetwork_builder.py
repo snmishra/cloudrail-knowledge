@@ -14,7 +14,7 @@ class ComputeSubNetworkBuilder(BaseGcpTerraformBuilder):
         subnetwork_id = attributes["id"]
         self_link = attributes["self_link"]
         region_link = self._get_known_value(attributes, "region")
-        region = extract_name_from_gcp_link(region_link) if region_link else None
+        region = extract_name_from_gcp_link(region_link)
         network_identifier = attributes["network"]
         ip_cidr_range = attributes["ip_cidr_range"]
         log_config = self.build_log_config_block(attributes)

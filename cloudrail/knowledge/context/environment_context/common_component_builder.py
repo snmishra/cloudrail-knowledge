@@ -1,7 +1,7 @@
 import json
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
 from cloudrail.knowledge.context.aws.resources.iam.policy_statement import PolicyStatement, StatementCondition, StatementEffect
 from cloudrail.knowledge.context.aws.resources.iam.principal import Principal, PrincipalType
@@ -94,5 +94,7 @@ def extract_attribute_from_file_path(path: str, strings_to_remove: list):
     return attribute.replace('.json', '')
 
 
-def extract_name_from_gcp_link(gcp_link: str) -> str:
-    return gcp_link.split('/')[-1]
+def extract_name_from_gcp_link(gcp_link: str, default=None) -> Optional[str]:
+
+    return gcp_link.split('/')[-1] if gcp_link else default
+
