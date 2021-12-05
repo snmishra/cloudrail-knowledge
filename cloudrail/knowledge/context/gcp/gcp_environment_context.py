@@ -30,7 +30,7 @@ class GcpEnvironmentContext(BaseEnvironmentContext):
                  compute_instances: List[GcpComputeInstance] = None,
                  compute_firewalls: List[GcpComputeFirewall] = None,
                  compute_networks: AliasesDict[GcpComputeNetwork] = None,
-                 compute_subnetworks: AliasesDict[GcpComputeNetwork] = None,
+                 compute_subnetworks: AliasesDict[GcpComputeSubNetwork] = None,
                  projects: AliasesDict[Project] = None,
                  container_cluster: List[GcpContainerCluster] = None,
                  compute_target_http_proxy: AliasesDict[GcpComputeTargetHttpProxy] = None,
