@@ -28,7 +28,8 @@ from cloudrail.knowledge.rules.azure.non_context_aware.function_app_authenticati
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_client_certificate_mode_rule import FunctionAppClientCertificateModeRule
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_enforces_ftps_only_rule import FunctionAppEnforcesFtpsOnlyRule
 from cloudrail.knowledge.rules.azure.non_context_aware.web_app_using_latest_version_rule import \
-    FunctionAppUsingLatestJavaVersionRule, FunctionAppUsingLatestPythonVersionRule, AppServiceUsingLatestPythonVersionRule
+    FunctionAppUsingLatestJavaVersionRule, FunctionAppUsingLatestPythonVersionRule, AppServiceUsingLatestPythonVersionRule, \
+    AppServiceUsingLatestJavaVersionRule
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_use_latest_http_version_rule import FunctionAppUseLatestHttpVersionRule
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_use_latest_tls_version_rule import FunctionAppUseLatestTlsVersionRule
 from cloudrail.knowledge.rules.azure.non_context_aware.key_vault_purge_protection_enabled_rule import KeyVaultPurgeProtectionEnabledRule
@@ -92,6 +93,7 @@ class AzureRulesLoader(AbstractRulesLoader):
             AppServiceClientCertificatesRequiredRule(),
             FunctionAppUsingLatestJavaVersionRule(),
             FunctionAppUsingLatestPythonVersionRule(),
-            AppServiceUsingLatestPythonVersionRule()
+            AppServiceUsingLatestPythonVersionRule(),
+            AppServiceUsingLatestJavaVersionRule()
         ]
         return {rule.get_id(): rule for rule in rules}
