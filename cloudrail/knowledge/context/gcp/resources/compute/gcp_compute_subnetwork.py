@@ -74,7 +74,7 @@ class GcpComputeSubNetwork(GcpResource):
         return False
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        return f'{self._BASE_URL}/networking/subnetworks/details/{self.region}/{self.name}?project={self.project_id}'
+        return f'{self._BASE_URL}/networking/subnetworks/details/{self.region}/{self.name}?project={self.project_id}' if self.region else None
 
     def get_type(self, is_plural: bool = False) -> str:
         return 'Compute SubNetwork Details'  # TODO: check the name
