@@ -1,6 +1,8 @@
+import dataclasses
 from dataclasses import dataclass
 from typing import Optional, List
 
+from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_network import GcpComputeNetwork
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
 
@@ -40,7 +42,7 @@ class GcpComputeSubNetwork(GcpResource):
                  subnetwork_id: str,
                  self_link: str,
                  region: str,
-                 network_identifier: bool,
+                 network_identifier: str,
                  ip_cidr_range: str,
                  log_config: Optional[GcpComputeSubNetworkLogConfig]):
         super().__init__(GcpResourceType.GOOGLE_COMPUTE_SUBNETWORK)
@@ -48,7 +50,7 @@ class GcpComputeSubNetwork(GcpResource):
         self.subnetwork_id: str = subnetwork_id
         self.self_link: str = self_link
         self.region: str = region
-        self.network_identifier: str = network
+        self.network_identifier: str = network_identifier
         self.ip_cidr_range: str = ip_cidr_range
         self.log_config: Optional[GcpComputeSubNetworkLogConfig] = log_config
         self.network: GcpComputeNetwork = None

@@ -101,7 +101,9 @@ google_compute_subnetwork:
   known_fields:
     pass:
       - name
+      - self_link
       - region
+      - network
       - ip_cidr_range
       - log_config:
           known_fields:
