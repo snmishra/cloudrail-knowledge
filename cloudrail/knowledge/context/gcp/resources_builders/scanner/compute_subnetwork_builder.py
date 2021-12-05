@@ -36,4 +36,3 @@ class ComputeSubNetworkBuilder(BaseGcpScannerBuilder):
             return GcpComputeSubNetworkLogConfig(aggregation_interval, flow_sampling, metadata, metadata_fields, filter_expr)
 
         return None
-
