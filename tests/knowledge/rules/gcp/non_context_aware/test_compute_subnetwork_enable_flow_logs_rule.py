@@ -20,7 +20,7 @@ class TestComputeSubNetworkEnableFlowLogsRule(TestCase):
         ]
     )
 
-    def test_compute_instance_public_ip(self, unused_name: str, total_issues: int, rule_status: RuleResultType):
+    def test_compute_subnetwork_enable_flow_log_rule(self, unused_name: str, total_issues: int, rule_status: RuleResultType):
         # Arrange
         compute_subnetworks: AliasesDict[GcpComputeSubNetwork] = AliasesDict()
         log_config_counter = 2 - total_issues
