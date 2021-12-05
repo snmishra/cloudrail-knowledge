@@ -32,7 +32,7 @@ class GcpComputeSubNetwork(GcpResource):
         subnetwork_id: (Optional) an identifier for the resource
         self_link: (Optional) The URI of the created resource.
         region: (Optional) The GCP region for this subnetwork.
-        network: (Required) The network this subnet belongs to.
+        network_identifier: (Required) The network this subnet belongs to.
         ip_cidr_range: (Required) The range of internal addresses that are owned by this subnetwork.
         log_config: (Optional) Denotes the logging options for the subnetwork flow logs.
     """
