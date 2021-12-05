@@ -20,16 +20,16 @@ class GcpComputeSslPolicy(GcpResource):
                  name: str,
                  policy_id: str,
                  self_link: str,
-                 min_tls_version: Optional[str],
-                 profile: Optional[str],
+                 min_tls_version: str,
+                 profile: str,
                  custom_features: Optional[List[str]]):
 
         super().__init__(GcpResourceType.GOOGLE_COMPUTE_SSL_POLICY)
         self.name: str = name
         self.policy_id: str = policy_id
         self.self_link: str = self_link
-        self.min_tls_version: Optional[str] = min_tls_version
-        self.profile: Optional[str] = profile
+        self.min_tls_version: str = min_tls_version
+        self.profile: str = profile
         self.custom_features: Optional[List[str]] = custom_features
         self.with_aliases(policy_id, self_link)
 
@@ -49,6 +49,11 @@ class GcpComputeSslPolicy(GcpResource):
     @property
     def is_labeled(self) -> bool:
         return False
+
+    @property
+    def is_using_secure_ciphers(self) -> bool:
+        not_secure_ciphers = ["TLS_RSA_WITH_AES_128_GCM_SHA256", "TLS_RSA_WITH_AES_256_GCM_SHA384", "TLS_RSA_WITH_AES_128_CBC_SHA", "TLS_RSA_WITH_AES_256_CBC_SHA", "TLS_RSA_WITH_3DES_EDE_CBC_SHA"]
+        return all(custom_feature not in not_secure_ciphers for custom_feature in self.custom_features) if self.custom_features else True
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'{self._BASE_URL}/net-security/sslpolicies/details/{self.name}?project={self.project_id}'
