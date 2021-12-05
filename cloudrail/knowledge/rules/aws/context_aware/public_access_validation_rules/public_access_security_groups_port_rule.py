@@ -40,8 +40,10 @@ class PublicAccessSecurityGroupsPortRule(AwsBaseRule):
         eni_list: AliasesDict[NetworkInterface] = env_context.get_used_network_interfaces()
         logging.error(f'len of eni_list {len(eni_list)}')
         self.remove_from_eni_list(eni_list, parameters)
+        print(eni_list)
         if self.port.value == KnownPorts.ALL:
             eni_to_sg_map: Dict[NetworkInterface, Set[SecurityGroup]] = self.find_sg_issues(eni_list)
+            print(eni_to_sg_map)
             message: str = ("~Internet~. {0} `{1}` has internet gateway. "
                             "Instance `{2}` is on `{1}`. {0} routes traffic from instance to internet gateway. "
                             "{0} uses Network ACL's `{3}` which allows all ports range. Instance uses security group `{4}`. "

@@ -1,18 +1,15 @@
 from unittest import TestCase
-
 from parameterized import parameterized
-
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
-from cloudrail.knowledge.rules.azure.non_context_aware.function_app_non_car_function_app_using_latest_java_version_rule import \
-    FunctionAppUsingLatestJavaVersionRule
+from cloudrail.knowledge.rules.azure.non_context_aware.web_app_using_latest_version_rule import FunctionAppUsingLatestJavaVersionRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 
 
-class TestFunctionAppUseLatestTlsVersionRule(TestCase):
+class TestFunctionAppUseLatestJavaVersionRule(TestCase):
 
     def setUp(self):
         self.rule = FunctionAppUsingLatestJavaVersionRule()

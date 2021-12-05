@@ -8,6 +8,8 @@ class GcpComputeSslPolicy(GcpResource):
     """
         Attributes:
             name: (Required) A unique name of the resource.
+            policy_id: an identifier for the resource with format projects/{{project}}/global/sslPolicies/{{name}}
+            self_link: (Optional) The URI of the created resource.
             min_tls_version: (Optional) The minimum version of SSL protocol that can be used by the clients to establish a connection with the load balancer.
                                         Default value is TLS_1_0
             profile: (Optional) Profile specifies the set of SSL features that can be used by the load balancer when negotiating SSL with clients
@@ -16,18 +18,29 @@ class GcpComputeSslPolicy(GcpResource):
 
     def __init__(self,
                  name: str,
+                 policy_id: str,
+                 self_link: str,
                  min_tls_version: Optional[str],
                  profile: Optional[str],
                  custom_features: Optional[List[str]]):
 
         super().__init__(GcpResourceType.GOOGLE_COMPUTE_SSL_POLICY)
         self.name: str = name
+        self.policy_id: str = policy_id
+        self.self_link: str = self_link
         self.min_tls_version: Optional[str] = min_tls_version
         self.profile: Optional[str] = profile
         self.custom_features: Optional[List[str]] = custom_features
+        self.with_aliases(policy_id, self_link)
 
     def get_keys(self) -> List[str]:
-        return [self.name, self.project_id]
+        return [self.self_link]
+
+    def get_id(self) -> str:
+        return self.policy_id
+
+    def get_name(self) -> Optional[str]:
+        return self.name
 
     @property
     def is_tagable(self) -> bool:
@@ -36,9 +49,6 @@ class GcpComputeSslPolicy(GcpResource):
     @property
     def is_labeled(self) -> bool:
         return False
-
-    def get_name(self) -> Optional[str]:
-        return self.name
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'{self._BASE_URL}/net-security/sslpolicies/details/{self.name}?project={self.project_id}'
