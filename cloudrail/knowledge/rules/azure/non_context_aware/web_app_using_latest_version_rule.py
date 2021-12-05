@@ -53,9 +53,18 @@ class AbstractWebAppUsingLatestVersionRule(AzureBaseRule):
         version = None
         if config.linux_fx_version:
             code_lang, version = tuple(config.linux_fx_version.split('|'))
+            if 'java' in version:
+                version = version.split('java')[1]
+                code_lang = 'JAVA'
+            elif 'jre' in version:
+                version = version.split('jre')[1]
+                code_lang = 'JAVA'
         elif config.java_version:
             code_lang = 'JAVA'
-            version = config.java_version
+            if config.java_version.startswith('1.'):
+                version = config.java_version.replace('1.', '')
+            else:
+                version = config.java_version
         return code_lang, version
 
     def _get_web_app_stack_latest_major_version(self, env_context: AzureEnvironmentContext, preferred_os: str = 'linux') -> Optional[WebAppStack]:
@@ -108,6 +117,21 @@ class AppServiceUsingLatestPythonVersionRule(AbstractWebAppUsingLatestVersionRul
 
     def get_id(self) -> str:
         return 'non_car_service_app_using_latest_python_version'
+
+    def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
+        return bool(environment_context.app_services)
+
+    def get_web_app_resources(self, environment_context: AzureEnvironmentContext) -> AliasesDict[AzureAppService]:
+        return environment_context.app_services
+
+
+class AppServiceUsingLatestJavaVersionRule(AbstractWebAppUsingLatestVersionRule):
+
+    def __init__(self) -> None:
+        super().__init__('JAVA', '11')
+
+    def get_id(self) -> str:
+        return 'non_car_service_app_using_latest_java_version'
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
         return bool(environment_context.app_services)
