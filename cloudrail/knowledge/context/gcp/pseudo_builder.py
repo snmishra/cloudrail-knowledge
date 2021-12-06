@@ -1,5 +1,5 @@
 import os
-from typing import List
+from typing import List, Optional
 
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.compute_firewall_builder import ComputeFirewallBuilder
@@ -31,8 +31,6 @@ class PseudoBuilder:
     def _get_firewalls_from_file(file_name: str) -> List[GcpComputeFirewall]:
         current_path = os.path.dirname(os.path.abspath(__file__))
         firewalls = file_to_json(os.path.join(current_path, 'pseudo_docs', file_name))
-        firewalls_list: List[GcpComputeFirewall] = []
-        for firewall in firewalls['value']:
-            firewall = ComputeFirewallBuilder.do_build(ComputeFirewallBuilder, firewall)
-            firewalls_list.append(firewall)
+        firewalls_list: Optional[List[GcpComputeFirewall]] = [ComputeFirewallBuilder.do_build(ComputeFirewallBuilder, firewall)
+                                                              for firewall in firewalls['value']]
         return firewalls_list

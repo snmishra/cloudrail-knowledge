@@ -48,4 +48,5 @@ class GcpComputeForwardingRule(GcpResource):
 
     def to_drift_detection_object(self) -> dict:
         return {'target': self.target,
-                'port_range': self.port_range.port_ranges}
+                'port_range': self.port_range.port_ranges,
+                'labels': self.labels}
