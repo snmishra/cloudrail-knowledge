@@ -10,7 +10,7 @@ class TestComputeInstance(GcpContextTest):
     def get_component(self):
         return 'compute_instance'
 
-    @context(module_path="basic", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
+    @context(module_path="basic_1", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
     def test_basic(self, ctx: GcpEnvironmentContext):
         compute = next((compute for compute in ctx.compute_instances if compute.name == 'cloudrail-test-google-compute-instance'), None)
         self.assertIsNotNone(compute)
@@ -40,7 +40,7 @@ class TestComputeInstance(GcpContextTest):
                              'https://www.googleapis.com/compute/v1/projects/dev-for-tests/regions/us-west1/subnetworks/default')
             self.assertEqual(compute.compute_network_interfaces[0].subnetwork_project, 'dev-for-tests')
 
-    @context(module_path="serial_ports_one_enabled_one_disabled", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
+    @context(module_path="serial_ports_one_enabled_one_disabled_1", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
     def test_serial_ports_one_enabled_one_disabled(self, ctx: GcpEnvironmentContext):
         self.assertEqual(len(ctx.compute_instances), 2)
         compute = next((compute for compute in ctx.compute_instances if compute.name == 'gce-5'), None)
@@ -51,7 +51,7 @@ class TestComputeInstance(GcpContextTest):
         self.assertIsNotNone(compute)
         self.assertFalse(compute.metadata)
 
-    @context(module_path="shielded_vm_config/enable_neither_vptm_nor_integrity", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
+    @context(module_path="shielded_vm_config/enable_neither_vptm_nor_integrity_1", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
     def test_shielded_vm_enable_neither_vptm_nor_integrity(self, ctx: GcpEnvironmentContext):
         compute = next((compute for compute in ctx.compute_instances if compute.name == 'one-enabled'), None)
         self.assertIsNotNone(compute)
@@ -60,7 +60,7 @@ class TestComputeInstance(GcpContextTest):
         self.assertFalse(compute.shielded_instance_config.enable_integrity_monitoring)
         self.assertFalse(compute.shielded_instance_config.enable_vtpm)
 
-    @context(module_path="shielded_vm_config/enable_vtpm_and_integrity", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
+    @context(module_path="shielded_vm_config/enable_vtpm_and_integrity_1", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
     def test_shielded_vm_enable_vtpm_and_integrity(self, ctx: GcpEnvironmentContext):
         compute = next((compute for compute in ctx.compute_instances if compute.name == 'one-enabled'), None)
         self.assertIsNotNone(compute)
@@ -69,7 +69,7 @@ class TestComputeInstance(GcpContextTest):
         self.assertTrue(compute.shielded_instance_config.enable_integrity_monitoring)
         self.assertTrue(compute.shielded_instance_config.enable_vtpm)
 
-    @context(module_path="shielded_vm_config/enable_vtpm_not_integrity", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
+    @context(module_path="shielded_vm_config/enable_vtpm_not_integrity_1", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
     def test_shielded_vm_enable_vtpm_not_integrity(self, ctx: GcpEnvironmentContext):
         compute = next((compute for compute in ctx.compute_instances if compute.name == 'one-enabled'), None)
         self.assertIsNotNone(compute)
@@ -78,7 +78,7 @@ class TestComputeInstance(GcpContextTest):
         self.assertFalse(compute.shielded_instance_config.enable_integrity_monitoring)
         self.assertTrue(compute.shielded_instance_config.enable_vtpm)
 
-    @context(module_path="default_service_account", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
+    @context(module_path="default_service_account_1", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
     def test_default_service_account(self, ctx: GcpEnvironmentContext):
         self.assertTrue(len(ctx.compute_instances), 2)
         for compute in ctx.compute_instances:
@@ -87,7 +87,7 @@ class TestComputeInstance(GcpContextTest):
             self.assertEqual(compute.service_account.email, '37924132841-compute@developer.gserviceaccount.com')
             self.assertEqual(compute.service_account.scopes, ['https://www.googleapis.com/auth/cloud-platform'])
 
-    @context(module_path="default_service_account_no_email", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
+    @context(module_path="default_service_account_no_email_1", base_scanner_data_for_iac='account-data-gcp-default-vpc-network.zip')
     def test_default_service_account_no_email(self, ctx: GcpEnvironmentContext):
         self.assertTrue(len(ctx.compute_instances), 2)
         for compute in ctx.compute_instances:
