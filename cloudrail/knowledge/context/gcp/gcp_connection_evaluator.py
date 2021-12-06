@@ -10,21 +10,25 @@ from cloudrail.knowledge.utils.utils import is_port_in_range
 class GcpConnectionEvaluator:
 
     @staticmethod
-    def firewalls_allowing_public_conns_on_port(network_entity: NetworkEntity, port: int) -> Optional[Set[GcpComputeFirewall]]:
-        conns = [conn for conn in network_entity.inbound_connections
-                 if GcpConnectionEvaluator._is_effected_ip_protocol(conn, IpProtocol('TCP'))
-                 and GcpConnectionEvaluator._is_public_inbound_conn(conn)
-                 and GcpConnectionEvaluator._is_port_conn(conn)
-                 and any(is_port_in_range(ports, port) for ports in conn.connection_property.ports)]
-        if not GcpConnectionEvaluator._evaluate_if_denied(conns):
-            return {conn.firewall for conn in conns if conn.firewall_action == FirewallRuleAction.ALLOW}
+    def firewalls_allowing_incoming_public_conns_on_port(network_entity: NetworkEntity, port: int) -> Optional[Set[GcpComputeFirewall]]:
+        if GcpConnectionEvaluator._evaluate_if_allowed(network_entity.inbound_connections, port):
+            return {conn.firewall for conn in network_entity.inbound_connections
+                    if conn.firewall_action == FirewallRuleAction.ALLOW
+                    and GcpConnectionEvaluator._is_effected_ip_protocol(conn, IpProtocol('TCP'))
+                    and GcpConnectionEvaluator._is_public_inbound_conn(conn)
+                    and GcpConnectionEvaluator._is_port_conn(conn)
+                    and any(is_port_in_range(ports, port) for ports in conn.connection_property.ports)}
         return None
 
     @staticmethod
-    def _evaluate_if_denied(conns_list: List[GcpConnection]) -> bool:
-        if conns_list:
-            conns_list = sorted(conns_list, key=lambda rule: rule.priority)
-            return conns_list[0].firewall_action == FirewallRuleAction.DENY
+    def _evaluate_if_allowed(conns_list: List[GcpConnection], port: int) -> bool:
+        first_match_conn: GcpConnection = next((conn for conn in conns_list
+                                                if GcpConnectionEvaluator._is_effected_ip_protocol(conn, IpProtocol('TCP'))
+                                                and GcpConnectionEvaluator._is_public_inbound_conn(conn)
+                                                and GcpConnectionEvaluator._is_port_conn(conn)
+                                                and any(is_port_in_range(ports, port) for ports in conn.connection_property.ports)), None)
+        if first_match_conn:
+            return first_match_conn.firewall_action == FirewallRuleAction.ALLOW
         return False
 
     @staticmethod

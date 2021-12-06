@@ -26,7 +26,7 @@ class PublicAccessVpcPortRule(GcpBaseRule):
     def execute(self, env_context: GcpEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for network_entity in env_context.get_all_network_entities():
-            firewalls: Set[GcpComputeFirewall] = GcpConnectionEvaluator.firewalls_allowing_public_conns_on_port(network_entity, self.port)
+            firewalls: Set[GcpComputeFirewall] = GcpConnectionEvaluator.firewalls_allowing_incoming_public_conns_on_port(network_entity, self.port)
             if firewalls:
                 forwarding_rules = self.conns_forwarding_on_port(network_entity, self.port)
                 public_ip_addresses = network_entity.public_ip_addresses
