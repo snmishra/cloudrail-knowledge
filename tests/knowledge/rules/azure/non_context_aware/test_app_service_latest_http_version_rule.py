@@ -1,20 +1,18 @@
 from unittest import TestCase
-
 from parameterized import parameterized
-
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
+from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import AzureAppService
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_config import AzureAppServiceConfig
-from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
-from cloudrail.knowledge.rules.azure.non_context_aware.web_app_use_http_version_rule import FunctionAppUseLatestHttpVersionRule
+from cloudrail.knowledge.rules.azure.non_context_aware.web_app_use_http_version_rule import AppServiceUseLatestHttpVersionRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 
 
-class TestFunctionAppUseLatestHttpVersionRule(TestCase):
+class TestAppServiceLatestHttpVersionRule(TestCase):
 
     def setUp(self):
-        self.rule = FunctionAppUseLatestHttpVersionRule()
+        self.rule = AppServiceUseLatestHttpVersionRule()
 
     @parameterized.expand(
         [
@@ -22,13 +20,13 @@ class TestFunctionAppUseLatestHttpVersionRule(TestCase):
             ["http2 disabled", False, True]
         ]
     )
-    def test_non_car_http_latest_in_function_app_fail(self, unused_name: str, http2_enable: bool, should_alert: bool):
+    def test_app_service_http_latest_version(self, unused_name: str, http2_enable: bool, should_alert: bool):
         # Arrange
-        func_app: AzureFunctionApp = create_empty_entity(AzureFunctionApp)
+        app_service: AzureAppService = create_empty_entity(AzureAppService)
         app_service_config: AzureAppServiceConfig = create_empty_entity(AzureAppServiceConfig)
         app_service_config.http2_enabled = http2_enable
-        func_app.app_service_config = app_service_config
-        context = AzureEnvironmentContext(function_apps=AliasesDict(func_app))
+        app_service.app_service_config = app_service_config
+        context = AzureEnvironmentContext(app_services=AliasesDict(app_service))
         # Act
         result = self.rule.run(context, {})
         # Assert

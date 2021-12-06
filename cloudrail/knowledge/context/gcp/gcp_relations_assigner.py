@@ -35,7 +35,7 @@ class GcpRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_ssl_policy, ctx.compute_target_ssl_proxy, (ctx.compute_ssl_policy,)),
             IterFunctionData(self._assign_ssl_policy, ctx.compute_target_https_proxy, (ctx.compute_ssl_policy,)),
             IterFunctionData(self._assign_target_proxy, ctx.compute_global_forwarding_rule, (ctx.get_all_targets_proxy(),)),
-            IterFunctionData(self._assign_network, ctx.compute_subnetworks, (ctx.compute_networks,)),
+            IterFunctionData(self._assign_subnetwork, ctx.compute_networks, (ctx.compute_subnetworks,)),
         ]
 
         super().__init__(function_pool, context=ctx)
@@ -107,13 +107,12 @@ class GcpRelationsAssigner(DependencyInvocation):
         global_forwarding_rule.target = ResourceInvalidator.get_by_logic(get_target, True, global_forwarding_rule, "Could not associate target proxy")
 
     @staticmethod
-    def _assign_network(subnetwork: GcpComputeSubNetwork, networks: AliasesDict[GcpComputeNetwork]):
-        def get_network():
-            network = ResourceInvalidator.get_by_id(networks, subnetwork.network_identifier, False)
-            if not network:
-                network = next((network for network in networks if
-                               subnetwork.project_id == network.project_id and
-                               subnetwork.network_identifier == network.name), None)
-            return network
+    def _assign_subnetwork(network: GcpComputeNetwork, subnetworks: AliasesDict[GcpComputeSubNetwork]):
+        def get_subnetworks():
+            subnetworks_list: List[GcpComputeSubNetwork] = []
+            for subnetwork in subnetworks:
+                if subnetwork.network_identifier in [network.self_link, network.name, network.network_id]:
+                    subnetworks_list.append(subnetwork)
+            return subnetworks_list
 
-        subnetwork.network = ResourceInvalidator.get_by_logic(get_network, True, subnetwork, "Could not associate compute network")
+        network.subnetworks = ResourceInvalidator.get_by_logic(get_subnetworks, False)
