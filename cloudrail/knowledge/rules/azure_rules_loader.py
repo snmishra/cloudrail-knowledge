@@ -29,7 +29,8 @@ from cloudrail.knowledge.rules.azure.non_context_aware.function_app_client_certi
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_enforces_ftps_only_rule import FunctionAppEnforcesFtpsOnlyRule
 from cloudrail.knowledge.rules.azure.non_context_aware.web_app_using_latest_version_rule import \
     FunctionAppUsingLatestJavaVersionRule, FunctionAppUsingLatestPythonVersionRule, AppServiceUsingLatestPythonVersionRule, \
-    AppServiceUsingLatestJavaVersionRule
+    AppServiceUsingLatestJavaVersionRule, AppServiceUsingLatestPhpVersionRule
+
 from cloudrail.knowledge.rules.azure.non_context_aware.web_app_use_http_version_rule import FunctionAppUseLatestHttpVersionRule, \
     AppServiceUseLatestHttpVersionRule
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_use_latest_tls_version_rule import FunctionAppUseLatestTlsVersionRule
@@ -96,6 +97,7 @@ class AzureRulesLoader(AbstractRulesLoader):
             FunctionAppUsingLatestPythonVersionRule(),
             AppServiceUsingLatestPythonVersionRule(),
             AppServiceUsingLatestJavaVersionRule(),
+            AppServiceUsingLatestPhpVersionRule(),
             AppServiceUseLatestHttpVersionRule()
         ]
         return {rule.get_id(): rule for rule in rules}
