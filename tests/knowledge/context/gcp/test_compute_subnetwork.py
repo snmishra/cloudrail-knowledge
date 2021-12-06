@@ -25,7 +25,3 @@ class TestComputeSubNetwork(GcpContextTest):
         elif subnetwork.origin == EntityOrigin.LIVE_ENV:
             self.assertEqual(subnetwork.network_identifier, "https://www.googleapis.com/compute/v1/projects/dev-for-tests/global/networks/log-test-network")
             self.assertEqual(subnetwork.region, "us-west1")
-
-        network = next((network for network in ctx.compute_networks if subnetwork.network_identifier in [network.network_id, network.name, network.self_link]), None)
-        self.assertIsNotNone(network)
-        self.assertEqual(len(network.subnetworks), 1)
