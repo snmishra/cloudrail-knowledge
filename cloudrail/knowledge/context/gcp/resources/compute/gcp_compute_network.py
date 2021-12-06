@@ -1,7 +1,6 @@
 from typing import Optional, List
 from enum import Enum
 
-from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_subnetwork import GcpComputeSubNetwork
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
