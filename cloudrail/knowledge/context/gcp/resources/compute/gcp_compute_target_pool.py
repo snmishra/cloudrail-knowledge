@@ -23,6 +23,7 @@ class GcpComputeTargetPool(GcpResource):
         self.region: Optional[str] = region
         self.instances: Optional[List[str]] = instances
         self.self_link: str = self_link
+        self.with_aliases(self.get_id())
 
 
     def get_keys(self) -> List[str]:

@@ -43,6 +43,8 @@ class TestPublicAccessVpcSshPortRule(TestCase):
         firewall.source_ranges = [source_range]
         firewall.direction = GcpComputeFirewallDirection.INGRESS
         firewall.network = network.name
+        firewall.disabled = False
+        firewall.priority = 10
         network.firewalls = [firewall]
         gcp_connection.connection_direction_type = ConnectionDirectionType.INBOUND
         gcp_connection.connection_property = PortConnectionProperty(PortSet([22, 22]).port_ranges, source_range, IpProtocol('TCP'))

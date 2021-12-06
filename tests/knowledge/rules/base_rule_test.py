@@ -98,8 +98,8 @@ class BaseRuleTest(unittest.TestCase):
             if os.path.isfile(account_data_zip):
                 shutil.unpack_archive(account_data_zip, extract_dir=local_account_data, format='zip')
                 self.account_data = local_account_data
-            elif self.get_default_account_data_path('account-data-vpc-platform.zip'):
-                shutil.unpack_archive(self.get_default_account_data_path('account-data-vpc-platform.zip'), extract_dir=local_account_data, format='zip')
+            elif self.get_default_account_data_path():
+                shutil.unpack_archive(self.get_default_account_data_path(), extract_dir=local_account_data, format='zip')
                 self.account_data = local_account_data
             else:
                 self.account_data = None

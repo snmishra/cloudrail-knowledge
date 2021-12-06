@@ -38,7 +38,7 @@ class PublicAccessVpcPortRule(GcpBaseRule):
                                     f"The {network_entity.get_type()} `{network_entity.get_friendly_name()}` "
                                     f"with one of the public IP addresses `{', ' .join(public_ip_addresses)}` "
                                     f"and via load balancer `{rule.get_friendly_name()}"
-                                    f"is reachable from the Internet via SSH port",
+                                    f"is reachable from the Internet via {self.port.name} port",
                                     network_entity,
                                     firewall))
                     elif public_ip_addresses and not forwarding_rules:
@@ -46,7 +46,7 @@ class PublicAccessVpcPortRule(GcpBaseRule):
                                 Issue(
                                     f"The {network_entity.get_type()} `{network_entity.get_friendly_name()}` "
                                     f"with one of the public IP addresses `{', ' .join(public_ip_addresses)}` "
-                                    f"is reachable from the Internet via SSH port",
+                                    f"is reachable from the Internet via {self.port.name} port",
                                     network_entity,
                                     firewall))
                     elif forwarding_rules and not public_ip_addresses:
@@ -55,7 +55,7 @@ class PublicAccessVpcPortRule(GcpBaseRule):
                                 Issue(
                                     f"The {network_entity.get_type()} `{network_entity.get_friendly_name()}` "
                                     f"exposed via load balancer `{rule.get_friendly_name()}` "
-                                    f"is reachable from the Internet via SSH port",
+                                    f"is reachable from the Internet via {self.port.name} port",
                                     network_entity,
                                     firewall))
         return issues
@@ -73,3 +73,11 @@ class PublicAccessVpcSshPortRule(PublicAccessVpcPortRule):
 
     def __init__(self):
         super().__init__(KnownPorts.SSH)
+
+class PublicAccessVpcRdpPortRule(PublicAccessVpcPortRule):
+
+    def get_id(self) -> str:
+        return 'car_vpc_not_publicly_accessible_rdp'
+
+    def __init__(self):
+        super().__init__(KnownPorts.RDP)
