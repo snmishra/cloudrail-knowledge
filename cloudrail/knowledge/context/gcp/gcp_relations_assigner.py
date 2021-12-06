@@ -55,11 +55,11 @@ class GcpRelationsAssigner(DependencyInvocation):
 
     @staticmethod
     def _assign_subnetwork(network: GcpComputeNetwork, subnetworks: AliasesDict[GcpComputeSubNetwork]):
-        def get_subnetwork():
+        def get_subnetworks():
             subnetworks_list: List[GcpComputeSubNetwork] = []
             for subnetwork in subnetworks:
                 if subnetwork.network_identifier in [network.self_link, network.name, network.network_id]:
                     subnetworks_list.append(subnetwork)
             return subnetworks_list
 
-        network.subnetworks = ResourceInvalidator.get_by_logic(get_subnetwork, False)
+        network.subnetworks = ResourceInvalidator.get_by_logic(get_subnetworks, False)

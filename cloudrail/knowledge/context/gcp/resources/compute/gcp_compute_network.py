@@ -34,7 +34,7 @@ class GcpComputeNetwork(GcpResource):
         self.self_link: str = self_link
         self.auto_create_subnetworks: Optional[bool] = auto_create_subnetworks
         self.routing_mode: Optional[GcpComputeNetworkRoutingMode] = routing_mode
-        self.subnetworks: Optional[List[GcpComputeSubNetwork]] = []
+        self.subnetworks: List[GcpComputeSubNetwork] = []
         self.with_aliases(network_id, self_link)
 
     def get_keys(self) -> List[str]:
