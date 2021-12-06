@@ -24,3 +24,7 @@ class TestPublicAccessVpcSshPortRule(GcpBaseRuleTest):
     @rule_test('restricted_ssh', should_alert=False)
     def test_restricted_ssh(self, rule_result: RuleResponse):
         pass
+
+    @rule_test('unrestricted_no_pub_ip', should_alert=False)
+    def test_unrestricted_no_pub_ip(self, rule_result: RuleResponse):
+        pass
