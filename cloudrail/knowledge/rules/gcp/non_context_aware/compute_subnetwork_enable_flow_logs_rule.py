@@ -16,7 +16,7 @@ class ComputeSubNetworkEnableFlowLogsRule(GcpBaseRule):
             if not subnetwork.log_config:
                 issues.append(
                     Issue(
-                        f"The {subnetwork.get_type()} `{subnetwork.get_friendly_name()}` has not log_config block present.",
+                        f"The {subnetwork.get_type()} `{subnetwork.get_friendly_name()}` does not have flow logs enabled.",
                         subnetwork,
                         subnetwork))
         return issues
