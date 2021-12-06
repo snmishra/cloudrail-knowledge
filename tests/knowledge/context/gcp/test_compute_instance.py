@@ -110,6 +110,6 @@ class TestComputeInstance(GcpContextTest):
         compute = next((compute for compute in ctx.compute_instances
                         if compute.name == 'unrestricted-gce'), None)
         self.assertIsNotNone(compute)
-        self.assertEqual(len(compute.inbound_connections), 4)
+        self.assertEqual(len(compute.inbound_connections), 7)
         self.assertTrue(any(conn_prop.connection_property == PortConnectionProperty([(22, 22)], '0.0.0.0/0', IpProtocol('TCP'))
                              for conn_prop in compute.inbound_connections))

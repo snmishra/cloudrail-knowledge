@@ -23,6 +23,7 @@ class GcpConnection(ConnectionDetail):
             and self.connection_type == other.connection_type \
                 and self.connection_direction_type == other.connection_direction_type
 
+
 class NetworkEntity(GcpResource, ConnectionInstance):
     """
         This class is the parent of all resources that have a network connection.

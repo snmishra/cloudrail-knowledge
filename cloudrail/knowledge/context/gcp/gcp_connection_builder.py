@@ -19,26 +19,26 @@ class GcpConnectionBuilder(DependencyInvocation):
 
     ## Evaluation of GCP connections, fowllowing GCP doc: https://cloud.google.com/vpc/docs/firewalls
     def _assign_port_connections(self, network_entity: NetworkEntity):
-        connections_set: Set[GcpConnection] = set()
+        connections_set: List[GcpConnection] = []
         enforced_firewalls: List[GcpComputeFirewall] = [firewall for firewall in network_entity.firewalls if not firewall.disabled]
         for firewall in enforced_firewalls:
             connection_direction = ConnectionDirectionType.INBOUND if firewall.direction == GcpComputeFirewallDirection.INGRESS else ConnectionDirectionType.OUTBOUND
             for cidr in firewall.firewall_ip_ranges:
                 connection_type = ConnectionType.PUBLIC if is_public_ip_range(cidr) else ConnectionType.PRIVATE
                 for rule in firewall.allow:
-                    connections_set.add(GcpConnection(connection_type=connection_type,
-                                                                     connection_property=PortConnectionProperty(rule.ports.port_ranges, cidr, rule.protocol),
-                                                                     connection_direction_type=connection_direction,
-                                                                     firewall_action=FirewallRuleAction.ALLOW,
-                                                                     priority=firewall.priority,
-                                                                     firewall=firewall))
+                    connections_set.append(GcpConnection(connection_type=connection_type,
+                                                         connection_property=PortConnectionProperty(rule.ports.port_ranges, cidr, rule.protocol),
+                                                         connection_direction_type=connection_direction,
+                                                         firewall_action=FirewallRuleAction.ALLOW,
+                                                         priority=firewall.priority,
+                                                         firewall=firewall))
                 for rule in firewall.deny:
-                    connections_set.add(GcpConnection(connection_type=connection_type,
-                                                                     connection_property=PortConnectionProperty(rule.ports.port_ranges, cidr, rule.protocol),
-                                                                     connection_direction_type=connection_direction,
-                                                                     firewall_action=FirewallRuleAction.DENY,
-                                                                     priority=firewall.priority,
-                                                                     firewall=firewall))
+                    connections_set.append(GcpConnection(connection_type=connection_type,
+                                                         connection_property=PortConnectionProperty(rule.ports.port_ranges, cidr, rule.protocol),
+                                                         connection_direction_type=connection_direction,
+                                                         firewall_action=FirewallRuleAction.DENY,
+                                                         priority=firewall.priority,
+                                                         firewall=firewall))
         connections_set = sorted(connections_set, key=lambda rule: rule.priority)
         connections_list = self._filter_conns_by_priority_and_action(connections_set)
         inbound_conns: List[GcpConnection] = [conn for conn in connections_list if conn.connection_direction_type == ConnectionDirectionType.INBOUND]

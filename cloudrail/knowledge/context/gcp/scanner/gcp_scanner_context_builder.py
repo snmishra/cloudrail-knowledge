@@ -39,7 +39,7 @@ class GcpScannerContextBuilder(ScannerContextBuilder):
             return context
         elif extra_args.get('default_resources_only'):
             context.projects = ProjectBuilder(*builder_args).build()
-            context.compute_networks = [network for network in ComputeNetworkBuilder(*builder_args).build() if network.get_name() == 'default']
+            context.compute_networks = AliasesDict(*[network for network in ComputeNetworkBuilder(*builder_args).build() if network.get_name() == 'default'])
             return context
 
         context.sql_database_instances = SqlDatabaseInstanceBuilder(*builder_args).build()
@@ -56,6 +56,6 @@ class GcpScannerContextBuilder(ScannerContextBuilder):
         context.compute_ssl_policy = AliasesDict(*ComputeSslPolicyBuilder(*builder_args).build())
         context.storage_buckets = AliasesDict(*StorageBucketBuilder(*builder_args).build())
         context.dns_managed_zones = GcpDnsManagedZoneBuilder(*builder_args).build()
-        context.compute_target_pools = ComputeTargetPoolBuilder(*builder_args).build()
+        context.compute_target_pools = AliasesDict(*ComputeTargetPoolBuilder(*builder_args).build())
         context.compute_forwarding_rules = ComputeForwardingRuleBuilder(*builder_args).build()
         return context

@@ -42,7 +42,7 @@ class GcpRelationsAssigner(DependencyInvocation):
 
     ## According to GCP docs, every VPC has 2 implied rules for Ipv4 and IPv6 if enabled:
     ## https://cloud.google.com/vpc/docs/firewalls#default_firewall_rules
-    def _assign_implied_firewalls_to_vpcs(self, vpcs: List[GcpComputeNetwork]):
+    def _assign_implied_firewalls_to_vpcs(self, vpcs: AliasesDict[GcpComputeNetwork]):
         implied_firewalls = self.pseudo_builder.get_implied_firewalls()
         for vpc in vpcs:
             for firewall in implied_firewalls:
@@ -58,7 +58,7 @@ class GcpRelationsAssigner(DependencyInvocation):
         vpc.firewalls.extend(ResourceInvalidator.get_by_logic(get_firewalls_vpc, False))
 
     @staticmethod
-    def _assign_networking_info_to_network_interfaces(instance: GcpComputeInstance, vpcs: List[GcpComputeNetwork]):
+    def _assign_networking_info_to_network_interfaces(instance: GcpComputeInstance, vpcs: AliasesDict[GcpComputeNetwork]):
         def get_instance_vpcs():
             instance_vpcs = [vpc for vpc in vpcs if any(extract_name_from_gcp_link(interface.network) == vpc.name for interface in instance.network_interfaces)]
             return instance_vpcs

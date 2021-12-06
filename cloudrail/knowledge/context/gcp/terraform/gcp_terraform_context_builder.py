@@ -68,6 +68,6 @@ class GcpTerraformContextBuilder(IacContextBuilder):
             context.compute_ssl_policy = AliasesDict(*ComputeSslPolicyBuilder(resources).build())
             context.storage_buckets = AliasesDict(*StorageBucketBuilder(resources).build())
             context.dns_managed_zones = GcpDnsManagedZoneBuilder(resources).build()
-            context.compute_target_pools = ComputeTargetPoolBuilder(resources).build()
+            context.compute_target_pools = AliasesDict(*ComputeTargetPoolBuilder(resources).build())
             context.compute_forwarding_rules = ComputeForwardingRuleBuilder(resources).build()
             return context
