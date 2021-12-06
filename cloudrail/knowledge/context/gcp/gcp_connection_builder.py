@@ -50,8 +50,8 @@ class GcpConnectionBuilder(DependencyInvocation):
     def _filter_conns_by_priority_and_action(connections_set: Set[GcpConnection]) -> List[GcpConnection]:
         connections_list: List[GcpConnection] = []
         for connection in connections_set:
-            if not any(connection == list_con for list_con in connections_list):
-                conns_with_same_priority = [list_con for list_con in connections_set if list_con.priority == connection.priority and connection == list_con]
+            if not any(connection.compare_conn(list_con) for list_con in connections_list):
+                conns_with_same_priority = [list_con for list_con in connections_set if list_con.priority == connection.priority and connection.compare_conn(list_con)]
                 if len(conns_with_same_priority) > 1:
                     connections_list.extend(sorted(conns_with_same_priority, key=lambda conn: conn.firewall_action == FirewallRuleAction.DENY))
                 else:

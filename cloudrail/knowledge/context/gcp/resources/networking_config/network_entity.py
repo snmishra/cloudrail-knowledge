@@ -18,15 +18,7 @@ class GcpConnection(ConnectionDetail):
     priority: int
     firewall: GcpComputeFirewall
 
-    def __hash__(self) -> int:
-        return hash((self.connection_type,
-                     self.connection_property,
-                     self.connection_direction_type,
-                     self.firewall_action,
-                     self.priority,
-                     self.firewall))
-
-    def __eq__(self, other) -> bool:
+    def compare_conn(self, other) -> bool:
         return self.connection_property == other.connection_property \
             and self.connection_type == other.connection_type \
                 and self.connection_direction_type == other.connection_direction_type
