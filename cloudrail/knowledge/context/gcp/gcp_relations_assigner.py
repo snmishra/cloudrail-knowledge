@@ -61,4 +61,6 @@ class GcpRelationsAssigner(DependencyInvocation):
                                subnetwork.network_identifier == network.name), None)
             return network
 
-        subnetwork.network = ResourceInvalidator.get_by_logic(get_network, True, subnetwork, "Could not associate compute network")
+        network = ResourceInvalidator.get_by_logic(get_network, True, subnetwork, "Could not associate compute network")
+        if network:
+            network.subnetworks.append(subnetwork)
