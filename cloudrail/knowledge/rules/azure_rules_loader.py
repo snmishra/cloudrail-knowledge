@@ -30,7 +30,9 @@ from cloudrail.knowledge.rules.azure.non_context_aware.function_app_enforces_ftp
 from cloudrail.knowledge.rules.azure.non_context_aware.web_app_using_latest_version_rule import \
     FunctionAppUsingLatestJavaVersionRule, FunctionAppUsingLatestPythonVersionRule, AppServiceUsingLatestPythonVersionRule, \
     AppServiceUsingLatestJavaVersionRule, AppServiceUsingLatestPhpVersionRule
-from cloudrail.knowledge.rules.azure.non_context_aware.function_app_use_latest_http_version_rule import FunctionAppUseLatestHttpVersionRule
+
+from cloudrail.knowledge.rules.azure.non_context_aware.web_app_use_http_version_rule import FunctionAppUseLatestHttpVersionRule, \
+    AppServiceUseLatestHttpVersionRule
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_use_latest_tls_version_rule import FunctionAppUseLatestTlsVersionRule
 from cloudrail.knowledge.rules.azure.non_context_aware.key_vault_purge_protection_enabled_rule import KeyVaultPurgeProtectionEnabledRule
 from cloudrail.knowledge.rules.azure.non_context_aware.kubernetes_cluster_rbac_enabled_rule import KubernetesClusterRbacEnabledRule
@@ -95,6 +97,7 @@ class AzureRulesLoader(AbstractRulesLoader):
             FunctionAppUsingLatestPythonVersionRule(),
             AppServiceUsingLatestPythonVersionRule(),
             AppServiceUsingLatestJavaVersionRule(),
-            AppServiceUsingLatestPhpVersionRule()
+            AppServiceUsingLatestPhpVersionRule(),
+            AppServiceUseLatestHttpVersionRule()
         ]
         return {rule.get_id(): rule for rule in rules}
