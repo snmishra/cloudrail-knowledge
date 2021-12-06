@@ -8,6 +8,7 @@ from cloudrail.knowledge.context.gcp.resources_builders.scanner.compute_global_f
     ComputeGlobalForwardingRuleBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.compute_forwarding_rule_builder import ComputeForwardingRuleBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.compute_network_builder import ComputeNetworkBuilder
+from cloudrail.knowledge.context.gcp.resources_builders.scanner.compute_subnetwork_builder import ComputeSubNetworkBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.compute_target_http_proxy_builder import \
     ComputeTargetHttpProxyBuilder
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.compute_target_ssl_proxy_builder import ComputeTargetSslProxyBuilder
@@ -44,16 +45,17 @@ class GcpScannerContextBuilder(ScannerContextBuilder):
         context.sql_database_instances = SqlDatabaseInstanceBuilder(*builder_args).build()
         context.compute_instances = ComputeInstanceBuilder(*builder_args).build()
         context.compute_firewalls = ComputeFirewallBuilder(*builder_args).build()
-        context.compute_networks = ComputeNetworkBuilder(*builder_args).build()
+        context.compute_networks = AliasesDict(*ComputeNetworkBuilder(*builder_args).build())
+        context.compute_subnetworks = AliasesDict(*ComputeSubNetworkBuilder(*builder_args).build())
         context.projects = ProjectBuilder(*builder_args).build()
         context.container_cluster = ContainerClusterBuilder(*builder_args).build()
-        context.compute_target_http_proxy = ComputeTargetHttpProxyBuilder(*builder_args).build()
-        context.compute_target_ssl_proxy = ComputeTargetSslProxyBuilder(*builder_args).build()
-        context.compute_target_https_proxy = ComputeTargetHttpsProxyBuilder(*builder_args).build()
+        context.compute_target_http_proxy = AliasesDict(*ComputeTargetHttpProxyBuilder(*builder_args).build())
+        context.compute_target_ssl_proxy = AliasesDict(*ComputeTargetSslProxyBuilder(*builder_args).build())
+        context.compute_target_https_proxy = AliasesDict(*ComputeTargetHttpsProxyBuilder(*builder_args).build())
         context.compute_global_forwarding_rule = ComputeGlobalForwardingRuleBuilder(*builder_args).build()
-        context.compute_target_pools = ComputeTargetPoolBuilder(*builder_args).build()
-        context.compute_forwarding_rules = ComputeForwardingRuleBuilder(*builder_args).build()
-        context.compute_ssl_policy = ComputeSslPolicyBuilder(*builder_args).build()
+        context.compute_ssl_policy = AliasesDict(*ComputeSslPolicyBuilder(*builder_args).build())
         context.storage_buckets = AliasesDict(*StorageBucketBuilder(*builder_args).build())
         context.dns_managed_zones = GcpDnsManagedZoneBuilder(*builder_args).build()
+        context.compute_target_pools = ComputeTargetPoolBuilder(*builder_args).build()
+        context.compute_forwarding_rules = ComputeForwardingRuleBuilder(*builder_args).build()
         return context
