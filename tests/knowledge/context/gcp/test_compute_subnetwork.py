@@ -28,4 +28,4 @@ class TestComputeSubNetwork(GcpContextTest):
 
         network = next((network for network in ctx.compute_networks if subnetwork.network_identifier in [network.network_id, network.name, network.self_link]), None)
         self.assertIsNotNone(network)
-        self.assertTrue(subnetwork in network.subnetworks)
+        self.assertEqual(len(network.subnetworks), 1)
