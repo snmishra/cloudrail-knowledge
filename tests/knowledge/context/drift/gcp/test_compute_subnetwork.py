@@ -15,3 +15,10 @@ class TestComputeSubNetworkDrifts(BaseGcpDriftTest):
         change_subnetwork = next(change_subnetwork for change_subnetwork in results if change_subnetwork.resource_id == 'google_compute_subnetwork.subnet-logging3')
         self.assertEqual(change_subnetwork.resource_iac['ip_cidr_range'], '10.3.0.0/24')
         self.assertEqual(change_subnetwork.resource_live['ip_cidr_range'], '10.3.0.0/16')
+
+    @drift_test(module_path="change_flow_logs")
+    def test_change_cidr(self, results: List[Drift]):
+        self.assertEqual(len(results), 1)
+        change_subnetwork = next(change_subnetwork for change_subnetwork in results if change_subnetwork.resource_id == 'google_compute_subnetwork.subnet-logging3')
+        self.assertFalse(change_subnetwork.resource_iac['log_config']['enabled'])
+        self.assertTrue(change_subnetwork.resource_live['log_config']['enabled'])
