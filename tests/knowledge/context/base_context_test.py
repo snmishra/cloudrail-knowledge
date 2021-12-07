@@ -85,7 +85,7 @@ class BaseContextTest(unittest.TestCase):
             version_dir = 'cross_version'
         else:
             version_dir = version
-        return os.path.join(self.scenarios_dir, version_dir, self.get_component(), module_path)
+        return os.path.join(self.scenarios_dir, version_dir, module_path)
 
     # pylint: disable=consider-using-with
     def run_test_case(self, module_path: str, assert_func, base_scanner_data_for_iac: Optional[str], test_options: TestOptions):

@@ -16,7 +16,7 @@ class DataLakeStoreTier(Enum):
     COMMITMENT_100TB = 'Commitment_100TB'
     COMMITMENT_500TB = 'Commitment_500TB'
     COMMITMENT_1PB = 'Commitment_1PB'
-    COMMITMENT_50000AUHours = 'Commitment_5PB'
+    COMMITMENT_5PB = 'Commitment_5PB'
 
 
 class AzureDataLakeStore(AzureResource, IMonitorSettings):
