@@ -41,7 +41,7 @@ class AzureRelationsAssigner(DependencyInvocation):
                              (ctx.net_security_groups, ctx.subnet_network_security_group_association)),
             IterFunctionData(self._assign_network_security_group_to_network_interface, ctx.network_interfaces,
                              (ctx.net_security_groups, ctx.network_interface_network_security_group_association)),
-            IterFunctionData(self._assign_monitor_diagnostic_setting_to_key_vault, ctx.monitor_diagnostic_settings, ({**ctx.key_vaults, **ctx.data_lake_store},)),
+            IterFunctionData(self._assign_monitor_diagnostic_settings, ctx.monitor_diagnostic_settings, (AliasesDict(*ctx.key_vaults, *ctx.data_lake_store),)),
             IterFunctionData(self._assign_network_security_group_rule_to_network_security_group, ctx.network_security_group_rules, (ctx.net_security_groups,)),
             IterFunctionData(self._assign_application_security_group_to_ip_config, ctx.network_interfaces, (ctx.app_security_groups, ctx.network_interface_application_security_group_association)),
             ### App Service
@@ -116,8 +116,8 @@ class AzureRelationsAssigner(DependencyInvocation):
             mssql_server.extended_auditing_policy = ResourceInvalidator.get_by_logic(get_audit_policy, False)
 
     @staticmethod
-    def _assign_monitor_diagnostic_setting_to_key_vault(monitor_diagnostic_setting: AzureMonitorDiagnosticSetting,
-                                                        target_resources_map: AliasesDict[IMonitorSettings]):
+    def _assign_monitor_diagnostic_settings(monitor_diagnostic_setting: AzureMonitorDiagnosticSetting,
+                                            target_resources_map: AliasesDict[IMonitorSettings]):
         if target_resource := ResourceInvalidator.get_by_id(target_resources_map, monitor_diagnostic_setting.target_resource_id, False, case_sensitive=False):
             target_resource.get_monitor_settings().append(monitor_diagnostic_setting)
 

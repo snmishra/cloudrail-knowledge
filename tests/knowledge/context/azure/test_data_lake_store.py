@@ -20,11 +20,10 @@ class TestDataLakeStore(AzureContextTest):
         self.assertEqual(data_store.identity, 'SystemAssigned')
         self.assertEqual(data_store.firewall_allow_azure_ips, FieldActive.ENABLED)
         self.assertEqual(data_store.firewall_state, FieldActive.ENABLED)
-        self.assertEqual(data_store.tags, {"env": "testing"})
         self.assertEqual(len(data_store.monitor_diagnostic_settings), 1)
 
     @context(module_path="custom_settings")
-    def test_default_settings(self, ctx: AzureEnvironmentContext):
+    def test_custom_settings(self, ctx: AzureEnvironmentContext):
         data_store: AzureDataLakeStore = ctx.data_lake_store.get('cr3682datalakesto')
         self.assertIsNotNone(data_store)
         self.assertEqual(data_store.tier, DataLakeStoreTier.COMMITMENT_1TB)

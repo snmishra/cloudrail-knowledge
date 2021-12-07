@@ -13,7 +13,7 @@ class AliasesDict(Generic[_VT]):
 
     def __init__(self, *args: _VT):
         self._values = set(args)
-        self._dict = {alias: arg for arg in args for alias in arg.aliases}
+        self._dict = {alias.lower(): arg for arg in args for alias in arg.aliases}
 
     def update(self, *items: _VT) -> None:
         for item in items:

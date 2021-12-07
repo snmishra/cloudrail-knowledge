@@ -64,5 +64,6 @@ class BaseAzureScannerBuilder(BaseScannerBuilder):
         if resource.is_tagable:
             resource.tags = attributes.get('tags')
         if not resource.get_id() and (_id := attributes.get('id')):
+            _id = _id.lower()
             resource.set_id(_id)
             resource.with_aliases(_id)
