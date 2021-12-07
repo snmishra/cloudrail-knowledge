@@ -340,3 +340,17 @@ azurerm_cosmosdb_account:
           known_fields:
             pass:
               - type
+
+azurerm_data_lake_store:
+  known_fields:
+    pass:
+      - name
+      - tier
+      - encryption_state
+      - encryption_type
+      - identity:
+          known_fields:
+            pass:
+              - type
+      - firewall_allow_azure_ips
+      - firewall_state
