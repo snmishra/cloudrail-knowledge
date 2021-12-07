@@ -23,13 +23,13 @@ class ComputeSubNetworkBuilder(BaseGcpScannerBuilder):
     @staticmethod
     def build_log_config_block(attribute: dict) -> GcpComputeSubNetworkLogConfig:
         if log_config_block := attribute.get("logConfig"):
-            enable = log_config_block.get("enable", False)
+            enabled = log_config_block.get("enable", False)
             aggregation_interval = log_config_block.get("aggregationInterval")
             flow_sampling = log_config_block.get("flowSampling")
             metadata = log_config_block.get("metadata")
             metadata_fields = log_config_block.get("metadataFields")
             filter_expr = log_config_block.get("filterExpr")
 
-            return GcpComputeSubNetworkLogConfig(enable, aggregation_interval, flow_sampling, metadata, metadata_fields, filter_expr)
+            return GcpComputeSubNetworkLogConfig(enabled, aggregation_interval, flow_sampling, metadata, metadata_fields, filter_expr)
 
         return GcpComputeSubNetworkLogConfig(False, None, None, None, None, None)

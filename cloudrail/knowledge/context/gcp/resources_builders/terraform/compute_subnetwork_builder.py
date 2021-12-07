@@ -22,13 +22,14 @@ class ComputeSubNetworkBuilder(BaseGcpTerraformBuilder):
     def build_log_config_block(self, attribute: dict) -> GcpComputeSubNetworkLogConfig:
         if log_config_block := attribute.get("log_config"):
             log_config_block = log_config_block[0]
+            enabled = log_config_block.get("enable", False)
             aggregation_interval = self._get_known_value(log_config_block, "aggregation_interval")
             flow_sampling = self._get_known_value(log_config_block, "flow_sampling")
             metadata = self._get_known_value(log_config_block, "metadata")
             metadata_fields = self._get_known_value(log_config_block, "metadata_fields")
             filter_expr = self._get_known_value(log_config_block, "filter_expr")
 
-            return GcpComputeSubNetworkLogConfig(True, aggregation_interval, flow_sampling, metadata, metadata_fields, filter_expr)
+            return GcpComputeSubNetworkLogConfig(enabled, aggregation_interval, flow_sampling, metadata, metadata_fields, filter_expr)
 
         return GcpComputeSubNetworkLogConfig(False, None, None, None, None, None)
 

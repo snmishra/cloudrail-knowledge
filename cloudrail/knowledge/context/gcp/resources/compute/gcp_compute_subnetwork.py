@@ -10,7 +10,7 @@ from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
 class GcpComputeSubNetworkLogConfig:
     """
         Attributes:
-        enable: (Optional) true if flow logs is enable else false
+        enabled: Indication if the flow logs are enabled or not.
         aggregation_interval: (Optional) Toggles the aggregation interval for collecting flow logs.
         flow_sampling : (Optional) The value of the field must be in [0, 1]. Set the sampling rate of VPC flow logs within the subnetwork
                                    where 1.0 means all collected logs are reported and 0.0 means no logs are reported.
@@ -18,7 +18,7 @@ class GcpComputeSubNetworkLogConfig:
         metadata_fields: (Optional) List of metadata fields that should be added to reported logs.
         filter_expr : (Optional) Export filter used to define which VPC flow logs should be logged, as as CEL expression.
     """
-    enable: bool
+    enabled: bool
     aggregation_interval: str
     flow_sampling: int
     metadata: str
