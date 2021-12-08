@@ -3,7 +3,7 @@ from typing import List, Optional
 from enum import Enum
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
 from cloudrail.knowledge.context.gcp.resources.gcp_resource import GcpResource
-from cloudrail.knowledge.context.gcp.resources.iam.iam_access_policy import GcpIamPolicyBindings
+from cloudrail.knowledge.context.gcp.resources.storage.gcp_storage_bucket_iam_policy import GcpStorageBucketIamPolicy
 
 
 class GcpStorageBucketStorageClass(Enum):
@@ -39,7 +39,7 @@ class GcpStorageBucket(GcpResource):
         self.region: str = region
         self.logging_enable: bool = logging_enable
         self.with_aliases(name)
-        self.iam_policies: List[GcpIamPolicyBindings] = []
+        self.iam_policy: GcpStorageBucketIamPolicy = None
 
     def get_keys(self) -> List[str]:
         return [self.name]
@@ -75,5 +75,5 @@ class GcpStorageBucket(GcpResource):
             'region': self.region,
             'labels': self.labels,
             'logging_enable': self.logging_enable,
-            'iam_policies': self.iam_policies and [dataclasses.asdict(binding) for binding in self.iam_policies]
+            'iam_policy': self.iam_policy and [dataclasses.asdict(binding) for binding in self.iam_policy.bindings]
         }

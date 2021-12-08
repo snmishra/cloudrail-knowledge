@@ -1,4 +1,3 @@
-import copy
 from typing import List
 from cloudrail.knowledge.context.environment_context.common_component_builder import extract_name_from_gcp_link
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
@@ -26,7 +25,6 @@ class GcpRelationsAssigner(DependencyInvocation):
     def __init__(self, ctx: GcpEnvironmentContext = None):
         self.pseudo_builder = PseudoBuilder(ctx)
         self.pseudo_builder.create_default_firewalls()
-        self.pseudo_builder.create_default_storage_bucket_iam_policy()
 
         function_pool = [
             ### VPC network
@@ -125,21 +123,15 @@ class GcpRelationsAssigner(DependencyInvocation):
 
         network.subnetworks = ResourceInvalidator.get_by_logic(get_subnetworks, False)
 
-    @staticmethod
-    def _assign_iam_policies_to_bucket(storage_bucket: GcpStorageBucket, bucket_iam_policies: List[GcpStorageBucketIamPolicy]):
+    def _assign_iam_policies_to_bucket(self, storage_bucket: GcpStorageBucket, bucket_iam_policies: List[GcpStorageBucketIamPolicy]):
+        if any(policy.policy_type != GcpIamPolicyType.AUTHORITATIVE for policy in bucket_iam_policies
+               if policy.bucket_name == storage_bucket.name and not policy.is_default) or len(bucket_iam_policies) == 0:
+            default_policy = self.pseudo_builder.create_default_storage_bucket_iam_policy(storage_bucket.project_id)
+            bucket_iam_policies.append(default_policy)
+            bucket_iam_policies = IamActions.merge_iam_policies(bucket_iam_policies)
         def get_iam_policies():
-            iam_policies = []
-            iam_policies = [binding for policy in bucket_iam_policies for binding in policy.bindings
-                            if policy.bucket_name == storage_bucket.name and not policy.is_default]
-            if not iam_policies or any(policy.policy_type != GcpIamPolicyType.AUTHORITATIVE for policy in bucket_iam_policies
-                                       if policy.bucket_name == storage_bucket.name and not policy.is_default):
-                default_policy = next((policy for policy in bucket_iam_policies if policy.is_default), None)
-                default_policy_copy = copy.deepcopy(default_policy)
-                for binding in default_policy_copy.bindings:
-                    for member in binding.members:
-                        member.replace('dev-for-tests', storage_bucket.project_id)
-                iam_policies.extend(default_policy.bindings)
-            iam_policies = IamActions.merge_bindings(iam_policies)
-            return iam_policies
+            iam_policy = next((policy for policy in bucket_iam_policies
+                               if policy.bucket_name == storage_bucket.name), None)
+            return iam_policy
 
-        storage_bucket.iam_policies = ResourceInvalidator.get_by_logic(get_iam_policies, False)
+        storage_bucket.iam_policy = ResourceInvalidator.get_by_logic(get_iam_policies, False)

@@ -37,12 +37,14 @@ class PseudoBuilder:
                                                               for firewall in firewalls['value']]
         return firewalls_list
 
-    def create_default_storage_bucket_iam_policy(self):
-        if len(self.ctx.storage_bucket_iam_policies) > 0 \
-            and not any(policy.origin == EntityOrigin.LIVE_ENV for policy in self.ctx.storage_bucket_iam_policies):
-            current_path = os.path.dirname(os.path.abspath(__file__))
-            raw_data_policy = file_to_json(os.path.join(current_path, 'pseudo_docs', 'default_storage_bucket_iam_policies.json'))
-            policy: GcpStorageBucketIamPolicy = StorageBucketIamPolicyBuilder.do_build(StorageBucketIamPolicyBuilder, raw_data_policy['value'][0])
-            policy.is_default = True
-            policy.is_pseudo = True
-            self.ctx.storage_bucket_iam_policies.append(policy)
+    @staticmethod
+    def create_default_storage_bucket_iam_policy(project_id: str) -> GcpStorageBucketIamPolicy:
+        current_path = os.path.dirname(os.path.abspath(__file__))
+        raw_data_policy = file_to_json(os.path.join(current_path, 'pseudo_docs', 'default_storage_bucket_iam_policies.json'))
+        policy: GcpStorageBucketIamPolicy = StorageBucketIamPolicyBuilder.do_build(StorageBucketIamPolicyBuilder, raw_data_policy['value'][0])
+        policy.is_default = True
+        policy.is_pseudo = True
+        for binding in policy.bindings:
+            for member in binding.members:
+                member.replace('dev-for-tests', project_id)
+        return policy
