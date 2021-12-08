@@ -75,5 +75,5 @@ class GcpStorageBucket(GcpResource):
             'region': self.region,
             'labels': self.labels,
             'logging_enable': self.logging_enable,
-            'iam_policies': [dataclasses.asdict(binding) for binding in self.iam_policies]
+            'iam_policies': self.iam_policies and [dataclasses.asdict(binding) for binding in self.iam_policies]
         }
