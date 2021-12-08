@@ -20,6 +20,6 @@ class DataLakeStoreBuilder(BaseAzureScannerBuilder):
                                   tier=tier,
                                   encryption_state=encryption_state,
                                   encryption_type=encryption_type,
-                                  identity=attributes['identity']['type'],  # todo - use new identity resource from main
+                                  identity=attributes['identity']['type'],
                                   firewall_allow_azure_ips=firewall_allow_azure_ips,
                                   firewall_state=firewall_state)
