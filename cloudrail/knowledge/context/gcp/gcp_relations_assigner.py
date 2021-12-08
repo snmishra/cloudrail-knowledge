@@ -1,3 +1,4 @@
+import copy
 from typing import List
 from cloudrail.knowledge.context.environment_context.common_component_builder import extract_name_from_gcp_link
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
@@ -14,6 +15,10 @@ from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_global_forwar
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_ssl_policy import GcpComputeSslPolicy
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_subnetwork import GcpComputeSubNetwork
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_target_proxy import GcpComputeTargetProxy
+from cloudrail.knowledge.context.gcp.resources.iam.iam_access_policy import GcpIamPolicyType
+from cloudrail.knowledge.context.gcp.resources.storage.gcp_storage_bucket import GcpStorageBucket
+from cloudrail.knowledge.context.gcp.resources.storage.gcp_storage_bucket_iam_policy import GcpStorageBucketIamPolicy
+from cloudrail.knowledge.context.gcp.gcp_iam_actions import IamActions
 
 
 class GcpRelationsAssigner(DependencyInvocation):
@@ -21,6 +26,7 @@ class GcpRelationsAssigner(DependencyInvocation):
     def __init__(self, ctx: GcpEnvironmentContext = None):
         self.pseudo_builder = PseudoBuilder(ctx)
         self.pseudo_builder.create_default_firewalls()
+        self.pseudo_builder.create_default_storage_bucket_iam_policy()
 
         function_pool = [
             ### VPC network
@@ -36,6 +42,8 @@ class GcpRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_ssl_policy, ctx.compute_target_https_proxy, (ctx.compute_ssl_policy,)),
             IterFunctionData(self._assign_target_proxy, ctx.compute_global_forwarding_rule, (ctx.get_all_targets_proxy(),)),
             IterFunctionData(self._assign_subnetwork, ctx.compute_networks, (ctx.compute_subnetworks,)),
+            ### Storage Bucket
+            IterFunctionData(self._assign_iam_policies_to_bucket, ctx.storage_buckets, (ctx.storage_bucket_iam_policies,)),
         ]
 
         super().__init__(function_pool, context=ctx)
@@ -116,3 +124,22 @@ class GcpRelationsAssigner(DependencyInvocation):
             return subnetworks_list
 
         network.subnetworks = ResourceInvalidator.get_by_logic(get_subnetworks, False)
+
+    @staticmethod
+    def _assign_iam_policies_to_bucket(storage_bucket: GcpStorageBucket, bucket_iam_policies: List[GcpStorageBucketIamPolicy]):
+        def get_iam_policies():
+            iam_policies = []
+            iam_policies = [binding for policy in bucket_iam_policies for binding in policy.bindings
+                            if policy.bucket_name == storage_bucket.name and not policy.is_default]
+            if not iam_policies or any(policy.policy_type != GcpIamPolicyType.AUTHORITATIVE for policy in bucket_iam_policies
+                                       if policy.bucket_name == storage_bucket.name and not policy.is_default):
+                default_policy = next((policy for policy in bucket_iam_policies if policy.is_default), None)
+                default_policy_copy = copy.deepcopy(default_policy)
+                for binding in default_policy_copy.bindings:
+                    for member in binding.members:
+                        member.replace('dev-for-tests', storage_bucket.project_id)
+                iam_policies.extend(default_policy.bindings)
+            iam_policies = IamActions.merge_bindings(iam_policies)
+            return iam_policies
+
+        storage_bucket.iam_policies = ResourceInvalidator.get_by_logic(get_iam_policies, False)

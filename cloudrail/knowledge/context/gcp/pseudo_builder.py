@@ -4,6 +4,8 @@ from typing import List, Optional
 from cloudrail.knowledge.context.gcp.gcp_environment_context import GcpEnvironmentContext
 from cloudrail.knowledge.context.gcp.resources_builders.scanner.compute_firewall_builder import ComputeFirewallBuilder
 from cloudrail.knowledge.context.gcp.resources.compute.gcp_compute_firewall import GcpComputeFirewall
+from cloudrail.knowledge.context.gcp.resources.storage.gcp_storage_bucket_iam_policy import GcpStorageBucketIamPolicy
+from cloudrail.knowledge.context.gcp.resources_builders.scanner.iam_policy_builder import StorageBucketIamPolicyBuilder
 from cloudrail.knowledge.context.mergeable import EntityOrigin
 from cloudrail.knowledge.utils.file_utils import file_to_json
 
@@ -34,3 +36,13 @@ class PseudoBuilder:
         firewalls_list: Optional[List[GcpComputeFirewall]] = [ComputeFirewallBuilder.do_build(ComputeFirewallBuilder, firewall)
                                                               for firewall in firewalls['value']]
         return firewalls_list
+
+    def create_default_storage_bucket_iam_policy(self):
+        if len(self.ctx.storage_bucket_iam_policies) > 0 \
+            and not any(policy.origin == EntityOrigin.LIVE_ENV for policy in self.ctx.storage_bucket_iam_policies):
+            current_path = os.path.dirname(os.path.abspath(__file__))
+            raw_data_policy = file_to_json(os.path.join(current_path, 'pseudo_docs', 'default_storage_bucket_iam_policies.json'))
+            policy: GcpStorageBucketIamPolicy = StorageBucketIamPolicyBuilder.do_build(StorageBucketIamPolicyBuilder, raw_data_policy['value'][0])
+            policy.is_default = True
+            policy.is_pseudo = True
+            self.ctx.storage_bucket_iam_policies.append(policy)
