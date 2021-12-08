@@ -34,6 +34,8 @@ from cloudrail.knowledge.rules.azure.non_context_aware.web_app_using_latest_vers
 from cloudrail.knowledge.rules.azure.non_context_aware.web_app_use_http_version_rule import FunctionAppUseLatestHttpVersionRule, \
     AppServiceUseLatestHttpVersionRule
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_use_latest_tls_version_rule import FunctionAppUseLatestTlsVersionRule
+from cloudrail.knowledge.rules.azure.non_context_aware.abstract_web_app_using_managed_identity_rule import \
+    FunctionAppUseManagedIdentityRule, AppServiceUseManagedIdentityRule
 from cloudrail.knowledge.rules.azure.non_context_aware.key_vault_purge_protection_enabled_rule import KeyVaultPurgeProtectionEnabledRule
 from cloudrail.knowledge.rules.azure.non_context_aware.kubernetes_cluster_rbac_enabled_rule import KubernetesClusterRbacEnabledRule
 from cloudrail.knowledge.rules.azure.non_context_aware.my_sql_server_enforcing_ssl_rule import MySqlServerEnforcingSslRule
@@ -94,6 +96,8 @@ class AzureRulesLoader(AbstractRulesLoader):
             FunctionAppEnforcesFtpsOnlyRule(),
             AppServiceClientCertificatesRequiredRule(),
             FunctionAppUsingLatestJavaVersionRule(),
+            FunctionAppUseManagedIdentityRule(),
+            AppServiceUseManagedIdentityRule(),
             FunctionAppUsingLatestPythonVersionRule(),
             AppServiceUsingLatestPythonVersionRule(),
             AppServiceUsingLatestJavaVersionRule(),
