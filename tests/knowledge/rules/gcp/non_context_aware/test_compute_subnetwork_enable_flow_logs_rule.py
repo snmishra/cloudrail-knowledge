@@ -26,7 +26,7 @@ class TestComputeSubNetworkEnableFlowLogsRule(TestCase):
         for i in range(2):
             compute_subnetwork = create_empty_entity(GcpComputeSubNetwork)
             compute_subnetwork.log_config = create_empty_entity(GcpComputeSubNetworkLogConfig)
-            compute_subnetwork.log_config.enable = log_config_enable[i]
+            compute_subnetwork.log_config.enabled = log_config_enable[i]
             compute_subnetworks.update(compute_subnetwork)
 
         context = GcpEnvironmentContext(compute_subnetworks=compute_subnetworks)
