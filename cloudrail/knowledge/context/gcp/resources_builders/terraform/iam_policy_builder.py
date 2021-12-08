@@ -1,7 +1,7 @@
 import json
 from typing import Callable, List, Optional
 from cloudrail.knowledge.context.gcp.resources.storage.gcp_storage_bucket_iam_policy import GcpStorageBucketIamPolicy
-from cloudrail.knowledge.context.gcp.resources.iam.iam_access_policy import GcpIamPolicyCondition, GcpIamPolicyType, IamAccessPolicy, GcpIamPolicyBindings
+from cloudrail.knowledge.context.gcp.resources.iam.iam_access_policy import GcpIamPolicyCondition, GcpIamPolicyType, IamAccessPolicy, GcpIamPolicyBinding
 from cloudrail.knowledge.exceptions import UnknownResultOfTerraformApply
 from cloudrail.knowledge.utils.utils import flat_list, is_iterable_with_values
 from cloudrail.knowledge.context.gcp.resources.constants.gcp_resource_type import GcpResourceType
@@ -10,12 +10,12 @@ from cloudrail.knowledge.context.gcp.resources_builders.terraform.base_gcp_terra
 class IamPolicyBuilder:
 
     def build_iam_policy(self, attributes: dict, resource_name: str, policy_type: GcpIamPolicyType, get_known_value_func: Callable) -> IamAccessPolicy:
-        bindings: List[GcpIamPolicyBindings] = []
+        bindings: List[GcpIamPolicyBinding] = []
         if policy_type == GcpIamPolicyType.AUTHORITATIVE:
             bindings_data = json.loads(attributes['policy_data'])['bindings']
             for binding in bindings_data:
                 condition = self._get_condition_data(binding, get_known_value_func)
-                bindings.append(GcpIamPolicyBindings(members=binding['members'],
+                bindings.append(GcpIamPolicyBinding(members=binding['members'],
                                                      role=binding['role'],
                                                      condition=condition))
         else:
@@ -23,7 +23,7 @@ class IamPolicyBuilder:
             raw_members = get_known_value_func(attributes, 'members')
             members = raw_member if is_iterable_with_values(raw_member) else raw_members
             condition = self._get_condition_data(attributes, get_known_value_func)
-            bindings = [GcpIamPolicyBindings(members=members,
+            bindings = [GcpIamPolicyBinding(members=members,
                                              role=attributes['role'],
                                              condition=condition)]
         return IamAccessPolicy(resource_name=resource_name,

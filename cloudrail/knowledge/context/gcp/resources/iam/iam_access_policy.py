@@ -32,7 +32,7 @@ class GcpIamPolicyCondition:
 
 
 @dataclass
-class GcpIamPolicyBindings:
+class GcpIamPolicyBinding:
     """
     Attributes:
         members: The list of identities which will be granted the privileges set in the role.
@@ -55,11 +55,11 @@ class IamAccessPolicy(GcpResource):
 
     def __init__(self,
                  resource_name: str,
-                 bindings: List[GcpIamPolicyBindings],
+                 bindings: List[GcpIamPolicyBinding],
                  policy_type: GcpIamPolicyType = GcpIamPolicyType.AUTHORITATIVE) -> None:
         super().__init__(GcpResourceType.NONE)
         self.resource_name: str = resource_name
-        self.bindings: List[GcpIamPolicyBindings] = bindings
+        self.bindings: List[GcpIamPolicyBinding] = bindings
         self.policy_type: GcpIamPolicyType = policy_type
 
     @abstractmethod

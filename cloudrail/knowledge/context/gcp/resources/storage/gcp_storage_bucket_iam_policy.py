@@ -1,5 +1,5 @@
 from typing import List, Optional
-from cloudrail.knowledge.context.gcp.resources.iam.iam_access_policy import GcpIamPolicyType, IamAccessPolicy, GcpIamPolicyBindings
+from cloudrail.knowledge.context.gcp.resources.iam.iam_access_policy import GcpIamPolicyType, IamAccessPolicy, GcpIamPolicyBinding
 
 
 class GcpStorageBucketIamPolicy(IamAccessPolicy):
@@ -11,12 +11,12 @@ class GcpStorageBucketIamPolicy(IamAccessPolicy):
 
     def __init__(self,
                  bucket_name: str,
-                 bindings: List[GcpIamPolicyBindings],
+                 bindings: List[GcpIamPolicyBinding],
                  policy_type: GcpIamPolicyType = GcpIamPolicyType.AUTHORITATIVE):
 
         super().__init__(bucket_name, bindings)
         self.bucket_name: str = bucket_name
-        self.bindings: List[GcpIamPolicyBindings] = bindings
+        self.bindings: List[GcpIamPolicyBinding] = bindings
         self.policy_type: GcpIamPolicyType = policy_type
         self.is_default: bool = False
 
