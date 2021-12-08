@@ -13,13 +13,15 @@ class AliasesDict(Generic[_VT]):
 
     def __init__(self, *args: _VT):
         self._values = set(args)
-        self._dict = {alias: arg for arg in args for alias in arg.aliases}
-        self._dict.update({alias.lower(): arg for arg in args for alias in arg.aliases})
+        self._dict = {}
+        self.update(*args)
 
     def update(self, *items: _VT) -> None:
         for item in items:
             self._values.add(item)
-            self._dict.update({alias: item for alias in item.aliases})
+            for arg in self._values:
+                for alias in arg.aliases:
+                    self._dict.update([(alias, arg), (alias.lower(), arg)])
 
     def pop(self, alias: str, default=__marker) -> Optional[_VT]:
         try:
