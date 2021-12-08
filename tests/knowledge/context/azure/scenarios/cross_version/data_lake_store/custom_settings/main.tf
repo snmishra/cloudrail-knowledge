@@ -22,7 +22,6 @@ resource "azurerm_data_lake_store" "datalake-store" {
   location                 = azurerm_resource_group.example.location
   tier                     = "Commitment_1TB"
   encryption_state         = "Disabled"
-  encryption_type          = "ServiceManaged"
   firewall_allow_azure_ips = "Disabled"
   firewall_state           = "Disabled"
 
