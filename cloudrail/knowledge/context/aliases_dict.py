@@ -21,7 +21,8 @@ class AliasesDict(Generic[_VT]):
             self._values.add(item)
             for arg in self._values:
                 for alias in arg.aliases:
-                    self._dict.update([(alias, arg), (alias.lower(), arg)])
+                    # self._dict.update([(alias, arg), (alias.lower(), arg)])
+                    self._dict.update({alias: arg})
 
     def pop(self, alias: str, default=__marker) -> Optional[_VT]:
         try:
