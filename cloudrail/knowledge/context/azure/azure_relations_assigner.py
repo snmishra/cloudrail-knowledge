@@ -41,7 +41,7 @@ class AzureRelationsAssigner(DependencyInvocation):
                              (ctx.net_security_groups, ctx.subnet_network_security_group_association)),
             IterFunctionData(self._assign_network_security_group_to_network_interface, ctx.network_interfaces,
                              (ctx.net_security_groups, ctx.network_interface_network_security_group_association)),
-            IterFunctionData(self._assign_monitor_diagnostic_settings, ctx.monitor_diagnostic_settings, (AliasesDict(*ctx.key_vaults, *ctx.data_lake_store),)),
+            IterFunctionData(self._assign_monitor_diagnostic_settings, ctx.monitor_diagnostic_settings, (AliasesDict(*ctx.get_all_monitored_resources()), )),
             IterFunctionData(self._assign_network_security_group_rule_to_network_security_group, ctx.network_security_group_rules, (ctx.net_security_groups,)),
             IterFunctionData(self._assign_application_security_group_to_ip_config, ctx.network_interfaces, (ctx.app_security_groups, ctx.network_interface_application_security_group_association)),
             ### App Service

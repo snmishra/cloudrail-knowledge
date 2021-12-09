@@ -1,9 +1,12 @@
+import functools
+
 from cloudrail.knowledge.context.azure.resources.databases.azure_cosmos_db_account import AzureCosmosDBAccount
+from cloudrail.knowledge.context.azure.resources.i_monitor_settings import IMonitorSettings
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface_security_group_association import \
     AzureNetworkInterfaceSecurityGroupAssociation
 from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_store import AzureDataLakeStore
 from cloudrail.knowledge.context.azure.resources.vmss.azure_virtual_machine_scale_set import AzureVirtualMachineScaleSet
-from typing import Dict, List
+from typing import Dict, List, Set, Callable
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.resources.disk.azure_managed_disk import AzureManagedDisk
@@ -35,7 +38,7 @@ from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
 from cloudrail.knowledge.context.azure.resources.webapp.web_app_stack import WebAppStack
-from cloudrail.knowledge.context.base_environment_context import (BaseEnvironmentContext, CheckovResult)
+from cloudrail.knowledge.context.base_environment_context import (BaseEnvironmentContext, CheckovResult, _TMergeAble)
 
 
 class AzureEnvironmentContext(BaseEnvironmentContext):
@@ -113,3 +116,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.virtual_machines_scale_sets: AliasesDict[AzureVirtualMachineScaleSet] = virtual_machines_scale_sets or AliasesDict()
         self.cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = cosmos_db_account or AliasesDict()
         self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
+
+    @functools.lru_cache(maxsize=None)
+    def get_all_monitored_resources(self) -> Set[_TMergeAble]:
+        condition: Callable = lambda aws_resource: isinstance(aws_resource, IMonitorSettings)
+        return self.get_all_mergeable_resources(condition)
