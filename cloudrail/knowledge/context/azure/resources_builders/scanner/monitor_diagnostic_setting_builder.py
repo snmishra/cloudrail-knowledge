@@ -7,7 +7,7 @@ from cloudrail.knowledge.context.azure.resources_builders.scanner.base_azure_sca
 class MonitorDiagnosticSettingBuilder(BaseAzureScannerBuilder):
 
     def get_file_name(self) -> str:
-        return 'key-vault-diagnostic-settings.json'
+        return '*-diagnostic-settings.json'
 
     def do_build(self, attributes: dict) -> AzureMonitorDiagnosticSetting:
         # The target resource id is the partial id of the monitoring diagnostic settings, as it is tightly coupled to the target

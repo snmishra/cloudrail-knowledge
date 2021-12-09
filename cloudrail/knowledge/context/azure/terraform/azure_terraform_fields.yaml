@@ -60,6 +60,11 @@ azurerm_app_service:
           known_fields:
             pass:
               - enabled
+      - identity:
+          known_fields:
+            pass:
+              - type
+              - identity_ids
 
 azurerm_function_app:
   known_fields:
@@ -82,6 +87,11 @@ azurerm_function_app:
       - storage_account_name
       - storage_account_access_key
       - client_cert_mode
+      - identity:
+          known_fields:
+            pass:
+              - type
+              - identity_ids
 
 azurerm_network_security_group:
   known_fields:
@@ -374,3 +384,17 @@ azurerm_cosmosdb_account:
           known_fields:
             pass:
               - type
+
+azurerm_data_lake_store:
+  known_fields:
+    pass:
+      - name
+      - tier
+      - encryption_state
+      - encryption_type
+      - identity:
+          known_fields:
+            pass:
+              - type
+      - firewall_allow_azure_ips
+      - firewall_state

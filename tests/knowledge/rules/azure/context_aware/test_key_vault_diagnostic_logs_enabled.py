@@ -42,7 +42,9 @@ class TestKeyVaultDiagnosticLogsEnabled(unittest.TestCase):
         # Arrange
         key_vault: AzureKeyVault = create_empty_entity(AzureKeyVault)
         key_vault.name = 'tmp-name'
-        key_vault.monitor_diagnostic_settings = monitor_diagnostic_settings
+        key_vault.set_id('keyvault_id')
+        key_vault.with_aliases(key_vault.get_id())
+        key_vault.monitor_diagnostic_settings = [monitor_diagnostic_settings] if monitor_diagnostic_settings else []
 
         context = AzureEnvironmentContext(key_vaults=AliasesDict(key_vault))
         # Act

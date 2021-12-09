@@ -1,9 +1,13 @@
+import functools
+
 from cloudrail.knowledge.context.azure.resources.databases.azure_cosmos_db_account import AzureCosmosDBAccount
 from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
+from cloudrail.knowledge.context.azure.resources.i_monitor_settings import IMonitorSettings
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface_security_group_association import \
     AzureNetworkInterfaceSecurityGroupAssociation
+from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_store import AzureDataLakeStore
 from cloudrail.knowledge.context.azure.resources.vmss.azure_virtual_machine_scale_set import AzureVirtualMachineScaleSet
-from typing import Dict, List
+from typing import Dict, List, Set, Callable
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.resources.disk.azure_managed_disk import AzureManagedDisk
@@ -74,7 +78,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  app_security_groups: AliasesDict[AzureApplicationSecurityGroup] = None,
                  nic_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = None,
                  virtual_machines_scale_sets: AliasesDict[AzureVirtualMachineScaleSet] = None,
-                 cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = None
+                 cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = None,
+                 data_lake_store: AliasesDict[AzureDataLakeStore] = None
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -113,3 +118,9 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
             nic_application_security_group_association or AliasesDict()
         self.virtual_machines_scale_sets: AliasesDict[AzureVirtualMachineScaleSet] = virtual_machines_scale_sets or AliasesDict()
         self.cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = cosmos_db_account or AliasesDict()
+        self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
+
+    @functools.lru_cache(maxsize=None)
+    def get_all_monitored_resources(self) -> Set[IMonitorSettings]:
+        condition: Callable = lambda aws_resource: isinstance(aws_resource, IMonitorSettings)
+        return self.get_all_mergeable_resources(condition)

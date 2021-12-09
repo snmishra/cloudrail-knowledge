@@ -4,6 +4,7 @@ from typing import Optional
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
+from cloudrail.knowledge.context.azure.resources_builders.scanner.data_lake_store_builder import DataLakeStoreBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.keyvault_builder import KeyVaultBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.kubernetes_cluster_builder import KubernetesClusterBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.managed_disk_builder import ManagedDiskBuilder
@@ -82,4 +83,5 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
         context.subnet_network_security_group_association = SecurityGroupToSubnetAssociationBuilder(*builder_args).build()
         context.network_interface_network_security_group_association = AzureNetworkInterfaceSecurityGroupAssociationBuilder(*builder_args).build()
         context.cosmos_db_account = AliasesDict(*CosmosDBAccountBuilder(*builder_args).build())
+        context.data_lake_store = AliasesDict(*DataLakeStoreBuilder(*builder_args).build())
         return context
