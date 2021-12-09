@@ -56,7 +56,8 @@ class AzureDataLakeAnalyticsAccount(AzureResource, IMonitorSettings):
         return {
             'tags': self.tags,
             'tier': self.tier,
-            'default_store_account_name': self.default_store_account_name
+            'default_store_account_name': self.default_store_account_name,
+            'monitor_diagnostic_settings': [settings.to_drift_detection_object() for settings in self.monitor_diagnostic_settings]
         }
 
     def get_monitor_settings(self) -> List[AzureMonitorDiagnosticSetting]:
