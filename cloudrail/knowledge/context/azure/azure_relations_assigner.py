@@ -1,5 +1,6 @@
 from typing import List
 
+from cloudrail.knowledge.context.azure.resources.i_monitor_settings import IMonitorSettings
 from cloudrail.knowledge.context.azure.resources.network.azure_application_security_group import AzureApplicationSecurityGroup
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface_application_security_group_association import \
     AzureNetworkInterfaceApplicationSecurityGroupAssociation
@@ -11,7 +12,6 @@ from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account_n
 from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
 from cloudrail.knowledge.context.azure.resources.databases.azure_sql_server import AzureSqlServer
 from cloudrail.knowledge.context.azure.resources.vm.azure_virtual_machine import AzureVirtualMachine
-from cloudrail.knowledge.context.azure.resources.keyvault.azure_key_vault import AzureKeyVault
 from cloudrail.knowledge.context.azure.resources.keyvault.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import AzureAppService
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_config import AzureAppServiceConfig
@@ -41,7 +41,7 @@ class AzureRelationsAssigner(DependencyInvocation):
                              (ctx.net_security_groups, ctx.subnet_network_security_group_association)),
             IterFunctionData(self._assign_network_security_group_to_network_interface, ctx.network_interfaces,
                              (ctx.net_security_groups, ctx.network_interface_network_security_group_association)),
-            IterFunctionData(self._assign_monitor_diagnostic_setting_to_key_vault, ctx.monitor_diagnostic_settings, (ctx.key_vaults,)),
+            IterFunctionData(self._assign_monitor_diagnostic_settings, ctx.monitor_diagnostic_settings, (AliasesDict(*ctx.get_all_monitored_resources()), )),
             IterFunctionData(self._assign_network_security_group_rule_to_network_security_group, ctx.network_security_group_rules, (ctx.net_security_groups,)),
             IterFunctionData(self._assign_application_security_group_to_ip_config, ctx.network_interfaces, (ctx.app_security_groups, ctx.network_interface_application_security_group_association)),
             ### App Service
@@ -116,10 +116,10 @@ class AzureRelationsAssigner(DependencyInvocation):
             mssql_server.extended_auditing_policy = ResourceInvalidator.get_by_logic(get_audit_policy, False)
 
     @staticmethod
-    def _assign_monitor_diagnostic_setting_to_key_vault(monitor_diagnostic_setting: AzureMonitorDiagnosticSetting,
-                                                        key_vaults: AliasesDict[AzureKeyVault]):
-        if key_vault := ResourceInvalidator.get_by_id(key_vaults, monitor_diagnostic_setting.target_resource_id, False, case_sensitive=False):
-            key_vault.monitor_diagnostic_settings = monitor_diagnostic_setting
+    def _assign_monitor_diagnostic_settings(monitor_diagnostic_setting: AzureMonitorDiagnosticSetting,
+                                            target_resources_map: AliasesDict[IMonitorSettings]):
+        if target_resource := ResourceInvalidator.get_by_id(target_resources_map, monitor_diagnostic_setting.target_resource_id, False, case_sensitive=False):
+            target_resource.get_monitor_settings().append(monitor_diagnostic_setting)
 
     @staticmethod
     def _assign_network_interface_to_virtual_machine(virtual_machine: AzureVirtualMachine, network_interfaces: AliasesDict[AzureNetworkInterface]):
