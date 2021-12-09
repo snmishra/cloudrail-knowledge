@@ -1,4 +1,4 @@
-from cloudrail.knowledge.context.azure.resources.data_lake_analytics.azure_data_lake_analytics_account import AzureDataLakeAnalyticsAccount, DataLakeAnalyticsAccountTier
+from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_analytics_account import AzureDataLakeAnalyticsAccount, DataLakeAnalyticsAccountTier
 from cloudrail.knowledge.context.azure.resources_builders.scanner.base_azure_scanner_builder import BaseAzureScannerBuilder
 
 class DataLakeAnalyticsAccountBuilder(BaseAzureScannerBuilder):

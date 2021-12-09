@@ -1,5 +1,5 @@
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
-from cloudrail.knowledge.context.azure.resources.data_lake_analytics.azure_data_lake_analytics_account import DataLakeAnalyticsAccountTier
+from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_analytics_account import DataLakeAnalyticsAccountTier
 
 from tests.knowledge.context.azure_context_test import AzureContextTest
 from tests.knowledge.context.test_context_annotation import context
@@ -17,3 +17,5 @@ class TestDataLakeAnalyticsAccount(AzureContextTest):
         self.assertIsNotNone(data_lake_analytics_account)
         self.assertEqual(data_lake_analytics_account.default_store_account_name, 'cr3682datalakest')
         self.assertEqual(data_lake_analytics_account.tier, DataLakeAnalyticsAccountTier.CONSUMPTION)
+        self.assertEqual(len(data_lake_analytics_account.monitor_diagnostic_settings), 1)
+        self.assertEqual(data_lake_analytics_account.monitor_diagnostic_settings[0].name, 'cr3682diag')

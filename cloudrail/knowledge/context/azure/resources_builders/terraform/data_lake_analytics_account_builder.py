@@ -1,4 +1,4 @@
-from cloudrail.knowledge.context.azure.resources.data_lake_analytics.azure_data_lake_analytics_account import AzureDataLakeAnalyticsAccount, DataLakeAnalyticsAccountTier
+from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_analytics_account import AzureDataLakeAnalyticsAccount, DataLakeAnalyticsAccountTier
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 
 from cloudrail.knowledge.context.azure.resources_builders.terraform.azure_terraform_builder import AzureTerraformBuilder

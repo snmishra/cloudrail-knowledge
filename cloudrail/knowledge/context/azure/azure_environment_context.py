@@ -4,7 +4,7 @@ from typing import Callable, Dict, List, Set
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.resources.aks.azure_kubernetes_cluster import AzureKubernetesCluster
 from cloudrail.knowledge.context.azure.resources.azure_resource_group import AzureResourceGroup
-from cloudrail.knowledge.context.azure.resources.data_lake_analytics.azure_data_lake_analytics_account import AzureDataLakeAnalyticsAccount
+from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_analytics_account import AzureDataLakeAnalyticsAccount
 from cloudrail.knowledge.context.azure.resources.databases.azure_cosmos_db_account import AzureCosmosDBAccount
 from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
 from cloudrail.knowledge.context.azure.resources.databases.azure_mysql_server import AzureMySqlServer
@@ -13,7 +13,7 @@ from cloudrail.knowledge.context.azure.resources.databases.azure_sql_server impo
 from cloudrail.knowledge.context.azure.resources.disk.azure_managed_disk import AzureManagedDisk
 from cloudrail.knowledge.context.azure.resources.i_monitor_settings import IMonitorSettings
 from cloudrail.knowledge.context.azure.resources.keyvault.azure_key_vault import AzureKeyVault
-from cloudrail.knowledge.context.azure.resources.keyvault.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
+from cloudrail.knowledge.context.azure.resources.monitor.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
 from cloudrail.knowledge.context.azure.resources.network.azure_application_security_group import AzureApplicationSecurityGroup
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface import AzureNetworkInterface
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface_application_security_group_association import \

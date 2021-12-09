@@ -2,8 +2,8 @@ from typing import Optional, List
 from enum import Enum
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
-from cloudrail.knowledge.context.azure.resources.keyvault.azure_monitor_diagnostic_setting import \
-    AzureMonitorDiagnosticSetting
+from cloudrail.knowledge.context.azure.resources.i_monitor_settings import IMonitorSettings
+from cloudrail.knowledge.context.azure.resources.monitor.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
 
 
 class DataLakeAnalyticsAccountTier(str, Enum):
@@ -18,7 +18,7 @@ class DataLakeAnalyticsAccountTier(str, Enum):
     COMMITMENT500AUHOURS = 'Commitment_500AUHours'
 
 
-class AzureDataLakeAnalyticsAccount(AzureResource):
+class AzureDataLakeAnalyticsAccount(AzureResource, IMonitorSettings):
     """
         Attributes:
             name: The name of the Data Lake Analytics Account.
@@ -58,3 +58,6 @@ class AzureDataLakeAnalyticsAccount(AzureResource):
             'tier': self.tier,
             'default_store_account_name': self.default_store_account_name
         }
+
+    def get_monitor_settings(self) -> List[AzureMonitorDiagnosticSetting]:
+        return self.monitor_diagnostic_settings
