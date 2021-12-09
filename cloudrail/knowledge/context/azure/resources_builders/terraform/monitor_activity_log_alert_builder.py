@@ -27,19 +27,21 @@ class MonitorActivityLogAlertBuilder(AzureTerraformBuilder):
     def build_criteria(self, attributes: dict) -> MonitorActivityLogAlertCriteria:
         criteria_dict = attributes['criteria'][0]
         category = self.assignee_enum(MonitorActivityLogAlertCriteriaCategory, criteria_dict['category'])
-        operation_name = criteria_dict.get('operation_name')
-        resource_provider = criteria_dict.get('resource_provider')
-        resource_type = criteria_dict.get('resource_type')
-        resource_group = criteria_dict.get('resource_group')
+        operation_name = self._get_known_value(criteria_dict, 'operation_name')
+        resource_provider = self._get_known_value(criteria_dict, 'resource_provider')
+        resource_type = self._get_known_value(criteria_dict, 'resource_type')
+        resource_group = self._get_known_value(criteria_dict, 'resource_group')
         resource_id = criteria_dict.get('resource_id')
-        caller = criteria_dict.get('caller')
-        level = self.assignee_enum(MonitorActivityLogAlertCriteriaLevel, criteria_dict.get('level')) if criteria_dict.get('level') else None
-        status = self.assignee_enum(MonitorActivityLogAlertCriteriaStatus, criteria_dict.get('status')) if criteria_dict.get('status') else None
-        sub_status = criteria_dict.get('sub_status')
-        recommendation_type = criteria_dict.get('recommendation_type')
-        rec_category_value = criteria_dict.get('recommendation_category')
+        caller = self._get_known_value(criteria_dict, 'caller')
+        level_value = self._get_known_value(criteria_dict, 'level')
+        level = self.assignee_enum(MonitorActivityLogAlertCriteriaLevel, level_value) if level_value else None
+        status_value = self._get_known_value(criteria_dict, 'status')
+        status = self.assignee_enum(MonitorActivityLogAlertCriteriaStatus, status_value) if status_value else None
+        sub_status = self._get_known_value(criteria_dict, 'sub_status')
+        recommendation_type = self._get_known_value(criteria_dict, 'recommendation_type')
+        rec_category_value = self._get_known_value(criteria_dict, 'recommendation_category')
         recommendation_category = self.assignee_enum(MonitorActivityLogAlertCriteriaRecommendationCategory, rec_category_value) if rec_category_value else None
-        rec_impact_value = criteria_dict.get('recommendation_impact')
+        rec_impact_value = self._get_known_value(criteria_dict, 'recommendation_impact')
         recommendation_impact = self.assignee_enum(MonitorActivityLogAlertCriteriaRecommendationImpact, rec_impact_value) if rec_impact_value else None
         service_health = self.build_service_health(criteria_dict)
 
@@ -51,19 +53,18 @@ class MonitorActivityLogAlertBuilder(AzureTerraformBuilder):
             service_health_dict = service_health_block[0]
             events = [MonitorActivityLogAlertCriteriaServiceHealthEvents(value) for key, values in service_health_dict.items() for value in values
                       if key == 'events' and is_valid_enum_value(MonitorActivityLogAlertCriteriaServiceHealthEvents, value)]
-            locations = service_health_dict.get('locations')
-            services = service_health_dict.get('services')
+            locations = self._get_known_value(service_health_dict, 'locations')
+            services = self._get_known_value(service_health_dict, 'services')
 
             return MonitorActivityLogAlertCriteriaServiceHealth(events, locations, services)
 
         return None
 
-    @staticmethod
-    def build_action(attributes: dict) -> Optional[MonitorActivityLogAlertAction]:
-        if action_block := attributes.get('action'):
+    def build_action(self, attributes: dict) -> Optional[MonitorActivityLogAlertAction]:
+        if action_block := self._get_known_value(attributes, 'action'):
             action_dict = action_block[0]
             action_group_id = action_dict.get('action_group_id')
-            webhook_properties = action_dict.get('webhook_properties')
+            webhook_properties = self._get_known_value(action_dict, 'webhook_properties')
             return MonitorActivityLogAlertAction(action_group_id, webhook_properties)
 
         return None

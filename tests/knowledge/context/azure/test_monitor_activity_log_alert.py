@@ -2,7 +2,7 @@ from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnv
 from cloudrail.knowledge.context.mergeable import EntityOrigin
 
 from tests.knowledge.context.azure_context_test import AzureContextTest
-from tests.knowledge.context.test_context_annotation import context, TestOptions
+from tests.knowledge.context.test_context_annotation import context
 
 
 class TestMonitorActivityLogAlert(AzureContextTest):
@@ -15,7 +15,7 @@ class TestMonitorActivityLogAlert(AzureContextTest):
         monitor = next((monitor for monitor in ctx.monitor_activity_log_alert if monitor.name == 'cr3690-activitylogalert1'), None)
         self.assertIsNotNone(monitor)
         self.assertTrue(monitor.enabled)
-        self.assertEqual(monitor.scopes, ['/subscriptions/230613d8-3b34-4790-b650-36f31045f19a'])  # check if it's ok push it to git with the id
+        self.assertEqual(monitor.scopes, ['/subscriptions/230613d8-3b34-4790-b650-36f31045f19a'])
         self.assertEqual(monitor.description, 'log alert rule')
         self.assertIsNotNone(monitor.criteria)
         self.assertEqual(monitor.criteria.category.value, 'Administrative')
@@ -25,7 +25,7 @@ class TestMonitorActivityLogAlert(AzureContextTest):
         self.assertEqual(monitor.criteria.resource_group, 'fakename')
         self.assertEqual(monitor.criteria.caller, 'fake@emailaddress.com')
         self.assertEqual(monitor.criteria.level.value, 'Warning')
-        self.assertIsNone(monitor.criteria.status)  # Invalid value in main tf
+        self.assertIsNone(monitor.criteria.status)  # None because invalid value in main tf
         self.assertEqual(monitor.criteria.sub_status, 'Failed')
         self.assertEqual(monitor.criteria.recommendation_category.value, 'OperationalExcellence')
         self.assertEqual(monitor.criteria.recommendation_impact.value, 'High')
