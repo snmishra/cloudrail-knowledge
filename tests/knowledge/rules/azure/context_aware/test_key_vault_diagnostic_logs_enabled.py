@@ -1,7 +1,7 @@
 import unittest
 
 from cloudrail.knowledge.context.azure.resources.keyvault.azure_key_vault import AzureKeyVault
-from cloudrail.knowledge.context.azure.resources.keyvault.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting, \
+from cloudrail.knowledge.context.azure.resources.monitor.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting, \
     AzureMonitorDiagnosticLogsSettings, AzureMonitorDiagnosticLogsRetentionPolicySettings
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
