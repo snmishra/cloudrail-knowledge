@@ -7,6 +7,7 @@ from typing import Dict, List
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.resources.disk.azure_managed_disk import AzureManagedDisk
 from cloudrail.knowledge.context.azure.resources.aks.azure_kubernetes_cluster import AzureKubernetesCluster
+from cloudrail.knowledge.context.azure.resources.data_lake_analytics.azure_data_lake_analytics_account import AzureDataLakeAnalyticsAccount
 from cloudrail.knowledge.context.azure.resources.azure_resource_group import AzureResourceGroup
 from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
 from cloudrail.knowledge.context.azure.resources.databases.azure_mysql_server import AzureMySqlServer
@@ -72,8 +73,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  app_security_groups: AliasesDict[AzureApplicationSecurityGroup] = None,
                  nic_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = None,
                  virtual_machines_scale_sets: AliasesDict[AzureVirtualMachineScaleSet] = None,
-                 cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = None
-                 ):
+                 cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = None,
+                 data_lake_analytics_accounts: AliasesDict[AzureDataLakeAnalyticsAccount] = None,):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
         self.resource_groups: AliasesDict[AzureResourceGroup] = resource_groups or AliasesDict()
@@ -110,3 +111,4 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
             nic_application_security_group_association or AliasesDict()
         self.virtual_machines_scale_sets: AliasesDict[AzureVirtualMachineScaleSet] = virtual_machines_scale_sets or AliasesDict()
         self.cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = cosmos_db_account or AliasesDict()
+        self.data_lake_analytics_accounts: AliasesDict[AzureDataLakeAnalyticsAccount] = data_lake_analytics_accounts or AliasesDict()

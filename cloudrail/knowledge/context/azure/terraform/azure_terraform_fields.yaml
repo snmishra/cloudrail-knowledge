@@ -350,3 +350,10 @@ azurerm_cosmosdb_account:
           known_fields:
             pass:
               - type
+
+azurerm_data_lake_analytics_account:
+  known_fields:
+    pass:
+      - name
+      - default_store_account_name
+      - tier

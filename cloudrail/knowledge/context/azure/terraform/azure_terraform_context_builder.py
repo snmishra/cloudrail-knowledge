@@ -3,6 +3,7 @@ from typing import Optional
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
+from cloudrail.knowledge.context.azure.resources_builders.terraform.data_lake_analytics_account_builder import DataLakeAnalyticsAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.cosmos_db_account_builder import \
     CosmosDBAccountBuilder
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
@@ -113,6 +114,7 @@ class AzureTerraformContextBuilder(IacContextBuilder):
             context.kubernetes_cluster = AliasesDict(*KubernetesClusterBuilder(resources).build())
             context.managed_disks = AliasesDict(*ManagedDiskBuilder(resources).build())
             context.cosmos_db_account = AliasesDict(*CosmosDBAccountBuilder(resources).build())
+            context.data_lake_analytics_accounts = AliasesDict(*DataLakeAnalyticsAccountBuilder(resources).build())
 
             context.checkov_results = to_checkov_results(dic.get('checkov_results', {}))
             return context
