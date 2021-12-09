@@ -38,6 +38,7 @@ from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
 from cloudrail.knowledge.context.azure.resources.webapp.web_app_stack import WebAppStack
+from cloudrail.knowledge.context.azure.resources.batch_management.azure_batch_account import AzureBatchAccount
 from cloudrail.knowledge.context.base_environment_context import (BaseEnvironmentContext, CheckovResult)
 
 
@@ -77,7 +78,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  nic_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = None,
                  virtual_machines_scale_sets: AliasesDict[AzureVirtualMachineScaleSet] = None,
                  cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = None,
-                 data_lake_store: AliasesDict[AzureDataLakeStore] = None
+                 data_lake_store: AliasesDict[AzureDataLakeStore] = None,
+                 batch_accounts: AliasesDict[AzureBatchAccount] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -116,6 +118,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.virtual_machines_scale_sets: AliasesDict[AzureVirtualMachineScaleSet] = virtual_machines_scale_sets or AliasesDict()
         self.cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = cosmos_db_account or AliasesDict()
         self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
+        self.batch_accounts: AliasesDict[AzureBatchAccount] = batch_accounts or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
     def get_all_monitored_resources(self) -> Set[IMonitorSettings]:
