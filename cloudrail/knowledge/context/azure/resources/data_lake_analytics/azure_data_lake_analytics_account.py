@@ -55,7 +55,6 @@ class AzureDataLakeAnalyticsAccount(AzureResource):
     def to_drift_detection_object(self) -> dict:
         return {
             'tags': self.tags,
-            'name': self.name,
             'tier': self.tier,
             'default_store_account_name': self.default_store_account_name
         }
