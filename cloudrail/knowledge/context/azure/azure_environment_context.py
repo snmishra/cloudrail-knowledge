@@ -38,7 +38,7 @@ from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
 from cloudrail.knowledge.context.azure.resources.webapp.web_app_stack import WebAppStack
-from cloudrail.knowledge.context.base_environment_context import (BaseEnvironmentContext, CheckovResult, _TMergeAble)
+from cloudrail.knowledge.context.base_environment_context import (BaseEnvironmentContext, CheckovResult)
 
 
 class AzureEnvironmentContext(BaseEnvironmentContext):
@@ -118,6 +118,6 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
-    def get_all_monitored_resources(self) -> Set[_TMergeAble]:
+    def get_all_monitored_resources(self) -> Set[IMonitorSettings]:
         condition: Callable = lambda aws_resource: isinstance(aws_resource, IMonitorSettings)
         return self.get_all_mergeable_resources(condition)
