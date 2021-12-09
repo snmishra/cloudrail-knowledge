@@ -116,7 +116,7 @@ class AzureMonitorActivityLogAlert(AzureResource):
         name: The name of the activity log aler.
         scopes: The Scope at which the Activity Log should be applied.
         criteria: The criteria parameters for this Activity Log Alert rule.
-        action: List of actions for this Log Alert rule.
+        actions: List of actions for this Log Alert rule.
         enabled: Whether or not this Activity Log Alert is enabled.
         description: The description of this activity log alert.
     """
@@ -125,7 +125,7 @@ class AzureMonitorActivityLogAlert(AzureResource):
                  name: str,
                  scopes: List[str],
                  criteria: MonitorActivityLogAlertCriteria,
-                 action: Optional[MonitorActivityLogAlertAction],
+                 actions: Optional[List[MonitorActivityLogAlertAction]],
                  enabled: bool,
                  description: Optional[str]):
         super().__init__(AzureResourceType.AZURERM_MONITOR_ACTIVITY_LOG_ALERT)
@@ -136,7 +136,7 @@ class AzureMonitorActivityLogAlert(AzureResource):
 
         # References to other resources
         self.criteria: MonitorActivityLogAlertCriteria = criteria
-        self.action: Optional[MonitorActivityLogAlertAction] = action
+        self.actions: Optional[List[MonitorActivityLogAlertAction]] = actions
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/' \
@@ -156,4 +156,4 @@ class AzureMonitorActivityLogAlert(AzureResource):
         return 'Activity Log Alert' + ('s' if is_plural else '')
 
     def to_drift_detection_object(self) -> dict:
-        pass  # TODO: Complete !
+        return {}

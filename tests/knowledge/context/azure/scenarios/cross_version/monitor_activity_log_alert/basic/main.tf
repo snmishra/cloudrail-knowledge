@@ -28,6 +28,17 @@ resource "azurerm_monitor_action_group" "test" {
   }
 }
 
+resource "azurerm_monitor_action_group" "test10" {
+  name                = "doron_test"
+  resource_group_name = azurerm_resource_group.rg.name
+  short_name          = "dfghjk"
+
+  webhook_receiver {
+    name        = "callmyapi"
+    service_uri = "http://example.com/alert"
+  }
+}
+
 resource "azurerm_monitor_activity_log_alert" "test1" {
   name                = "${local.resource_prefix}-activitylogalert1"
   resource_group_name = azurerm_resource_group.rg.name
@@ -45,7 +56,7 @@ resource "azurerm_monitor_activity_log_alert" "test1" {
     resource_id             = azurerm_network_security_group.nsg.id
     caller                  = "fake@emailaddress.com"
     level                   = "Warning"
-    status                  = "Suceeded"
+    status                  = "doron"
     sub_status              = "Failed"
     recommendation_category = "OperationalExcellence"
     recommendation_impact   = "High"
@@ -53,6 +64,14 @@ resource "azurerm_monitor_activity_log_alert" "test1" {
 
   action {
     action_group_id = azurerm_monitor_action_group.test.id
+
+    webhook_properties = {
+      "key" = "value"
+    }
+  }
+
+  action {
+    action_group_id = azurerm_monitor_action_group.test10.id
 
     webhook_properties = {
       "key" = "value"

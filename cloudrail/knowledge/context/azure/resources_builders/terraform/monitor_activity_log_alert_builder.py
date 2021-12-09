@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert, MonitorActivityLogAlertAction, MonitorActivityLogAlertCriteria, \
@@ -15,11 +15,11 @@ class MonitorActivityLogAlertBuilder(AzureTerraformBuilder):
         name = attributes['name']
         scopes = attributes['scopes']
         criteria = self.build_criteria(attributes)
-        action = self.build_action(attributes)
+        actions = self.build_actions(attributes)
         enabled = attributes.get('enabled', True)
         description = attributes.get('description')
 
-        return AzureMonitorActivityLogAlert(name, scopes, criteria, action, enabled, description)
+        return AzureMonitorActivityLogAlert(name, scopes, criteria, actions, enabled, description)
 
     def get_service_name(self) -> AzureResourceType:
         return AzureResourceType.AZURERM_MONITOR_ACTIVITY_LOG_ALERT
@@ -60,13 +60,15 @@ class MonitorActivityLogAlertBuilder(AzureTerraformBuilder):
 
         return None
 
-    def build_action(self, attributes: dict) -> Optional[MonitorActivityLogAlertAction]:
+    def build_actions(self, attributes: dict) -> Optional[List[MonitorActivityLogAlertAction]]:
+        actions_list = []
         if action_block := self._get_known_value(attributes, 'action'):
-            action_dict = action_block[0]
-            action_group_id = action_dict.get('action_group_id')
-            webhook_properties = self._get_known_value(action_dict, 'webhook_properties')
-            return MonitorActivityLogAlertAction(action_group_id, webhook_properties)
+            for action in action_block:
+                action_group_id = action.get('action_group_id')
+                webhook_properties = self._get_known_value(action, 'webhook_properties')
+                actions_list.append(MonitorActivityLogAlertAction(action_group_id, webhook_properties))
 
+            return actions_list
         return None
 
     @staticmethod

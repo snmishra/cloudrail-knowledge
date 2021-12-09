@@ -2,7 +2,7 @@ from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnv
 from cloudrail.knowledge.context.mergeable import EntityOrigin
 
 from tests.knowledge.context.azure_context_test import AzureContextTest
-from tests.knowledge.context.test_context_annotation import context
+from tests.knowledge.context.test_context_annotation import context, TestOptions
 
 
 class TestMonitorActivityLogAlert(AzureContextTest):
@@ -30,15 +30,20 @@ class TestMonitorActivityLogAlert(AzureContextTest):
         self.assertEqual(monitor.criteria.recommendation_category.value, 'OperationalExcellence')
         self.assertEqual(monitor.criteria.recommendation_impact.value, 'High')
         self.assertIsNone(monitor.criteria.recommendation_type)
-        self.assertEqual(monitor.action.webhook_properties, {'key': 'value'})
+        for action in monitor.actions or []:
+            self.assertEqual(action.webhook_properties, {'key': 'value'})
         self.assertEqual(monitor.tags, {'environment': 'production'})
         self.assertIsNone(monitor.criteria.service_health)
 
         if monitor.origin == EntityOrigin.TERRAFORM:
             self.assertEqual(monitor.criteria.resource_id, 'azurerm_network_security_group.nsg.id')
-            self.assertEqual(monitor.action.action_group_id, 'azurerm_monitor_action_group.test.id')
+            for action in monitor.actions or []:
+                self.assertTrue(action.action_group_id in ['azurerm_monitor_action_group.test.id', 'azurerm_monitor_action_group.test10.id'])
         elif monitor.origin == EntityOrigin.LIVE_ENV:
             self.assertEqual(monitor.criteria.resource_id, '/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourceGroups/cr3690-RG/providers/Microsoft.'
                                                            'Network/networkSecurityGroups/cr3690-nsg')
-            self.assertEqual(monitor.action.action_group_id, '/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourceGroups/cr3690-RG/providers/Microsoft.'
-                                                             'Insights/actionGroups/example-actiongroup')
+            for action in monitor.actions or []:
+                self.assertTrue(action.action_group_id in ['/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourceGroups/cr3690-RG/providers/Microsoft.'
+                                                                   'Insights/actionGroups/doron_test',
+                                                                   '/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourceGroups/cr3690-RG/providers/Microsoft.'
+                                                                   'Insights/actionGroups/example-actiongroup'])

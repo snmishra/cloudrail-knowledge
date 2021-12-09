@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 
 from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert, MonitorActivityLogAlertCriteria, MonitorActivityLogAlertCriteriaCategory, \
     MonitorActivityLogAlertCriteriaLevel, MonitorActivityLogAlertCriteriaStatus, MonitorActivityLogAlertCriteriaRecommendationCategory, MonitorActivityLogAlertCriteriaRecommendationImpact, \
@@ -19,11 +19,11 @@ class MonitorActivityLogAlertBuilder(BaseAzureScannerBuilder):
         name = attributes["name"]
         scopes = properties['scopes']
         criteria = self.build_criteria(properties)
-        action = self.build_action(properties)
+        actions = self.build_actions(properties)
         enabled = properties.get('enabled')
         description = properties.get('description')
 
-        return AzureMonitorActivityLogAlert(name, scopes, criteria, action, enabled, description)
+        return AzureMonitorActivityLogAlert(name, scopes, criteria, actions, enabled, description)
 
     def build_criteria(self, properties: dict) -> MonitorActivityLogAlertCriteria:
         criteria_list = properties.get('condition').get('allOf')
@@ -64,12 +64,13 @@ class MonitorActivityLogAlertBuilder(BaseAzureScannerBuilder):
         return None
 
     @staticmethod
-    def build_action(properties: dict) -> Optional[MonitorActivityLogAlertAction]:
+    def build_actions(properties: dict) -> Optional[List[MonitorActivityLogAlertAction]]:
+        actions_list = []
         if action_block := properties.get('actions').get('actionGroups'):
-            action_dict = action_block[0]
-            action_group_id = action_dict.get('actionGroupId')
-            webhook_properties = action_dict.get('webhookProperties')
-            return MonitorActivityLogAlertAction(action_group_id, webhook_properties)
+            for action in action_block:
+                action_group_id = action.get('actionGroupId')
+                webhook_properties = action.get('webhookProperties')
+                actions_list.append(MonitorActivityLogAlertAction(action_group_id, webhook_properties))
 
         return None
 
