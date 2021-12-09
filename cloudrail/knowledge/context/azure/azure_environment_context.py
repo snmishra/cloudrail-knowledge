@@ -1,4 +1,5 @@
 from cloudrail.knowledge.context.azure.resources.databases.azure_cosmos_db_account import AzureCosmosDBAccount
+from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface_security_group_association import \
     AzureNetworkInterfaceSecurityGroupAssociation
 from cloudrail.knowledge.context.azure.resources.vmss.azure_virtual_machine_scale_set import AzureVirtualMachineScaleSet
@@ -65,6 +66,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  key_vaults: AliasesDict[AzureKeyVault] = None,
                  kubernetes_cluster: AliasesDict[AzureKubernetesCluster] = None,
                  monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = None,
+                 monitor_activity_log_alert: AliasesDict[AzureMonitorActivityLogAlert] = None,
                  managed_disks: AliasesDict[AzureManagedDisk] = None,
                  virtual_machines: AliasesDict[AzureVirtualMachine] = None,
                  public_ips: AliasesDict[AzurePublicIp] = None,
@@ -100,6 +102,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = storage_account_network_rules or AliasesDict()
         self.key_vaults: AliasesDict[AzureKeyVault] = key_vaults or AliasesDict()
         self.monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = monitor_diagnostic_settings or AliasesDict()
+        self.monitor_activity_log_alert: AliasesDict[AzureMonitorActivityLogAlert] = monitor_activity_log_alert or AliasesDict()
         self.kubernetes_cluster: AliasesDict[AzureKubernetesCluster] = kubernetes_cluster or AliasesDict()
         self.managed_disks: AliasesDict[AzureManagedDisk] = managed_disks or AliasesDict()
         self.virtual_machines: AliasesDict[AzureVirtualMachine] = virtual_machines or AliasesDict()
