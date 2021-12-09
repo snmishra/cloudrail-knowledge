@@ -80,3 +80,7 @@ class AzureDataLakeStore(AzureResource, IMonitorSettings):
 
     def get_monitor_settings(self) -> List[AzureMonitorDiagnosticSetting]:
         return self.monitor_diagnostic_settings
+
+    def set_id(self, _id: str):
+        super().set_id(_id)
+        self.with_aliases(_id.lower())
