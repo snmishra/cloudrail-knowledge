@@ -69,7 +69,7 @@ class DataLakeAnalyticsDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
 
 
 class BatchAccountDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
-    
+
     def get_id(self) -> str:
         return 'car_batch_account_diagnostic_logs_enabled'
 
