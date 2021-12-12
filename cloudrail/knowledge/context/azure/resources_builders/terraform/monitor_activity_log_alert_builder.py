@@ -6,7 +6,7 @@ from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_aler
     MonitorActivityLogAlertCriteriaRecommendationImpact, MonitorActivityLogAlertCriteriaServiceHealth, MonitorActivityLogAlertCriteriaServiceHealthEvents
 
 from cloudrail.knowledge.context.azure.resources_builders.terraform.azure_terraform_builder import AzureTerraformBuilder
-from cloudrail.knowledge.utils.enum_utils import is_valid_enum_value
+from cloudrail.knowledge.utils.enum_utils import is_valid_enum_value, enum_implementation
 
 
 class MonitorActivityLogAlertBuilder(AzureTerraformBuilder):
@@ -26,7 +26,7 @@ class MonitorActivityLogAlertBuilder(AzureTerraformBuilder):
 
     def build_criteria(self, attributes: dict) -> MonitorActivityLogAlertCriteria:
         criteria_dict = attributes['criteria'][0]
-        category = self.assignee_enum(MonitorActivityLogAlertCriteriaCategory, criteria_dict['category'])
+        category = enum_implementation(MonitorActivityLogAlertCriteriaCategory, criteria_dict['category'])
         operation_name = self._get_known_value(criteria_dict, 'operation_name')
         resource_provider = self._get_known_value(criteria_dict, 'resource_provider')
         resource_type = self._get_known_value(criteria_dict, 'resource_type')
@@ -34,15 +34,15 @@ class MonitorActivityLogAlertBuilder(AzureTerraformBuilder):
         resource_id = criteria_dict.get('resource_id')
         caller = self._get_known_value(criteria_dict, 'caller')
         level_value = self._get_known_value(criteria_dict, 'level')
-        level = self.assignee_enum(MonitorActivityLogAlertCriteriaLevel, level_value) if level_value else None
+        level = enum_implementation(MonitorActivityLogAlertCriteriaLevel, level_value) if level_value else None
         status_value = self._get_known_value(criteria_dict, 'status')
-        status = self.assignee_enum(MonitorActivityLogAlertCriteriaStatus, status_value) if status_value else None
+        status = enum_implementation(MonitorActivityLogAlertCriteriaStatus, status_value) if status_value else None
         sub_status = self._get_known_value(criteria_dict, 'sub_status')
         recommendation_type = self._get_known_value(criteria_dict, 'recommendation_type')
         rec_category_value = self._get_known_value(criteria_dict, 'recommendation_category')
-        recommendation_category = self.assignee_enum(MonitorActivityLogAlertCriteriaRecommendationCategory, rec_category_value) if rec_category_value else None
+        recommendation_category = enum_implementation(MonitorActivityLogAlertCriteriaRecommendationCategory, rec_category_value) if rec_category_value else None
         rec_impact_value = self._get_known_value(criteria_dict, 'recommendation_impact')
-        recommendation_impact = self.assignee_enum(MonitorActivityLogAlertCriteriaRecommendationImpact, rec_impact_value) if rec_impact_value else None
+        recommendation_impact = enum_implementation(MonitorActivityLogAlertCriteriaRecommendationImpact, rec_impact_value) if rec_impact_value else None
         service_health = self.build_service_health(criteria_dict)
 
         return MonitorActivityLogAlertCriteria(category, operation_name, resource_provider, resource_type, resource_group, resource_id, caller, level, status, sub_status,
@@ -71,7 +71,3 @@ class MonitorActivityLogAlertBuilder(AzureTerraformBuilder):
             return actions_list
 
         return None
-
-    @staticmethod
-    def assignee_enum(enum_meta_class, value):
-        return enum_meta_class(value) if is_valid_enum_value(enum_meta_class, value) else None

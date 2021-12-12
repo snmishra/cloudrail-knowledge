@@ -137,8 +137,7 @@ class AzureMonitorActivityLogAlert(AzureResource):
         self.actions: Optional[List[MonitorActivityLogAlertAction]] = actions
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/' \
-               f'{self.resource_group_name}/providers/Microsoft.Insights/activityLogAlerts/{self.name}/overview'
+        return f'https://portal.azure.com/#@{self.tenant_id}/resource{self.get_id()}/overview'
 
     @property
     def is_tagable(self) -> bool:
@@ -156,7 +155,7 @@ class AzureMonitorActivityLogAlert(AzureResource):
     def to_drift_detection_object(self) -> dict:
         return {"enabled": self.enabled,
                 "tags": self.tags,
-                "actions": dataclasses.asdict(self.actions),
+                "actions": [dataclasses.asdict(action) for action in self.actions],
                 "scopes": self.scopes,
                 "description": self.description,
                 "criteria": dataclasses.asdict(self.criteria)

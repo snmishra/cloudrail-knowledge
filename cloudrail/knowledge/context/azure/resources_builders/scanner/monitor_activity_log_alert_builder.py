@@ -5,7 +5,7 @@ from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_aler
     MonitorActivityLogAlertCriteriaServiceHealthEvents, MonitorActivityLogAlertCriteriaServiceHealth, MonitorActivityLogAlertAction
 
 from cloudrail.knowledge.context.azure.resources_builders.scanner.base_azure_scanner_builder import BaseAzureScannerBuilder
-from cloudrail.knowledge.utils.enum_utils import is_valid_enum_value
+from cloudrail.knowledge.utils.enum_utils import is_valid_enum_value, enum_implementation
 
 
 class MonitorActivityLogAlertBuilder(BaseAzureScannerBuilder):
@@ -15,7 +15,6 @@ class MonitorActivityLogAlertBuilder(BaseAzureScannerBuilder):
 
     def do_build(self, attributes: dict) -> AzureMonitorActivityLogAlert:
         properties = attributes['properties']
-
         name = attributes["name"]
         scopes = properties['scopes']
         criteria = self.build_criteria(properties)
@@ -29,7 +28,7 @@ class MonitorActivityLogAlertBuilder(BaseAzureScannerBuilder):
         criteria_list = properties.get('condition').get('allOf')
         criteria_dict = {criteria['field']: {'equals': criteria['equals'], 'containsAny': criteria['containsAny']} for criteria in criteria_list if 'field' in criteria}
         any_of_dict = self.build_any_of_block(criteria_list)
-        category = self.assignee_enum(MonitorActivityLogAlertCriteriaCategory, criteria_dict['category']['equals'])
+        category = enum_implementation(MonitorActivityLogAlertCriteriaCategory, criteria_dict['category']['equals'])
         operation_name = criteria_dict.get('operationName', {}).get('equals')
         resource_provider = criteria_dict.get('resourceProvider', {}).get('equals')
         resource_type = criteria_dict.get('resourceType', {}).get('equals')
@@ -37,15 +36,15 @@ class MonitorActivityLogAlertBuilder(BaseAzureScannerBuilder):
         resource_id = criteria_dict.get('resourceId', {}).get('equals')
         caller = criteria_dict.get('caller', {}).get('equals')
         level_value = criteria_dict.get('level', {}).get('equals')
-        level = self.assignee_enum(MonitorActivityLogAlertCriteriaLevel, level_value) if level_value else None
+        level = enum_implementation(MonitorActivityLogAlertCriteriaLevel, level_value) if level_value else None
         status_value = criteria_dict.get('status', {}).get('equals')
-        status = self.assignee_enum(MonitorActivityLogAlertCriteriaStatus, status_value) if status_value else None
+        status = enum_implementation(MonitorActivityLogAlertCriteriaStatus, status_value) if status_value else None
         sub_status = criteria_dict.get('subStatus', {}).get('equals')
         recommendation_type = criteria_dict.get('properties.recommendationType', {}).get('equals')
         rec_category_value = criteria_dict.get('properties.recommendationCategory', {}).get('equals')
-        recommendation_category = self.assignee_enum(MonitorActivityLogAlertCriteriaRecommendationCategory, rec_category_value) if rec_category_value else None
+        recommendation_category = enum_implementation(MonitorActivityLogAlertCriteriaRecommendationCategory, rec_category_value) if rec_category_value else None
         rec_impact_value = criteria_dict.get('properties.recommendationImpact', {}).get('equals')
-        recommendation_impact = self.assignee_enum(MonitorActivityLogAlertCriteriaRecommendationImpact, rec_impact_value) if rec_impact_value else None
+        recommendation_impact = enum_implementation(MonitorActivityLogAlertCriteriaRecommendationImpact, rec_impact_value) if rec_impact_value else None
         service_health = self.build_service_health(criteria_dict, any_of_dict)
 
         return MonitorActivityLogAlertCriteria(category, operation_name, resource_provider, resource_type, resource_group, resource_id, caller, level, status, sub_status,
@@ -89,7 +88,3 @@ class MonitorActivityLogAlertBuilder(BaseAzureScannerBuilder):
                     any_of_dict[field_name] = [value]
 
         return any_of_dict
-
-    @staticmethod
-    def assignee_enum(enum_meta_class, value):
-        return enum_meta_class(value) if is_valid_enum_value(enum_meta_class, value) else None
