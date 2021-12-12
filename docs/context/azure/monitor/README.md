@@ -6,7 +6,7 @@ A few rules that use objects from this package:
 
 ```python
 --8<--
-cloudrail/knowledge/rules/azure/context_aware/key_vault_diagnostic_logs_enabled_rule.py
+cloudrail/knowledge/rules/azure/context_aware/disgnostics_logs_enabled_rule.py
 --8<--
 ```
 </details>

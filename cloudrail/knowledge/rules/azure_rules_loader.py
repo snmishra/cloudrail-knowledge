@@ -1,6 +1,7 @@
 from typing import Dict, List
 
-from cloudrail.knowledge.rules.azure.context_aware.key_vault_diagnostic_logs_enabled_rule import KeyVaultDiagnosticLogsEnabledRule
+from cloudrail.knowledge.rules.azure.context_aware.disgnostics_logs_enabled_rule import KeyVaultDiagnosticLogsEnabledRule, \
+    DataLakeAnalyticsDiagnosticLogsEnabledRule
 from cloudrail.knowledge.rules.azure.context_aware.not_publicly_accessible_rule import VirtualMachineNotPubliclyAccessibleRdpRule, \
     VirtualMachineNotPubliclyAccessibleSshRule
 from cloudrail.knowledge.rules.azure.non_context_aware.app_service_accessible_only_via_https_rule import AppServiceAccessibleOnlyViaHttpsRule
@@ -102,6 +103,7 @@ class AzureRulesLoader(AbstractRulesLoader):
             AppServiceUsingLatestPythonVersionRule(),
             AppServiceUsingLatestJavaVersionRule(),
             AppServiceUsingLatestPhpVersionRule(),
-            AppServiceUseLatestHttpVersionRule()
+            AppServiceUseLatestHttpVersionRule(),
+            DataLakeAnalyticsDiagnosticLogsEnabledRule()
         ]
         return {rule.get_id(): rule for rule in rules}
