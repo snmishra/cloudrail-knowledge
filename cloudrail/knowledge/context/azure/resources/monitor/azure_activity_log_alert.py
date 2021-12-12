@@ -68,20 +68,20 @@ class MonitorActivityLogAlertCriteriaServiceHealth:
 class MonitorActivityLogAlertCriteria:
     """
         Attributes:
-        category: The category of the operation.
-        operation_name: The Resource Manager Role-Based Access Control operation name.
-        resource_provider: The name of the resource provider monitored by the activity log alert.
-        resource_type: The resource type monitored by the activity log alert.
-        resource_group: The name of resource group monitored by the activity log alert.
-        resource_id: The specific resource monitored by the activity log alert.
-        caller: The email address or Azure Active Directory identifier of the user who performed the operation.
-        level: The severity level of the event.
-        status: The status of the event.
-        sub_status: The sub status of the event.
-        recommendation_type: The recommendation type of the event.
-        recommendation_category: The recommendation category of the event.
-        recommendation_impact: The recommendation impact of the event.
-        service_health: A block to define fine grain service health settings.
+            category: The category of the operation.
+            operation_name: The Resource Manager Role-Based Access Control operation name.
+            resource_provider: The name of the resource provider monitored by the activity log alert.
+            resource_type: The resource type monitored by the activity log alert.
+            resource_group: The name of resource group monitored by the activity log alert.
+            resource_id: The specific resource monitored by the activity log alert.
+            caller: The email address or Azure Active Directory identifier of the user who performed the operation.
+            level: The severity level of the event.
+            status: The status of the event.
+            sub_status: The sub status of the event.
+            recommendation_type: The recommendation type of the event.
+            recommendation_category: The recommendation category of the event.
+            recommendation_impact: The recommendation impact of the event.
+            service_health: A block to define fine grain service health settings.
     """
     category: MonitorActivityLogAlertCriteriaCategory
     operation_name: Optional[str]
@@ -103,8 +103,8 @@ class MonitorActivityLogAlertCriteria:
 class MonitorActivityLogAlertAction:
     """
         Attributes:
-        action_group_id: The ID of the Action Group.
-        webhook_properties: The map of custom string properties to include with the post operation.
+            action_group_id: The ID of the Action Group.
+            webhook_properties: The map of custom string properties to include with the post operation.
     """
     action_group_id: str
     webhook_properties: Dict[str, str] = None
@@ -113,12 +113,12 @@ class MonitorActivityLogAlertAction:
 class AzureMonitorActivityLogAlert(AzureResource):
     """
         Attributes:
-        name: The name of the activity log aler.
-        scopes: The Scope at which the Activity Log should be applied.
-        criteria: The criteria parameters for this Activity Log Alert rule.
-        actions: List of actions for this Log Alert rule.
-        enabled: Whether or not this Activity Log Alert is enabled.
-        description: The description of this activity log alert.
+            name: The name of the activity log aler.
+            scopes: The Scope at which the Activity Log should be applied.
+            criteria: The criteria parameters for this Activity Log Alert rule.
+            actions: List of actions for this Log Alert rule.
+            enabled: Whether or not this Activity Log Alert is enabled.
+            description: The description of this activity log alert.
     """
 
     def __init__(self,
