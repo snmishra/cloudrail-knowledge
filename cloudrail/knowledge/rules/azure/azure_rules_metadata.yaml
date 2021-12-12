@@ -1466,3 +1466,34 @@ rules_metadata:
   severity: medium
   supported_iac_types:
   - terraform
+
+- cloud_provider: azure
+  rule_id: car_data_lake_store_diagnostic_logs_enabled
+  name: Ensure Data Lake Store has diagnostic logs enabled
+
+  description: Cloudrail will review the Data Lake Store configuration in your environment.
+    If a store does not have diagnostic logs enabled, Cloudrail will highlight it as a violation.
+  human_readable_logic: Cloudrail will review the Data Lake Store and Monitor diagnostic settings configuration within
+    your Azure subscription and Terraform plan to ensure that Data Lake Store have diagnostic logs enabled.
+  remediation_steps:
+    console:  Follow the guide at
+      <https://docs.microsoft.com/en-us/azure/data-lake-store/data-lake-store-diagnostic-logs#enable-diagnostic-logging-for-your-data-lake-storage-gen1-account>
+      in order to enable diagnostic logs for the Data Lake Store.
+    terraform: Create an azurerm_monitor_diagnostic_setting resource and set the target_resource_id to the
+      Data Lake Store ID. In the log block, set the enabled argument to true.
+      In the log, retention_policy block, set enabled argument to true and days argument to 0 (indefinitely) or
+      a value greater than or equal to 365.
+  resource_type:
+  - database
+  rule_type: context_aware
+  security_layer: logging
+  severity: medium
+  supported_iac_types:
+  - terraform
+  compliance:
+    CIS:
+      1.3.1:
+        - '5.1.1'
+    PCI DSS:
+      3.2.1:
+        - '10.2'
