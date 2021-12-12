@@ -34,7 +34,6 @@ class AzureBatchAccount(AzureResource, IMonitorSettings):
             public_network_access_enabled: Whether public access is allowed for this server.  Defaults to true.
             key_vault_reference: A reference to KeyVault to use when deploying Batch account using UserSubscription pool allocation mode.
             storage_account_id: Specifies the storage account to use for the Batch account.
-            tags: A mapping of tags to assign to the Batch account.
     """
 
     def __init__(self, name: str,
@@ -55,10 +54,6 @@ class AzureBatchAccount(AzureResource, IMonitorSettings):
 
     @property
     def is_tagable(self) -> bool:
-        return True
-
-    @staticmethod
-    def is_standalone() -> bool:
         return True
 
     def get_keys(self) -> List[str]:
