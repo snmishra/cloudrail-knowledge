@@ -1,13 +1,7 @@
 import functools
-
-from cloudrail.knowledge.context.azure.resources.databases.azure_cosmos_db_account import AzureCosmosDBAccount
-from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
-from cloudrail.knowledge.context.azure.resources.i_monitor_settings import IMonitorSettings
-from cloudrail.knowledge.context.azure.resources.network.azure_network_interface_security_group_association import \
-    AzureNetworkInterfaceSecurityGroupAssociation
-from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_store import AzureDataLakeStore
-from cloudrail.knowledge.context.azure.resources.vmss.azure_virtual_machine_scale_set import AzureVirtualMachineScaleSet
 from typing import Dict, List, Set, Callable
+
+from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.resources.aks.azure_kubernetes_cluster import AzureKubernetesCluster

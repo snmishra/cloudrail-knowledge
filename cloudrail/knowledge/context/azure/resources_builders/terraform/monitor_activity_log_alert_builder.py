@@ -69,6 +69,7 @@ class MonitorActivityLogAlertBuilder(AzureTerraformBuilder):
                 actions_list.append(MonitorActivityLogAlertAction(action_group_id, webhook_properties))
 
             return actions_list
+
         return None
 
     @staticmethod
