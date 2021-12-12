@@ -19,10 +19,10 @@ class TestDataLakeStoreDiagnosticLogsEnabled(unittest.TestCase):
 
     @parameterized.expand(
         [
-            # ['No monitoring settings',
-            #  None, True],
-            # ['No logs',
-            #  AzureMonitorDiagnosticSetting('settings_name', 'datalakestore_id', None), True],
+            ['No monitoring settings',
+             None, True],
+            ['No logs',
+             AzureMonitorDiagnosticSetting('settings_name', 'datalakestore_id', None), True],
             ['Logs enabled, but no retention policy',
              AzureMonitorDiagnosticSetting('settings_name', 'datalakestore_id', AzureMonitorDiagnosticLogsSettings(True, None)), True],
             ['Logs disabled, no retention policy',
