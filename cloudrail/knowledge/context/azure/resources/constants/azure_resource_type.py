@@ -40,3 +40,4 @@ class AzureResourceType(Enum):
     AZURERM_COSMOSDB_ACCOUNT = 'azurerm_cosmosdb_account'
     AZURERM_DATA_LAKE_ANALYTICS_ACCOUNT = 'azurerm_data_lake_analytics_account'
     AZURERM_DATA_LAKE_STORE = 'azurerm_data_lake_store'
+    AZURERM_SUBSCRIPTION = 'azurerm_subscription'
