@@ -14,6 +14,7 @@ from cloudrail.knowledge.context.azure.resources_builders.terraform.keyvault_bui
 from cloudrail.knowledge.context.azure.resources_builders.terraform.kubernetes_cluster_builder import KubernetesClusterBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.managed_disk_builder import ManagedDiskBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.monitor_diagnostic_setting_builder import MonitorDiagnosticSettingBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.monitor_activity_log_alert_builder import MonitorActivityLogAlertBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.app_service_config_builder import AppServiceConfigBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.application_security_group_builder import ApplicationSecurityGroupBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.function_app_builder import FunctionAppBuilder
@@ -112,6 +113,7 @@ class AzureTerraformContextBuilder(IacContextBuilder):
                 *AzureNetworkInterfaceApplicationSecurityGroupAssociationBuilder(resources).build())
             context.key_vaults = AliasesDict(*KeyVaultBuilder(resources).build())
             context.monitor_diagnostic_settings = AliasesDict(*MonitorDiagnosticSettingBuilder(resources).build())
+            context.monitor_activity_log_alert = AliasesDict(*MonitorActivityLogAlertBuilder(resources).build())
             context.kubernetes_cluster = AliasesDict(*KubernetesClusterBuilder(resources).build())
             context.managed_disks = AliasesDict(*ManagedDiskBuilder(resources).build())
             context.cosmos_db_account = AliasesDict(*CosmosDBAccountBuilder(resources).build())
