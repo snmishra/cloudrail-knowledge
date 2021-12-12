@@ -414,3 +414,18 @@ azurerm_batch_account:
       - pool_allocation_mode
       - public_network_access_enabled
       - storage_account_id
+
+azurerm_iothub:
+  known_fields:
+    pass:
+      - name
+      - sku
+      - event_hub_partition_count
+      - event_hub_retention_in_days
+      - endpoint
+      - fallback_route
+      - ip_filter_rule
+      - enrichment
+      - route
+      - public_network_access_enabled
+      - min_tls_version

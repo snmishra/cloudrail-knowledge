@@ -1,5 +1,6 @@
 import functools
 from typing import Dict, List, Set, Callable
+from cloudrail.knowledge.context.azure.resources.iot.azure_iot_hub import AzureIoTHub
 
 from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
 
@@ -83,6 +84,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  data_lake_analytics_accounts: AliasesDict[AzureDataLakeAnalyticsAccount] = None,
                  data_lake_store: AliasesDict[AzureDataLakeStore] = None,
                  batch_accounts: AliasesDict[AzureBatchAccount] = None,
+                 iot_hubs: AliasesDict[AzureIoTHub] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -124,6 +126,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.data_lake_analytics_accounts: AliasesDict[AzureDataLakeAnalyticsAccount] = data_lake_analytics_accounts or AliasesDict()
         self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
         self.batch_accounts: AliasesDict[AzureBatchAccount] = batch_accounts or AliasesDict()
+        self.iot_hubs: AliasesDict[AzureIoTHub] = iot_hubs or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
     def get_all_monitored_resources(self) -> Set[IMonitorSettings]:
