@@ -16,7 +16,7 @@ class BatchAccountBuilder(AzureTerraformBuilder):
                                  pool_allocation_mode=BatchAccountPoolAllocationMode(self._get_known_value(attributes, 'pool_allocation_mode', 'BatchService')),
                                  public_network_access_enabled=self._get_known_value(attributes, 'public_network_access_enabled', True),
                                  key_vault_reference=key_vault_reference,
-                                 storage_account_id=self._get_known_value(attributes, 'storage_account_id'))
+                                 storage_account_id=attributes.get('storage_account_id'))
 
     def get_service_name(self) -> AzureResourceType:
         return AzureResourceType.AZURERM_BATCH_ACCOUNT

@@ -1,20 +1,20 @@
 import unittest
 
-from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_analytics_account import AzureDataLakeAnalyticsAccount
+from cloudrail.knowledge.context.azure.resources.batch_management.azure_batch_account import AzureBatchAccount
 from cloudrail.knowledge.context.azure.resources.monitor.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting, \
     AzureMonitorDiagnosticLogsSettings, AzureMonitorDiagnosticLogsRetentionPolicySettings
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
-from cloudrail.knowledge.rules.azure.context_aware.disgnostics_logs_enabled_rule import DataLakeAnalyticsDiagnosticLogsEnabledRule
+from cloudrail.knowledge.rules.azure.context_aware.disgnostics_logs_enabled_rule import BatchAccountDiagnosticLogsEnabledRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 
 from parameterized import parameterized
 
 
-class TestDataLakeAnalyticsDiagnosticLogsEnabledRule(unittest.TestCase):
+class TestBatchAccountDiagnosticLogsEnabledRule(unittest.TestCase):
     def setUp(self):
-        self.rule = DataLakeAnalyticsDiagnosticLogsEnabledRule()
+        self.rule = BatchAccountDiagnosticLogsEnabledRule()
 
     monitor_diagnostic_settings: AzureMonitorDiagnosticSetting = create_empty_entity(AzureMonitorDiagnosticSetting)
     @parameterized.expand(
@@ -43,13 +43,13 @@ class TestDataLakeAnalyticsDiagnosticLogsEnabledRule(unittest.TestCase):
     )
     def test_states(self, unused_name: str, monitor_diagnostic_settings: AzureMonitorDiagnosticSetting, should_alert: bool):
         # Arrange
-        data_lake_analyitics_account: AzureDataLakeAnalyticsAccount = create_empty_entity(AzureDataLakeAnalyticsAccount)
-        data_lake_analyitics_account.name = 'tmp-name'
-        data_lake_analyitics_account.set_id('diag_monitor_setting_key')
-        data_lake_analyitics_account.with_aliases(data_lake_analyitics_account.get_id())
-        data_lake_analyitics_account.monitor_diagnostic_settings = [monitor_diagnostic_settings] if monitor_diagnostic_settings else []
+        batch_account: AzureBatchAccount = create_empty_entity(AzureBatchAccount)
+        batch_account.name = 'tmp-name'
+        batch_account.set_id('diag_monitor_setting_key')
+        batch_account.with_aliases(batch_account.get_id())
+        batch_account.monitor_diagnostic_settings = [monitor_diagnostic_settings] if monitor_diagnostic_settings else []
 
-        context = AzureEnvironmentContext(data_lake_analytics_accounts=AliasesDict(data_lake_analyitics_account),
+        context = AzureEnvironmentContext(batch_accounts=AliasesDict(batch_account),
                                           monitor_diagnostic_settings=AliasesDict(monitor_diagnostic_settings))
         # Act
         result = self.rule.run(context, {})

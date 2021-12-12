@@ -2,11 +2,11 @@
 A few rules that use objects from this package:
 
 <details>
-<summary>non_car_kubernetes_cluster_rbac_enabled</summary>
+<summary>car_batch_account_diagnostic_logs_enabled</summary>
 
 ```python
 --8<--
-cloudrail/knowledge/rules/azure/non_context_aware/kubernetes_cluster_rbac_enabled_rule.py
+cloudrail/knowledge/rules/azure/context_aware/disgnostics_logs_enabled_rule.py
 --8<--
 ```
 </details>

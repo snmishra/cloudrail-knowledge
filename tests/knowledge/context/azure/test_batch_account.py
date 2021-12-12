@@ -26,7 +26,7 @@ class TestBatchAccount(AzureContextTest):
                              'https://cloudrailtestkeyvault.vault.azure.net/')
             self.assertEqual(batch_account.storage_account_id,
                              '/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourceGroups/cloudrailtest-rg/providers/Microsoft.Storage/storageAccounts/cloudrailteststorageacc')
-        else:
+        elif batch_account.origin == EntityOrigin.TERRAFORM:
             self.assertEqual(batch_account.key_vault_reference.id,
                              'azurerm_key_vault.test.id')
             self.assertEqual(batch_account.key_vault_reference.url,
