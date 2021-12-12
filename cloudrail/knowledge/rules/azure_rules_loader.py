@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from cloudrail.knowledge.rules.azure.context_aware.ensure_disgnostics_logs_enabled_rule import KeyVaultDiagnosticLogsEnabledRule, \
+from cloudrail.knowledge.rules.azure.context_aware.disgnostics_logs_enabled_rule import KeyVaultDiagnosticLogsEnabledRule, \
     DataLakeAnalyticsDiagnosticLogsEnabledRule
 from cloudrail.knowledge.rules.azure.context_aware.not_publicly_accessible_rule import VirtualMachineNotPubliclyAccessibleRdpRule, \
     VirtualMachineNotPubliclyAccessibleSshRule

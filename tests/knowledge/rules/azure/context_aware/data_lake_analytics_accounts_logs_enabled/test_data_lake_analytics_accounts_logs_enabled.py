@@ -1,5 +1,5 @@
 from cloudrail.knowledge.rules.base_rule import RuleResponse
-from cloudrail.knowledge.rules.azure.context_aware.ensure_disgnostics_logs_enabled_rule import DataLakeAnalyticsDiagnosticLogsEnabledRule
+from cloudrail.knowledge.rules.azure.context_aware.disgnostics_logs_enabled_rule import DataLakeAnalyticsDiagnosticLogsEnabledRule
 
 from tests.knowledge.rules.base_rule_test import AzureBaseRuleTest, rule_test
 

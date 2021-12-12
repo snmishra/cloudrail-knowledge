@@ -5,7 +5,7 @@ from cloudrail.knowledge.context.azure.resources.monitor.azure_monitor_diagnosti
     AzureMonitorDiagnosticLogsSettings, AzureMonitorDiagnosticLogsRetentionPolicySettings
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
-from cloudrail.knowledge.rules.azure.context_aware.ensure_disgnostics_logs_enabled_rule import KeyVaultDiagnosticLogsEnabledRule
+from cloudrail.knowledge.rules.azure.context_aware.disgnostics_logs_enabled_rule import KeyVaultDiagnosticLogsEnabledRule
 from cloudrail.knowledge.rules.base_rule import RuleResultType
 from cloudrail.dev_tools.rule_test_utils import create_empty_entity
 

@@ -8,7 +8,7 @@ from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
 
 
-class EnsureDiagnosticLogsEnabledBaseRule(AzureBaseRule):
+class AbstractDiagnosticLogsRule(AzureBaseRule):
 
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
@@ -48,7 +48,7 @@ class EnsureDiagnosticLogsEnabledBaseRule(AzureBaseRule):
         return bool(self.get_resources(environment_context))
 
 
-class KeyVaultDiagnosticLogsEnabledRule(EnsureDiagnosticLogsEnabledBaseRule):
+class KeyVaultDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
 
     def get_id(self) -> str:
         return 'car_key_vault_diagnostic_logs_enabled'
@@ -58,7 +58,7 @@ class KeyVaultDiagnosticLogsEnabledRule(EnsureDiagnosticLogsEnabledBaseRule):
         return env_context.key_vaults
 
 
-class DataLakeAnalyticsDiagnosticLogsEnabledRule(EnsureDiagnosticLogsEnabledBaseRule):
+class DataLakeAnalyticsDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
 
     def get_id(self) -> str:
         return 'car_data_lake_analytics_account_diagnostic_logs_enabled'
