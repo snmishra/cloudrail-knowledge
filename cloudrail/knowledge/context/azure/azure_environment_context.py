@@ -1,5 +1,7 @@
 import functools
-from typing import Callable, Dict, List, Set
+from typing import Dict, List, Set, Callable
+
+from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.resources.aks.azure_kubernetes_cluster import AzureKubernetesCluster
@@ -38,6 +40,7 @@ from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
 from cloudrail.knowledge.context.azure.resources.webapp.web_app_stack import WebAppStack
+from cloudrail.knowledge.context.azure.resources.batch_management.azure_batch_account import AzureBatchAccount
 from cloudrail.knowledge.context.base_environment_context import (BaseEnvironmentContext, CheckovResult)
 
 
@@ -69,6 +72,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  key_vaults: AliasesDict[AzureKeyVault] = None,
                  kubernetes_cluster: AliasesDict[AzureKubernetesCluster] = None,
                  monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = None,
+                 monitor_activity_log_alert: AliasesDict[AzureMonitorActivityLogAlert] = None,
                  managed_disks: AliasesDict[AzureManagedDisk] = None,
                  virtual_machines: AliasesDict[AzureVirtualMachine] = None,
                  public_ips: AliasesDict[AzurePublicIp] = None,
@@ -80,6 +84,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  data_lake_analytics_accounts: AliasesDict[AzureDataLakeAnalyticsAccount] = None,
                  data_lake_store: AliasesDict[AzureDataLakeStore] = None,
                  subscriptions: AliasesDict[AzureSubscription] = None,
+                 batch_accounts: AliasesDict[AzureBatchAccount] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -107,6 +112,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = storage_account_network_rules or AliasesDict()
         self.key_vaults: AliasesDict[AzureKeyVault] = key_vaults or AliasesDict()
         self.monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = monitor_diagnostic_settings or AliasesDict()
+        self.monitor_activity_log_alert: AliasesDict[AzureMonitorActivityLogAlert] = monitor_activity_log_alert or AliasesDict()
         self.kubernetes_cluster: AliasesDict[AzureKubernetesCluster] = kubernetes_cluster or AliasesDict()
         self.managed_disks: AliasesDict[AzureManagedDisk] = managed_disks or AliasesDict()
         self.virtual_machines: AliasesDict[AzureVirtualMachine] = virtual_machines or AliasesDict()
@@ -120,6 +126,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.data_lake_analytics_accounts: AliasesDict[AzureDataLakeAnalyticsAccount] = data_lake_analytics_accounts or AliasesDict()
         self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
         self.subscriptions: AliasesDict[AzureSubscription] = subscriptions or AliasesDict()
+        self.batch_accounts: AliasesDict[AzureBatchAccount] = batch_accounts or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
     def get_all_monitored_resources(self) -> Set[IMonitorSettings]:

@@ -2,7 +2,7 @@
 A few rules that use objects from this package:
 
 <details>
-<summary>car_key_vault_diagnostic_logs_enabled</summary>
+<summary>car_batch_account_diagnostic_logs_enabled</summary>
 
 ```python
 --8<--
@@ -11,7 +11,7 @@ cloudrail/knowledge/rules/azure/context_aware/disgnostics_logs_enabled_rule.py
 ```
 </details>
 
-## ::: cloudrail.knowledge.context.azure.resources.keyvault.azure_key_vault
+## ::: cloudrail.knowledge.context.azure.resources.batch_management.azure_batch_account
     rendering:
       show_root_toc_entry: false
     selection:

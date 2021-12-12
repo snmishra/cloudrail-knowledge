@@ -39,6 +39,8 @@ from cloudrail.knowledge.context.azure.resources_builders.scanner.virtual_machin
 from cloudrail.knowledge.context.azure.resources_builders.scanner.vnet_gateway_builder import VnetGatewayBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.cosmos_db_account_builder import CosmosDBAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.web_app_stacks_builder import WebAppStacksBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.batch_account_builder import BatchAccountBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.monitor_activity_log_alert_builder import MonitorActivityLogAlertBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.data_lake_analytics_account_builder import DataLakeAnalyticsAccountBuilder
 from cloudrail.knowledge.context.environment_context.scanner_context_builder import ScannerContextBuilder
 
@@ -77,6 +79,7 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
         context.app_security_groups = AliasesDict(*ApplicationSecurityGroupBuilder(*builder_args).build())
         context.key_vaults = AliasesDict(*KeyVaultBuilder(*builder_args).build())
         context.monitor_diagnostic_settings = AliasesDict(*MonitorDiagnosticSettingBuilder(*builder_args).build())
+        context.monitor_activity_log_alert = AliasesDict(*MonitorActivityLogAlertBuilder(*builder_args).build())
         context.kubernetes_cluster = AliasesDict(*KubernetesClusterBuilder(*builder_args).build())
         context.managed_disks = AliasesDict(*ManagedDiskBuilder(*builder_args).build())
         context.virtual_machines_scale_sets = AliasesDict(*VirtualMachineScaleSetBuilder(*builder_args).build())
@@ -86,4 +89,5 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
         context.data_lake_analytics_accounts = AliasesDict(*DataLakeAnalyticsAccountBuilder(*builder_args).build())
         context.data_lake_store = AliasesDict(*DataLakeStoreBuilder(*builder_args).build())
         context.subscriptions = AliasesDict(*SubscriptionBuilder(*builder_args).build())
+        context.batch_accounts = AliasesDict(*BatchAccountBuilder(*builder_args).build())
         return context
