@@ -69,6 +69,16 @@ class DataLakeAnalyticsDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
         return env_context.data_lake_analytics_accounts
 
 
+class BatchAccountDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
+
+    def get_id(self) -> str:
+        return 'car_batch_account_diagnostic_logs_enabled'
+
+    @staticmethod
+    def get_resources(env_context: AzureEnvironmentContext) -> Iterable[Union[Mergeable, IMonitorSettings]]:
+        return env_context.batch_accounts
+
+
 class DataLakeStoreDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
 
     def get_id(self) -> str:

@@ -60,6 +60,7 @@ nav:
       - 'xray': 'context/aws/xray/README.md'
     - 'Azure Context':
       - 'aks': 'context/azure/aks/README.md'
+      - 'batch_management': 'context/azure/batch_management/README.md'
       - 'databases': 'context/azure/databases/README.md'
       - 'disk': 'context/azure/disk/README.md'
       - 'keyvault': 'context/azure/keyvault/README.md'
