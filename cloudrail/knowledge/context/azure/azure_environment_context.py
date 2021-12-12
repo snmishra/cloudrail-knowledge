@@ -10,19 +10,23 @@ from cloudrail.knowledge.context.azure.resources.vmss.azure_virtual_machine_scal
 from typing import Dict, List, Set, Callable
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
-from cloudrail.knowledge.context.azure.resources.disk.azure_managed_disk import AzureManagedDisk
 from cloudrail.knowledge.context.azure.resources.aks.azure_kubernetes_cluster import AzureKubernetesCluster
 from cloudrail.knowledge.context.azure.resources.azure_resource_group import AzureResourceGroup
+from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_analytics_account import AzureDataLakeAnalyticsAccount
+from cloudrail.knowledge.context.azure.resources.databases.azure_cosmos_db_account import AzureCosmosDBAccount
 from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
 from cloudrail.knowledge.context.azure.resources.databases.azure_mysql_server import AzureMySqlServer
 from cloudrail.knowledge.context.azure.resources.databases.azure_postgresql_server import AzurePostgreSqlServer
 from cloudrail.knowledge.context.azure.resources.databases.azure_sql_server import AzureSqlServer
+from cloudrail.knowledge.context.azure.resources.disk.azure_managed_disk import AzureManagedDisk
+from cloudrail.knowledge.context.azure.resources.i_monitor_settings import IMonitorSettings
+from cloudrail.knowledge.context.azure.resources.keyvault.azure_key_vault import AzureKeyVault
+from cloudrail.knowledge.context.azure.resources.monitor.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
 from cloudrail.knowledge.context.azure.resources.network.azure_application_security_group import AzureApplicationSecurityGroup
+from cloudrail.knowledge.context.azure.resources.network.azure_network_interface import AzureNetworkInterface
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface_application_security_group_association import \
     AzureNetworkInterfaceApplicationSecurityGroupAssociation
-from cloudrail.knowledge.context.azure.resources.network.azure_network_interface import AzureNetworkInterface
-from cloudrail.knowledge.context.azure.resources.keyvault.azure_key_vault import AzureKeyVault
-from cloudrail.knowledge.context.azure.resources.keyvault.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
+from cloudrail.knowledge.context.azure.resources.network.azure_network_interface_security_group_association import AzureNetworkInterfaceSecurityGroupAssociation
 from cloudrail.knowledge.context.azure.resources.network.azure_network_security_group import AzureNetworkSecurityGroup
 from cloudrail.knowledge.context.azure.resources.network.azure_network_security_group_rule import AzureNetworkSecurityRule
 from cloudrail.knowledge.context.azure.resources.network.azure_public_ip import AzurePublicIp
@@ -32,9 +36,11 @@ from cloudrail.knowledge.context.azure.resources.network.azure_vnet_gateway impo
 from cloudrail.knowledge.context.azure.resources.security.azure_security_center_auto_provisioning import AzureSecurityCenterAutoProvisioning
 from cloudrail.knowledge.context.azure.resources.security.azure_security_center_contact import AzureSecurityCenterContact
 from cloudrail.knowledge.context.azure.resources.security.azure_security_center_subscription_pricing import AzureSecurityCenterSubscriptionPricing
+from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_store import AzureDataLakeStore
 from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account import AzureStorageAccount
 from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules
 from cloudrail.knowledge.context.azure.resources.vm.azure_virtual_machine import AzureVirtualMachine
+from cloudrail.knowledge.context.azure.resources.vmss.azure_virtual_machine_scale_set import AzureVirtualMachineScaleSet
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import AzureAppService
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
@@ -79,7 +85,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  nic_application_security_group_association: AliasesDict[AzureNetworkInterfaceApplicationSecurityGroupAssociation] = None,
                  virtual_machines_scale_sets: AliasesDict[AzureVirtualMachineScaleSet] = None,
                  cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = None,
-                 data_lake_store: AliasesDict[AzureDataLakeStore] = None
+                 data_lake_analytics_accounts: AliasesDict[AzureDataLakeAnalyticsAccount] = None,
+                 data_lake_store: AliasesDict[AzureDataLakeStore] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -118,6 +125,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
             nic_application_security_group_association or AliasesDict()
         self.virtual_machines_scale_sets: AliasesDict[AzureVirtualMachineScaleSet] = virtual_machines_scale_sets or AliasesDict()
         self.cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = cosmos_db_account or AliasesDict()
+        self.data_lake_analytics_accounts: AliasesDict[AzureDataLakeAnalyticsAccount] = data_lake_analytics_accounts or AliasesDict()
         self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
