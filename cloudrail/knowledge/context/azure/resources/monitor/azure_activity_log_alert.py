@@ -133,8 +133,6 @@ class AzureMonitorActivityLogAlert(AzureResource):
         self.scopes: List[str] = scopes
         self.enabled: bool = enabled
         self.description: Optional[str] = description
-
-        # References to other resources
         self.criteria: MonitorActivityLogAlertCriteria = criteria
         self.actions: Optional[List[MonitorActivityLogAlertAction]] = actions
 
