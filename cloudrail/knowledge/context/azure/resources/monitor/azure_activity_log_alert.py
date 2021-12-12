@@ -1,7 +1,7 @@
 from typing import Optional, Dict, List
 from enum import Enum
 from dataclasses import dataclass
-
+import dataclasses
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
 
@@ -156,4 +156,10 @@ class AzureMonitorActivityLogAlert(AzureResource):
         return 'Activity Log Alert' + ('s' if is_plural else '')
 
     def to_drift_detection_object(self) -> dict:
-        return {}
+        return {"enabled": self.enabled,
+                "tags": self.tags,
+                "actions": dataclasses.asdict(self.actions),
+                "scopes": self.scopes,
+                "description": self.description,
+                "criteria": dataclasses.asdict(self.criteria)
+                }
