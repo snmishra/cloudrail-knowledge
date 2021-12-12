@@ -8,13 +8,14 @@ class BatchAccountBuilder(BaseAzureScannerBuilder):
         return 'list-batch-accounts.json'
 
     def do_build(self, attributes: dict) -> AzureBatchAccount:
+        batch_account_propertries = attributes['properties']
         key_vault_reference = None
-        if key_vault_ref_data := attributes.get('keyVaultReference'):
+        if key_vault_ref_data := batch_account_propertries.get('keyVaultReference'):
             key_vault_reference=BatchAccountKeyVaultReference(name=attributes['name'],
                                                               id=key_vault_ref_data['id'],
                                                               url=key_vault_ref_data['url'])
         return AzureBatchAccount(name=attributes['name'],
-                                 pool_allocation_mode=BatchAccountPoolAllocationMode(attributes['poolAllocationMode']),
-                                 public_network_access_enabled=attributes['publicNetworkAccess'] == 'enabled',
+                                 pool_allocation_mode=BatchAccountPoolAllocationMode(batch_account_propertries['poolAllocationMode']),
+                                 public_network_access_enabled=batch_account_propertries['publicNetworkAccess'] == 'enabled',
                                  key_vault_reference=key_vault_reference,
-                                 storage_account_id=attributes.get('autoStorage', {}).get('storageAccountId'))
+                                 storage_account_id=batch_account_propertries.get('autoStorage', {}).get('storageAccountId'))

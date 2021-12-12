@@ -38,13 +38,13 @@ class AzureBatchAccount(AzureResource, IMonitorSettings):
     """
 
     def __init__(self, name: str,
-                 pool_allocation_mode: Optional[BatchAccountPoolAllocationMode],
+                 pool_allocation_mode: BatchAccountPoolAllocationMode,
                  public_network_access_enabled: bool,
                  key_vault_reference: Optional[BatchAccountKeyVaultReference],
                  storage_account_id: Optional[str]):
         super().__init__(AzureResourceType.AZURERM_BATCH_ACCOUNT)
         self.name: str = name
-        self.pool_allocation_mode: Optional[BatchAccountPoolAllocationMode] = pool_allocation_mode
+        self.pool_allocation_mode: BatchAccountPoolAllocationMode = pool_allocation_mode
         self.public_network_access_enabled: bool = public_network_access_enabled
         self.key_vault_reference: Optional[BatchAccountKeyVaultReference] = key_vault_reference
         self.storage_account_id: Optional[str] = storage_account_id
