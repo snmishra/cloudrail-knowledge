@@ -38,6 +38,7 @@ from cloudrail.knowledge.context.azure.resources_builders.scanner.virtual_machin
 from cloudrail.knowledge.context.azure.resources_builders.scanner.vnet_gateway_builder import VnetGatewayBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.cosmos_db_account_builder import CosmosDBAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.web_app_stacks_builder import WebAppStacksBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.data_lake_analytics_account_builder import DataLakeAnalyticsAccountBuilder
 from cloudrail.knowledge.context.environment_context.scanner_context_builder import ScannerContextBuilder
 
 
@@ -81,5 +82,6 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
         context.subnet_network_security_group_association = SecurityGroupToSubnetAssociationBuilder(*builder_args).build()
         context.network_interface_network_security_group_association = AzureNetworkInterfaceSecurityGroupAssociationBuilder(*builder_args).build()
         context.cosmos_db_account = AliasesDict(*CosmosDBAccountBuilder(*builder_args).build())
+        context.data_lake_analytics_accounts = AliasesDict(*DataLakeAnalyticsAccountBuilder(*builder_args).build())
         context.data_lake_store = AliasesDict(*DataLakeStoreBuilder(*builder_args).build())
         return context
