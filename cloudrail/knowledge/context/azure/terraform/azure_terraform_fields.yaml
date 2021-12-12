@@ -371,3 +371,12 @@ azurerm_data_lake_store:
               - type
       - firewall_allow_azure_ips
       - firewall_state
+
+azurerm_batch_account:
+  known_fields:
+    pass:
+      - name
+      - key_vault_reference
+      - pool_allocation_mode
+      - public_network_access_enabled
+      - storage_account_id
