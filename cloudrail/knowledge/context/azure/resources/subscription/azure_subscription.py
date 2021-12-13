@@ -1,7 +1,9 @@
 from typing import Optional, List
 
+from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
+from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
 
 
 class AzureSubscription(AzureResource):
@@ -17,8 +19,7 @@ class AzureSubscription(AzureResource):
         super().__init__(AzureResourceType.AZURERM_SUBSCRIPTION)
         self.subscription_name: str = subscription_name
         self.subscription_id: str = subscription_id
-        # Resources part of the context
-        # self.monitor_activity_alert_log_list: Optional[List[AzureMonitorActivityLogAlert]] = None
+        self.monitor_activity_alert_log_list: Optional[AliasesDict[AzureMonitorActivityLogAlert]] = None
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/overview'
