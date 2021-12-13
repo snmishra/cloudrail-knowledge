@@ -38,4 +38,4 @@ class AzureSubscription(AzureResource):
         return 'Subscription' + ('s' if is_plural else '')
 
     def to_drift_detection_object(self) -> dict:
-        pass
+        return {"tags": self.tags}
