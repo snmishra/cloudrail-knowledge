@@ -19,7 +19,7 @@ class AzureSubscription(AzureResource):
         super().__init__(AzureResourceType.AZURERM_SUBSCRIPTION)
         self.subscription_name: str = subscription_name
         self.subscription_id: str = subscription_id
-        self.monitor_activity_alert_log_list: Optional[AliasesDict[AzureMonitorActivityLogAlert]] = None
+        self.monitor_activity_alert_log_list: Optional[List[AzureMonitorActivityLogAlert]] = None
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/overview'
