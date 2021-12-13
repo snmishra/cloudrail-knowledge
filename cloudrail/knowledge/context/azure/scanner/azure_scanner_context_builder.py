@@ -36,6 +36,7 @@ from cloudrail.knowledge.context.azure.resources_builders.scanner.subnet_network
 from cloudrail.knowledge.context.azure.resources_builders.scanner.virtual_machine_builder import VirtualMachineBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.virtual_machine_scale_set_builder import VirtualMachineScaleSetBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.vnet_gateway_builder import VnetGatewayBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.iot_hub_builder import IoTHubBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.cosmos_db_account_builder import CosmosDBAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.web_app_stacks_builder import WebAppStacksBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.batch_account_builder import BatchAccountBuilder
@@ -88,5 +89,6 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
         context.data_lake_analytics_accounts = AliasesDict(*DataLakeAnalyticsAccountBuilder(*builder_args).build())
         context.data_lake_store = AliasesDict(*DataLakeStoreBuilder(*builder_args).build())
         context.batch_accounts = AliasesDict(*BatchAccountBuilder(*builder_args).build())
+        context.iot_hubs = AliasesDict(*IoTHubBuilder(*builder_args).build())
 
         return context

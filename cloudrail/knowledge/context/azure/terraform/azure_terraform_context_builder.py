@@ -45,6 +45,7 @@ from cloudrail.knowledge.context.azure.resources_builders.terraform.virtual_mach
 from cloudrail.knowledge.context.azure.resources_builders.terraform.virtual_machine_scale_set_builder import VirtualMachineScaleSetBuilder, LinuxVirtualMachineScaleSetBuilder, \
     WindowsVirtualMachineScaleSetBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.vnet_gateway_builder import VnetGatewayBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.iot_hub_builder import IoTHubBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.batch_account_builder import BatchAccountBuilder
 from cloudrail.knowledge.context.environment_context.terraform_resources_helper import get_raw_resources_by_type
 from cloudrail.knowledge.context.environment_context.terraform_resources_metadata_parser import TerraformResourcesMetadataParser
@@ -121,6 +122,7 @@ class AzureTerraformContextBuilder(IacContextBuilder):
             context.data_lake_analytics_accounts = AliasesDict(*DataLakeAnalyticsAccountBuilder(resources).build())
             context.data_lake_store = AliasesDict(*AzureDataLakeStoreBuilder(resources).build())
             context.batch_accounts = AliasesDict(*BatchAccountBuilder(resources).build())
+            context.iot_hubs = AliasesDict(*IoTHubBuilder(resources).build())
 
             context.checkov_results = to_checkov_results(dic.get('checkov_results', {}))
             return context

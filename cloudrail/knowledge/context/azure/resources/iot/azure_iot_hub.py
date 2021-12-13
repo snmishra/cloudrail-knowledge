@@ -1,3 +1,4 @@
+import dataclasses
 from typing import Optional, List
 from enum import Enum
 from dataclasses import dataclass
@@ -31,6 +32,7 @@ class IoTHubEndpointEncoding(str, Enum):
 
 
 class IoTHubRouteSource(str, Enum):
+    NONE = 'None'
     DEVICE_MESSAGES = 'DeviceMessages'
     INVALID = 'Invalid'
     TWIN_CHANGE_EVENTS = 'TwinChangeEvents'
@@ -74,10 +76,10 @@ class IoTHubEndpoint:
     name: str
     batch_frequency_in_seconds: int
     max_chunk_size_in_bytes: int
-    container_name: str
+    container_name: Optional[str]
     encoding: IoTHubEndpointEncoding
-    file_name_format: str
-    resource_group_name: str
+    file_name_format: Optional[str]
+    resource_group_name: Optional[str]
 
 
 @dataclass
@@ -89,7 +91,7 @@ class IoTHubFallbackRoute:
             endpoint_names: The endpoints to which messages that satisfy the condition are routed.
             enabled: Whether the fallback route is enabled
     """
-    source: IoTHubRouteSource
+    source: Optional[IoTHubRouteSource]
     condition: str
     endpoint_names: List[str]
     enabled: bool
@@ -167,8 +169,8 @@ class AzureIoTHub(AzureResource, IMonitorSettings):
             event_hub_partition_count: The number of device-to-cloud partitions used by backing event hubs.
             event_hub_retention_in_days: The event hub retention to use in days.
             endpoint_list: List of endpoints configuration.
-            fallback_route_list: A list of fallback routes for messages that don't match any of the supplied routes.
-            file_upload_list: A list of file upload configurations.
+            fallback_route: A fallback route for messages that don't match any of the supplied routes.
+            file_upload: A file upload configurations.
             ip_filter_rule_list: A list of IP filter rules.
             route_list: A list of routes for message delivering.
             enrichment_list: A list of enrichment key/value pairs for endpoints.
@@ -179,27 +181,27 @@ class AzureIoTHub(AzureResource, IMonitorSettings):
     def __init__(self,
                  name: str,
                  sku: IoTHubSku,
-                 event_hub_partition_count: Optional[int],
-                 event_hub_retention_in_days: Optional[int],
+                 event_hub_partition_count: int,
+                 event_hub_retention_in_days: int,
                  endpoint_list: List[IoTHubEndpoint],
-                 fallback_route_list: Optional[List[IoTHubFallbackRoute]],
-                 file_upload_list: Optional[List[IoTHubFileUpload]],
+                 fallback_route: IoTHubFallbackRoute,
+                 file_upload: Optional[IoTHubFileUpload],
                  ip_filter_rule_list: Optional[List[IoTHubIpFilterRule]],
                  route_list: Optional[List[IoTHubRoute]],
                  enrichment_list: Optional[List[IoTHubEnrichment]],
                  public_network_access_enabled: bool,
-                 min_tls_version: Optional[str]):
+                 min_tls_version: str):
         super().__init__(AzureResourceType.AZURERM_IOT_HUB)
         self.name: str = name
         self.sku: IoTHubSku = sku
-        self.event_hub_partition_count: Optional[int] = event_hub_partition_count
-        self.event_hub_retention_in_days: Optional[int] = event_hub_retention_in_days
+        self.event_hub_partition_count: int = event_hub_partition_count
+        self.event_hub_retention_in_days: int = event_hub_retention_in_days
         self.ip_filter_rule_list: Optional[List[IoTHubIpFilterRule]] = ip_filter_rule_list
         self.public_network_access_enabled: bool = public_network_access_enabled
-        self.min_tls_version: Optional[str] = min_tls_version
+        self.min_tls_version: str = min_tls_version
         self.endpoint_list: List[IoTHubEndpoint] = endpoint_list
-        self.fallback_route_list: Optional[List[IoTHubFallbackRoute]] = fallback_route_list
-        self.file_upload_list: Optional[List[IoTHubFileUpload]] = file_upload_list
+        self.fallback_route: IoTHubFallbackRoute = fallback_route
+        self.file_upload: Optional[IoTHubFileUpload] = file_upload
         self.route_list: Optional[List[IoTHubRoute]] = route_list
         self.enrichment_list: Optional[List[IoTHubEnrichment]] = enrichment_list
         self.monitor_diagnostic_settings: List[AzureMonitorDiagnosticSetting] = []
@@ -225,6 +227,12 @@ class AzureIoTHub(AzureResource, IMonitorSettings):
                 'event_hub_partition_count': self.event_hub_partition_count,
                 'event_hub_retention_in_days': self.event_hub_retention_in_days,
                 'public_network_access_enabled': self.public_network_access_enabled,
+                'ip_filter_rule_list': [dataclasses.asdict(rule) for rule in self.ip_filter_rule_list],
+                'endpoint_list': [dataclasses.asdict(endpoint) for endpoint in self.endpoint_list],
+                'fallback_route': dataclasses.asdict(self.fallback_route),
+                'file_upload': self.file_upload and dataclasses.asdict(self.file_upload),
+                'route_list': [dataclasses.asdict(route) for route in self.route_list],
+                'enrichment_list': [dataclasses.asdict(enrichment) for enrichment in self.enrichment_list],
                 'min_tls_version': self.min_tls_version}
 
     def get_monitor_settings(self) -> List[AzureMonitorDiagnosticSetting]:
