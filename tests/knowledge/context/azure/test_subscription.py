@@ -9,7 +9,7 @@ class TestSubscription(AzureNoCloudAccountContextTest):
     def get_component(self):
         return 'subscription'
 
-    # CR-3703 Unable to create new subscription using IaC, probably lack of permissions
+    # CR-3703 Unable to create new subscription using IaC (Error when apply - Alias methot is not supported)
     @context(module_path="basic", test_options=TestOptions(run_drift_detection=False))
     def test_basic(self, ctx: AzureEnvironmentContext):
         subscription = next((subscription for subscription in ctx.subscriptions if subscription.subscription_name == 'dev_alon'), None)
