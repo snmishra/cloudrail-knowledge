@@ -34,6 +34,7 @@ from cloudrail.knowledge.context.azure.resources.security.azure_security_center_
 from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_store import AzureDataLakeStore
 from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account import AzureStorageAccount
 from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules
+from cloudrail.knowledge.context.azure.resources.subscription.azure_subscription import AzureSubscription
 from cloudrail.knowledge.context.azure.resources.vm.azure_virtual_machine import AzureVirtualMachine
 from cloudrail.knowledge.context.azure.resources.vmss.azure_virtual_machine_scale_set import AzureVirtualMachineScaleSet
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import AzureAppService
@@ -83,6 +84,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = None,
                  data_lake_analytics_accounts: AliasesDict[AzureDataLakeAnalyticsAccount] = None,
                  data_lake_store: AliasesDict[AzureDataLakeStore] = None,
+                 subscriptions: AliasesDict[AzureSubscription] = None,
                  batch_accounts: AliasesDict[AzureBatchAccount] = None,
                  iot_hubs: AliasesDict[AzureIoTHub] = None,
                  ):
@@ -125,6 +127,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.cosmos_db_account: AliasesDict[AzureCosmosDBAccount] = cosmos_db_account or AliasesDict()
         self.data_lake_analytics_accounts: AliasesDict[AzureDataLakeAnalyticsAccount] = data_lake_analytics_accounts or AliasesDict()
         self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
+        self.subscriptions: AliasesDict[AzureSubscription] = subscriptions or AliasesDict()
         self.batch_accounts: AliasesDict[AzureBatchAccount] = batch_accounts or AliasesDict()
         self.iot_hubs: AliasesDict[AzureIoTHub] = iot_hubs or AliasesDict()
 

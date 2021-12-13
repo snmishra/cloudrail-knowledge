@@ -41,5 +41,6 @@ class AzureResourceType(Enum):
     AZURERM_MONITOR_ACTIVITY_LOG_ALERT = 'azurerm_monitor_activity_log_alert'
     AZURERM_DATA_LAKE_ANALYTICS_ACCOUNT = 'azurerm_data_lake_analytics_account'
     AZURERM_DATA_LAKE_STORE = 'azurerm_data_lake_store'
+    AZURERM_SUBSCRIPTION = 'azurerm_subscription'
     AZURERM_BATCH_ACCOUNT = 'azurerm_batch_account'
     AZURERM_IOT_HUB = 'azurerm_iothub'

@@ -406,6 +406,12 @@ azurerm_data_lake_store:
       - firewall_allow_azure_ips
       - firewall_state
 
+azurerm_subscription:
+  known_fields:
+    pass:
+      - subscription_id
+      - subscription_name
+
 azurerm_batch_account:
   known_fields:
     pass:
