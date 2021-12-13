@@ -24,6 +24,7 @@ from cloudrail.knowledge.context.azure.resources_builders.scanner.security_cente
 from cloudrail.knowledge.context.azure.resources_builders.scanner.security_center_subscription_pricing_builder import \
     SecurityCenterSubscriptionPricingBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.sql_server_builder import SqlServerBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.subscription_builder import SubscriptionBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.storage_account_builder import StorageAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.storage_account_network_rule_builder import StorageAccountNetworkRuleBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.network_security_group_builder import NetworkSecurityGroupBuilder
@@ -87,6 +88,6 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
         context.cosmos_db_account = AliasesDict(*CosmosDBAccountBuilder(*builder_args).build())
         context.data_lake_analytics_accounts = AliasesDict(*DataLakeAnalyticsAccountBuilder(*builder_args).build())
         context.data_lake_store = AliasesDict(*DataLakeStoreBuilder(*builder_args).build())
+        context.subscriptions = AliasesDict(*SubscriptionBuilder(*builder_args).build())
         context.batch_accounts = AliasesDict(*BatchAccountBuilder(*builder_args).build())
-
         return context
