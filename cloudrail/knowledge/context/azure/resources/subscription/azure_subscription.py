@@ -1,6 +1,5 @@
 from typing import Optional, List
 
-from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
