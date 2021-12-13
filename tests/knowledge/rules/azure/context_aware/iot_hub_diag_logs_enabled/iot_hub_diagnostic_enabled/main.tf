@@ -1,11 +1,15 @@
+provider "azurerm" {
+  features {}
+}
 
 locals {
-  resource_prefix = "cr3685"
+  resource_prefix = "cr2387"
+  environment = "Tests"
 }
 
 resource "azurerm_resource_group" "rg" {
   name     = "${local.resource_prefix}-RG"
-  location = "eastus"
+  location = "West Europe"
 }
 
 resource "azurerm_storage_account" "storacc" {
@@ -22,6 +26,33 @@ resource "azurerm_storage_container" "example" {
   container_access_type = "private"
 }
 
+resource "azurerm_eventhub_namespace" "example" {
+  name                = "${local.resource_prefix}eventhubnamespace"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku                 = "Basic"
+  capacity            = 1
+}
+
+resource "azurerm_eventhub" "eventhub" {
+  name                = "${local.resource_prefix}-eventhub"
+  resource_group_name = azurerm_resource_group.rg.name
+  namespace_name      = azurerm_eventhub_namespace.example.name
+  partition_count     = 2
+  message_retention   = 1
+}
+
+resource "azurerm_eventhub_authorization_rule" "example" {
+  resource_group_name = azurerm_resource_group.rg.name
+  namespace_name      = azurerm_eventhub_namespace.example.name
+  eventhub_name       = azurerm_eventhub.eventhub.name
+  name                = "authrule1"
+  send                = true
+  //listen              = true
+  //manage              = true
+}
+
+
 resource "azurerm_iothub" "iothub" {
   name                = "${local.resource_prefix}-IoTHub"
   resource_group_name = azurerm_resource_group.rg.name
@@ -32,9 +63,6 @@ resource "azurerm_iothub" "iothub" {
     capacity = "1"
   }
 
-  event_hub_partition_count   = 2
-  event_hub_retention_in_days = 1
-
   endpoint {
     type                       = "AzureIotHub.StorageContainer"
     connection_string          = azurerm_storage_account.storacc.primary_blob_connection_string
@@ -44,30 +72,12 @@ resource "azurerm_iothub" "iothub" {
     container_name             = azurerm_storage_container.example.name
     encoding                   = "Avro"
     file_name_format           = "{iothub}/{partition}_{YYYY}_{MM}_{DD}_{HH}_{mm}"
-    resource_group_name        = azurerm_resource_group.rg.name
   }
 
-  fallback_route {
-    source         = "DeviceMessages"
-    condition      = "true"
-    endpoint_names = ["export"]
-    enabled        = true
-  }
-
-  file_upload {
-    connection_string  = azurerm_storage_account.storacc.primary_blob_connection_string
-    container_name     = azurerm_storage_container.example.name
-    sas_ttl            = "PT1H"
-    notifications      = false
-    lock_duration      = "PT1M"
-    default_ttl        = "PT1H"
-    max_delivery_count = 10
-  }
-
-  ip_filter_rule {
-    name    = "sample"
-    ip_mask = "10.0.10.0/24"
-    action  = "Accept"
+  endpoint {
+    type              = "AzureIotHub.EventHub"
+    connection_string = azurerm_eventhub_authorization_rule.example.primary_connection_string
+    name              = "export2"
   }
 
   route {
@@ -78,23 +88,24 @@ resource "azurerm_iothub" "iothub" {
     enabled        = true
   }
 
+  route {
+    name           = "export2"
+    source         = "DeviceMessages"
+    condition      = "true"
+    endpoint_names = ["export2"]
+    enabled        = true
+  }
+
   enrichment {
     key            = "tenant"
     value          = "$twin.tags.Tenant"
-    endpoint_names = ["export"]
-  }
-
-  public_network_access_enabled = false
-  min_tls_version               = "1.2"
-
-  tags = {
-    environment = "Production"
+    endpoint_names = ["export", "export2"]
   }
 
 }
 
 data "azurerm_monitor_diagnostic_categories" "main" {
-  count       = local.enabled ? 1 : 0
+  count = local.enabled ? 1 : 0
   resource_id = azurerm_iothub.iothub.id
 }
 variable "log_categories" {
@@ -102,10 +113,9 @@ variable "log_categories" {
   default     = null
   description = "List of log categories."
 }
-
 locals {
   logs_destinations_ids = "id"
-  enabled               = length(local.logs_destinations_ids) > 0
+  enabled = length(local.logs_destinations_ids) > 0
   log_categories = (
     var.log_categories != null ?
     var.log_categories :
@@ -125,25 +135,20 @@ resource "azurerm_monitor_diagnostic_setting" "example" {
   target_resource_id = azurerm_iothub.iothub.id
   storage_account_id = azurerm_storage_account.storacc.id
 
-  dynamic "log" {
-    for_each = local.logs
-
-    content {
-      category = log.key
-      enabled  = true
-
-      retention_policy {
-        enabled = true
-        days    = 31
-      }
+  log {
+    category = "AuditEvent"
+    enabled  = true
+    retention_policy {
+      enabled = true
+      days = 400
     }
   }
-
   metric {
     category = "AllMetrics"
-    enabled  = false
+    enabled = false
     retention_policy {
       enabled = false
     }
   }
 }
+

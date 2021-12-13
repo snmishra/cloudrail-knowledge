@@ -34,20 +34,20 @@ class IoTHubBuilder(BaseAzureScannerBuilder):
 
         ## Fallback route
         fall_back_route_data = routing_data['fallbackRoute']
-        fallback_route = IoTHubFallbackRoute(source=fall_back_route_data['source'],
+        fallback_route = IoTHubFallbackRoute(source=IoTHubRouteSource(fall_back_route_data['source']),
                                              condition=fall_back_route_data['condition'],
                                              endpoint_names=fall_back_route_data['endpointNames'],
                                              enabled=fall_back_route_data['isEnabled'])
 
         ## File Upload
         file_upload = None
-        if file_upload_data := routing_data.get('storageEndpoints', {}).get('$default'):
-            cloud_to_device_data = routing_data['cloudToDevice']
+        if file_upload_data := iot_propertries.get('storageEndpoints', {}).get('$default'):
+            cloud_to_device_data = iot_propertries['cloudToDevice']
             file_upload = IoTHubFileUpload(connection_string=file_upload_data['connectionString'],
                                            container_name=file_upload_data['containerName'],
                                            sas_ttl=file_upload_data['sasTtlAsIso8601'],
-                                           notifications=routing_data['enableFileUploadNotifications'],
-                                           lock_duration=routing_data['messagingEndpoints']['fileNotifications']['lockDurationAsIso8601'],
+                                           notifications=iot_propertries['enableFileUploadNotifications'],
+                                           lock_duration=iot_propertries['messagingEndpoints']['fileNotifications']['lockDurationAsIso8601'],
                                            default_ttl=cloud_to_device_data['defaultTtlAsIso8601'],
                                            max_delivery_count=cloud_to_device_data['maxDeliveryCount'])
 
@@ -75,7 +75,7 @@ class IoTHubBuilder(BaseAzureScannerBuilder):
                                                     endpoint_names=enrichment['endpointNames']))
 
         sku_data = attributes['sku']
-        event_hub_data = attributes['eventHubEndpoints']
+        event_hub_data = iot_propertries['eventHubEndpoints']['events']
         return AzureIoTHub(name=attributes['name'],
                            sku=IoTHubSku(IoTHubSkuName(sku_data['name']), sku_data['capacity']),
                            event_hub_partition_count=event_hub_data['partitionCount'],
@@ -86,8 +86,8 @@ class IoTHubBuilder(BaseAzureScannerBuilder):
                            ip_filter_rule_list=ip_filter_rule_list,
                            route_list=route_list,
                            enrichment_list=enrichment_list,
-                           public_network_access_enabled=routing_data.get('publicNetworkAccess') == 'Enabled',
-                           min_tls_version=routing_data['minTlsVersion'])
+                           public_network_access_enabled=iot_propertries.get('publicNetworkAccess') == 'Enabled',
+                           min_tls_version=iot_propertries['minTlsVersion'])
 
 
     @staticmethod
@@ -95,6 +95,7 @@ class IoTHubBuilder(BaseAzureScannerBuilder):
         if encoding := attributes.get('encoding'):
             encoding = IoTHubEndpointEncoding(encoding.lower())
         return IoTHubEndpoint(type=IoTHubEndpointType(attributes['type']),
+                              name=attributes['name'],
                               connection_string=attributes['connectionString'],
                               batch_frequency_in_seconds=attributes.get('batchFrequencyInSeconds'),
                               max_chunk_size_in_bytes=attributes.get('maxChunkSizeInBytes'),

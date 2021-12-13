@@ -7,9 +7,10 @@ from cloudrail.knowledge.context.azure.resources_builders.terraform.azure_terraf
 class IoTHubBuilder(AzureTerraformBuilder):
 
     def do_build(self, attributes: dict) -> AzureIoTHub:
+
         ## Endpoints
         endpoint_list = []
-        for endpoint in self._get_known_value(attributes, 'endpoint'):
+        for endpoint in self._get_known_value(attributes, 'endpoint', []):
             endpoint_type = IoTHubEndpointType(endpoint['type'])
             batch_frequency_in_seconds = None
             max_chunk_size_in_bytes = None
@@ -17,7 +18,7 @@ class IoTHubBuilder(AzureTerraformBuilder):
             if endpoint_type == IoTHubEndpointType.STORAGE_CONTAINER:
                 batch_frequency_in_seconds = self._get_known_value(endpoint, 'batch_frequency_in_seconds', 300)
                 max_chunk_size_in_bytes = self._get_known_value(endpoint, 'max_chunk_size_in_bytes', 314572800)
-                encoding = IoTHubEndpointEncoding(self._get_known_value(endpoint, 'encoding', 'avro'))
+                encoding = IoTHubEndpointEncoding(self._get_known_value(endpoint, 'encoding', 'avro').lower())
             endpoint_list.append(IoTHubEndpoint(type=endpoint_type,
                                                 connection_string=endpoint['connection_string'],
                                                 name=endpoint['name'],
@@ -53,14 +54,14 @@ class IoTHubBuilder(AzureTerraformBuilder):
 
         ## IP Filter rules
         ip_filter_rule_list = []
-        for rule in self._get_known_value(attributes, 'ip_filter_rule'):
+        for rule in self._get_known_value(attributes, 'ip_filter_rule', []):
             ip_filter_rule_list.append(IoTHubIpFilterRule(name=rule['name'],
                                                           ip_mask=rule['ip_mask'],
                                                           action=IoTHubIpFilterRuleAction(rule['action'])))
 
         ## Routes
         route_list = []
-        for route in self._get_known_value(attributes, 'route'):
+        for route in self._get_known_value(attributes, 'route', []):
             route_list.append(IoTHubRoute(name=route['name'],
                                           source=IoTHubRouteSource(route['source']),
                                           condition=self._get_known_value(route, 'condition', 'true'),
@@ -69,7 +70,7 @@ class IoTHubBuilder(AzureTerraformBuilder):
 
         ## Encrichment
         enrichment_list = []
-        for route in self._get_known_value(attributes, 'enrichment'):
+        for route in self._get_known_value(attributes, 'enrichment', []):
             enrichment_list.append(IoTHubEnrichment(key=route['key'],
                                                     value=route['value'],
                                                     endpoint_names=route['endpoint_names']))

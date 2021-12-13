@@ -76,3 +76,12 @@ class BatchAccountDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
     @staticmethod
     def get_resources(env_context: AzureEnvironmentContext):
         return env_context.batch_accounts
+
+class IotHubDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
+
+    def get_id(self) -> str:
+        return 'car_iot_hub_diagnostic_logs_enabled'
+
+    @staticmethod
+    def get_resources(env_context: AzureEnvironmentContext):
+        return env_context.iot_hubs

@@ -423,6 +423,7 @@ azurerm_iothub:
       - event_hub_partition_count
       - event_hub_retention_in_days
       - endpoint
+      - file_upload
       - fallback_route
       - ip_filter_rule
       - enrichment
