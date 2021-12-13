@@ -171,7 +171,7 @@ class AzureRelationsAssigner(DependencyInvocation):
         def get_monitors():
             monitors = []
             for monitor in monitor_activity_log_alert:
-                if subscription._id in monitor.scopes:
+                if subscription.get_id() in monitor.scopes:
                     monitors.append(monitor)
             return monitors
 
