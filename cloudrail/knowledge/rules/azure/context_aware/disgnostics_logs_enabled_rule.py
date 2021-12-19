@@ -1,8 +1,9 @@
 from abc import abstractmethod
-from typing import Iterable, List, Dict
+from typing import Iterable, List, Dict, Union
 
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.context.azure.resources.i_monitor_settings import IMonitorSettings
+from cloudrail.knowledge.context.mergeable import Mergeable
 from cloudrail.knowledge.rules.azure.azure_base_rule import AzureBaseRule
 from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
@@ -41,7 +42,7 @@ class AbstractDiagnosticLogsRule(AzureBaseRule):
 
     @staticmethod
     @abstractmethod
-    def get_resources(env_context: AzureEnvironmentContext) -> Iterable[IMonitorSettings]:
+    def get_resources(env_context: AzureEnvironmentContext) -> Iterable[Union[Mergeable, IMonitorSettings]]:
         pass
 
     def should_run_rule(self, environment_context: AzureEnvironmentContext) -> bool:
@@ -64,7 +65,7 @@ class DataLakeAnalyticsDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
         return 'car_data_lake_analytics_account_diagnostic_logs_enabled'
 
     @staticmethod
-    def get_resources(env_context: AzureEnvironmentContext):
+    def get_resources(env_context: AzureEnvironmentContext) -> Iterable[Union[Mergeable, IMonitorSettings]]:
         return env_context.data_lake_analytics_accounts
 
 
@@ -74,5 +75,14 @@ class BatchAccountDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
         return 'car_batch_account_diagnostic_logs_enabled'
 
     @staticmethod
-    def get_resources(env_context: AzureEnvironmentContext):
+    def get_resources(env_context: AzureEnvironmentContext) -> Iterable[Union[Mergeable, IMonitorSettings]]:
         return env_context.batch_accounts
+
+
+class DataLakeStoreDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
+
+    def get_id(self) -> str:
+        return 'car_data_lake_store_diagnostic_logs_enabled'
+
+    def get_resources(self, env_context: AzureEnvironmentContext) -> Iterable[Union[Mergeable, IMonitorSettings]]:
+        return env_context.data_lake_store.values()
