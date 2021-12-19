@@ -168,6 +168,13 @@ class AzureRelationsAssigner(DependencyInvocation):
 
     @staticmethod
     def _assign_monitor_activity_log_alert_to_subscription(subscription: AzureSubscription, monitor_activity_log_alert: AliasesDict[AzureMonitorActivityLogAlert]):
+        # def create_monitor_activity_alert_log_map():
+        #     monitor_activity_alert_log_map = {}
+        #     for monitor in monitor_activity_log_alert:
+        #         if subscription.get_id() in monitor.scopes:
+        #             if monitor.criteria.resource_type:
+        #                 x = 1
+
         subscription.monitor_activity_alert_log_list = ResourceInvalidator.get_by_logic(
             lambda: [monitor for monitor in monitor_activity_log_alert if subscription.get_id() in monitor.scopes],
             False)

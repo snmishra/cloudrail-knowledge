@@ -28,6 +28,7 @@ from cloudrail.knowledge.rules.azure.non_context_aware.app_service_non_car_clien
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_authentication_enable_rule import FunctionAppAuthenticationEnableRule
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_client_certificate_mode_rule import FunctionAppClientCertificateModeRule
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_enforces_ftps_only_rule import FunctionAppEnforcesFtpsOnlyRule
+from cloudrail.knowledge.rules.azure.non_context_aware.monitor_activity_log_alert_exists_rule import NetworkSecurityGroupRulesMonitorActivityLogAlertExistsRule
 from cloudrail.knowledge.rules.azure.non_context_aware.web_app_using_latest_version_rule import \
     FunctionAppUsingLatestJavaVersionRule, FunctionAppUsingLatestPythonVersionRule, AppServiceUsingLatestPythonVersionRule, \
     AppServiceUsingLatestJavaVersionRule, AppServiceUsingLatestPhpVersionRule
@@ -106,5 +107,6 @@ class AzureRulesLoader(AbstractRulesLoader):
             AppServiceUseLatestHttpVersionRule(),
             DataLakeAnalyticsDiagnosticLogsEnabledRule(),
             BatchAccountDiagnosticLogsEnabledRule(),
+            NetworkSecurityGroupRulesMonitorActivityLogAlertExistsRule(),
         ]
         return {rule.get_id(): rule for rule in rules}
