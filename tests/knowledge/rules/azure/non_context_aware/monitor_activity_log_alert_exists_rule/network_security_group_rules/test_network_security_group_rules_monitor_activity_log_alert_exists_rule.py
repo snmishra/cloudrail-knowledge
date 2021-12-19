@@ -3,7 +3,7 @@ from cloudrail.knowledge.rules.base_rule import RuleResponse
 from tests.knowledge.rules.base_rule_test import AzureBaseRuleTest, rule_test
 
 
-class TestAMonitorActivityAlertLogExistsRule(AzureBaseRuleTest):
+class TestANetworkSecurityGroupRulesMonitorActivityLogAlertExistsRule(AzureBaseRuleTest):
     def get_rule(self):
         return NetworkSecurityGroupRulesMonitorActivityLogAlertExistsRule()
 
