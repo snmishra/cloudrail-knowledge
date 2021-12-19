@@ -1,5 +1,5 @@
 import json
-from typing import Callable, Optional
+from typing import Optional
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.logic_app.azure_logic_app_workflow import AzureLogicAppWorkflow, \
     LogicAppWorkflowAccessControl, LogicAppWorkflowAccessControlRules
@@ -13,10 +13,10 @@ class LogicAppWorkflowBuilder(AzureTerraformBuilder):
         ## Access control config
         access_control_config_list = []
         for config in self._get_known_value(attributes, 'access_control', []):
-            actions = self._get_access_control_rule(config, 'action', self._get_known_value)
-            contents = self._get_access_control_rule(config, 'content', self._get_known_value)
-            triggers = self._get_access_control_rule(config, 'trigger', self._get_known_value)
-            workflow_management_list = self._get_access_control_rule(config, 'workflow_management', self._get_known_value)
+            actions = self._get_access_control_rule(config, 'action')
+            contents = self._get_access_control_rule(config, 'content')
+            triggers = self._get_access_control_rule(config, 'trigger')
+            workflow_management_list = self._get_access_control_rule(config, 'workflow_management')
             access_control_config_list.append(LogicAppWorkflowAccessControl(actions=actions,
                                                                             contents=contents,
                                                                             triggers=triggers,
@@ -47,8 +47,9 @@ class LogicAppWorkflowBuilder(AzureTerraformBuilder):
     def get_service_name(self) -> AzureResourceType:
         return AzureResourceType.AZURERM_LOGIC_APP_WORKFLOW
 
-    @staticmethod
-    def _get_access_control_rule(data: dict, key: str, known_value_func: Callable) -> Optional[LogicAppWorkflowAccessControlRules]:
-        if access_control_rule_data := known_value_func(data, key):
-            return LogicAppWorkflowAccessControlRules(allowed_caller_ip_address_range=known_value_func(access_control_rule_data[0], 'allowed_caller_ip_address_range'))
+    @classmethod
+    def _get_access_control_rule(cls, data: dict, key: str) -> Optional[LogicAppWorkflowAccessControlRules]:
+        if access_control_rule_data := cls._get_known_value(data, key):
+            return LogicAppWorkflowAccessControlRules(allowed_caller_ip_address_range=cls._get_known_value(data, key)(access_control_rule_data[0],
+                                                                                                                      'allowed_caller_ip_address_range'))
         return None
