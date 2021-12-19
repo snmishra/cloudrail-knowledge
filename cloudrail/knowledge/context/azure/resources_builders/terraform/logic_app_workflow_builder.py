@@ -50,6 +50,6 @@ class LogicAppWorkflowBuilder(AzureTerraformBuilder):
     @classmethod
     def _get_access_control_rule(cls, data: dict, key: str) -> Optional[LogicAppWorkflowAccessControlRules]:
         if access_control_rule_data := cls._get_known_value(data, key):
-            return LogicAppWorkflowAccessControlRules(allowed_caller_ip_address_range=cls._get_known_value(data, key)(access_control_rule_data[0],
-                                                                                                                      'allowed_caller_ip_address_range'))
+            return LogicAppWorkflowAccessControlRules(allowed_caller_ip_address_range=cls._get_known_value(access_control_rule_data[0],
+                                                                                                           'allowed_caller_ip_address_range'))
         return None
