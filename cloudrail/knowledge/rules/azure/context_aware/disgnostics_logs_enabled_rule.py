@@ -86,3 +86,11 @@ class DataLakeStoreDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
 
     def get_resources(self, env_context: AzureEnvironmentContext) -> Iterable[Union[Mergeable, IMonitorSettings]]:
         return env_context.data_lake_store.values()
+
+class LogicAppWorkflowDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
+
+    def get_id(self) -> str:
+        return 'car_logic_app_workflow_diagnostic_logs_enabled'
+
+    def get_resources(self, env_context: AzureEnvironmentContext) -> Iterable[Union[Mergeable, IMonitorSettings]]:
+        return env_context.logic_app_workflows

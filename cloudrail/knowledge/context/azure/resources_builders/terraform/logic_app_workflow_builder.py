@@ -12,7 +12,7 @@ class LogicAppWorkflowBuilder(AzureTerraformBuilder):
     def do_build(self, attributes: dict) -> AzureLogicAppWorkflow:
         ## Access control config
         access_control_config_list = []
-        for config in self._get_known_value(attributes, 'access_control'):
+        for config in self._get_known_value(attributes, 'access_control', []):
             actions = self._get_access_control_rule(config, 'action', self._get_known_value)
             contents = self._get_access_control_rule(config, 'content', self._get_known_value)
             triggers = self._get_access_control_rule(config, 'trigger', self._get_known_value)
