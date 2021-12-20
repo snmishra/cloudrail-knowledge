@@ -28,7 +28,7 @@ class IamActions:
         roles = {binding.role for binding in bindings if not binding.condition}
         role_members_map = {}
         for role in roles:
-            role_members = list({', '.join(flat_list([binding.members for binding in bindings if role == binding.role]))})
+            role_members = flat_list([binding.members for binding in bindings if role == binding.role])
             role_members_map[role] = role_members
         for key, value in role_members_map.items():
             merged_bindings.append(GcpIamPolicyBinding(role=key, members=value, condition=None))
