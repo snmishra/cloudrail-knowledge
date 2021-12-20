@@ -1578,7 +1578,7 @@ rules_metadata:
       3.2.1:
       - '10.2'
   resource_type:
-  - compute
+  - workflow
   rule_id: car_logic_app_workflow_diagnostic_logs_enabled
   rule_type: context_aware
   security_layer: logging
