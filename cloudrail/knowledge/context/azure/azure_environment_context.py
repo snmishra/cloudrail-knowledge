@@ -1,5 +1,6 @@
 import functools
 from typing import Dict, List, Set, Callable
+from cloudrail.knowledge.context.azure.resources.iot.azure_iot_hub import AzureIoTHub
 
 from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
 
@@ -86,6 +87,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  data_lake_store: AliasesDict[AzureDataLakeStore] = None,
                  subscriptions: AliasesDict[AzureSubscription] = None,
                  batch_accounts: AliasesDict[AzureBatchAccount] = None,
+                 iot_hubs: AliasesDict[AzureIoTHub] = None,
                  logic_app_workflows: AliasesDict[AzureLogicAppWorkflow] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
@@ -129,6 +131,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
         self.subscriptions: AliasesDict[AzureSubscription] = subscriptions or AliasesDict()
         self.batch_accounts: AliasesDict[AzureBatchAccount] = batch_accounts or AliasesDict()
+        self.iot_hubs: AliasesDict[AzureIoTHub] = iot_hubs or AliasesDict()
         self.logic_app_workflows: AliasesDict[AzureLogicAppWorkflow] = logic_app_workflows or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
