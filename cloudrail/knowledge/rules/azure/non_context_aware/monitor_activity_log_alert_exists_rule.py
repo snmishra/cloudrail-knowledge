@@ -2,7 +2,7 @@ from abc import abstractmethod
 from typing import List, Dict
 
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
-from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
+from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert, MonitorActivityLogAlertCriteriaCategory
 from cloudrail.knowledge.rules.azure.azure_base_rule import AzureBaseRule
 from cloudrail.knowledge.rules.base_rule import Issue
 from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterType
@@ -75,4 +75,4 @@ class NetworkSecurityGroupRulesMonitorActivityLogAlertExistsRule(BaseMonitorActi
         return "Network Security Group Rules"
 
     def _get_category(self) -> str:
-        return "Administrative"
+        return MonitorActivityLogAlertCriteriaCategory.ADMINISTRATIVE.value
