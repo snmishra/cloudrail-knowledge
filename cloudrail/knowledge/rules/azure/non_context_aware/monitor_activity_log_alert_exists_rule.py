@@ -27,7 +27,7 @@ class BaseMonitorActivityLogAlertExistsRule(AzureBaseRule):
                     # Checks if monitor is enabled
                     if not monitor.enabled:
                         issues.append(Issue(
-                            f"The {monitor.get_type()} `{monitor.get_friendly_name()}` on '{subscription.subscription_id}' does not enabled",
+                            f"The {monitor.get_type()} `{monitor.get_friendly_name()}` on '{subscription.subscription_id}' is not enabled",
                             subscription,
                             monitor))
                     # Checks if category set properly

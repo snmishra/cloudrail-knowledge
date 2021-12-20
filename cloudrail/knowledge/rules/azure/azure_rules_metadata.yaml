@@ -1592,12 +1592,12 @@ rules_metadata:
       - 5.1.1
     PCI DSS:
       3.2.1:
-        - '10.2'
-    resource_type:
-    - compute
-    rule_id: car_data_lake_store_diagnostic_logs_enabled
-    rule_type: context_aware
-    security_layer: logging
-    severity: medium
-    supported_iac_types:
-    - terraform
+      - '10.2'
+  resource_type:
+  - compute
+  rule_id: car_data_lake_store_diagnostic_logs_enabled
+  rule_type: context_aware
+  security_layer: logging
+  severity: medium
+  supported_iac_types:
+  - terraform
