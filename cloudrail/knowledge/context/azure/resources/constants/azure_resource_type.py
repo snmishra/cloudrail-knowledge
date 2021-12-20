@@ -43,3 +43,4 @@ class AzureResourceType(Enum):
     AZURERM_DATA_LAKE_STORE = 'azurerm_data_lake_store'
     AZURERM_SUBSCRIPTION = 'azurerm_subscription'
     AZURERM_BATCH_ACCOUNT = 'azurerm_batch_account'
+    AZURERM_LOGIC_APP_WORKFLOW = 'azurerm_logic_app_workflow'

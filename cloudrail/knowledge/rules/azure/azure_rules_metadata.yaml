@@ -1545,3 +1545,43 @@ rules_metadata:
   severity: medium
   supported_iac_types:
   - terraform
+
+- cloud_provider: azure
+  description:
+    params:
+    - Logic App Workflow
+    - an app
+    template: diagnostic_logs_enabled_description
+  human_readable_logic:
+    params:
+    - Logic App Workflow
+    template: diagnostic_logs_enabled_human_readable_name
+  name:
+    params:
+    - Logic App Workflow
+    template: diagnostic_logs_enabled_name
+  remediation_steps:
+    console:
+      params:
+      - <https://docs.microsoft.com/en-us/azure/data-lake-store/data-lake-store-diagnostic-logs#enable-diagnostic-logging-for-your-data-lake-storage-gen1-account>
+      - Logic App Workflow
+      template: diagnostic_logs_enabled_console_remediation_steps
+    terraform:
+      params:
+      - Logic App Workflow
+      template: diagnostic_logs_enabled_iac_remediation_steps
+  compliance:
+    CIS:
+      1.3.1:
+      - 5.1.1
+    PCI DSS:
+      3.2.1:
+      - '10.2'
+  resource_type:
+  - workflow
+  rule_id: car_logic_app_workflow_diagnostic_logs_enabled
+  rule_type: context_aware
+  security_layer: logging
+  severity: medium
+  supported_iac_types:
+  - terraform
