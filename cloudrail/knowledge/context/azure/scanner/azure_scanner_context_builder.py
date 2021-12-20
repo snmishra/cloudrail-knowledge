@@ -18,6 +18,7 @@ from cloudrail.knowledge.context.azure.resources_builders.scanner.network_interf
 from cloudrail.knowledge.context.azure.resources_builders.scanner.postgresql_server_builder import PostgreSqlServerBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.public_ip_builder import PublicIpBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.my_sql_server_builder import MySqlServerBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.search_service_builder import SearchServiceBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.security_center_auto_provisioning_builder import \
     SecurityCenterAutoProvisioningBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.security_center_contact_builder import SecurityCenterContactBuilder
@@ -94,4 +95,5 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
         context.batch_accounts = AliasesDict(*BatchAccountBuilder(*builder_args).build())
         context.iot_hubs = AliasesDict(*IoTHubBuilder(*builder_args).build())
         context.logic_app_workflows = AliasesDict(*LogicAppWorkflowBuilder(*builder_args).build())
+        context.search_services = AliasesDict(*SearchServiceBuilder(*builder_args).build())
         return context

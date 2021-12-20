@@ -45,3 +45,4 @@ class AzureResourceType(Enum):
     AZURERM_BATCH_ACCOUNT = 'azurerm_batch_account'
     AZURERM_IOT_HUB = 'azurerm_iothub'
     AZURERM_LOGIC_APP_WORKFLOW = 'azurerm_logic_app_workflow'
+    AZURERM_SEARCH_SERVICE = 'azurerm_search_service'

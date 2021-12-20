@@ -7,6 +7,7 @@ from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_aler
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.resources.aks.azure_kubernetes_cluster import AzureKubernetesCluster
 from cloudrail.knowledge.context.azure.resources.azure_resource_group import AzureResourceGroup
+from cloudrail.knowledge.context.azure.resources.search.azure_search_service import AzureSearchService
 from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_analytics_account import AzureDataLakeAnalyticsAccount
 from cloudrail.knowledge.context.azure.resources.databases.azure_cosmos_db_account import AzureCosmosDBAccount
 from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
@@ -89,6 +90,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  batch_accounts: AliasesDict[AzureBatchAccount] = None,
                  iot_hubs: AliasesDict[AzureIoTHub] = None,
                  logic_app_workflows: AliasesDict[AzureLogicAppWorkflow] = None,
+                 search_services: AliasesDict[AzureSearchService] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -133,6 +135,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.batch_accounts: AliasesDict[AzureBatchAccount] = batch_accounts or AliasesDict()
         self.iot_hubs: AliasesDict[AzureIoTHub] = iot_hubs or AliasesDict()
         self.logic_app_workflows: AliasesDict[AzureLogicAppWorkflow] = logic_app_workflows or AliasesDict()
+        self.search_services: AliasesDict[AzureSearchService] = search_services or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
     def get_all_monitored_resources(self) -> Set[IMonitorSettings]:

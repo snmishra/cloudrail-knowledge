@@ -102,3 +102,11 @@ class LogicAppWorkflowDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
 
     def get_resources(self, env_context: AzureEnvironmentContext) -> Iterable[Union[Mergeable, IMonitorSettings]]:
         return env_context.logic_app_workflows
+
+class SearchServiceDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
+
+    def get_id(self) -> str:
+        return 'car_search_service_diagnostic_logs_enabled'
+
+    def get_resources(self, env_context: AzureEnvironmentContext) -> Iterable[Union[Mergeable, IMonitorSettings]]:
+        return env_context.search_services
