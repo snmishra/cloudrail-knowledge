@@ -1,5 +1,6 @@
 import functools
 from typing import Dict, List, Set, Callable
+from cloudrail.knowledge.context.azure.resources.iot.azure_iot_hub import AzureIoTHub
 
 from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
 
@@ -40,6 +41,7 @@ from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
 from cloudrail.knowledge.context.azure.resources.webapp.web_app_stack import WebAppStack
+from cloudrail.knowledge.context.azure.resources.logic_app.azure_logic_app_workflow import AzureLogicAppWorkflow
 from cloudrail.knowledge.context.azure.resources.batch_management.azure_batch_account import AzureBatchAccount
 from cloudrail.knowledge.context.base_environment_context import (BaseEnvironmentContext, CheckovResult)
 
@@ -85,6 +87,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  data_lake_store: AliasesDict[AzureDataLakeStore] = None,
                  subscriptions: AliasesDict[AzureSubscription] = None,
                  batch_accounts: AliasesDict[AzureBatchAccount] = None,
+                 iot_hubs: AliasesDict[AzureIoTHub] = None,
+                 logic_app_workflows: AliasesDict[AzureLogicAppWorkflow] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -127,6 +131,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
         self.subscriptions: AliasesDict[AzureSubscription] = subscriptions or AliasesDict()
         self.batch_accounts: AliasesDict[AzureBatchAccount] = batch_accounts or AliasesDict()
+        self.iot_hubs: AliasesDict[AzureIoTHub] = iot_hubs or AliasesDict()
+        self.logic_app_workflows: AliasesDict[AzureLogicAppWorkflow] = logic_app_workflows or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
     def get_all_monitored_resources(self) -> Set[IMonitorSettings]:

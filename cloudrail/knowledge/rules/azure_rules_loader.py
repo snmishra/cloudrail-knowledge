@@ -2,7 +2,8 @@ from typing import Dict, List
 
 from cloudrail.knowledge.rules.abstract_rules_loader import AbstractRulesLoader
 from cloudrail.knowledge.rules.azure.context_aware.disgnostics_logs_enabled_rule import KeyVaultDiagnosticLogsEnabledRule, \
-    BatchAccountDiagnosticLogsEnabledRule, DataLakeAnalyticsDiagnosticLogsEnabledRule, DataLakeStoreDiagnosticLogsEnabledRule
+    BatchAccountDiagnosticLogsEnabledRule, DataLakeAnalyticsDiagnosticLogsEnabledRule, DataLakeStoreDiagnosticLogsEnabledRule, \
+    LogicAppWorkflowDiagnosticLogsEnabledRule, IotHubDiagnosticLogsEnabledRule
 from cloudrail.knowledge.rules.azure.context_aware.not_publicly_accessible_rule import VirtualMachineNotPubliclyAccessibleRdpRule, \
     VirtualMachineNotPubliclyAccessibleSshRule
 from cloudrail.knowledge.rules.azure.non_context_aware.abstract_web_app_using_managed_identity_rule import \
@@ -106,6 +107,9 @@ class AzureRulesLoader(AbstractRulesLoader):
             DataLakeAnalyticsDiagnosticLogsEnabledRule(),
             BatchAccountDiagnosticLogsEnabledRule(),
             NetworkSecurityGroupRulesMonitorActivityLogAlertExistsRule(),
-            DataLakeStoreDiagnosticLogsEnabledRule()
+            DataLakeStoreDiagnosticLogsEnabledRule(),
+            IotHubDiagnosticLogsEnabledRule(),
+            DataLakeStoreDiagnosticLogsEnabledRule(),
+            LogicAppWorkflowDiagnosticLogsEnabledRule()
         ]
         return {rule.get_id(): rule for rule in rules}
