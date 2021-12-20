@@ -436,3 +436,15 @@ azurerm_iothub:
       - route
       - public_network_access_enabled
       - min_tls_version
+
+azurerm_logic_app_workflow:
+  known_fields:
+    pass:
+      - name
+      - access_control
+      - enabled
+      - logic_app_integration_account_id
+      - workflow_schema
+      - workflow_version
+      - workflow_parameters
+      - parameters

@@ -41,6 +41,7 @@ from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
 from cloudrail.knowledge.context.azure.resources.webapp.web_app_stack import WebAppStack
+from cloudrail.knowledge.context.azure.resources.logic_app.azure_logic_app_workflow import AzureLogicAppWorkflow
 from cloudrail.knowledge.context.azure.resources.batch_management.azure_batch_account import AzureBatchAccount
 from cloudrail.knowledge.context.base_environment_context import (BaseEnvironmentContext, CheckovResult)
 
@@ -87,6 +88,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  subscriptions: AliasesDict[AzureSubscription] = None,
                  batch_accounts: AliasesDict[AzureBatchAccount] = None,
                  iot_hubs: AliasesDict[AzureIoTHub] = None,
+                 logic_app_workflows: AliasesDict[AzureLogicAppWorkflow] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -130,6 +132,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.subscriptions: AliasesDict[AzureSubscription] = subscriptions or AliasesDict()
         self.batch_accounts: AliasesDict[AzureBatchAccount] = batch_accounts or AliasesDict()
         self.iot_hubs: AliasesDict[AzureIoTHub] = iot_hubs or AliasesDict()
+        self.logic_app_workflows: AliasesDict[AzureLogicAppWorkflow] = logic_app_workflows or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
     def get_all_monitored_resources(self) -> Set[IMonitorSettings]:
