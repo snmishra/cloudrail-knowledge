@@ -2179,7 +2179,7 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     def _assign_keys_data_to_ssm_parameter(self, ssm_param: SsmParameter, keys_data: List[KmsKey]):
         def get_kms_data():
-            kms_data = next((kms_keys_data for kms_keys_data in keys_data if ssm_param.kms_key_id in kms_keys_data.arn
+            kms_data = next((kms_keys_data for kms_keys_data in keys_data if kms_keys_data.arn and ssm_param.kms_key_id in kms_keys_data.arn
                              or ssm_param.kms_key_id == kms_keys_data.arn), None)
             if kms_data is None:
                 kms_data: KmsKey = self.pseudo_builder.create_kms_key(ssm_param.get_keys()[0], None,
