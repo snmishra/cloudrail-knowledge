@@ -76,3 +76,64 @@ class NetworkSecurityGroupRulesMonitorActivityLogAlertExistsRule(BaseMonitorActi
 
     def _get_category(self) -> str:
         return MonitorActivityLogAlertCriteriaCategory.ADMINISTRATIVE.value
+
+
+class NetworkSecurityGroupMonitorActivityLogAlertExistsRule(BaseMonitorActivityLogAlertExistsRule):
+    def get_id(self) -> str:
+        return 'non_car_activity_log_alert_create_update_delete_network_security_groups'
+
+    def _get_operations_name(self) -> List[str]:
+        return ["Microsoft.Network/networkSecurityGroups/write",
+                "Microsoft.Network/networkSecurityGroups/delete",
+                "Microsoft.ClassicNetwork/networkSecurityGroups/write",
+                "Microsoft.ClassicNetwork/networkSecurityGroups/delete"]
+
+    def _get_resource_name(self) -> str:
+        return "Network Security Group"
+
+    def _get_category(self) -> str:
+        return MonitorActivityLogAlertCriteriaCategory.ADMINISTRATIVE.value
+
+
+class PolicyAssignmentMonitorActivityLogAlertExistsRule(BaseMonitorActivityLogAlertExistsRule):
+    def get_id(self) -> str:
+        return 'non_car_activity_log_alert_create_update_delete_policy_assignment'
+
+    def _get_operations_name(self) -> List[str]:
+        return ["Microsoft.Authorization/policyAssignments/write",
+                "Microsoft.Authorization/policyAssignments/delete"]
+
+    def _get_resource_name(self) -> str:
+        return "Policy Assignment"
+
+    def _get_category(self) -> str:
+        return MonitorActivityLogAlertCriteriaCategory.ADMINISTRATIVE.value
+
+
+class SecurityPolicyMonitorActivityLogAlertExistsRule(BaseMonitorActivityLogAlertExistsRule):
+    def get_id(self) -> str:
+        return 'non_car_activity_log_alert_update_security_policy'
+
+    def _get_operations_name(self) -> List[str]:
+        return ["Microsoft.Security/policies/write"]
+
+    def _get_resource_name(self) -> str:
+        return "Security Policy"
+
+    def _get_category(self) -> str:
+        return MonitorActivityLogAlertCriteriaCategory.SECURITY.value
+
+
+class SecuritySolutionsMonitorActivityLogAlertExistsRule(BaseMonitorActivityLogAlertExistsRule):
+    def get_id(self) -> str:
+        return 'non_car_activity_log_alert_create_update_delete_security_solutions'
+
+    def _get_operations_name(self) -> List[str]:
+        return ["Microsoft.Security/securitySolutions/write",
+                "Microsoft.Security/securitySolutions/delete"]
+
+    def _get_resource_name(self) -> str:
+        return "Security Solutions"
+
+    def _get_category(self) -> str:
+        return MonitorActivityLogAlertCriteriaCategory.SECURITY.value
