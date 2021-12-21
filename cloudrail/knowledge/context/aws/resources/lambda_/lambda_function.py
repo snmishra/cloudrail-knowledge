@@ -39,10 +39,10 @@ class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
         self.arn: str = arn
         self.qualified_arn: str = qualified_arn
         self.function_name: str = function_name
-        self.lambda_func_version: str = lambda_func_version
-        self.execution_role_arn: str = role_arn
-        self.handler: str = handler
-        self.runtime: str = runtime
+        self.lambda_func_version: Optional[str] = lambda_func_version
+        self.execution_role_arn: Optional[str] = role_arn
+        self.handler: Optional[str] = handler
+        self.runtime: Optional[str] = runtime
         self.vpc_config: NetworkConfiguration = vpc_config
         self.lambda_func_alias: Optional[LambdaAlias] = None
         self.log_group: CloudWatchLogGroup = None
