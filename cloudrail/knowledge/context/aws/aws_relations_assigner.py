@@ -162,7 +162,7 @@ from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironme
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
 from cloudrail.knowledge.context.mergeable import EntityOrigin, Mergeable
 from cloudrail.knowledge.utils.arn_utils import build_arn, get_arn_resource, is_valid_arn
-from cloudrail.knowledge.utils.utils import flat_list, hash_list
+from cloudrail.knowledge.utils.utils import flat_list, hash_list, is_iterable_with_values
 
 from cloudrail.knowledge.context.aws.parallel.create_iam_entity_to_esc_actions_task import CreateIamEntityToEscActionsMapTask
 from cloudrail.knowledge.context.aws.pseudo_builder import PseudoBuilder
@@ -301,7 +301,8 @@ class AwsRelationsAssigner(DependencyInvocation):
                              ctx.load_balancers, (ctx.load_balancer_target_groups, ctx.load_balancer_target_group_associations)),
             IterFunctionData(self._assign_load_balancer_listener_ports,
                              ctx.load_balancers, (ctx.load_balancer_listeners,)),
-            IterFunctionData(self._assign_load_balancer_target_ec2_instance, ctx.load_balancer_targets, (ctx.ec2s,)),
+            IterFunctionData(self._assign_load_balancer_target_ec2_instance, ctx.load_balancer_targets, (ctx.ec2s,),
+                             [self._assign_ec2_network_interfaces]),
             IterFunctionData(self._assign_load_balancer_target_group_targets, ctx.load_balancer_target_groups, (ctx.load_balancer_targets,)),
             IterFunctionData(self._assign_load_balancer_attributes, ctx.load_balancers, (ctx.load_balancers_attributes,)),
             ### Network Interface ###
@@ -1028,10 +1029,15 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     def _assign_ec2_network_interfaces(self, ec2: Ec2Instance, network_interfaces: AliasesDict[NetworkInterface],
                                        subnets: AliasesDict[Subnet], vpcs: AliasesDict[Vpc]):
-        ec2.network_resource.network_interfaces = ResourceInvalidator.get_by_logic(
-            lambda: [eni for eni in network_interfaces if eni.eni_id in ec2.network_interfaces_ids],
-            False
-        )
+        def get_ec2_network_interfaces():
+            enis: List[NetworkInterface] = [eni for eni in network_interfaces if eni.eni_id in ec2.network_interfaces_ids]
+            if is_iterable_with_values(enis) and all(not eni.is_primary for eni in enis):
+                return None
+            else:
+                return enis
+
+        ec2.network_resource.network_interfaces = ResourceInvalidator.get_by_logic(get_ec2_network_interfaces, True, ec2,
+                                                                                   'The EC2 instance does not have primaty ENI attached')
 
         if not ec2.network_resource.network_interfaces and ec2.is_managed_by_iac:
             self.pseudo_builder.create_ec2_network_interface(ec2, subnets, vpcs)
