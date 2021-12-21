@@ -28,8 +28,8 @@ class LambdaFunction(NetworkEntity, PoliciedResource, AwsClient):
     ARN_PARSER: ArnParser = ArnParser()
 
     def __init__(self, account: str, region: str, arn: str, qualified_arn: str, function_name: str,
-                 lambda_func_version: str, role_arn: str, handler: str,
-                 runtime: str, vpc_config: NetworkConfiguration, xray_tracing_enabled: bool):
+                 lambda_func_version: str, role_arn: Optional[str], handler: Optional[str],
+                 runtime: Optional[str], vpc_config: NetworkConfiguration, xray_tracing_enabled: bool):
         NetworkEntity.__init__(self, function_name, account, region, AwsServiceName.AWS_LAMBDA_FUNCTION,
                                AwsServiceAttributes(aws_service_type=AwsServiceType.LAMBDA.value, region=region))
         PoliciedResource.__init__(self, account, region, AwsServiceName.AWS_LAMBDA_FUNCTION,
