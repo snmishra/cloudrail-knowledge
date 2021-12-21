@@ -1178,7 +1178,7 @@ class AwsRelationsAssigner(DependencyInvocation):
                                                                                             monitoring=monitoring)
 
             for pseudo_ec2 in pseudo_ec2s:
-                self.pseudo_builder.create_ec2_network_interface(pseudo_ec2, subnets, vpcs, launch_configuration)
+                pseudo_ec2.network_resource.add_interface(self.pseudo_builder.create_ec2_network_interface(pseudo_ec2, subnets, vpcs, launch_configuration))
 
             self._attach_load_balancer_to_auto_scaling_group(auto_scaling_group=auto_scaling_group,
                                                              load_balancers=load_balancers,
