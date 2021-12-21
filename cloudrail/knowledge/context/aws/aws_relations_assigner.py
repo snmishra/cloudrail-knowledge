@@ -162,7 +162,7 @@ from cloudrail.knowledge.context.aws.aws_environment_context import AwsEnvironme
 from cloudrail.knowledge.context.ip_protocol import IpProtocol
 from cloudrail.knowledge.context.mergeable import EntityOrigin, Mergeable
 from cloudrail.knowledge.utils.arn_utils import build_arn, get_arn_resource, is_valid_arn
-from cloudrail.knowledge.utils.utils import flat_list, hash_list, is_iterable_with_values
+from cloudrail.knowledge.utils.utils import flat_list, hash_list
 
 from cloudrail.knowledge.context.aws.parallel.create_iam_entity_to_esc_actions_task import CreateIamEntityToEscActionsMapTask
 from cloudrail.knowledge.context.aws.pseudo_builder import PseudoBuilder
