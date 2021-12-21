@@ -46,3 +46,4 @@ class AzureResourceType(Enum):
     AZURERM_IOT_HUB = 'azurerm_iothub'
     AZURERM_LOGIC_APP_WORKFLOW = 'azurerm_logic_app_workflow'
     AZURERM_SEARCH_SERVICE = 'azurerm_search_service'
+    AZURERM_STREAM_ANALYTICS_JOB = 'azurerm_stream_analytics_job'
