@@ -459,3 +459,11 @@ azurerm_search_service:
       - replica_count
       - allowed_ips
       - identity
+
+azurerm_servicebus_namespace:
+  known_fields:
+    pass:
+      - name
+      - sku
+      - capacity
+      - zone_redundant

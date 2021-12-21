@@ -110,3 +110,11 @@ class SearchServiceDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
 
     def get_resources(self, env_context: AzureEnvironmentContext) -> Iterable[Union[Mergeable, IMonitorSettings]]:
         return env_context.search_services
+
+class ServiceBusNamespaceDiagnosticLogsEnabledRule(AbstractDiagnosticLogsRule):
+
+    def get_id(self) -> str:
+        return 'car_service_bus_namespace_diagnostic_logs_enabled'
+
+    def get_resources(self, env_context: AzureEnvironmentContext) -> Iterable[Union[Mergeable, IMonitorSettings]]:
+        return env_context.service_bus_namespaces
