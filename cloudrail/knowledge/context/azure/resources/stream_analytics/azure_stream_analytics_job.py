@@ -56,8 +56,8 @@ class AzureStreamAnalyticsJob(AzureResource, IMonitorSettings):
 
     def __init__(self,
                  name: str,
-                 compatibility_level: Optional[StreamAnalyticsJobCompatibilityLevel],
-                 data_locale: Optional[str],
+                 compatibility_level: StreamAnalyticsJobCompatibilityLevel,
+                 data_locale: str,
                  events_late_arrival_max_delay_in_seconds: int,
                  events_out_of_order_max_delay_in_seconds: int,
                  events_out_of_order_policy: StreamAnalyticsJobEventsPolicy,
@@ -67,8 +67,8 @@ class AzureStreamAnalyticsJob(AzureResource, IMonitorSettings):
                  transformation_query: str):
         super().__init__(AzureResourceType.AZURERM_STREAM_ANALYTICS_JOB)
         self.name: str = name
-        self.compatibility_level: Optional[StreamAnalyticsJobCompatibilityLevel] = compatibility_level
-        self.data_locale: Optional[str] = data_locale
+        self.compatibility_level: StreamAnalyticsJobCompatibilityLevel = compatibility_level
+        self.data_locale: str = data_locale
         self.events_late_arrival_max_delay_in_seconds: int = events_late_arrival_max_delay_in_seconds
         self.events_out_of_order_max_delay_in_seconds: int = events_out_of_order_max_delay_in_seconds
         self.events_out_of_order_policy: StreamAnalyticsJobEventsPolicy = events_out_of_order_policy
@@ -98,5 +98,12 @@ class AzureStreamAnalyticsJob(AzureResource, IMonitorSettings):
         return self.monitor_diagnostic_settings
 
     def to_drift_detection_object(self) -> dict:
-        return {
+        return {'compatibility_level': self.compatibility_level,
+                'data_locale': self.data_locale,
+                'events_late_arrival_max_delay_in_seconds': self.events_late_arrival_max_delay_in_seconds,
+                'events_out_of_order_max_delay_in_seconds': self.events_out_of_order_max_delay_in_seconds,
+                'identity': self.identity,
+                'output_error_policy': self.output_error_policy,
+                'stream_units': self.stream_units,
+                'transformation_query': self.transformation_query,
                 'monitor_diagnostic_settings': [settings.to_drift_detection_object() for settings in self.monitor_diagnostic_settings]}
