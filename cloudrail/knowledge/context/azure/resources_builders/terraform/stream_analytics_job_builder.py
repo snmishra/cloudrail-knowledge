@@ -24,7 +24,7 @@ class StreamAnalyticsJobBuilder(AzureTerraformBuilder):
                                        identity=identity,
                                        output_error_policy=enum_implementation(StreamAnalyticsJobOutputErrorPolicy,
                                                                                self._get_known_value(attributes, 'output_error_policy', 'Drop')),
-                                       stream_units=attributes['stream_units'],
+                                       stream_units=attributes['streaming_units'],
                                        transformation_query=attributes['transformation_query'])
 
     def get_service_name(self) -> AzureResourceType:
