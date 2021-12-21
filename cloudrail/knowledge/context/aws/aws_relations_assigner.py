@@ -1029,18 +1029,13 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     def _assign_ec2_network_interfaces(self, ec2: Ec2Instance, network_interfaces: AliasesDict[NetworkInterface],
                                        subnets: AliasesDict[Subnet], vpcs: AliasesDict[Vpc]):
-        def get_ec2_network_interfaces():
-            enis: List[NetworkInterface] = [eni for eni in network_interfaces if eni.eni_id in ec2.network_interfaces_ids]
-            if is_iterable_with_values(enis) and all(not eni.is_primary for eni in enis):
-                return None
-            else:
-                return enis
+        def get_enis():
+            enis = [eni for eni in network_interfaces if eni.eni_id in ec2.network_interfaces_ids]
+            if not enis and ec2.is_managed_by_iac:
+                enis.append(self.pseudo_builder.create_ec2_network_interface(ec2, subnets, vpcs))
+            return enis if any(eni.is_primary for eni in enis) else None
 
-        ec2.network_resource.network_interfaces = ResourceInvalidator.get_by_logic(get_ec2_network_interfaces, True, ec2,
-                                                                                   'The EC2 instance does not have primaty ENI attached')
-
-        if not ec2.network_resource.network_interfaces and ec2.is_managed_by_iac:
-            self.pseudo_builder.create_ec2_network_interface(ec2, subnets, vpcs)
+        ec2.network_resource.network_interfaces = ResourceInvalidator.get_by_logic(get_enis, True, ec2, 'Could not find primary ENI')
 
         for eni in ec2.network_resource.network_interfaces:
             eni.owner = ec2
