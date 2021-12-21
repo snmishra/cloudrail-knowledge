@@ -166,6 +166,7 @@ class PseudoBuilder:
         self.ctx.network_interfaces.update(pseudo_eni)
         ec2.network_interfaces_ids = [pseudo_eni.eni_id]
         pseudo_eni.owner = ec2
+        return pseudo_eni
 
     def create_vpc_endpoint_network_interface(self, vpc_endpoint: VpcEndpointInterface):
         for subnet_id in vpc_endpoint.subnet_ids:
