@@ -22,7 +22,7 @@ class TestNetworkSecurityGroupRulesMonitorActivityLogAlertExistsRule(TestCase):
         ]
     )
 
-    def test_compute_subnetwork_enable_flow_log_rule(self, unused_name: str, enabled: bool, category: str, operations_name_exists: bool, total_issues: int, rule_status: RuleResultType):
+    def test_network_security_group_rules_monitor_activity_log_alert_exists_rule(self, unused_name: str, enabled: bool, category: str, operations_name_exists: bool, total_issues: int, rule_status: RuleResultType):
         # Arrange
         subscription: AzureSubscription = create_empty_entity(AzureSubscription)
         monitors: AliasesDict[AzureMonitorActivityLogAlert] = AliasesDict()
