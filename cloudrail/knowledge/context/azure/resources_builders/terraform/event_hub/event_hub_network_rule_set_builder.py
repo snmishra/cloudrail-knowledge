@@ -1,5 +1,4 @@
-from typing import List, Optional
-from cloudrail.knowledge.context.aws.resources_builders.terraform.terraform_resource_builder_helper import _is_known_value
+from typing import Optional
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.event_hub.event_hub_network_rule_set import EventHubNetworkRuleSet, EventHubNetworkRuleAction, \
     EventHubNetworkRuleNetworkRule

@@ -16,6 +16,28 @@ class TestEventHubNamespace(AzureContextTest):
     def test_default_settings(self, ctx: AzureEnvironmentContext):
         event_hub_namespace: AzureEventHubNamespace = ctx.event_hub_namespaces.get('cr3684-eventhubnam')
         self.assertIsNotNone(event_hub_namespace)
+        self.assertFalse(event_hub_namespace.auto_inflate_enabled)
+        self.assertEqual(event_hub_namespace.capacity, 1)
+        self.assertEqual(event_hub_namespace.maximum_throughput_units, 0)
+        self.assertEqual(event_hub_namespace.namespace_id, '/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourceGroups/cr3684-rg/providers/'
+                                                           'Microsoft.EventHub/namespaces/cr3684-eventhubnam')
+        self.assertEqual(event_hub_namespace.sku, EventHubNamespaceSku.STANDARD)
+        self.assertEqual(len(event_hub_namespace.monitor_diagnostic_settings), 0)
+        self.assertIsNotNone(event_hub_namespace.network_rule_set)
+        net_rule: EventHubNetworkRuleSet = event_hub_namespace.network_rule_set
+        self.assertEqual(net_rule.default_action, EventHubNetworkRuleAction.DENY)
+        self.assertEqual(net_rule.rule_set_name, 'default')
+        self.assertEqual(net_rule.rule_set_id.lower(), '/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourceGroups/cr3684-rg/providers/'
+                                               'Microsoft.EventHub/namespaces/cr3684-eventhubnam/networkRuleSets/default'.lower())
+        self.assertEqual(net_rule.ip_mask_list, [])
+        self.assertFalse(net_rule.trusted_service_access_enabled)
+        self.assertEqual(net_rule.virtual_network_rule_list, [])
+        self.assertIsNone(event_hub_namespace.system_managed_identity)
+
+    @context(module_path="custom_settings")
+    def test_custom_settings(self, ctx: AzureEnvironmentContext):
+        event_hub_namespace: AzureEventHubNamespace = ctx.event_hub_namespaces.get('cr3684-eventhubnam')
+        self.assertIsNotNone(event_hub_namespace)
         self.assertTrue(event_hub_namespace.auto_inflate_enabled)
         self.assertEqual(event_hub_namespace.capacity, 2)
         self.assertEqual(event_hub_namespace.maximum_throughput_units, 2)
