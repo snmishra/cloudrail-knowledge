@@ -5,6 +5,8 @@ from typing import Optional
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.context.azure.resources_builders.scanner.data_lake_store_builder import DataLakeStoreBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.event_hub.event_hub_namespace_builder import EventHubNamespaceBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.event_hub.event_hub_network_rule_set_builder import EventHubNetworkRuleSetBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.keyvault_builder import KeyVaultBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.kubernetes_cluster_builder import KubernetesClusterBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.managed_disk_builder import ManagedDiskBuilder
@@ -90,4 +92,6 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
         context.data_lake_store = AliasesDict(*DataLakeStoreBuilder(*builder_args).build())
         context.subscriptions = AliasesDict(*SubscriptionBuilder(*builder_args).build())
         context.batch_accounts = AliasesDict(*BatchAccountBuilder(*builder_args).build())
+        context.event_hub_namespaces = AliasesDict(*EventHubNamespaceBuilder(*builder_args).build())
+        context.event_hub_network_rule_sets = AliasesDict(*EventHubNetworkRuleSetBuilder(*builder_args).build())
         return context

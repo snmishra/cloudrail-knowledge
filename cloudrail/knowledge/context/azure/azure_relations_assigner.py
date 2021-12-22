@@ -1,5 +1,7 @@
 from typing import List
 
+from cloudrail.knowledge.context.azure.resources.event_hub.azure_event_hub_namespace import AzureEventHubNamespace
+from cloudrail.knowledge.context.azure.resources.event_hub.event_hub_network_rule_set import EventHubNetworkRuleSet
 from cloudrail.knowledge.context.azure.resources.i_monitor_settings import IMonitorSettings
 from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
 from cloudrail.knowledge.context.azure.resources.network.azure_application_security_group import AzureApplicationSecurityGroup
@@ -60,6 +62,9 @@ class AzureRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_subnet_to_ip_config, ctx.network_interfaces, (ctx.subnets,)),
             ### Monitor Activity Log Alert
             IterFunctionData(self._assign_monitor_activity_log_alert_to_subscription, ctx.subscriptions, (ctx.monitor_activity_log_alert,)),
+            # Event Hub Namespace
+            IterFunctionData(self._assign_network_rule_set_to_event_hub_namespace, ctx.event_hub_network_rule_sets, (ctx.event_hub_namespaces,)),
+
         ]
 
         super().__init__(function_pool, context=ctx)
@@ -171,3 +176,10 @@ class AzureRelationsAssigner(DependencyInvocation):
         subscription.monitor_activity_alert_log_list = ResourceInvalidator.get_by_logic(
             lambda: [monitor for monitor in monitor_activity_log_alert if subscription.get_id() in monitor.scopes],
             False)
+
+    @staticmethod
+    def _assign_network_rule_set_to_event_hub_namespace(network_rule_set: EventHubNetworkRuleSet, event_hub_namespaces: AliasesDict[AzureEventHubNamespace]):
+        event_hub: AzureEventHubNamespace = ResourceInvalidator.get_by_id(event_hub_namespaces,
+                                                                          network_rule_set.event_hub_namespace_id,
+                                                                          True, network_rule_set)
+        event_hub.network_rule_set = network_rule_set

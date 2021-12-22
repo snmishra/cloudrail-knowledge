@@ -1,6 +1,8 @@
 import functools
 from typing import Dict, List, Set, Callable
 
+from cloudrail.knowledge.context.azure.resources.event_hub.azure_event_hub_namespace import AzureEventHubNamespace
+from cloudrail.knowledge.context.azure.resources.event_hub.event_hub_network_rule_set import EventHubNetworkRuleSet
 from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
@@ -85,6 +87,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  data_lake_store: AliasesDict[AzureDataLakeStore] = None,
                  subscriptions: AliasesDict[AzureSubscription] = None,
                  batch_accounts: AliasesDict[AzureBatchAccount] = None,
+                 event_hub_namespaces: AliasesDict[AzureEventHubNamespace] = None,
+                 event_hub_network_rule_sets: AliasesDict[EventHubNetworkRuleSet] = None
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -127,6 +131,8 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
         self.subscriptions: AliasesDict[AzureSubscription] = subscriptions or AliasesDict()
         self.batch_accounts: AliasesDict[AzureBatchAccount] = batch_accounts or AliasesDict()
+        self.event_hub_namespaces: AliasesDict[AzureEventHubNamespace] = event_hub_namespaces or AliasesDict()
+        self.event_hub_network_rule_sets: AliasesDict[EventHubNetworkRuleSet] = event_hub_network_rule_sets or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
     def get_all_monitored_resources(self) -> Set[IMonitorSettings]:

@@ -43,3 +43,5 @@ class AzureResourceType(Enum):
     AZURERM_DATA_LAKE_STORE = 'azurerm_data_lake_store'
     AZURERM_SUBSCRIPTION = 'azurerm_subscription'
     AZURERM_BATCH_ACCOUNT = 'azurerm_batch_account'
+    AZURERM_EVENTHUB_NAMESPACE = 'azurerm_eventhub_namespace'
+    AZURERM_USER_ASSIGNED_IDENTITY = 'azurerm_user_assigned_identity'
