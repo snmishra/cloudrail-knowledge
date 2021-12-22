@@ -5,6 +5,7 @@ from cloudrail.knowledge.context.azure.resources.vm.azure_virtual_machine import
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface import AzureNetworkInterface
+from cloudrail.knowledge.context.azure.resources.vmss.azure_virtual_machine_scale_set_extension import AzureVirtualMachineScaleSetExtension
 
 
 class AzureVirtualMachineScaleSet(AzureResource):
@@ -22,6 +23,7 @@ class AzureVirtualMachineScaleSet(AzureResource):
         self.os_type: OperatingSystemType = os_type
         self.disk_settings: DiskSettings = disk_settings
         self.network_interfaces_config: List[AzureNetworkInterface] = network_interfaces_config
+        self.extension_config: AzureVirtualMachineScaleSetExtension = None
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]

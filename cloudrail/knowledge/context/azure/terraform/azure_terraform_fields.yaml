@@ -320,6 +320,7 @@ azurerm_virtual_machine_scale_set:
       - os_profile_linux_config
       - storage_profile_os_disk
       - storage_profile_data_disk
+      - extension
 
 azurerm_cosmosdb_account:
   known_fields:
@@ -481,3 +482,12 @@ azurerm_servicebus_namespace:
       - sku
       - capacity
       - zone_redundant
+
+azurerm_virtual_machine_scale_set_extension:
+  known_fields:
+    pass:
+      - name
+      - virtual_machine_scale_set_id
+      - publisher
+      - type
+      - type_handler_version

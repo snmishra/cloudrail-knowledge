@@ -23,6 +23,8 @@ from cloudrail.knowledge.context.azure.resources.network.azure_security_group_to
 from cloudrail.knowledge.context.azure.resources.network.azure_subnet import AzureSubnet
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface_security_group_association import AzureNetworkInterfaceSecurityGroupAssociation
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface import AzureNetworkInterface
+from cloudrail.knowledge.context.azure.resources.vmss.azure_virtual_machine_scale_set import AzureVirtualMachineScaleSet
+from cloudrail.knowledge.context.azure.resources.vmss.azure_virtual_machine_scale_set_extension import AzureVirtualMachineScaleSetExtension
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.context.azure.pseudo_builder import PseudoBuilder
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
@@ -60,6 +62,8 @@ class AzureRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_subnet_to_ip_config, ctx.network_interfaces, (ctx.subnets,)),
             ### Monitor Activity Log Alert
             IterFunctionData(self._assign_monitor_activity_log_alert_to_subscription, ctx.subscriptions, (ctx.monitor_activity_log_alert,)),
+            ### VMSS
+            IterFunctionData(self._assign_extension_to_vmss, ctx.virtual_machines_scale_sets, (ctx.vmss_extentions,)),
         ]
 
         super().__init__(function_pool, context=ctx)
@@ -171,3 +175,8 @@ class AzureRelationsAssigner(DependencyInvocation):
         subscription.monitor_activity_alert_log_list = ResourceInvalidator.get_by_logic(
             lambda: [monitor for monitor in monitor_activity_log_alert if subscription.get_id() in monitor.scopes],
             False)
+
+
+    @staticmethod
+    def _assign_extension_to_vmss(vmss: AzureVirtualMachineScaleSet, vmss_extentions: AliasesDict[AzureVirtualMachineScaleSetExtension]):
+        vmss.extension_config = ResourceInvalidator.get_by_id(vmss_extentions, vmss.get_id(), False, case_sensitive=False)

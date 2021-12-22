@@ -37,6 +37,7 @@ from cloudrail.knowledge.context.azure.resources_builders.scanner.subnet_network
     SecurityGroupToSubnetAssociationBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.virtual_machine_builder import VirtualMachineBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.virtual_machine_scale_set_builder import VirtualMachineScaleSetBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.vmss_extension_builder import VmssExtensionBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.vnet_gateway_builder import VnetGatewayBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.iot_hub_builder import IoTHubBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.cosmos_db_account_builder import CosmosDBAccountBuilder
@@ -100,4 +101,5 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
         context.search_services = AliasesDict(*SearchServiceBuilder(*builder_args).build())
         context.service_bus_namespaces = AliasesDict(*ServiceBusNamespaceBuilder(*builder_args).build())
         context.stream_analytics_jobs = AliasesDict(*StreamAnalyticsJobBuilder(*builder_args).build())
+        context.vmss_extentions = AliasesDict(*VmssExtensionBuilder(*builder_args).build())
         return context
