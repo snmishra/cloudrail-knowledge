@@ -64,7 +64,14 @@ class AzureEventHubNamespace(AzureResource, IMonitorSettings):
         return 'EventHub Namespace' + ('s' if is_plural else '')
 
     def to_drift_detection_object(self) -> dict:
-        return {}  # todo
+        return {'sku': self.sku,
+                'capacity': self.capacity,
+                'auto_inflate_enabled': self.auto_inflate_enabled,
+                'system_managed_identity': self.system_managed_identity and self.system_managed_identity.to_drift_detection_object(),
+                'maximum_throughput_units': self.maximum_throughput_units,
+                'network_rule_set': self.network_rule_set and self.network_rule_set.to_drift_detection_object(),
+                'monitor_diagnostic_settings': [settings.to_drift_detection_object() for settings in self.monitor_diagnostic_settings]
+                }
 
     def get_id(self) -> str:
         return self.namespace_id

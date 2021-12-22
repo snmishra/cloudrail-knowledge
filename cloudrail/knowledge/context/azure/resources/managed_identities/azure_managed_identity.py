@@ -13,3 +13,9 @@ class AzureManagedIdentity:
         self.principal_id: str = principal_id
         self.tenant_id: str = tenant_id
         self.identity_type: ManagedIdentityType = identity_type
+
+    def to_drift_detection_object(self) -> dict:
+        return {'principal_id': self.principal_id,
+                'tenant_id': self.tenant_id,
+                'identity_type': self.identity_type,
+                }

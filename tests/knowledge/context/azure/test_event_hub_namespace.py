@@ -34,8 +34,8 @@ class TestEventHubNamespace(AzureContextTest):
         self.assertEqual(net_rule.virtual_network_rule_list, [])
         self.assertIsNone(event_hub_namespace.system_managed_identity)
 
-    @context(module_path="custom_settings")
-    def test_custom_settings(self, ctx: AzureEnvironmentContext):
+    @context(module_path="custom_config")
+    def test_custom_config(self, ctx: AzureEnvironmentContext):
         event_hub_namespace: AzureEventHubNamespace = ctx.event_hub_namespaces.get('cr3684-eventhubnam')
         self.assertIsNotNone(event_hub_namespace)
         self.assertTrue(event_hub_namespace.auto_inflate_enabled)
