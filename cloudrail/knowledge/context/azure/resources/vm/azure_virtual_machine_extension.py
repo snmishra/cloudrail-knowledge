@@ -1,16 +1,21 @@
+from enum import Enum
 from typing import Optional, List
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 
+class ResourceType(str, Enum):
+    VMSS = 'vmss'
+    VM = 'vm'
 
-class AzureVirtualMachineScaleSetExtension(AzureResource):
+
+class AzureVirtualMachineExtension(AzureResource):
     """
         Attributes:
             name: The name for the Virtual Machine Scale Set Extension
             publisher: Specifies the Publisher of the Extension
             extension_type: Specifies the type of the Extension
             type_handler_version: Specifies the version of the extension to use
-            virtual_machine_scale_set_id: The ID of the Virtual Machine Scale Set
+            attached_resource_id: The ID of the Virtual Machine Scale Set or the Virtual Machine which this extnesion config relates to.
     """
 
     def __init__(self,
@@ -18,18 +23,23 @@ class AzureVirtualMachineScaleSetExtension(AzureResource):
                  publisher: str,
                  extension_type: str,
                  type_handler_version: str,
-                 virtual_machine_scale_set_id: str):
-        super().__init__(AzureResourceType.AZURERM_VIRTUAL_MACHINE_SCALE_SET_EXTENSION)
+                 attached_resource_id: str,
+                 resource_attached_type: ResourceType):
+        super().__init__(AzureResourceType.AZURERM_VIRTUAL_MACHINE_EXTENSION)
         self.name: str = name
         self.publisher: str = publisher
         self.extension_type: str = extension_type
         self.type_handler_version: str = type_handler_version
-        self.virtual_machine_scale_set_id: str = virtual_machine_scale_set_id
-        self.with_aliases(self.virtual_machine_scale_set_id)
+        self.attached_resource_id: str = attached_resource_id
+        self.resource_attached_type: ResourceType = resource_attached_type
 
     def get_cloud_resource_url(self) -> Optional[str]:
-        return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/' \
-               f'{self.resource_group_name}/providers/Microsoft.Compute/virtualMachineScaleSets/{self.virtual_machine_scale_set_id}/extensions'
+        if self.resource_attached_type == ResourceType.VMSS:
+            return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/' \
+                f'{self.resource_group_name}/providers/Microsoft.Compute/virtualMachineScaleSets/{self.attached_resource_id}/extensions'
+        else:
+            return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/' \
+                f'{self.resource_group_name}/providers/Microsoft.Compute/virtualMachine/{self.attached_resource_id}/extensions'
 
     @property
     def is_tagable(self) -> bool:
