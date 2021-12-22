@@ -3,6 +3,7 @@ from typing import Optional, List
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.resources.i_monitor_settings import IMonitorSettings
+from cloudrail.knowledge.context.azure.resources.managed_identities.azure_managed_identity import AzureManagedIdentity
 from cloudrail.knowledge.context.azure.resources.monitor.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
 from cloudrail.knowledge.context.field_active import FieldActive
 
@@ -35,7 +36,7 @@ class AzureDataLakeStore(AzureResource, IMonitorSettings):
                  tier: DataLakeStoreTier,
                  encryption_state: FieldActive,
                  encryption_type: str,
-                 identity: Optional[str],
+                 identity: Optional[AzureManagedIdentity],
                  firewall_allow_azure_ips: FieldActive,
                  firewall_state: FieldActive):
         super().__init__(AzureResourceType.AZURERM_DATA_LAKE_STORE)
@@ -43,7 +44,7 @@ class AzureDataLakeStore(AzureResource, IMonitorSettings):
         self.tier: DataLakeStoreTier = tier
         self.encryption_state: FieldActive = encryption_state
         self.encryption_type: str = encryption_type
-        self.identity: Optional[str] = identity
+        self.identity: Optional[AzureManagedIdentity] = identity
         self.firewall_allow_azure_ips: FieldActive = firewall_allow_azure_ips
         self.firewall_state: FieldActive = firewall_state
         # Resources part of the context
@@ -69,11 +70,11 @@ class AzureDataLakeStore(AzureResource, IMonitorSettings):
 
     def to_drift_detection_object(self) -> dict:
         return {
-            'encryption_state': self.encryption_state,
+            'encryption_state': self.encryption_state and self.encryption_state.value,
             'encryption_type': self.encryption_type,
-            'identity': self.identity,
-            'firewall_allow_azure_ips': self.firewall_allow_azure_ips,
-            'firewall_state': self.firewall_state,
+            'identity': self.identity.to_drift_detection_object(),
+            'firewall_allow_azure_ips': self.firewall_allow_azure_ips and self.firewall_allow_azure_ips.value,
+            'firewall_state': self.firewall_state and self.firewall_state.value,
         }
 
     def get_monitor_settings(self) -> List[AzureMonitorDiagnosticSetting]:

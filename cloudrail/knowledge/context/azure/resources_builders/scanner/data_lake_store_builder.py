@@ -1,3 +1,6 @@
+from typing import Optional
+
+from cloudrail.knowledge.context.azure.resources.managed_identities.azure_managed_identity import AzureManagedIdentity, ManagedIdentityType
 from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_store import AzureDataLakeStore, DataLakeStoreTier
 from cloudrail.knowledge.context.azure.resources_builders.scanner.base_azure_scanner_builder import BaseAzureScannerBuilder
 from cloudrail.knowledge.context.field_active import FieldActive
@@ -16,9 +19,11 @@ class DataLakeStoreBuilder(BaseAzureScannerBuilder):
         encryption_type = encryption_type or ('ServiceManaged' if encryption_state == FieldActive.ENABLED else '')
         firewall_allow_azure_ips: FieldActive = FieldActive(properties.get('firewallAllowAzureIps'))
         firewall_state: FieldActive = FieldActive(properties.get('firewallState'))
-        identity = None
+        identity: Optional[AzureManagedIdentity] = None
         if identity_data := attributes.get('identity'):
-            identity = identity_data['type']
+            identity = AzureManagedIdentity(principal_id=identity_data['principalId'],
+                                            tenant_id=identity_data['tenantId'],
+                                            identity_type=ManagedIdentityType.SYSTEM_ASSIGNED)
         return AzureDataLakeStore(name=attributes['name'],
                                   tier=tier,
                                   encryption_state=encryption_state,
