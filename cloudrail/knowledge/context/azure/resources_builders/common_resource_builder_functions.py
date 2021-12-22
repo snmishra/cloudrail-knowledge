@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
+from cloudrail.knowledge.context.aws.resources_builders.terraform.terraform_resource_builder_helper import _get_known_value
+from cloudrail.knowledge.context.azure.resources.managed_identities.azure_managed_identity import AzureManagedIdentity, ManagedIdentityType
 from cloudrail.knowledge.context.azure.resources.webapp.azure_identity import Identity
 from cloudrail.knowledge.context.connection import ConnectionDirectionType
 from cloudrail.knowledge.context.azure.resources.network.azure_network_security_group_rule import AzureNetworkSecurityRule, NetworkSecurityRuleActionType
@@ -88,3 +90,23 @@ def _build_scanner_identity(attributes):
         identity = Identity(type=identity_data.get('type'),
                             identity_ids=identity_ids)
     return identity
+
+
+def create_terraform_system_managed_identity(attributes: dict) -> Optional[AzureManagedIdentity]:
+    identity: Optional[AzureManagedIdentity] = None
+    if identity_data := _get_known_value(attributes, 'identity'):
+        identity_data = identity_data[0]
+        identity = AzureManagedIdentity(principal_id=identity_data.get('principal_id'),
+                                        tenant_id=identity_data.get('principal_id'),
+                                        identity_type=ManagedIdentityType.SYSTEM_ASSIGNED)
+    return identity
+
+
+def create_scanner_system_managed_identity(attributes: dict) -> Optional[AzureManagedIdentity]:
+    managed_identity: Optional[AzureManagedIdentity] = None
+    if identity := attributes.get('identity'):
+        if identity['type'] is not None and identity['type'] != 'None':
+            managed_identity = AzureManagedIdentity(principal_id=identity.get('principalId'),
+                                                    tenant_id=identity.get('tenantId'),
+                                                    identity_type=ManagedIdentityType(identity['type']))
+    return managed_identity

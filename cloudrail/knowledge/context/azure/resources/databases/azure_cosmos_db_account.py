@@ -5,6 +5,7 @@ from dataclasses import dataclass
 import dataclasses
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
+from cloudrail.knowledge.context.azure.resources.managed_identities.azure_managed_identity import AzureManagedIdentity
 from cloudrail.knowledge.context.azure.resources.monitor.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
 
 
@@ -129,15 +130,6 @@ class CosmosDBAccountCorsRule:
     max_age_in_seconds: int
 
 
-@dataclass
-class CosmosDBAccountIdentity:
-    """
-        Attributes:
-            type: The type of Managed Service Identity that should be configured. Possible value is only 'SystemAssigned'.
-    """
-    type: CosmosDBAccountIdentityType
-
-
 class AzureCosmosDBAccount(AzureResource):
     """
         Attributes:
@@ -188,7 +180,7 @@ class AzureCosmosDBAccount(AzureResource):
                  local_authentication_disabled: bool,
                  backup: List[CosmosDBAccountBackup],
                  cors_rule_list: List[CosmosDBAccountCorsRule],
-                 identity: List[CosmosDBAccountIdentity],
+                 identity: AzureManagedIdentity,
                  tags: Dict[str, str] = None,
                  key_vault_key_id: Optional[str] = None):
 
@@ -214,7 +206,7 @@ class AzureCosmosDBAccount(AzureResource):
         self.local_authentication_disabled: bool = local_authentication_disabled
         self.backup: List[CosmosDBAccountBackup] = backup
         self.cors_rule_list: List[CosmosDBAccountCorsRule] = cors_rule_list
-        self.identity: List[CosmosDBAccountIdentity] = identity
+        self.identity: AzureManagedIdentity = identity
 
         # References to other resources
         self.key_vault_key_id: Optional[str] = key_vault_key_id
@@ -268,5 +260,5 @@ class AzureCosmosDBAccount(AzureResource):
                 'local_authentication_disabled': self.local_authentication_disabled,
                 'backup': [dataclasses.asdict(back) for back in self.backup],
                 'cors_rule_list': [dataclasses.asdict(rule) for rule in self.cors_rule_list],
-                'identity': [dataclasses.asdict(iden) for iden in self.identity],
+                'identity': self.identity.to_drift_detection_object(),
                 'key_vault_key_id': self.key_vault_key_id}
