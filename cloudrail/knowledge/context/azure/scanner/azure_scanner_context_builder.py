@@ -11,7 +11,7 @@ from cloudrail.knowledge.context.azure.resources_builders.scanner.keyvault_build
 from cloudrail.knowledge.context.azure.resources_builders.scanner.kubernetes_cluster_builder import KubernetesClusterBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.managed_disk_builder import ManagedDiskBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.monitor_diagnostic_setting_builder import MonitorDiagnosticSettingBuilder
-from cloudrail.knowledge.context.azure.resources_builders.scanner.app_service_builder import AppServiceBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.app_service_builder import AppServiceBuilder, AppServiceAssignedUserIdentityBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.app_service_config_builder import AppServiceConfigBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.application_security_group_builder import ApplicationSecurityGroupBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.function_app_builder import FunctionAppBuilder
@@ -94,4 +94,5 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
         context.batch_accounts = AliasesDict(*BatchAccountBuilder(*builder_args).build())
         context.event_hub_namespaces = AliasesDict(*EventHubNamespaceBuilder(*builder_args).build())
         context.event_hub_network_rule_sets = AliasesDict(*EventHubNetworkRuleSetBuilder(*builder_args).build())
+        context.assigned_user_identities = AliasesDict(*AppServiceAssignedUserIdentityBuilder(*builder_args).build())
         return context
