@@ -32,7 +32,7 @@ class TestEventHubNamespace(AzureContextTest):
         self.assertEqual(net_rule.ip_mask_list, [])
         self.assertFalse(net_rule.trusted_service_access_enabled)
         self.assertEqual(net_rule.virtual_network_rule_list, [])
-        self.assertIsNone(event_hub_namespace.system_managed_identity)
+        self.assertEqual(len(event_hub_namespace.managed_identities), 0)
 
     @context(module_path="custom_config")
     def test_custom_config(self, ctx: AzureEnvironmentContext):
@@ -59,5 +59,5 @@ class TestEventHubNamespace(AzureContextTest):
         self.assertEqual(rule.subnet_id, '/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourcegroups/cr3684-rg/providers/Microsoft.Network/'
                                          'virtualNetworks/cr3684-vnet/subnets/cr3684-subnet')
 
-        self.assertIsNotNone(event_hub_namespace.system_managed_identity)
-        self.assertEqual(event_hub_namespace.system_managed_identity.identity_type, ManagedIdentityType.SYSTEM_ASSIGNED)
+        self.assertEqual(len(event_hub_namespace.managed_identities), 1)
+        self.assertEqual(event_hub_namespace.managed_identities[0].identity_type, ManagedIdentityType.SYSTEM_ASSIGNED)

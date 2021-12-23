@@ -1,5 +1,8 @@
+from typing import List
+
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.event_hub.azure_event_hub_namespace import AzureEventHubNamespace, EventHubNamespaceSku
+from cloudrail.knowledge.context.azure.resources.managed_identities.azure_managed_identity import AzureManagedIdentity
 from cloudrail.knowledge.context.azure.resources_builders.common_resource_builder_functions import create_terraform_system_managed_identity
 from cloudrail.knowledge.context.azure.resources_builders.terraform.azure_terraform_builder import AzureTerraformBuilder
 
@@ -7,12 +10,16 @@ from cloudrail.knowledge.context.azure.resources_builders.terraform.azure_terraf
 class EventHubNamespaceBuilder(AzureTerraformBuilder):
 
     def do_build(self, attributes: dict) -> AzureEventHubNamespace:
+        identity = create_terraform_system_managed_identity(attributes)
+        managed_identities: List[AzureManagedIdentity] = []
+        if identity:
+            managed_identities.append(identity)
         return AzureEventHubNamespace(name=attributes['name'],
                                       namespace_id=attributes['id'],
                                       sku=EventHubNamespaceSku(attributes['sku']),
                                       capacity=attributes.get('capacity', 2),
                                       auto_inflate_enabled=attributes.get('auto_inflate_enabled', False),
-                                      system_managed_identity=create_terraform_system_managed_identity(attributes),
+                                      managed_identities=managed_identities,
                                       maximum_throughput_units=int(attributes.get('maximum_throughput_units', 0)))
 
     def get_service_name(self) -> AzureResourceType:

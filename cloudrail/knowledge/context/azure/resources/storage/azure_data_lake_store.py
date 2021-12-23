@@ -2,6 +2,7 @@ from enum import Enum
 from typing import Optional, List
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
+from cloudrail.knowledge.context.azure.resources.i_managed_identity_resource import IManagedIdentityResource
 from cloudrail.knowledge.context.azure.resources.i_monitor_settings import IMonitorSettings
 from cloudrail.knowledge.context.azure.resources.managed_identities.azure_managed_identity import AzureManagedIdentity
 from cloudrail.knowledge.context.azure.resources.monitor.azure_monitor_diagnostic_setting import AzureMonitorDiagnosticSetting
@@ -19,7 +20,7 @@ class DataLakeStoreTier(Enum):
     COMMITMENT_5PB = 'Commitment_5PB'
 
 
-class AzureDataLakeStore(AzureResource, IMonitorSettings):
+class AzureDataLakeStore(AzureResource, IMonitorSettings, IManagedIdentityResource):
     """
         Attributes:
             name: The name of the Data Lake Analytics Store.
@@ -36,7 +37,7 @@ class AzureDataLakeStore(AzureResource, IMonitorSettings):
                  tier: DataLakeStoreTier,
                  encryption_state: FieldActive,
                  encryption_type: str,
-                 identity: Optional[AzureManagedIdentity],
+                 managed_identities: List[AzureManagedIdentity] ,
                  firewall_allow_azure_ips: FieldActive,
                  firewall_state: FieldActive):
         super().__init__(AzureResourceType.AZURERM_DATA_LAKE_STORE)
@@ -44,7 +45,7 @@ class AzureDataLakeStore(AzureResource, IMonitorSettings):
         self.tier: DataLakeStoreTier = tier
         self.encryption_state: FieldActive = encryption_state
         self.encryption_type: str = encryption_type
-        self.identity: Optional[AzureManagedIdentity] = identity
+        self.managed_identities: List[AzureManagedIdentity] = managed_identities
         self.firewall_allow_azure_ips: FieldActive = firewall_allow_azure_ips
         self.firewall_state: FieldActive = firewall_state
         # Resources part of the context
@@ -72,10 +73,16 @@ class AzureDataLakeStore(AzureResource, IMonitorSettings):
         return {
             'encryption_state': self.encryption_state and self.encryption_state.value,
             'encryption_type': self.encryption_type,
-            'identity': self.identity and self.identity.to_drift_detection_object(),
+            'managed_identities': [identity.to_drift_detection_object() for identity in self.managed_identities],
             'firewall_allow_azure_ips': self.firewall_allow_azure_ips and self.firewall_allow_azure_ips.value,
             'firewall_state': self.firewall_state and self.firewall_state.value,
         }
 
     def get_monitor_settings(self) -> List[AzureMonitorDiagnosticSetting]:
         return self.monitor_diagnostic_settings
+
+    def get_managed_identities(self) -> List[AzureManagedIdentity]:
+        return self.managed_identities
+
+    def get_managed_identities_ids(self) -> List[str]:
+        return []
