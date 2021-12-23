@@ -90,3 +90,14 @@ class AzureVirtualMachineScaleSet(AzureResource):
         return {'tags': self.tags, 'name': self.name,
                 'os_type': self.os_type.value,
                 'disk_settings': dataclasses.asdict(self.disk_settings)}
+
+    @property
+    def is_diagnostics_logs_enabled(self) -> bool:
+        if self.os_type == OperatingSystemType.LINUX:
+            return self.extensions and \
+                   any(ext.publisher in ('Microsoft.Azure.Diagnostics', 'Microsoft.OSTCExtensions') and ext.extension_type == 'LinuxDiagnostic'
+                       for ext in self.extensions)
+        else:
+            return self.extensions and \
+                   any(ext.publisher == 'Microsoft.Azure.Diagnostics' and ext.extension_type == 'IaaSDiagnostics'
+                       for ext in self.extensions)

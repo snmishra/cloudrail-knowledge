@@ -7,6 +7,7 @@ from cloudrail.knowledge.rules.azure.context_aware.disgnostics_logs_enabled_rule
     ServiceBusNamespaceDiagnosticLogsEnabledRule, StreamAnalyitcsJobDiagnosticLogsEnabledRule
 from cloudrail.knowledge.rules.azure.context_aware.not_publicly_accessible_rule import VirtualMachineNotPubliclyAccessibleRdpRule, \
     VirtualMachineNotPubliclyAccessibleSshRule
+from cloudrail.knowledge.rules.azure.context_aware.vmss_diagnostics_logs_enabled_rule import VmssDiagnosticsLogsEnabledRule
 from cloudrail.knowledge.rules.azure.non_context_aware.abstract_web_app_using_managed_identity_rule import \
     FunctionAppUseManagedIdentityRule, AppServiceUseManagedIdentityRule
 from cloudrail.knowledge.rules.azure.non_context_aware.app_service_accessible_only_via_https_rule import AppServiceAccessibleOnlyViaHttpsRule
@@ -121,5 +122,6 @@ class AzureRulesLoader(AbstractRulesLoader):
             SearchServiceDiagnosticLogsEnabledRule(),
             ServiceBusNamespaceDiagnosticLogsEnabledRule(),
             StreamAnalyitcsJobDiagnosticLogsEnabledRule(),
+            VmssDiagnosticsLogsEnabledRule(),
         ]
         return {rule.get_id(): rule for rule in rules}
