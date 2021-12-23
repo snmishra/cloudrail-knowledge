@@ -1,5 +1,6 @@
 import functools
 from typing import Dict, List, Set, Callable
+from cloudrail.knowledge.context.azure.resources.iot.azure_iot_hub import AzureIoTHub
 
 from cloudrail.knowledge.context.azure.resources.event_hub.azure_event_hub_namespace import AzureEventHubNamespace
 from cloudrail.knowledge.context.azure.resources.event_hub.event_hub_network_rule_set import EventHubNetworkRuleSet
@@ -10,6 +11,8 @@ from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_aler
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.resources.aks.azure_kubernetes_cluster import AzureKubernetesCluster
 from cloudrail.knowledge.context.azure.resources.azure_resource_group import AzureResourceGroup
+from cloudrail.knowledge.context.azure.resources.search.azure_search_service import AzureSearchService
+from cloudrail.knowledge.context.azure.resources.service_bus.azure_service_bus_namespace import AzureServiceBusNamespace
 from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_analytics_account import AzureDataLakeAnalyticsAccount
 from cloudrail.knowledge.context.azure.resources.databases.azure_cosmos_db_account import AzureCosmosDBAccount
 from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
@@ -37,6 +40,7 @@ from cloudrail.knowledge.context.azure.resources.security.azure_security_center_
 from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_store import AzureDataLakeStore
 from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account import AzureStorageAccount
 from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules
+from cloudrail.knowledge.context.azure.resources.stream_analytics.azure_stream_analytics_job import AzureStreamAnalyticsJob
 from cloudrail.knowledge.context.azure.resources.subscription.azure_subscription import AzureSubscription
 from cloudrail.knowledge.context.azure.resources.vm.azure_virtual_machine import AzureVirtualMachine
 from cloudrail.knowledge.context.azure.resources.vmss.azure_virtual_machine_scale_set import AzureVirtualMachineScaleSet
@@ -44,6 +48,7 @@ from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_config import AzureAppServiceConfig
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
 from cloudrail.knowledge.context.azure.resources.webapp.web_app_stack import WebAppStack
+from cloudrail.knowledge.context.azure.resources.logic_app.azure_logic_app_workflow import AzureLogicAppWorkflow
 from cloudrail.knowledge.context.azure.resources.batch_management.azure_batch_account import AzureBatchAccount
 from cloudrail.knowledge.context.base_environment_context import (BaseEnvironmentContext, CheckovResult)
 
@@ -89,6 +94,11 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  data_lake_store: AliasesDict[AzureDataLakeStore] = None,
                  subscriptions: AliasesDict[AzureSubscription] = None,
                  batch_accounts: AliasesDict[AzureBatchAccount] = None,
+                 iot_hubs: AliasesDict[AzureIoTHub] = None,
+                 logic_app_workflows: AliasesDict[AzureLogicAppWorkflow] = None,
+                 search_services: AliasesDict[AzureSearchService] = None,
+                 service_bus_namespaces: AliasesDict[AzureServiceBusNamespace] = None,
+                 stream_analytics_jobs: AliasesDict[AzureStreamAnalyticsJob] = None,
                  event_hub_namespaces: AliasesDict[AzureEventHubNamespace] = None,
                  event_hub_network_rule_sets: AliasesDict[EventHubNetworkRuleSet] = None,
                  assigned_user_identities: AliasesDict[AzureAssignedUserIdentity] = None
@@ -134,9 +144,15 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
         self.subscriptions: AliasesDict[AzureSubscription] = subscriptions or AliasesDict()
         self.batch_accounts: AliasesDict[AzureBatchAccount] = batch_accounts or AliasesDict()
+        self.iot_hubs: AliasesDict[AzureIoTHub] = iot_hubs or AliasesDict()
+        self.logic_app_workflows: AliasesDict[AzureLogicAppWorkflow] = logic_app_workflows or AliasesDict()
+        self.search_services: AliasesDict[AzureSearchService] = search_services or AliasesDict()
+        self.service_bus_namespaces: AliasesDict[AzureServiceBusNamespace] = service_bus_namespaces or AliasesDict()
+        self.stream_analytics_jobs: AliasesDict[AzureStreamAnalyticsJob] = stream_analytics_jobs or AliasesDict()
         self.event_hub_namespaces: AliasesDict[AzureEventHubNamespace] = event_hub_namespaces or AliasesDict()
         self.event_hub_network_rule_sets: AliasesDict[EventHubNetworkRuleSet] = event_hub_network_rule_sets or AliasesDict()
         self.assigned_user_identities: AliasesDict[AzureAssignedUserIdentity] = assigned_user_identities or AliasesDict()
+
 
     @functools.lru_cache(maxsize=None)
     def get_all_monitored_resources(self) -> Set[IMonitorSettings]:

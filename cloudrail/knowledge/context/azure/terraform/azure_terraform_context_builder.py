@@ -7,6 +7,8 @@ from cloudrail.knowledge.context.azure.resources_builders.terraform.assigned_use
 from cloudrail.knowledge.context.azure.resources_builders.terraform.data_lake_analytics_account_builder import DataLakeAnalyticsAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.event_hub.event_hub_namespace_builder import EventHubNamespaceBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.event_hub.event_hub_network_rule_set_builder import EventHubNetworkRuleSetBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.search_service_builder import SearchServiceBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.service_bus_namespace_builder import ServiceBusNamespaceBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.subscription_builder import SubscriptionBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.cosmos_db_account_builder import \
     CosmosDBAccountBuilder
@@ -49,7 +51,10 @@ from cloudrail.knowledge.context.azure.resources_builders.terraform.virtual_mach
 from cloudrail.knowledge.context.azure.resources_builders.terraform.virtual_machine_scale_set_builder import VirtualMachineScaleSetBuilder, LinuxVirtualMachineScaleSetBuilder, \
     WindowsVirtualMachineScaleSetBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.vnet_gateway_builder import VnetGatewayBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.iot_hub_builder import IoTHubBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.batch_account_builder import BatchAccountBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.logic_app_workflow_builder import LogicAppWorkflowBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.stream_analytics_job_builder import StreamAnalyticsJobBuilder
 from cloudrail.knowledge.context.environment_context.terraform_resources_helper import get_raw_resources_by_type
 from cloudrail.knowledge.context.environment_context.terraform_resources_metadata_parser import TerraformResourcesMetadataParser
 from cloudrail.knowledge.context.environment_context.terraform_unknown_blocks_parser import TerraformUnknownBlocksParser
@@ -126,6 +131,12 @@ class AzureTerraformContextBuilder(IacContextBuilder):
             context.data_lake_store = AliasesDict(*AzureDataLakeStoreBuilder(resources).build())
             context.subscriptions = AliasesDict(*SubscriptionBuilder(resources).build())
             context.batch_accounts = AliasesDict(*BatchAccountBuilder(resources).build())
+            context.iot_hubs = AliasesDict(*IoTHubBuilder(resources).build())
+            context.logic_app_workflows = AliasesDict(*LogicAppWorkflowBuilder(resources).build())
+            context.search_services = AliasesDict(*SearchServiceBuilder(resources).build())
+            context.service_bus_namespaces = AliasesDict(*ServiceBusNamespaceBuilder(resources).build())
+            context.stream_analytics_jobs = AliasesDict(*StreamAnalyticsJobBuilder(resources).build())
+
             context.checkov_results = to_checkov_results(dic.get('checkov_results', {}))
             context.event_hub_namespaces = AliasesDict(*EventHubNamespaceBuilder(resources).build())
             context.event_hub_network_rule_sets = AliasesDict(*EventHubNetworkRuleSetBuilder(resources).build())
