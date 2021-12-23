@@ -107,9 +107,10 @@ def create_terraform_system_managed_identity(attributes: dict) -> Optional[Azure
 def create_scanner_system_managed_identity(attributes: dict) -> Optional[AzureManagedIdentity]:
     managed_identity: Optional[AzureManagedIdentity] = None
     if identity := attributes.get('identity'):
-        identity_type: ManagedIdentityType = ManagedIdentityType(identity.get('type'))
-        if identity['type'] is not None and identity['type'] != 'None' and identity_type == ManagedIdentityType.SYSTEM_ASSIGNED:
-            managed_identity = AzureManagedIdentity(principal_id=identity.get('principalId'),
-                                                    tenant_id=identity.get('tenantId'),
-                                                    identity_type=ManagedIdentityType(identity['type']))
+        if attributes['identity']['type'] is not None and attributes['identity']['type'] != 'None':
+            identity_type: ManagedIdentityType = ManagedIdentityType(identity.get('type'))
+            if identity['type'] is not None and identity['type'] != 'None' and identity_type == ManagedIdentityType.SYSTEM_ASSIGNED:
+                managed_identity = AzureManagedIdentity(principal_id=identity.get('principalId'),
+                                                        tenant_id=identity.get('tenantId'),
+                                                        identity_type=ManagedIdentityType(identity['type']))
     return managed_identity
