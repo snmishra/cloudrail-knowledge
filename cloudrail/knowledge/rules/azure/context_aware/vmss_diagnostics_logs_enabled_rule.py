@@ -9,7 +9,7 @@ from cloudrail.knowledge.rules.rule_parameters.base_paramerter import ParameterT
 class VmssDiagnosticsLogsEnabledRule(AzureBaseRule):
 
     def get_id(self) -> str:
-        return 'non_car_authentication_enabled_in_web_app'
+        return 'car_virtual_machine_scale_set_diagnostic_logs_enabled'
 
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
