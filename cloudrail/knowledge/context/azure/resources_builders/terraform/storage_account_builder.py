@@ -1,6 +1,7 @@
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account import AzureStorageAccount
-from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules, BypassTrafficType, NetworkRuleDefaultAction
+from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules, BypassTrafficType, NetworkRuleDefaultAction, \
+    AzureVirtualNetworkSubnetId
 from cloudrail.knowledge.context.azure.resources_builders.terraform.azure_terraform_builder import AzureTerraformBuilder
 
 
@@ -21,6 +22,8 @@ class StorageAccountBuilder(AzureTerraformBuilder):
             storage_account.network_rules = AzureStorageAccountNetworkRules(storage_name=attributes['name'],
                                                                             default_action=NetworkRuleDefaultAction(network_rules[0]['default_action'].lower()),
                                                                             ip_rules=self._get_known_value(network_rules[0], 'ip_rules', []),
+                                                                            virtual_network_subnet_ids=[AzureVirtualNetworkSubnetId(subnet_id) for subnet_id in
+                                                                                                        self._get_known_value(network_rules[0], 'virtual_network_subnet_ids', [])],
                                                                             bypass_traffic=bypass_traffic)
         return storage_account
 

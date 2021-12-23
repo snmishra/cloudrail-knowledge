@@ -1,3 +1,5 @@
+import dataclasses
+from dataclasses import dataclass
 from enum import Enum
 from typing import Optional, List
 from cloudrail.knowledge.context.azure.resources.azure_resource import AzureResource
@@ -22,20 +24,32 @@ class BypassTrafficType(str, Enum):
     AZURESERVICES = 'AzureServices'
 
 
+@dataclass
+class AzureVirtualNetworkSubnetId:
+    """
+        Attributes:
+            id: Resource ID of a subnet.
+    """
+
+    id: str
+
+
 class AzureStorageAccountNetworkRules(AzureResource):
     """
         Attributes:
             storage_name: The name of the storage account.
             default_action: The default action when no other rules match.
             ip_rules: List of IP addresses to allow access from the internet to the storage account.
+            virtual_network_subnet_ids: List of virtual network subnet ids to secure the storage account.
             bypass_traffic: List of traffic services which will bypass the network rules, and will have access to the storage account.
     """
-    def __init__(self, storage_name: str, default_action: str, ip_rules: list, bypass_traffic: list) -> None:
+    def __init__(self, storage_name: str, default_action: str, ip_rules: list, virtual_network_subnet_ids: List[AzureVirtualNetworkSubnetId], bypass_traffic: list) -> None:
         super().__init__(AzureResourceType.AZURERM_STORAGE_ACCOUNT_NETWORK_RULES)
         self.storage_name: str = storage_name
         self.with_aliases(storage_name)
         self.default_action: NetworkRuleDefaultAction = default_action
         self.ip_rules: list = ip_rules
+        self.virtual_network_subnet_ids: List[AzureVirtualNetworkSubnetId] = virtual_network_subnet_ids
         self.bypass_traffic: List[BypassTrafficType] = bypass_traffic
 
     def get_keys(self) -> List[str]:
@@ -65,4 +79,5 @@ class AzureStorageAccountNetworkRules(AzureResource):
         return {'storage_name': self.storage_name,
                 'default_action': self.default_action.value,
                 'ip_rules': self.ip_rules,
+                'virtual_network_subnet_ids': [dataclasses.asdict(virtual_network_subnet_id) for virtual_network_subnet_id in self.virtual_network_subnet_ids],
                 'bypass_traffic': [bypass.value for bypass in self.bypass_traffic]}
