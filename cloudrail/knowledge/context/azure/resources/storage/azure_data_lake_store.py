@@ -72,7 +72,7 @@ class AzureDataLakeStore(AzureResource, IMonitorSettings):
         return {
             'encryption_state': self.encryption_state and self.encryption_state.value,
             'encryption_type': self.encryption_type,
-            'identity': self.identity.to_drift_detection_object(),
+            'identity': self.identity and self.identity.to_drift_detection_object(),
             'firewall_allow_azure_ips': self.firewall_allow_azure_ips and self.firewall_allow_azure_ips.value,
             'firewall_state': self.firewall_state and self.firewall_state.value,
         }

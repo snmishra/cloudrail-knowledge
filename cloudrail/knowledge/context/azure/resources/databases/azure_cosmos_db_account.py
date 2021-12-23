@@ -260,5 +260,5 @@ class AzureCosmosDBAccount(AzureResource):
                 'local_authentication_disabled': self.local_authentication_disabled,
                 'backup': [dataclasses.asdict(back) for back in self.backup],
                 'cors_rule_list': [dataclasses.asdict(rule) for rule in self.cors_rule_list],
-                'identity': self.identity.to_drift_detection_object(),
+                'identity': self.identity and self.identity.to_drift_detection_object(),
                 'key_vault_key_id': self.key_vault_key_id}
