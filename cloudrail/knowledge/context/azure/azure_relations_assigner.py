@@ -187,6 +187,6 @@ class AzureRelationsAssigner(DependencyInvocation):
 
     @staticmethod
     def _assign_extension_to_vm(vm: AzureVirtualMachine, vms_extentions: AliasesDict[AzureVirtualMachineExtension]):
-        vm.extensions = ResourceInvalidator.get_by_logic(
+        vm.extesions = ResourceInvalidator.get_by_logic(
             lambda: [extension for extension in vms_extentions if vm.get_id().lower() == extension.attached_resource_id.lower()],
             False)

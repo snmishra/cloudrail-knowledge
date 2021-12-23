@@ -43,7 +43,7 @@ def _build_vm(attributes: dict, os_type: OperatingSystemType, vm_tf_type: str, g
         ## Disk Settings
         os_disk_profile = attributes['storage_os_disk'][0]
         os_disk = OsDisk(name=os_disk_profile['name'],
-                         is_managed_disk=os_disk_profile.get('vhd_uri') is None,
+                         is_managed_disk=os_disk_profile.get('vhd_uri') in (None, ''),
                          caching=enum_implementation(OsDiskCaching, get_known_value_function(os_disk_profile, 'caching', None)),
                          storage_account_type=enum_implementation(OsDiskStorageAccountType, get_known_value_function(os_disk_profile, 'managed_disk_type')))
         if data_disks_list_data := get_known_value_function(attributes, 'storage_data_disk'):
@@ -52,7 +52,7 @@ def _build_vm(attributes: dict, os_type: OperatingSystemType, vm_tf_type: str, g
         disk_settings=DiskSettings(os_disk, data_disks_list)
 
         ## SKU
-        sku = attributes['sku']
+        sku = attributes['vm_size']
 
         ## Source Image Reference
         if source_image_data := get_known_value_function(attributes, 'storage_image_reference'):

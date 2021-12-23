@@ -116,4 +116,7 @@ class AzureVirtualMachine(NetworkResource):
         return {'tags': self.tags, 'name': self.name,
                 'network_interface_ids': self.network_interface_ids,
                 'os_type': self.os_type.value,
-                'disk_settings': dataclasses.asdict(self.disk_settings)}
+                'disk_settings': dataclasses.asdict(self.disk_settings),
+                'extesions': [ext.to_drift_detection_object() for ext in self.extesions],
+                'disable_password_authentication': self.disable_password_authentication,
+                'source_image_reference': dataclasses.asdict(self.source_image_reference)}

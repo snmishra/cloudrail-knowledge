@@ -43,7 +43,7 @@ class AzureVirtualMachineExtension(AzureResource):
 
     @property
     def is_tagable(self) -> bool:
-        return False
+        return self.resource_attached_type == ResourceType.VM
 
     @staticmethod
     def is_standalone() -> bool:

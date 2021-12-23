@@ -8,6 +8,7 @@ class VmssBasicExtensionBuilder(AzureTerraformBuilder):
 
     def do_build(self, attributes: dict) -> AzureVirtualMachineExtension:
         attributes['resource_type'] = 'vmss'
+        attributes['attached_resource_id'] = attributes['virtual_machine_scale_set_id']
         return _build_vm_extension(attributes)
 
     def get_service_name(self) -> AzureResourceType:
@@ -32,6 +33,7 @@ class VmExtensionBuilder(AzureTerraformBuilder):
 
     def do_build(self, attributes: dict) -> Optional[List[AzureVirtualMachineExtension]]:
         attributes['resource_type'] = 'vm'
+        attributes['attached_resource_id'] = attributes['virtual_machine_id']
         return _build_vm_extension(attributes)
 
     def get_service_name(self) -> AzureResourceType:

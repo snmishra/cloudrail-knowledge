@@ -15,7 +15,7 @@ class VmssExtensionBuilder(BaseAzureScannerBuilder):
 class VmExtensionBuilder(BaseAzureScannerBuilder):
 
     def get_file_name(self) -> str:
-        return 'vms-extensions.json'
+        return 'vm-extensions.json'
 
     def do_build(self, attributes: dict) -> AzureVirtualMachineExtension:
         attributes['resource_type'] = 'vm'
