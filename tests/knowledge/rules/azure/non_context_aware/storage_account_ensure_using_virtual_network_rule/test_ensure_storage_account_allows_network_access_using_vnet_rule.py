@@ -11,10 +11,6 @@ class TestEnsureStorageAccountAllowsNetworkAccessUsingVnetRule(AzureBaseRuleTest
     def test_ip_rules_and_virtual_network_subnet_id_empty(self, rule_result: RuleResponse):
         pass
 
-    @rule_test('ip_rules_and_virtual_network_subnet_id_exists', should_alert=True)
-    def test_ip_rules_and_virtual_network_subnet_id_exists(self, rule_result: RuleResponse):
-        pass
-
     @rule_test('ip_rules_only', should_alert=True)
     def test_ip_rules_only(self, rule_result: RuleResponse):
         pass
