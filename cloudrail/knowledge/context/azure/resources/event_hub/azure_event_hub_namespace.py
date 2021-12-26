@@ -22,14 +22,13 @@ class AzureEventHubNamespace(AzureResource, IMonitorSettings, IManagedIdentityRe
             sku: Defines which tier to use (allowed values: Basic, Standard, and Premium).
             capacity: Specifies the capacity units for a Standard SKU namespace.
             auto_inflate_enabled: Enable or disable Auto Inflate for the EventHub Namespace.
-            system_managed_identity: The type of identity which should be used for this EventHub Namespace.
+            managed_identities: The type of identity which should be used for this EventHub Namespace.
             maximum_throughput_units: Specifies the maximum number of throughput units when Auto Inflate is enabled.
             network_rule_set: Set of network rules to control access to the EventHub Namespace.
     """
 
     def __init__(self,
                  name: str,
-                 namespace_id: str,
                  sku: EventHubNamespaceSku,
                  capacity: int,
                  auto_inflate_enabled: bool,
@@ -37,14 +36,12 @@ class AzureEventHubNamespace(AzureResource, IMonitorSettings, IManagedIdentityRe
                  maximum_throughput_units: int):
         super().__init__(AzureResourceType.AZURERM_EVENTHUB_NAMESPACE)
         self.name: str = name
-        self.namespace_id: str = namespace_id
         self.sku: EventHubNamespaceSku = sku
         self.capacity: int = capacity
         self.auto_inflate_enabled: bool = auto_inflate_enabled
         self.managed_identities: List[AzureManagedIdentity] = managed_identities
         self.maximum_throughput_units: int = maximum_throughput_units
         self.network_rule_set: Optional[EventHubNetworkRuleSet] = None
-        self.with_aliases(self.namespace_id, self.name)
         self.monitor_diagnostic_settings: List[AzureMonitorDiagnosticSetting] = []
 
     def get_cloud_resource_url(self) -> Optional[str]:
@@ -73,9 +70,6 @@ class AzureEventHubNamespace(AzureResource, IMonitorSettings, IManagedIdentityRe
                 'network_rule_set': self.network_rule_set and self.network_rule_set.to_drift_detection_object(),
                 'monitor_diagnostic_settings': [settings.to_drift_detection_object() for settings in self.monitor_diagnostic_settings]
                 }
-
-    def get_id(self) -> str:
-        return self.namespace_id
 
     def get_monitor_settings(self) -> List[AzureMonitorDiagnosticSetting]:
         return self.monitor_diagnostic_settings

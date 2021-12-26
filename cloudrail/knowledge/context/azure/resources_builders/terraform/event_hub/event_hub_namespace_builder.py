@@ -15,7 +15,6 @@ class EventHubNamespaceBuilder(AzureTerraformBuilder):
         if identity:
             managed_identities.append(identity)
         return AzureEventHubNamespace(name=attributes['name'],
-                                      namespace_id=attributes['id'],
                                       sku=EventHubNamespaceSku(attributes['sku']),
                                       capacity=attributes.get('capacity', 2),
                                       auto_inflate_enabled=attributes.get('auto_inflate_enabled', False),

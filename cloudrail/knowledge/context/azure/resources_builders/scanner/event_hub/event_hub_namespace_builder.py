@@ -18,7 +18,6 @@ class EventHubNamespaceBuilder(BaseAzureScannerBuilder):
         if identity:
             managed_identities.append(identity)
         return AzureEventHubNamespace(name=attributes['name'],
-                                      namespace_id=attributes['id'],
                                       sku=EventHubNamespaceSku(attributes['sku']['tier']),
                                       capacity=attributes['sku']['capacity'],
                                       auto_inflate_enabled=properties['isAutoInflateEnabled'],

@@ -13,6 +13,7 @@ class AzureAppService(AzureResource, IManagedIdentityResource):
             app_service_config: App service configuration.
             https_only: Indicates if the App Service only be accessed via HTTPS.
             client_cert_required: Indicate if client certificates are required in Web App.
+            identities_ids: The managed identities associated with the app service.
     """
     def __init__(self, name: str, https_only: bool, client_cert_required: bool, identities_ids: List[str]):
         super().__init__(AzureResourceType.AZURERM_APP_SERVICE)

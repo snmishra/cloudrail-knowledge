@@ -17,9 +17,12 @@ class EventHubNetworkRuleSetBuilder(AzureTerraformBuilder):
                                                       event_hub_namespace_id=attributes['id'],
                                                       default_action=EventHubNetworkRuleAction(rule_set['default_action']),
                                                       trusted_service_access_enabled=rule_set.get('trusted_service_access_enabled'),
-                                                      virtual_network_rule_list=[EventHubNetworkRuleNetworkRule(subnet_id=net_rule['subnet_id'],
-                                                                                                                ignore_missing_virtual_network_service_endpoint=net_rule.get('ignore_missing_virtual_network_service_endpoint', False))
-                                                                                 for net_rule in rule_set.get('virtual_network_rule', [])],
+                                                      virtual_network_rule_list=[
+                                                          EventHubNetworkRuleNetworkRule(subnet_id=net_rule['subnet_id'],
+                                                                                         ignore_missing_virtual_network_service_endpoint=net_rule
+                                                                                         .get('ignore_missing_virtual_network_service_endpoint',
+                                                                                              False))
+                                                          for net_rule in rule_set.get('virtual_network_rule', [])],
                                                       ip_mask_list=[ip_rule.get('ip_mask') for ip_rule in rule_set.get('ip_rule', [])])
         return network_rule_set
 

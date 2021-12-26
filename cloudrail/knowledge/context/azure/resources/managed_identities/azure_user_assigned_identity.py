@@ -7,6 +7,12 @@ from cloudrail.knowledge.context.azure.resources.managed_identities.azure_manage
 
 class AzureAssignedUserIdentity(AzureManagedIdentity, AzureResource):
 
+    """
+        Attributes:
+            identity_id: The assigned user identity id.
+            identity_name: The assigned user identity name.
+            client_id: Client id associated with the user assigned identity.
+    """
     def __init__(self, identity_id: str, identity_name: str = None, client_id: str = None, principal_id: str = None, tenant_id: str = None):
         AzureManagedIdentity.__init__(self, principal_id=principal_id, tenant_id=tenant_id,
                                       identity_type=ManagedIdentityType.USER_ASSIGNED)
@@ -17,7 +23,13 @@ class AzureAssignedUserIdentity(AzureManagedIdentity, AzureResource):
         self.with_aliases(identity_id, self.identity_name)
 
     def get_keys(self) -> List[str]:
-        return [self.identity_id]
+        return [self.get_id()]
+
+    def get_id(self) -> str:
+        return self.identity_id
+
+    def get_name(self) -> Optional[str]:
+        return self.identity_name
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/' \
@@ -28,4 +40,4 @@ class AzureAssignedUserIdentity(AzureManagedIdentity, AzureResource):
         return True
 
     def to_drift_detection_object(self) -> dict:
-        return {}
+        return {'tags': self.tags}
