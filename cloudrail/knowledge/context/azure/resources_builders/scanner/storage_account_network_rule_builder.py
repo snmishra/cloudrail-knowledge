@@ -1,5 +1,4 @@
-from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules, BypassTrafficType, NetworkRuleDefaultAction, \
-    AzureVirtualNetworkSubnetId
+from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules, BypassTrafficType, NetworkRuleDefaultAction
 from cloudrail.knowledge.context.azure.resources_builders.scanner.base_azure_scanner_builder import BaseAzureScannerBuilder
 
 
@@ -23,5 +22,5 @@ class StorageAccountNetworkRuleBuilder(BaseAzureScannerBuilder):
         return AzureStorageAccountNetworkRules(storage_name=attributes['name'],
                                                default_action=NetworkRuleDefaultAction(network_rules_data['defaultAction'].lower()),
                                                ip_rules=ip_rules,
-                                               virtual_network_subnet_ids=[AzureVirtualNetworkSubnetId(subnet_id.get('id')) for subnet_id in network_rules_data['virtualNetworkRules']],
+                                               virtual_network_subnet_ids=[subnet_id.get('id') for subnet_id in network_rules_data['virtualNetworkRules']],
                                                bypass_traffic=bypass_traffic)

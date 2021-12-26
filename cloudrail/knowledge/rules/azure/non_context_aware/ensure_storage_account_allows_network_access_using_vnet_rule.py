@@ -13,7 +13,7 @@ class EnsureStorageAccountAllowsNetworkAccessUsingVnetRule(AzureBaseRule):
     def execute(self, env_context: AzureEnvironmentContext, parameters: Dict[ParameterType, any]) -> List[Issue]:
         issues: List[Issue] = []
         for storage_account in env_context.storage_accounts:
-            if not storage_account.network_rules.virtual_network_subnet_ids:
+            if storage_account.network_rules.ip_rules:
                 issues.append(
                     Issue(
                         f'The {storage_account.get_type()} `{storage_account.get_friendly_name()}` is allowing network access based on IP rules instead of virtual network rules.',
