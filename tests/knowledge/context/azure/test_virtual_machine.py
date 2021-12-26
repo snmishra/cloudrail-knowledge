@@ -24,8 +24,8 @@ class TestAzureVirtualMachine(AzureContextTest):
         self.assertEqual(vm.source_image_reference, SourceImageReference('MicrosoftWindowsServer', 'WindowsServer', '2019-Datacenter', 'latest'))
         self.assertFalse(vm.disable_password_authentication)
         self.assertEqual(len(vm.network_interfaces), 1)
-        self.assertEqual(len(vm.extesions), 1)
-        self.assertEqual(vm.extesions[0].publisher, 'Microsoft.Azure.Security')
+        self.assertEqual(len(vm.extensions), 1)
+        self.assertEqual(vm.extensions[0].publisher, 'Microsoft.Azure.Security')
 
     @context(module_path="linux_vm_with_extension")
     def test_linux_vm_with_extension(self, ctx: AzureEnvironmentContext):
@@ -44,9 +44,9 @@ class TestAzureVirtualMachine(AzureContextTest):
         self.assertEqual(vm.sku, 'Standard_B2s')
         self.assertEqual(vm.source_image_reference, SourceImageReference('Canonical', 'UbuntuServer', '16.04-LTS', 'latest'))
         self.assertFalse(vm.disable_password_authentication)
-        self.assertEqual(len(vm.extesions), 1)
-        self.assertEqual(vm.extesions[0].publisher, 'Microsoft.Azure.Extensions')
-        self.assertEqual(vm.extesions[0].tags, {'environment': 'Production'})
+        self.assertEqual(len(vm.extensions), 1)
+        self.assertEqual(vm.extensions[0].publisher, 'Microsoft.Azure.Extensions')
+        self.assertEqual(vm.extensions[0].tags, {'environment': 'Production'})
 
     @context(module_path="windows_vm_with_extension")
     def test_windows_vm_with_extension(self, ctx: AzureEnvironmentContext):
@@ -55,8 +55,8 @@ class TestAzureVirtualMachine(AzureContextTest):
         self.assertEqual(vm.os_type, OperatingSystemType.WINDOWS)
         self.assertIsNone(vm.disable_password_authentication)
         self.assertEqual(len(vm.network_interfaces), 1)
-        self.assertEqual(len(vm.extesions), 1)
-        self.assertEqual(vm.extesions[0].publisher, 'Microsoft.Azure.Security')
+        self.assertEqual(len(vm.extensions), 1)
+        self.assertEqual(vm.extensions[0].publisher, 'Microsoft.Azure.Security')
 
     @context(module_path="no_os_managed_disk")
     def test_no_os_managed_disk(self, ctx: AzureEnvironmentContext):

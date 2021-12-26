@@ -24,7 +24,7 @@ from cloudrail.knowledge.context.azure.resources.network.azure_subnet import Azu
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface_security_group_association import AzureNetworkInterfaceSecurityGroupAssociation
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface import AzureNetworkInterface
 from cloudrail.knowledge.context.azure.resources.vmss.azure_virtual_machine_scale_set import AzureVirtualMachineScaleSet
-from cloudrail.knowledge.context.azure.resources.vm.azure_virtual_machine_extension import AzureVirtualMachineExtension
+from cloudrail.knowledge.context.azure.resources.vm.azure_virtual_machine_extension import AzureVirtualMachineExtension, ResourceType
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.context.azure.pseudo_builder import PseudoBuilder
 from cloudrail.knowledge.context.azure.resources.webapp.azure_function_app import AzureFunctionApp
@@ -57,14 +57,14 @@ class AzureRelationsAssigner(DependencyInvocation):
             ### Virtual Machine
             IterFunctionData(self._assign_network_interface_to_virtual_machine, [vm for vm in ctx.virtual_machines if not vm.is_pseudo],
                              (ctx.network_interfaces,)),
-            IterFunctionData(self._assign_extension_to_vm, ctx.virtual_machines, (ctx.vms_extentions,)),
+            IterFunctionData(self._assign_extension_to_vm, ctx.vms_extentions, (ctx.virtual_machines,)),
             ### Network Interface
             IterFunctionData(self._assign_public_ip_to_ip_config, ctx.network_interfaces, (ctx.public_ips,)),
             IterFunctionData(self._assign_subnet_to_ip_config, ctx.network_interfaces, (ctx.subnets,)),
             ### Monitor Activity Log Alert
             IterFunctionData(self._assign_monitor_activity_log_alert_to_subscription, ctx.subscriptions, (ctx.monitor_activity_log_alert,)),
             ### VMSS
-            IterFunctionData(self._assign_extension_to_vmss, ctx.virtual_machines_scale_sets, (ctx.vms_extentions,)),
+            IterFunctionData(self._assign_extension_to_vmss, ctx.vms_extentions, (ctx.virtual_machines_scale_sets,)),
         ]
 
         super().__init__(function_pool, context=ctx)
@@ -177,16 +177,22 @@ class AzureRelationsAssigner(DependencyInvocation):
             lambda: [monitor for monitor in monitor_activity_log_alert if subscription.get_id() in monitor.scopes],
             False)
 
+    @staticmethod
+    def _assign_extension_to_vmss(vms_extention: AzureVirtualMachineExtension, vmss_list: AliasesDict[AzureVirtualMachineScaleSet]):
+        if vms_extention.resource_attached_type == ResourceType.VMSS:
+            vmss = ResourceInvalidator.get_by_id(vmss_list,
+                                                vms_extention.attached_resource_id,
+                                                True,
+                                                'Unable to find associated vmss',
+                                                case_sensitive=False)
+            vmss.extensions.append(vms_extention)
 
     @staticmethod
-    def _assign_extension_to_vmss(vmss: AzureVirtualMachineScaleSet, vms_extentions: AliasesDict[AzureVirtualMachineExtension]):
-        vmss.extensions = ResourceInvalidator.get_by_logic(
-            lambda: [extension for extension in vms_extentions if vmss.get_id().lower() == extension.attached_resource_id.lower()],
-            False)
-
-
-    @staticmethod
-    def _assign_extension_to_vm(vm: AzureVirtualMachine, vms_extentions: AliasesDict[AzureVirtualMachineExtension]):
-        vm.extesions = ResourceInvalidator.get_by_logic(
-            lambda: [extension for extension in vms_extentions if vm.get_id().lower() == extension.attached_resource_id.lower()],
-            False)
+    def _assign_extension_to_vm(vms_extention: AzureVirtualMachineExtension, vms: AliasesDict[AzureVirtualMachine]):
+        if vms_extention.resource_attached_type == ResourceType.VM:
+            vm = ResourceInvalidator.get_by_id(vms,
+                                            vms_extention.attached_resource_id,
+                                            True,
+                                            'Unable to find associated vm',
+                                            case_sensitive=False)
+            vm.extensions.append(vms_extention)

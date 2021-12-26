@@ -96,7 +96,7 @@ class AzureVirtualMachine(NetworkResource):
         self.sku: str = sku
         self.source_image_reference: SourceImageReference = source_image_reference
         self.disable_password_authentication: Optional[bool] = disable_password_authentication
-        self.extesions: Optional[List[AzureVirtualMachineExtension]] = []
+        self.extensions: Optional[List[AzureVirtualMachineExtension]] = []
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]
@@ -117,6 +117,6 @@ class AzureVirtualMachine(NetworkResource):
                 'network_interface_ids': self.network_interface_ids,
                 'os_type': self.os_type.value,
                 'disk_settings': dataclasses.asdict(self.disk_settings),
-                'extesions': [ext.to_drift_detection_object() for ext in self.extesions],
+                'extesions': [ext.to_drift_detection_object() for ext in self.extensions],
                 'disable_password_authentication': self.disable_password_authentication,
                 'source_image_reference': dataclasses.asdict(self.source_image_reference)}

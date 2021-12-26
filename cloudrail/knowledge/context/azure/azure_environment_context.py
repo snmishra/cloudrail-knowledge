@@ -148,5 +148,5 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
 
     @functools.lru_cache(maxsize=None)
     def get_all_monitored_resources(self) -> Set[IMonitorSettings]:
-        condition: Callable = lambda aws_resource: isinstance(aws_resource, IMonitorSettings)
+        condition: Callable = lambda azure_resource: isinstance(azure_resource, IMonitorSettings)
         return self.get_all_mergeable_resources(condition)
