@@ -17,7 +17,8 @@ class EventHubNetworkRuleSetBuilder(BaseAzureScannerBuilder):
                                       trusted_service_access_enabled=properties.get('trustedServiceAccessEnabled'),
                                       virtual_network_rule_list=[
                                           EventHubNetworkRuleNetworkRule(subnet_id=net_rule['subnet']['id'],
-                                                                         ignore_missing_virtual_network_service_endpoint=net_rule.get('ignoreMissingVnetServiceEndpoint', False))
+                                                                         ignore_missing_virtual_network_service_endpoint=net_rule
+                                                                         .get('ignoreMissingVnetServiceEndpoint', False))
                                           for net_rule in properties.get('virtualNetworkRules', [])
                                     ],
                                       ip_mask_list=[ip_rule.get('ipMask') for ip_rule in properties.get('ipRules', [])])
