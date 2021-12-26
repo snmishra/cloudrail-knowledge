@@ -71,6 +71,7 @@ class AzureDataLakeStore(AzureResource, IMonitorSettings, IManagedIdentityResour
 
     def to_drift_detection_object(self) -> dict:
         return {
+            'tags': self.tags,
             'encryption_state': self.encryption_state and self.encryption_state.value,
             'encryption_type': self.encryption_type,
             'managed_identities': [identity.to_drift_detection_object() for identity in self.managed_identities],
