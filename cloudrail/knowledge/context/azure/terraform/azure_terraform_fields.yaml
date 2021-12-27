@@ -17,9 +17,23 @@ azurerm_mssql_server:
       - name
       - version
       - administrator_login
-      - administrator_login_password
       - public_network_access_enabled
       - extended_auditing_policy
+      - azuread_administrator
+      - identity
+      - connection_policy
+      - minimum_tls_version
+      - primary_user_assigned_identity_id
+
+azurerm_sql_server:
+  known_fields:
+    pass:
+      - name
+      - version
+      - administrator_login
+      - extended_auditing_policy
+      - identity
+      - connection_policy
 
 azurerm_sql_database:
   known_fields:

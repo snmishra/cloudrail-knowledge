@@ -13,7 +13,7 @@ class TestSqlServer(AzureContextTest):
     def test_allow_public_access(self, ctx: AzureEnvironmentContext):
         sql_server = ctx.sql_servers.get('test-sqlserver-cloudrail')
         self.assertIsNotNone(sql_server)
-        self.assertTrue(sql_server.public_network_access_enable)
+        self.assertTrue(sql_server.public_network_access_enabled)
         if not sql_server.is_managed_by_iac:
             self.assertEqual(sql_server.get_cloud_resource_url(),
                              'https://portal.azure.com/#@871cad0f-903e-4648-9655-89b796e7c99e/resource/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourceGroups/testresourcegroup/providers/Microsoft.Sql/servers/test-sqlserver-cloudrail/overview')
