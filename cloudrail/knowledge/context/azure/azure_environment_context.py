@@ -1,10 +1,15 @@
 import functools
 from typing import Dict, List, Set, Callable
-from cloudrail.knowledge.context.azure.resources.iot.azure_iot_hub import AzureIoTHub
-
-from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
-
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
+from cloudrail.knowledge.context.azure.resources.iot.azure_iot_hub import AzureIoTHub
+from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_vulnerability_assessment import AzureMsSqlServerVulnerabilityAssessment
+from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_security_alert_policy import AzureMsSqlServerSecurityAlertPolicy
+from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_transparent_data_encryption import AzureMsSqlServerTransparentDataEncryption
+from cloudrail.knowledge.context.azure.resources.event_hub.azure_event_hub_namespace import AzureEventHubNamespace
+from cloudrail.knowledge.context.azure.resources.event_hub.event_hub_network_rule_set import EventHubNetworkRuleSet
+from cloudrail.knowledge.context.azure.resources.i_managed_identity_resource import IManagedIdentityResource
+from cloudrail.knowledge.context.azure.resources.managed_identities.azure_user_assigned_identity import AzureAssignedUserIdentity
+from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
 from cloudrail.knowledge.context.azure.resources.aks.azure_kubernetes_cluster import AzureKubernetesCluster
 from cloudrail.knowledge.context.azure.resources.azure_resource_group import AzureResourceGroup
 from cloudrail.knowledge.context.azure.resources.search.azure_search_service import AzureSearchService
@@ -97,6 +102,12 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  service_bus_namespaces: AliasesDict[AzureServiceBusNamespace] = None,
                  stream_analytics_jobs: AliasesDict[AzureStreamAnalyticsJob] = None,
                  vms_extentions: AliasesDict[AzureVirtualMachineExtension] = None,
+                 event_hub_namespaces: AliasesDict[AzureEventHubNamespace] = None,
+                 event_hub_network_rule_sets: AliasesDict[EventHubNetworkRuleSet] = None,
+                 assigned_user_identities: AliasesDict[AzureAssignedUserIdentity] = None,
+                 sql_server_vulnerability_assessments: AliasesDict[AzureMsSqlServerVulnerabilityAssessment] = None,
+                 sql_server_security_alert_policies: AliasesDict[AzureMsSqlServerSecurityAlertPolicy] = None,
+                 sql_server_transparent_data_encryptions: AliasesDict[AzureMsSqlServerTransparentDataEncryption] = None,
                  ):
         BaseEnvironmentContext.__init__(self)
         self.checkov_results: Dict[str, List[CheckovResult]] = checkov_results or {}
@@ -145,8 +156,19 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.service_bus_namespaces: AliasesDict[AzureServiceBusNamespace] = service_bus_namespaces or AliasesDict()
         self.stream_analytics_jobs: AliasesDict[AzureStreamAnalyticsJob] = stream_analytics_jobs or AliasesDict()
         self.vms_extentions: AliasesDict[AzureVirtualMachineExtension] = vms_extentions or AliasesDict()
+        self.event_hub_namespaces: AliasesDict[AzureEventHubNamespace] = event_hub_namespaces or AliasesDict()
+        self.event_hub_network_rule_sets: AliasesDict[EventHubNetworkRuleSet] = event_hub_network_rule_sets or AliasesDict()
+        self.assigned_user_identities: AliasesDict[AzureAssignedUserIdentity] = assigned_user_identities or AliasesDict()
+        self.sql_server_vulnerability_assessments: AliasesDict[AzureMsSqlServerVulnerabilityAssessment] = sql_server_vulnerability_assessments or AliasesDict()
+        self.sql_server_security_alert_policies: AliasesDict[AzureMsSqlServerSecurityAlertPolicy] = sql_server_security_alert_policies or AliasesDict()
+        self.sql_server_transparent_data_encryptions: AliasesDict[AzureMsSqlServerTransparentDataEncryption] = sql_server_transparent_data_encryptions or AliasesDict()
 
     @functools.lru_cache(maxsize=None)
     def get_all_monitored_resources(self) -> Set[IMonitorSettings]:
         condition: Callable = lambda azure_resource: isinstance(azure_resource, IMonitorSettings)
+        return self.get_all_mergeable_resources(condition)
+
+    @functools.lru_cache(maxsize=None)
+    def get_all_assigned_user_identity_resources(self) -> Set[IMonitorSettings]:
+        condition: Callable = lambda azure_resource: isinstance(azure_resource, IManagedIdentityResource)
         return self.get_all_mergeable_resources(condition)

@@ -3,7 +3,10 @@ from typing import Optional
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
+from cloudrail.knowledge.context.azure.resources_builders.terraform.assigned_user_identity_builder import AssignedUserIdentityBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.data_lake_analytics_account_builder import DataLakeAnalyticsAccountBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.event_hub.event_hub_namespace_builder import EventHubNamespaceBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.event_hub.event_hub_network_rule_set_builder import EventHubNetworkRuleSetBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.search_service_builder import SearchServiceBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.service_bus_namespace_builder import ServiceBusNamespaceBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.subscription_builder import SubscriptionBuilder
@@ -33,7 +36,7 @@ from cloudrail.knowledge.context.azure.resources_builders.terraform.public_ip_bu
 from cloudrail.knowledge.context.azure.resources_builders.terraform.security_center_auto_provisioning_builder import SecurityCenterAutoProvisioningBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.security_center_contact_builder import SecurityCenterContactBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.security_center_subscription_pricing_builder import SecurityCenterSubscriptionPricingBuilder
-from cloudrail.knowledge.context.azure.resources_builders.terraform.sql_server_builder import SqlServerBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.sql_server_builder import MsSqlServerBuilder, StandardSqlServerBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.network_security_group_builder import NetworkSecurityGroupBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.storage_account_builder import StorageAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.storage_account_network_rule_builder import StorageAccountNetworkRuleBuilder
@@ -53,6 +56,8 @@ from cloudrail.knowledge.context.azure.resources_builders.terraform.iot_hub_buil
 from cloudrail.knowledge.context.azure.resources_builders.terraform.batch_account_builder import BatchAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.logic_app_workflow_builder import LogicAppWorkflowBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.stream_analytics_job_builder import StreamAnalyticsJobBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.sql_server_vulnerability_assessment_builder import SqlServerVulnerabilityAssessmentBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.sql_server_security_alert_policy_builder import SqlServerSecurityAlertPolicyBuilder
 from cloudrail.knowledge.context.environment_context.terraform_resources_helper import get_raw_resources_by_type
 from cloudrail.knowledge.context.environment_context.terraform_resources_metadata_parser import TerraformResourcesMetadataParser
 from cloudrail.knowledge.context.environment_context.terraform_unknown_blocks_parser import TerraformUnknownBlocksParser
@@ -91,10 +96,11 @@ class AzureTerraformContextBuilder(IacContextBuilder):
                                           LinuxVirtualMachineScaleSetBuilder(resources).build() + \
                                           WindowsVirtualMachineScaleSetBuilder(resources).build()
             vmss_extentions = VmssBasicExtensionBuilder(resources).build() + VmssNestedExtensionBuilder(resources).build() + VmExtensionBuilder(resources).build()
+            sql_servers = MsSqlServerBuilder(resources).build() + StandardSqlServerBuilder(resources).build()
 
             context: AzureEnvironmentContext = AzureEnvironmentContext()
             context.unknown_blocks = TerraformUnknownBlocksParser.parse(dic['resource_changes'])
-            context.sql_servers = AliasesDict(*SqlServerBuilder(resources).build())
+            context.sql_servers = AliasesDict(*sql_servers)
             context.app_services = AliasesDict(*AppServiceBuilder(resources).build())
             context.app_service_configs = AliasesDict(*AppServiceConfigBuilder(resources).build())
             context.function_apps = AliasesDict(*FunctionAppBuilder(resources).build())
@@ -138,4 +144,9 @@ class AzureTerraformContextBuilder(IacContextBuilder):
             context.vms_extentions = AliasesDict(*vmss_extentions)
 
             context.checkov_results = to_checkov_results(dic.get('checkov_results', {}))
+            context.event_hub_namespaces = AliasesDict(*EventHubNamespaceBuilder(resources).build())
+            context.event_hub_network_rule_sets = AliasesDict(*EventHubNetworkRuleSetBuilder(resources).build())
+            context.assigned_user_identities = AliasesDict(*AssignedUserIdentityBuilder(resources).build())
+            context.sql_server_vulnerability_assessments = AliasesDict(*SqlServerVulnerabilityAssessmentBuilder(resources).build())
+            context.sql_server_security_alert_policies = AliasesDict(*SqlServerSecurityAlertPolicyBuilder(resources).build())
             return context

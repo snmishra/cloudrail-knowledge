@@ -2,9 +2,12 @@ from typing import Callable, List
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
 from cloudrail.knowledge.context.azure.resources.databases.azure_sql_server import AzureSqlServer, MsSqlServerVersion, MsSqlServerAzureAdAdministrator, \
-    MsSqlServerConnectionPolicy, MsSqlServerIdentity, MsSqlServerIdentityTypes, MsSqlServerMinimumTLSVersion
+    MsSqlServerMinimumTLSVersion
+from cloudrail.knowledge.context.azure.resources.managed_identities.azure_managed_identity import AzureManagedIdentity
 from cloudrail.knowledge.context.azure.resources_builders.terraform.azure_terraform_builder import AzureTerraformBuilder
 from cloudrail.knowledge.utils.enum_utils import enum_implementation
+from cloudrail.knowledge.context.azure.resources_builders.common_resource_builder_functions import get_terraform_user_managed_identities_ids, \
+    create_terraform_system_managed_identity
 
 
 class MsSqlServerBuilder(AzureTerraformBuilder):
@@ -19,7 +22,6 @@ class MsSqlServerBuilder(AzureTerraformBuilder):
 
     def get_service_name(self) -> AzureResourceType:
         return AzureResourceType.AZURERM_MSSQL_SERVER
-
 
 class StandardSqlServerBuilder(AzureTerraformBuilder):
 
@@ -40,16 +42,16 @@ def _sql_server_builder(attributes: dict, get_known_value: Callable) -> AzureSql
                                                                             azuread_authentication_only=get_known_value(azure_admin,
                                                                                                                             'azuread_authentication_only')))
     ## Managed Identities
-    identity_list: List[MsSqlServerIdentity] = []
-    for identity in get_known_value(attributes, 'identity'):
-        identity_list.append(MsSqlServerIdentity(type=enum_implementation(MsSqlServerIdentityTypes, identity['type']),
-                                                 user_assigned_identity_ids=get_known_value(identity, 'user_assigned_identity_ids', [])))
+    managed_identities: List[AzureManagedIdentity] = []
+    if managed_identity := create_terraform_system_managed_identity(attributes):
+        managed_identities.append(managed_identity)
+
     return AzureSqlServer(server_name=attributes['name'],
                           version=enum_implementation(MsSqlServerVersion, attributes['version']),
                           administrator_login=attributes['administrator_login'],
                           azuread_administrator_list=azuread_administrator_list,
-                          connection_policy=enum_implementation(MsSqlServerConnectionPolicy, get_known_value(attributes, 'connection_policy')),
-                          identity_list=identity_list,
+                          user_assigned_identity_ids=get_terraform_user_managed_identities_ids(attributes),
+                          managed_identities=managed_identities,
                           minimum_tls_version=enum_implementation(MsSqlServerMinimumTLSVersion, get_known_value(attributes, 'minimum_tls_version')),
                           primary_user_assigned_identity_id=get_known_value(attributes, 'primary_user_assigned_identity_id'),
                           public_network_access_enabled=get_known_value(attributes, 'public_network_access_enabled'))

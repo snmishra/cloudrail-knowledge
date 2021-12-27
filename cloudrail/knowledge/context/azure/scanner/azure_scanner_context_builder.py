@@ -5,11 +5,13 @@ from typing import Optional
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
 from cloudrail.knowledge.context.azure.resources_builders.scanner.data_lake_store_builder import DataLakeStoreBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.event_hub.event_hub_namespace_builder import EventHubNamespaceBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.event_hub.event_hub_network_rule_set_builder import EventHubNetworkRuleSetBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.keyvault_builder import KeyVaultBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.kubernetes_cluster_builder import KubernetesClusterBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.managed_disk_builder import ManagedDiskBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.monitor_diagnostic_setting_builder import MonitorDiagnosticSettingBuilder
-from cloudrail.knowledge.context.azure.resources_builders.scanner.app_service_builder import AppServiceBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.app_service_builder import AppServiceBuilder, AppServiceAssignedUserIdentityBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.app_service_config_builder import AppServiceConfigBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.application_security_group_builder import ApplicationSecurityGroupBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.function_app_builder import FunctionAppBuilder
@@ -24,7 +26,7 @@ from cloudrail.knowledge.context.azure.resources_builders.scanner.security_cente
 from cloudrail.knowledge.context.azure.resources_builders.scanner.security_center_contact_builder import SecurityCenterContactBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.security_center_subscription_pricing_builder import \
     SecurityCenterSubscriptionPricingBuilder
-from cloudrail.knowledge.context.azure.resources_builders.scanner.sql_server_builder import SqlServerBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.sql_server_builder import SqlServerAssignedUserIdentityBuilder, SqlServerBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.subscription_builder import SubscriptionBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.storage_account_builder import StorageAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.storage_account_network_rule_builder import StorageAccountNetworkRuleBuilder
@@ -48,6 +50,8 @@ from cloudrail.knowledge.context.azure.resources_builders.scanner.monitor_activi
 from cloudrail.knowledge.context.azure.resources_builders.scanner.data_lake_analytics_account_builder import DataLakeAnalyticsAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.service_bus_namespace_builder import ServiceBusNamespaceBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.stream_analytics_job_builder import StreamAnalyticsJobBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.sql_server_vulnerability_assessment_builder import SqlServerVulnerabilityAssessmentBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.sql_server_security_alert_policy_builder import SqlServerSecurityAlertPolicyBuilder
 from cloudrail.knowledge.context.environment_context.scanner_context_builder import ScannerContextBuilder
 
 
@@ -62,6 +66,7 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
             return AzureEnvironmentContext()
         builder_args = (account_data_dir, account_id, extra_args.get('tenant_id'))
         all_vms_extenstions = VmssExtensionBuilder(*builder_args).build() + VmExtensionBuilder(*builder_args).build()
+        assigned_user_identities = AppServiceAssignedUserIdentityBuilder(*builder_args).build() + SqlServerAssignedUserIdentityBuilder(*builder_args).build()
 
         context: AzureEnvironmentContext = AzureEnvironmentContext()
         context.sql_servers = AliasesDict(*SqlServerBuilder(*builder_args).build())
@@ -104,4 +109,9 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
         context.service_bus_namespaces = AliasesDict(*ServiceBusNamespaceBuilder(*builder_args).build())
         context.stream_analytics_jobs = AliasesDict(*StreamAnalyticsJobBuilder(*builder_args).build())
         context.vms_extentions = AliasesDict(*all_vms_extenstions)
+        context.event_hub_namespaces = AliasesDict(*EventHubNamespaceBuilder(*builder_args).build())
+        context.event_hub_network_rule_sets = AliasesDict(*EventHubNetworkRuleSetBuilder(*builder_args).build())
+        context.assigned_user_identities = AliasesDict(*assigned_user_identities)
+        context.sql_server_vulnerability_assessments = AliasesDict(*SqlServerVulnerabilityAssessmentBuilder(*builder_args).build())
+        context.sql_server_security_alert_policies = AliasesDict(*SqlServerSecurityAlertPolicyBuilder(*builder_args).build())
         return context
