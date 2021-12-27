@@ -22,7 +22,7 @@ class TestEventHubNamespace(AzureContextTest):
         self.assertEqual(event_hub_namespace.capacity, 1)
         self.assertEqual(event_hub_namespace.maximum_throughput_units, 0)
         self.assertEqual(event_hub_namespace.sku, EventHubNamespaceSku.STANDARD)
-        self.assertEqual(len(event_hub_namespace.monitor_diagnostic_settings), 0)
+        self.assertEqual(len(event_hub_namespace.get_monitor_settings()), 0)
         self.assertIsNotNone(event_hub_namespace.network_rule_set)
         net_rule: EventHubNetworkRuleSet = event_hub_namespace.network_rule_set
         self.assertEqual(net_rule.default_action, EventHubNetworkRuleAction.DENY)
@@ -44,7 +44,7 @@ class TestEventHubNamespace(AzureContextTest):
         self.assertEqual(event_hub_namespace.capacity, 2)
         self.assertEqual(event_hub_namespace.maximum_throughput_units, 2)
         self.assertEqual(event_hub_namespace.sku, EventHubNamespaceSku.STANDARD)
-        self.assertEqual(len(event_hub_namespace.monitor_diagnostic_settings), 1)
+        self.assertEqual(len(event_hub_namespace.get_monitor_settings()), 1)
         self.assertIsNotNone(event_hub_namespace.network_rule_set)
         net_rule: EventHubNetworkRuleSet = event_hub_namespace.network_rule_set
         self.assertEqual(net_rule.default_action, EventHubNetworkRuleAction.DENY)
