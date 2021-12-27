@@ -1,5 +1,6 @@
 from typing import List
 
+from cloudrail.knowledge.context.aws.resources_builders.terraform.terraform_resource_builder_helper import _get_known_value
 from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type import AzureResourceType
 from cloudrail.knowledge.context.azure.resources.event_hub.azure_event_hub_namespace import AzureEventHubNamespace, EventHubNamespaceSku
 from cloudrail.knowledge.context.azure.resources.managed_identities.azure_managed_identity import AzureManagedIdentity
@@ -19,7 +20,7 @@ class EventHubNamespaceBuilder(AzureTerraformBuilder):
                                       capacity=attributes.get('capacity', 2),
                                       auto_inflate_enabled=attributes.get('auto_inflate_enabled', False),
                                       managed_identities=managed_identities,
-                                      maximum_throughput_units=int(attributes.get('maximum_throughput_units', 0)))
+                                      maximum_throughput_units=int(_get_known_value(attributes, 'maximum_throughput_units', 0)))
 
     def get_service_name(self) -> AzureResourceType:
         return AzureResourceType.AZURERM_EVENTHUB_NAMESPACE
