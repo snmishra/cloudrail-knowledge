@@ -77,8 +77,8 @@ class AzureSqlServer(AzureResource, IManagedIdentityResource):
         self.user_assigned_identity_ids: List[str] = user_assigned_identity_ids
         self.managed_identities: List[AzureManagedIdentity] = managed_identities
         self.primary_user_assigned_identity_id: Optional[str] = primary_user_assigned_identity_id
-        self.security_alert_policy_list: Optional[List[AzureMsSqlServerSecurityAlertPolicy]] = []
         self.public_network_access_enabled: bool = public_network_access_enabled
+        self.security_alert_policy_list: Optional[List[AzureMsSqlServerSecurityAlertPolicy]] = []
         self.transparent_data_encryption: Optional[AzureMsSqlServerTransparentDataEncryption] = None
         self.extended_auditing_policy: AzureSqlServerExtendedAuditingPolicy = None
 

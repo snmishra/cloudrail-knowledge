@@ -1,4 +1,7 @@
 from typing import List, Union
+from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_security_alert_policy import AzureMsSqlServerSecurityAlertPolicy
+from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_transparent_data_encryption import AzureMsSqlServerTransparentDataEncryption
+from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_vulnerability_assessment import AzureMsSqlServerVulnerabilityAssessment
 
 from cloudrail.knowledge.context.azure.resources.event_hub.azure_event_hub_namespace import AzureEventHubNamespace
 from cloudrail.knowledge.context.azure.resources.event_hub.event_hub_network_rule_set import EventHubNetworkRuleSet
@@ -55,8 +58,13 @@ class AzureRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_config_to_app_service, ctx.app_services, (ctx.app_service_configs,)),
             ### Function App
             IterFunctionData(self._assign_config_to_function_app, ctx.function_apps, (ctx.function_app_configs,)),
-            ### MSQL server
+            ### SQL server resources
             IterFunctionData(self._assign_audit_policy_to_mssql_server, ctx.sql_servers, (ctx.sql_server_extended_audit_policies,)),
+            IterFunctionData(self._assign_transparent_data_encryption_to_server, ctx.sql_servers, (ctx.sql_server_vulnerability_assessments,)),
+            IterFunctionData(self._assign_vulnerbility_assesment_to_policy, ctx.sql_server_vulnerability_assessments,
+                             (ctx.sql_server_security_alert_policies,)),
+            IterFunctionData(self._assign_security_alert_policy_to_server, ctx.sql_servers, (ctx.sql_server_security_alert_policies,),
+                             [self._assign_vulnerbility_assesment_to_policy]),
             ### Storage Account
             IterFunctionData(self._assign_network_rules_to_storage_account, ctx.storage_accounts, (ctx.storage_account_network_rules,)),
             ### Virtual Machine
@@ -74,7 +82,7 @@ class AzureRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_network_rule_set_to_event_hub_namespace, ctx.event_hub_network_rule_sets, (ctx.event_hub_namespaces,)),
             # Managed Identities
             IterFunctionData(self._assign_user_identities, AliasesDict(*ctx.get_all_assigned_user_identity_resources()),
-                             (ctx.assigned_user_identities,))
+                             (ctx.assigned_user_identities,)),
         ]
 
         super().__init__(function_pool, context=ctx)
@@ -221,3 +229,31 @@ class AzureRelationsAssigner(DependencyInvocation):
                                                                                      identity_id,
                                                                                      True, managed_identity_resource)
             managed_identity_resource.get_managed_identities().append(user_identity)
+
+    @staticmethod
+    def _assign_transparent_data_encryption_to_server(sql_server: AzureSqlServer,
+                                                      sql_server_transparent_data_encryptions: AliasesDict[AzureMsSqlServerTransparentDataEncryption]):
+        def get_transparent_data_encryption():
+            data_encryption = next((de for de in sql_server_transparent_data_encryptions
+                                    if de.server_id in (sql_server.get_name(), sql_server.get_id())), None)
+            return data_encryption
+
+        sql_server.transparent_data_encryption = ResourceInvalidator.get_by_logic(get_transparent_data_encryption, False)
+
+    @staticmethod
+    def _assign_security_alert_policy_to_server(sql_server: AzureSqlServer,
+                                                sql_server_security_alert_policies: AliasesDict[AzureMsSqlServerSecurityAlertPolicy]):
+        def get_security_alert_policies():
+            policies = [policy for policy in sql_server_security_alert_policies
+                        if policy.server_name == sql_server.server_name]
+            return policies
+
+        sql_server.security_alert_policy_list = ResourceInvalidator.get_by_logic(get_security_alert_policies, False)
+
+
+    @staticmethod
+    def _assign_vulnerbility_assesment_to_policy(sql_server_vulnerability_assessment: AzureMsSqlServerVulnerabilityAssessment,
+                                                 sql_security_alert_policies: AliasesDict[AzureMsSqlServerSecurityAlertPolicy]):
+        sql_security_alert_policy = ResourceInvalidator.get_by_id(sql_security_alert_policies,
+                                                                 sql_server_vulnerability_assessment.server_security_alert_policy_id, False)
+        sql_security_alert_policy.vulnerability_assessment = sql_server_vulnerability_assessment
