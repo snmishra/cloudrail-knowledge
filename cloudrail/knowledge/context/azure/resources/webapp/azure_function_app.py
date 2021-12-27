@@ -16,6 +16,7 @@ class AzureFunctionApp(AzureResource, IManagedIdentityResource):
             client_cert_mode: The mode of the Function App's client certificates requirement for incoming requests.
             https_only: Indicates if the Function App only be accessed via HTTPS.
             identities_ids: The managed identities associated with the function app.
+            managed_identities: all managed identities associate with the function app.
     """
 
     def __init__(self, name: str,
