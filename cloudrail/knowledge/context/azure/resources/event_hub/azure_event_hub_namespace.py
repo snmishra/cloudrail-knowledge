@@ -22,7 +22,7 @@ class AzureEventHubNamespace(AzureResource, IMonitorSettings, IManagedIdentityRe
             sku: Defines which tier to use (allowed values: Basic, Standard, and Premium).
             capacity: Specifies the capacity units for a Standard SKU namespace.
             auto_inflate_enabled: Enable or disable Auto Inflate for the EventHub Namespace.
-            managed_identities: The type of identity which should be used for this EventHub Namespace.
+            managed_identities: all managed identities associate with the EventHub Namespace.
             maximum_throughput_units: Specifies the maximum number of throughput units when Auto Inflate is enabled.
             network_rule_set: Set of network rules to control access to the EventHub Namespace.
     """

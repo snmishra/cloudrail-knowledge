@@ -27,7 +27,7 @@ class AzureDataLakeStore(AzureResource, IMonitorSettings, IManagedIdentityResour
             tier: The monthly commitment tier.
             encryption_state: Enabling or disable encryption (allowed values: 'Enabled' or 'Disabled').
             encryption_type: Type of encryption used (allowed values: 'ServiceManaged' or '').
-            identity: The type of identity which should be used for this Data Lake Store.
+            managed_identities: all managed identities associate with the data lake store.
             firewall_allow_azure_ips: whether to allow or not Azure Service IPs through the firewall.
             firewall_state: The state of the firewall (allowed values: 'Enabled' or 'Disabled')
     """
@@ -37,7 +37,7 @@ class AzureDataLakeStore(AzureResource, IMonitorSettings, IManagedIdentityResour
                  tier: DataLakeStoreTier,
                  encryption_state: FieldActive,
                  encryption_type: str,
-                 managed_identities: List[AzureManagedIdentity] ,
+                 managed_identities: List[AzureManagedIdentity],
                  firewall_allow_azure_ips: FieldActive,
                  firewall_state: FieldActive):
         super().__init__(AzureResourceType.AZURERM_DATA_LAKE_STORE)
