@@ -3,6 +3,9 @@ from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_se
 from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_transparent_data_encryption import AzureMsSqlServerTransparentDataEncryption
 from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_vulnerability_assessment import AzureMsSqlServerVulnerabilityAssessment
 
+from cloudrail.knowledge.context.azure.resources.databases.azure_postgresql_server import AzurePostgreSqlServer
+from cloudrail.knowledge.context.azure.resources.databases.azure_postgresql_server_configuration import \
+    AzurePostgreSqlServerConfiguration
 from cloudrail.knowledge.context.azure.resources.event_hub.azure_event_hub_namespace import AzureEventHubNamespace
 from cloudrail.knowledge.context.azure.resources.event_hub.event_hub_network_rule_set import EventHubNetworkRuleSet
 from cloudrail.knowledge.context.azure.resources.i_managed_identity_resource import IManagedIdentityResource
@@ -58,6 +61,8 @@ class AzureRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_config_to_app_service, ctx.app_services, (ctx.app_service_configs,)),
             ### Function App
             IterFunctionData(self._assign_config_to_function_app, ctx.function_apps, (ctx.function_app_configs,)),
+            ### PostgreSql Server
+            IterFunctionData(self._assign_config_to_postgresql_server, ctx.postgresql_servers, (ctx.postgresql_servers_configuration,)),
             ### SQL server resources
             IterFunctionData(self._assign_audit_policy_to_mssql_server, ctx.sql_servers, (ctx.sql_server_extended_audit_policies,)),
             IterFunctionData(self._assign_transparent_data_encryption_to_server, ctx.sql_servers, (ctx.sql_server_transparent_data_encryptions,)),
@@ -119,6 +124,15 @@ class AzureRelationsAssigner(DependencyInvocation):
             False
         )
         function_app.app_service_config = app_service_config
+
+    @staticmethod
+    def _assign_config_to_postgresql_server(postgresql_server: AzurePostgreSqlServer,
+                                            postgresql_server_configs: AliasesDict[AzurePostgreSqlServerConfiguration]):
+        postgresql_server.postgresql_configuration = ResourceInvalidator.get_by_logic(
+            lambda: next((postgresql_server_config for postgresql_server_config in postgresql_server_configs if
+                            postgresql_server.name == postgresql_server_config.server_name), None),
+            False
+            )
 
     @staticmethod
     def _assign_network_rules_to_storage_account(storage_account: AzureStorageAccount, storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules]):

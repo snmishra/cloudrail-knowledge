@@ -251,6 +251,28 @@ azurerm_postgresql_server:
     pass:
       - name
       - ssl_enforcement_enabled
+      - sku_name
+      - version
+      - administrator_login
+      - administrator_login_password
+      - auto_grow_enabled
+      - backup_retention_days
+      - geo_redundant_backup_enabled
+      - infrastructure_encryption_enabled
+      - public_network_access_enabled
+      - ssl_minimal_tls_version_enforced
+      - storage_mb
+      - identity:
+          known_fields:
+              pass:
+                - type
+
+azurerm_postgresql_configuration:
+  known_fields:
+    pass:
+      - name
+      - server_name
+      - value
 
 azurerm_kubernetes_cluster:
   known_fields:

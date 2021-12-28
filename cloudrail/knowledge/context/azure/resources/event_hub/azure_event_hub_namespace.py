@@ -42,7 +42,7 @@ class AzureEventHubNamespace(AzureResource, IMonitorSettings, IManagedIdentityRe
         self.managed_identities: List[AzureManagedIdentity] = managed_identities
         self.maximum_throughput_units: int = maximum_throughput_units
         self.network_rule_set: Optional[EventHubNetworkRuleSet] = None
-        self.monitor_diagnostic_settings: List[AzureMonitorDiagnosticSetting] = []
+        self._monitor_diagnostic_settings: List[AzureMonitorDiagnosticSetting] = []
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/' \
@@ -68,11 +68,11 @@ class AzureEventHubNamespace(AzureResource, IMonitorSettings, IManagedIdentityRe
                 'managed_identities': [identity.to_drift_detection_object() for identity in self.managed_identities],
                 'maximum_throughput_units': self.maximum_throughput_units,
                 'network_rule_set': self.network_rule_set and self.network_rule_set.to_drift_detection_object(),
-                'monitor_diagnostic_settings': [settings.to_drift_detection_object() for settings in self.monitor_diagnostic_settings]
+                'monitor_diagnostic_settings': [settings.to_drift_detection_object() for settings in self._monitor_diagnostic_settings]
                 }
 
     def get_monitor_settings(self) -> List[AzureMonitorDiagnosticSetting]:
-        return self.monitor_diagnostic_settings
+        return self._monitor_diagnostic_settings
 
     def get_managed_identities(self) -> List[AzureManagedIdentity]:
         return self.managed_identities
