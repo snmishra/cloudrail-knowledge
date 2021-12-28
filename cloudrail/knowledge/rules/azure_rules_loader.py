@@ -27,6 +27,7 @@ from cloudrail.knowledge.rules.azure.non_context_aware.email_notification_high_s
     EmailNotificationHighSeverityAlertsEnabledRule
 from cloudrail.knowledge.rules.azure.non_context_aware.ensure_managed_disks_encrypted_rule import EnsureManagedDisksEncryptedRule
 from cloudrail.knowledge.rules.azure.non_context_aware.ensure_sql_server_audit_enabled_rule import EnsureSqlServerAuditEnabledRule
+from cloudrail.knowledge.rules.azure.non_context_aware.ensure_storage_account_allows_network_access_using_vnet_rule import EnsureStorageAccountAllowsNetworkAccessUsingVnetRule
 from cloudrail.knowledge.rules.azure.non_context_aware.ensure_storage_account_default_network_deny_rule import \
     EnsureStorageAccountDefaultNetworkDenyRule
 from cloudrail.knowledge.rules.azure.non_context_aware.ensure_vms_and_vmss_use_managed_disks_rule import EnsureVmAndVmssUseManagedDisksRule
@@ -120,6 +121,7 @@ class AzureRulesLoader(AbstractRulesLoader):
             SecuritySolutionsMonitorActivityLogAlertExistsRule(),
             SearchServiceDiagnosticLogsEnabledRule(),
             ServiceBusNamespaceDiagnosticLogsEnabledRule(),
+            EnsureStorageAccountAllowsNetworkAccessUsingVnetRule(),
             StreamAnalyitcsJobDiagnosticLogsEnabledRule(),
             VmssDiagnosticsLogsEnabledRule(),
             EventHubNamespaceDiagnosticLogsEnabledRule()

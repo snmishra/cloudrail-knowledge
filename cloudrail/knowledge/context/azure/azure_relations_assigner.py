@@ -139,7 +139,7 @@ class AzureRelationsAssigner(DependencyInvocation):
         def get_network_rules():
             network_rules = next((rules for rules in storage_account_network_rules if rules.storage_name == storage_account.storage_name), None)
             if network_rules is None:
-                network_rules = AzureStorageAccountNetworkRules(storage_account.storage_name, NetworkRuleDefaultAction.ALLOW, [], [BypassTrafficType.AZURESERVICES])
+                network_rules = AzureStorageAccountNetworkRules(storage_account.storage_name, NetworkRuleDefaultAction.ALLOW, [], [], [BypassTrafficType.AZURESERVICES])
             return network_rules
         if storage_account.network_rules is None:
             storage_account.network_rules = ResourceInvalidator.get_by_logic(get_network_rules, False)

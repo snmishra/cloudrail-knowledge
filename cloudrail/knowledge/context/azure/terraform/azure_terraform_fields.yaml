@@ -169,6 +169,7 @@ azurerm_storage_account_network_rules:
       - storage_account_name
       - default_action
       - ip_rules
+      - virtual_network_subnet_ids
       - bypass
 
 azurerm_monitor_diagnostic_setting:
