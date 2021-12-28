@@ -3,13 +3,17 @@ from typing import Optional
 
 from cloudrail.knowledge.context.aliases_dict import AliasesDict
 from cloudrail.knowledge.context.azure.azure_environment_context import AzureEnvironmentContext
+from cloudrail.knowledge.context.azure.resources_builders.terraform.assigned_user_identity_builder import AssignedUserIdentityBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.data_lake_analytics_account_builder import DataLakeAnalyticsAccountBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.event_hub.event_hub_namespace_builder import EventHubNamespaceBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.event_hub.event_hub_network_rule_set_builder import EventHubNetworkRuleSetBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.search_service_builder import SearchServiceBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.service_bus_namespace_builder import ServiceBusNamespaceBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.subscription_builder import SubscriptionBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.cosmos_db_account_builder import \
     CosmosDBAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.data_lake_store_builder import AzureDataLakeStoreBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.vm_extension_builder import VmssBasicExtensionBuilder, VmssNestedExtensionBuilder, VmExtensionBuilder
 from cloudrail.knowledge.context.base_environment_context import BaseEnvironmentContext
 
 from cloudrail.knowledge.utils.terraform_output_validator import TerraformOutputValidator
@@ -89,6 +93,7 @@ class AzureTerraformContextBuilder(IacContextBuilder):
             virtual_machines_scale_sets = VirtualMachineScaleSetBuilder(resources).build() + \
                                           LinuxVirtualMachineScaleSetBuilder(resources).build() + \
                                           WindowsVirtualMachineScaleSetBuilder(resources).build()
+            vmss_extentions = VmssBasicExtensionBuilder(resources).build() + VmssNestedExtensionBuilder(resources).build() + VmExtensionBuilder(resources).build()
 
             context: AzureEnvironmentContext = AzureEnvironmentContext()
             context.unknown_blocks = TerraformUnknownBlocksParser.parse(dic['resource_changes'])
@@ -133,6 +138,10 @@ class AzureTerraformContextBuilder(IacContextBuilder):
             context.search_services = AliasesDict(*SearchServiceBuilder(resources).build())
             context.service_bus_namespaces = AliasesDict(*ServiceBusNamespaceBuilder(resources).build())
             context.stream_analytics_jobs = AliasesDict(*StreamAnalyticsJobBuilder(resources).build())
+            context.vms_extentions = AliasesDict(*vmss_extentions)
 
             context.checkov_results = to_checkov_results(dic.get('checkov_results', {}))
+            context.event_hub_namespaces = AliasesDict(*EventHubNamespaceBuilder(resources).build())
+            context.event_hub_network_rule_sets = AliasesDict(*EventHubNetworkRuleSetBuilder(resources).build())
+            context.assigned_user_identities = AliasesDict(*AssignedUserIdentityBuilder(resources).build())
             return context
