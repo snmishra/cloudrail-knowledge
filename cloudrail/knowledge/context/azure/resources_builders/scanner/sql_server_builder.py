@@ -33,6 +33,6 @@ class SqlServerBuilder(BaseAzureScannerBuilder):
                               azuread_administrator_list=azuread_administrator_list,
                               user_assigned_identity_ids=get_scanner_user_managed_identities_ids(attributes),
                               managed_identities=managed_identities,
-                              minimum_tls_version=enum_implementation(MsSqlServerMinimumTLSVersion, properties['minimalTlsVersion']),
+                              minimum_tls_version=enum_implementation(MsSqlServerMinimumTLSVersion, properties.get('minimalTlsVersion')),
                               primary_user_assigned_identity_id=properties.get('primaryUserAssignedIdentityId'),
                               public_network_access_enabled=properties['publicNetworkAccess'] == 'Enabled')

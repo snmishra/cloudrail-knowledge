@@ -19,8 +19,7 @@ class TestSqlServer(AzureContextTest):
         self.assertTrue(sql_server.public_network_access_enabled)
         if not sql_server.is_managed_by_iac:
             self.assertEqual(sql_server.get_cloud_resource_url(),
-                             'https://portal.azure.com/#@871cad0f-903e-4648-9655-89b796e7c99e/resource/subscriptions/230613d8-3b34-4790-b650-36f31045f19a\
-                                 /resourceGroups/testresourcegroup/providers/Microsoft.Sql/servers/test-sqlserver-cloudrail/overview')
+                             'https://portal.azure.com/#@871cad0f-903e-4648-9655-89b796e7c99e/resource/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourceGroups/testresourcegroup/providers/Microsoft.Sql/servers/test-sqlserver-cloudrail/overview')
 
     @context(module_path="audit_enabled_extended_block")
     def test_audit_enabled_extended_block(self, ctx: AzureEnvironmentContext):
@@ -32,11 +31,9 @@ class TestSqlServer(AzureContextTest):
         if sql_server.is_managed_by_iac:
             self.assertEqual(sql_server.extended_auditing_policy.server_id, 'azurerm_mssql_server.sql.id')
         else:
-            self.assertEqual(sql_server.extended_auditing_policy.server_id, '/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourceGroups/cr2509-RG/\
-                providers/Microsoft.Sql/servers/cr2509-sqlserver')
+            self.assertEqual(sql_server.extended_auditing_policy.server_id, '/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourceGroups/cr2509-RG/providers/Microsoft.Sql/servers/cr2509-sqlserver')
             self.assertEqual(sql_server.extended_auditing_policy.get_cloud_resource_url(),
-                             'https://portal.azure.com/#@871cad0f-903e-4648-9655-89b796e7c99e/resource/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/\
-                                 resourceGroups/cr2509-RG/providers/Microsoft.Sql/servers/cr2509-sqlserver/serverAuditing')
+                             'https://portal.azure.com/#@871cad0f-903e-4648-9655-89b796e7c99e/resource/subscriptions/230613d8-3b34-4790-b650-36f31045f19a/resourceGroups/cr2509-RG/providers/Microsoft.Sql/servers/cr2509-sqlserver/serverAuditing')
 
     @context(module_path="audit_enabled_extended_block_default_retention")
     def test_audit_enabled_extended_block_default_retention(self, ctx: AzureEnvironmentContext):
