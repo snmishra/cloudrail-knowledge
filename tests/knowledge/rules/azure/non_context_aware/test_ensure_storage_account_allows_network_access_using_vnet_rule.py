@@ -15,7 +15,6 @@ class TestEnsureStorageAccountAllowsNetworkAccessUsingVnetRule(TestCase):
 
     @parameterized.expand(
         [
-            ["Ip rules and virtual network subnet id empty", {"ip_rules": [], "virtual_network_subnet_ids": []}, 1, RuleResultType.FAILED],
             ["Ip rules only", {"ip_rules": ["1.2.3.4"], "virtual_network_subnet_ids": []}, 1, RuleResultType.FAILED],
             ["Virtual network subnet ids only", {"ip_rules": [], "virtual_network_subnet_ids": ["azurerm_subnet.snet.id"]}, 0, RuleResultType.SUCCESS],
         ]
