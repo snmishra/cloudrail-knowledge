@@ -27,6 +27,7 @@ from cloudrail.knowledge.context.azure.resources_builders.scanner.security_cente
 from cloudrail.knowledge.context.azure.resources_builders.scanner.sql_server_builder import SqlServerBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.subscription_builder import SubscriptionBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.storage_account_builder import StorageAccountBuilder
+from cloudrail.knowledge.context.azure.resources_builders.scanner.storage_account_customer_managed_key_builder import StorageAccountCustomerManagedKeyBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.storage_account_network_rule_builder import StorageAccountNetworkRuleBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.network_security_group_builder import NetworkSecurityGroupBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.network_interface_builder import NetworkInterfaceBuilder
@@ -74,6 +75,7 @@ class AzureScannerContextBuilder(ScannerContextBuilder):
         context.security_center_contacts = AliasesDict(*SecurityCenterContactBuilder(*builder_args).build())
         context.security_center_auto_provisioning = AliasesDict(*SecurityCenterAutoProvisioningBuilder(*builder_args).build())
         context.storage_accounts = AliasesDict(*StorageAccountBuilder(*builder_args).build())
+        context.storage_accounts_customer_managed_key = AliasesDict(*StorageAccountCustomerManagedKeyBuilder(*builder_args).build())
         context.storage_account_network_rules = AliasesDict(*StorageAccountNetworkRuleBuilder(*builder_args).build())
         context.postgresql_servers = AliasesDict(*PostgreSqlServerBuilder(*builder_args).build())
         context.security_center_subscription_pricings = SecurityCenterSubscriptionPricingBuilder(*builder_args).build()

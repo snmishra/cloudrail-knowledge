@@ -149,6 +149,13 @@ azurerm_storage_account:
       - enable_https_traffic_only
       - allow_blob_public_access
 
+azurerm_storage_account_customer_managed_key:
+  known_fields:
+    pass:
+      - storage_account_id
+      - key_vault_id
+      - key_name
+
 azurerm_storage_account_network_rules:
   known_fields:
     pass:
@@ -211,6 +218,7 @@ azurerm_key_vault:
     pass:
       - name
       - purge_protection_enabled
+      - vault_uri
 
 
 azurerm_security_center_subscription_pricing:

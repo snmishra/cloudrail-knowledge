@@ -1,6 +1,7 @@
 from typing import List
 
 from cloudrail.knowledge.context.azure.resources.i_monitor_settings import IMonitorSettings
+from cloudrail.knowledge.context.azure.resources.keyvault.azure_key_vault import AzureKeyVault
 from cloudrail.knowledge.context.azure.resources.monitor.azure_activity_log_alert import AzureMonitorActivityLogAlert
 from cloudrail.knowledge.context.azure.resources.network.azure_application_security_group import AzureApplicationSecurityGroup
 from cloudrail.knowledge.context.azure.resources.network.azure_network_interface_application_security_group_association import \
@@ -8,6 +9,7 @@ from cloudrail.knowledge.context.azure.resources.network.azure_network_interface
 from cloudrail.knowledge.context.azure.resources.network.azure_network_security_group_rule import AzureNetworkSecurityRule
 from cloudrail.knowledge.context.azure.resources.network.azure_public_ip import AzurePublicIp
 from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account import AzureStorageAccount
+from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account_customer_managed_key import AzureStorageAccountCustomerManagedKey
 from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules, \
     BypassTrafficType, NetworkRuleDefaultAction
 from cloudrail.knowledge.context.azure.resources.databases.azure_mssql_server_extended_auditing_policy import AzureSqlServerExtendedAuditingPolicy
@@ -60,6 +62,10 @@ class AzureRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_subnet_to_ip_config, ctx.network_interfaces, (ctx.subnets,)),
             ### Monitor Activity Log Alert
             IterFunctionData(self._assign_monitor_activity_log_alert_to_subscription, ctx.subscriptions, (ctx.monitor_activity_log_alert,)),
+            ### Storage Account Customer Managed Key
+            IterFunctionData(self._assign_key_vault_id_to_storage_account_customer_managed_key, ctx.storage_accounts_customer_managed_key, (ctx.key_vaults,)),
+            ### Storage Account
+            IterFunctionData(self._assign_storage_account_customer_managed_key_to_storage_account, ctx.storage_accounts, (ctx.storage_accounts_customer_managed_key,)),
         ]
 
         super().__init__(function_pool, context=ctx)
@@ -106,6 +112,19 @@ class AzureRelationsAssigner(DependencyInvocation):
             return network_rules
         if storage_account.network_rules is None:
             storage_account.network_rules = ResourceInvalidator.get_by_logic(get_network_rules, False)
+
+    @staticmethod
+    def _assign_key_vault_id_to_storage_account_customer_managed_key(storage_account_customer_managed_key: AzureStorageAccountCustomerManagedKey, key_vaults: AliasesDict[AzureKeyVault]):
+        if storage_account_customer_managed_key.key_vault_uri:
+            key_vault = next((key_vault for key_vault in key_vaults if key_vault.vault_uri == storage_account_customer_managed_key.key_vault_uri), None)
+            if key_vault:
+                storage_account_customer_managed_key.key_vault_id = key_vault.get_id()
+
+    @staticmethod
+    def _assign_storage_account_customer_managed_key_to_storage_account(storage_account: AzureStorageAccount, storage_account_customer_managed_keys: AliasesDict[AzureStorageAccountCustomerManagedKey]):
+        if not storage_account.storage_account_customer_managed_key:
+            storage_account.storage_account_customer_managed_key = ResourceInvalidator.get_by_id(storage_account_customer_managed_keys, storage_account.get_id(), False)
+            x = 1
 
     @staticmethod
     def _assign_audit_policy_to_mssql_server(mssql_server: AzureSqlServer, audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy]):
