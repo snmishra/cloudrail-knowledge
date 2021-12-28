@@ -2,7 +2,6 @@ from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service import
 from cloudrail.knowledge.context.azure.resources.webapp.azure_app_service_type import AzureAppServiceType
 from cloudrail.knowledge.context.azure.resources_builders.common_resource_builder_functions import get_scanner_user_managed_identities_ids, \
     create_scanner_system_managed_identity
-from cloudrail.knowledge.context.azure.resources_builders.scanner.base_assigned_user_identity_builder import BaseAssignedUserIdentityBuilder
 from cloudrail.knowledge.context.azure.resources_builders.scanner.base_azure_scanner_builder import BaseAzureScannerBuilder
 
 
@@ -21,9 +20,3 @@ class AppServiceBuilder(BaseAzureScannerBuilder):
                 app_service.managed_identities.append(managed_identity)
             return app_service
         return None
-
-
-class AppServiceAssignedUserIdentityBuilder(BaseAssignedUserIdentityBuilder):
-
-    def get_file_name(self) -> str:
-        return 'app-service.json'

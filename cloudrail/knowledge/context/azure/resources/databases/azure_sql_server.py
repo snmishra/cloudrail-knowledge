@@ -98,6 +98,9 @@ class AzureSqlServer(AzureResource, IManagedIdentityResource):
     def is_tagable(self) -> bool:
         return True
 
+    def get_type(self, is_plural: bool = False) -> str:
+        return 'Asure SQL server ' + ('s' if is_plural else '')
+
     def get_managed_identities(self) -> List[AzureManagedIdentity]:
         return self.managed_identities
 

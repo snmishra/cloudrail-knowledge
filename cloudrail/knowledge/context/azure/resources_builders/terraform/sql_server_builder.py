@@ -37,10 +37,10 @@ def _sql_server_builder(attributes: dict, get_known_value: Callable) -> AzureSql
     azuread_administrator_list: List[MsSqlServerAzureAdAdministrator] = []
     for azure_admin in get_known_value(attributes, 'azuread_administrator', []):
         azuread_administrator_list.append(MsSqlServerAzureAdAdministrator(login_username=azure_admin['login_username'],
-                                                                            object_id=azure_admin['object_id'],
-                                                                            tenant_id=get_known_value(azure_admin, 'tenant_id'),
-                                                                            azuread_authentication_only=get_known_value(azure_admin,
-                                                                                                                            'azuread_authentication_only')))
+                                                                          object_id=azure_admin['object_id'],
+                                                                          tenant_id=get_known_value(azure_admin, 'tenant_id'),
+                                                                          azuread_authentication_only=get_known_value(azure_admin,
+                                                                                                                      'azuread_authentication_only')))
     ## Managed Identities
     managed_identities: List[AzureManagedIdentity] = []
     if managed_identity := create_terraform_system_managed_identity(attributes):

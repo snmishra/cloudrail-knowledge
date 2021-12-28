@@ -60,7 +60,7 @@ class AzureRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_config_to_function_app, ctx.function_apps, (ctx.function_app_configs,)),
             ### SQL server resources
             IterFunctionData(self._assign_audit_policy_to_mssql_server, ctx.sql_servers, (ctx.sql_server_extended_audit_policies,)),
-            IterFunctionData(self._assign_transparent_data_encryption_to_server, ctx.sql_servers, (ctx.sql_server_vulnerability_assessments,)),
+            IterFunctionData(self._assign_transparent_data_encryption_to_server, ctx.sql_servers, (ctx.sql_server_transparent_data_encryptions,)),
             IterFunctionData(self._assign_vulnerbility_assesment_to_policy, ctx.sql_server_vulnerability_assessments,
                              (ctx.sql_server_security_alert_policies,)),
             IterFunctionData(self._assign_security_alert_policy_to_server, ctx.sql_servers, (ctx.sql_server_security_alert_policies,),
@@ -255,5 +255,6 @@ class AzureRelationsAssigner(DependencyInvocation):
     def _assign_vulnerbility_assesment_to_policy(sql_server_vulnerability_assessment: AzureMsSqlServerVulnerabilityAssessment,
                                                  sql_security_alert_policies: AliasesDict[AzureMsSqlServerSecurityAlertPolicy]):
         sql_security_alert_policy = ResourceInvalidator.get_by_id(sql_security_alert_policies,
-                                                                 sql_server_vulnerability_assessment.server_security_alert_policy_id, False)
-        sql_security_alert_policy.vulnerability_assessment = sql_server_vulnerability_assessment
+                                                                  sql_server_vulnerability_assessment.server_security_alert_policy_id, False)
+        if sql_security_alert_policy:
+            sql_security_alert_policy.vulnerability_assessment = sql_server_vulnerability_assessment

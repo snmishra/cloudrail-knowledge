@@ -9,24 +9,19 @@ class AzureAssignedUserIdentity(AzureManagedIdentity, AzureResource):
 
     """
         Attributes:
-            identity_id: The assigned user identity id.
             identity_name: The assigned user identity name.
             client_id: Client id associated with the user assigned identity.
     """
-    def __init__(self, identity_id: str, identity_name: str = None, client_id: str = None, principal_id: str = None, tenant_id: str = None):
+    def __init__(self, identity_name: str = None, client_id: str = None, principal_id: str = None, tenant_id: str = None):
         AzureManagedIdentity.__init__(self, principal_id=principal_id, tenant_id=tenant_id,
                                       identity_type=ManagedIdentityType.USER_ASSIGNED)
         AzureResource.__init__(self, AzureResourceType.AZURERM_USER_ASSIGNED_IDENTITY)
-        self.identity_id: str = identity_id
-        self.identity_name: str = identity_name or identity_id.split('/')[-1]
+        self.identity_name: str = identity_name
         self.client_id: str = client_id
-        self.with_aliases(identity_id, self.identity_name)
+        self.with_aliases(self.identity_name)
 
     def get_keys(self) -> List[str]:
         return [self.get_id()]
-
-    def get_id(self) -> str:
-        return self.identity_id
 
     def get_name(self) -> Optional[str]:
         return self.identity_name

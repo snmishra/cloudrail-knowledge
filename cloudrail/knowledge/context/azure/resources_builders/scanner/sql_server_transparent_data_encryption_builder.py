@@ -8,5 +8,5 @@ class SqlServerTransparentEncryptionDataBuilder(BaseAzureScannerBuilder):
 
     def do_build(self, attributes: dict) -> AzureMsSqlServerTransparentDataEncryption:
         properties = attributes['properties']
-        return AzureMsSqlServerTransparentDataEncryption(server_id=properties['serverKeyName'],
+        return AzureMsSqlServerTransparentDataEncryption(server_id=attributes['id'].split('/')[-3],
                                                          key_vault_key_id=properties['uri'])

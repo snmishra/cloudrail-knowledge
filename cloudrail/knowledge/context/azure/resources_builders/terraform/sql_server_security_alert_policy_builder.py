@@ -16,7 +16,7 @@ class SqlServerSecurityAlertPolicyBuilder(AzureTerraformBuilder):
                                                    state=enum_implementation(AzureMsSqlServerSecurityAlertPolicyState, attributes['state']),
                                                    disabled_alerts=disabled_alerts,
                                                    email_account_admins=self._get_known_value(attributes, 'email_account_admins', False),
-                                                   email_addresses=self._get_known_value(attributes, 'email_addresses'),
+                                                   email_addresses=self._get_known_value(attributes, 'email_addresses', []),
                                                    retention_days=self._get_known_value(attributes, 'retention_days', 0),
                                                    storage_account_access_key=self._get_known_value(attributes, 'storage_account_access_key'),
                                                    storage_endpoint=self._get_known_value(attributes, 'storage_endpoint'))

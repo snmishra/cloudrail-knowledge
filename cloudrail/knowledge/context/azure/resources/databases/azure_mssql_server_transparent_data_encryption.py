@@ -6,7 +6,7 @@ from cloudrail.knowledge.context.azure.resources.constants.azure_resource_type i
 class AzureMsSqlServerTransparentDataEncryption(AzureResource):
     """
         Attributes:
-            server_id: Specifies the name of the MS SQL Server.
+            server_id: Specifies the name or ID of the MS SQL Server.
             key_vault_key_id: To use customer managed keys from Azure Key Vault, provide the AKV Key ID. To use service managed keys, omit this field.
     """
 
@@ -33,6 +33,9 @@ class AzureMsSqlServerTransparentDataEncryption(AzureResource):
     @staticmethod
     def is_standalone() -> bool:
         return False
+
+    def get_type(self, is_plural: bool = False) -> str:
+        return 'Azure SQL server transparent data encryption ' + ('s' if is_plural else '')
 
     def to_drift_detection_object(self) -> dict:
         return {'key_vault_key_id': self.key_vault_key_id}

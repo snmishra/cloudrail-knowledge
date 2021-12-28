@@ -68,5 +68,16 @@ class AzureMsSqlServerSecurityAlertPolicy(AzureResource):
     def is_tagable(self) -> bool:
         return False
 
+    def get_type(self, is_plural: bool = False) -> str:
+        return 'Azure SQL server security alert ' + ('policies' if is_plural else 'policy')
+
     def to_drift_detection_object(self) -> dict:
-        return {'server_name': self.server_name}
+        return {'server_name': self.server_name,
+                'state': self.state,
+                'disabled_alerts': self.disabled_alerts,
+                'email_account_admins': self.email_account_admins,
+                'email_addresses': self.email_addresses,
+                'retention_days': self.retention_days,
+                'storage_account_access_key': self.storage_account_access_key,
+                'storage_endpoint': self.storage_endpoint,
+                'vulnerability_assessment': self.vulnerability_assessment and self.vulnerability_assessment.to_drift_detection_object()}
