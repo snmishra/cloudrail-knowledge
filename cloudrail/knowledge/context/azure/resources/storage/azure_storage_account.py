@@ -43,7 +43,7 @@ class AzureStorageAccount(AzureResource):
         return 'Storage ' + 'Account' if not is_plural else 'Accounts'
 
     @property
-    def is_encryption_by_customer_managed_key(self) -> bool:
+    def is_encrypted_by_customer_managed_key(self) -> bool:
         return bool(self.storage_account_customer_managed_key)
 
     @property
