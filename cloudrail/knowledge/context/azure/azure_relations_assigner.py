@@ -139,7 +139,6 @@ class AzureRelationsAssigner(DependencyInvocation):
     def _assign_storage_account_customer_managed_key_to_storage_account(storage_account: AzureStorageAccount, storage_account_customer_managed_keys: AliasesDict[AzureStorageAccountCustomerManagedKey]):
         if not storage_account.storage_account_customer_managed_key:
             storage_account.storage_account_customer_managed_key = ResourceInvalidator.get_by_id(storage_account_customer_managed_keys, storage_account.get_id(), False)
-            x = 1
 
     @staticmethod
     def _assign_audit_policy_to_mssql_server(mssql_server: AzureSqlServer, audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy]):
