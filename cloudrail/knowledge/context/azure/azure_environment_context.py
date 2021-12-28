@@ -1,5 +1,9 @@
 import functools
+
 from typing import Dict, List, Set, Callable
+
+from cloudrail.knowledge.context.azure.resources.databases.azure_postgresql_server_configuration import \
+    AzurePostgreSqlServerConfiguration
 from cloudrail.knowledge.context.azure.resources.iot.azure_iot_hub import AzureIoTHub
 
 from cloudrail.knowledge.context.azure.resources.event_hub.azure_event_hub_namespace import AzureEventHubNamespace
@@ -76,6 +80,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  my_sql_servers: AliasesDict[AzureMySqlServer] = None,
                  sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = None,
                  postgresql_servers: AliasesDict[AzurePostgreSqlServer] = None,
+                 postgresql_servers_configuration: AliasesDict[AzurePostgreSqlServerConfiguration] = None,
                  storage_accounts: AliasesDict[AzureStorageAccount] = None,
                  storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = None,
                  security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
@@ -146,6 +151,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.data_lake_store: AliasesDict[AzureDataLakeStore] = data_lake_store or AliasesDict()
         self.subscriptions: AliasesDict[AzureSubscription] = subscriptions or AliasesDict()
         self.batch_accounts: AliasesDict[AzureBatchAccount] = batch_accounts or AliasesDict()
+        self.postgresql_servers_configuration: AliasesDict[AzurePostgreSqlServerConfiguration] = postgresql_servers_configuration or AliasesDict()
         self.iot_hubs: AliasesDict[AzureIoTHub] = iot_hubs or AliasesDict()
         self.logic_app_workflows: AliasesDict[AzureLogicAppWorkflow] = logic_app_workflows or AliasesDict()
         self.search_services: AliasesDict[AzureSearchService] = search_services or AliasesDict()
