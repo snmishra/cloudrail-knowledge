@@ -152,9 +152,11 @@ class AzureRelationsAssigner(DependencyInvocation):
     @staticmethod
     def _assign_storage_account_customer_managed_key_to_storage_account(storage_account: AzureStorageAccount, customer_managed_keys: AliasesDict[AzureStorageAccountCustomerManagedKey]):
         def get_storage_account_customer_managed_key():
-            for storage_account_customer_managed_key in customer_managed_keys:
-                if storage_account_customer_managed_key.storage_account_id == storage_account.get_id():
-                    return storage_account_customer_managed_key
+            storage_account_customer_managed_key = None
+            for customer_managed_key in customer_managed_keys:
+                if customer_managed_key.storage_account_id == storage_account.get_id():
+                    storage_account_customer_managed_key = customer_managed_key
+            return storage_account_customer_managed_key
 
         if not storage_account.storage_account_customer_managed_key:
             storage_account.storage_account_customer_managed_key = ResourceInvalidator.get_by_logic(get_storage_account_customer_managed_key, False)
