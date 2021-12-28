@@ -2025,3 +2025,31 @@ rules_metadata:
   severity: medium
   supported_iac_types:
   - terraform
+
+- cloud_provider: azure
+  description: Cloudrail will review the Storage Accounts configuration in your environment.
+    If an account is not encrypted with a customer-managed key, Cloudrail will highlight it as a violation.
+  human_readable_logic: Cloudrail will review the Storage Accounts configuration within your Azure subscription and Terraform plan to
+    ensure that a customer-managed key is being used for encryption.
+    Storage accounts used for Activity Log storage will be skipped as there is a specific rule for those accounts.
+  name: Ensure Storage Account is encrypted with a customer-managed key
+  remediation_steps:
+    console: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/common/customer-managed-keys-configure-key-vault?tabs=portal>
+      in order to set a customer-managed key for storage account encryption.
+    terraform: Create an azurerm_storage_account_customer_managed_key resource and set the storage_account_id argument to the ID of the Storage Account.
+      Set also the key_vault_id and key_name arguments to the corresponding values.
+  compliance:
+    CIS:
+      1.3.1:
+      - 3.9
+    PCI DSS:
+      3.2.1:
+      - '3.5'
+  resource_type:
+  - storage
+  rule_id: non_car_storage_account_encrypted_customer_managed_key
+  rule_type: non_context_aware
+  security_layer: encryption
+  severity: medium
+  supported_iac_types:
+  - terraform
