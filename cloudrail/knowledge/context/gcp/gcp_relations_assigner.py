@@ -92,8 +92,8 @@ class GcpRelationsAssigner(DependencyInvocation):
             ssl_policy = ResourceInvalidator.get_by_id(ssl_policies, target_proxy.ssl_policy_identifier, False)
             if not ssl_policy:
                 ssl_policy = next((ssl_policy for ssl_policy in ssl_policies if
-                                  target_proxy.project_id == ssl_policy.project_id and
-                                  target_proxy.ssl_policy_identifier == ssl_policy.name), None)
+                                   target_proxy.project_id == ssl_policy.project_id and
+                                   target_proxy.ssl_policy_identifier == ssl_policy.name), None)
             return ssl_policy
 
         # only is_encrypted resources have ssl_policy
