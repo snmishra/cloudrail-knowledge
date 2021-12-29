@@ -183,6 +183,7 @@ azurerm_monitor_diagnostic_setting:
   known_fields:
     pass:
       - target_resource_id
+      - storage_account_id
       - name
       - log:
           known_fields:

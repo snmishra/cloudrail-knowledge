@@ -18,8 +18,9 @@ class MonitorDiagnosticSettingBuilder(AzureTerraformBuilder):
             log_settings = AzureMonitorDiagnosticLogsSettings(logs_enabled, retention_policy)
 
         target_resource_id = self._get_target_resource_id(attributes)
+        storage_account_id = attributes.get('storage_account_id')
 
-        return AzureMonitorDiagnosticSetting(name=attributes['name'], target_resource_id=target_resource_id, logs_settings=log_settings)
+        return AzureMonitorDiagnosticSetting(name=attributes['name'], target_resource_id=target_resource_id, logs_settings=log_settings, storage_account_id=storage_account_id)
 
     def get_service_name(self) -> AzureResourceType:
         return AzureResourceType.AZURERM_MONITOR_DIAGNOSTIC_SETTING
