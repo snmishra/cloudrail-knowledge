@@ -11,4 +11,3 @@ deepdiff
 rsa
 natsort
 cfn_flip
-mkdocs-autorefs==0.3.0
