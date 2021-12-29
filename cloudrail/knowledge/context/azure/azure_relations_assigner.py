@@ -169,9 +169,7 @@ class AzureRelationsAssigner(DependencyInvocation):
     @staticmethod
     def _assign_storage_account_to_monitor_diagnostic_setting(monitor_diagnostic_setting: AzureMonitorDiagnosticSetting, storage_accounts: AliasesDict[AzureStorageAccount]):
         if monitor_diagnostic_setting.storage_account_id:
-            monitor_diagnostic_setting.storage_account = ResourceInvalidator.get_by_logic(
-                lambda: next((storage_account for storage_account in storage_accounts if monitor_diagnostic_setting.storage_account_id == storage_account.get_id()), None)
-                , False)
+            monitor_diagnostic_setting.storage_account = ResourceInvalidator.get_by_id(storage_accounts, monitor_diagnostic_setting.storage_account_id, False)
 
     @staticmethod
     def _assign_audit_policy_to_mssql_server(mssql_server: AzureSqlServer, audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy]):
