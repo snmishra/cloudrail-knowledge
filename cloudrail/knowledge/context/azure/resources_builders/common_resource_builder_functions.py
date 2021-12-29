@@ -80,7 +80,7 @@ def get_terraform_user_managed_identities_ids(attributes: dict) -> List[str]:
         for identity in attributes.get('identity'):
             identity_type: ManagedIdentityType = ManagedIdentityType(identity.get('type'))
             if identity_type == ManagedIdentityType.USER_ASSIGNED:
-                return identity.get('identity_ids')
+                return identity.get('identity_ids') or identity.get('user_assigned_identity_ids')
     return []
 
 
@@ -109,7 +109,7 @@ def create_scanner_system_managed_identity(attributes: dict) -> Optional[AzureMa
     if identity := attributes.get('identity'):
         if attributes['identity']['type'] is not None and attributes['identity']['type'] != 'None':
             identity_type: ManagedIdentityType = ManagedIdentityType(identity.get('type'))
-            if identity['type'] is not None and identity['type'] != 'None' and identity_type == ManagedIdentityType.SYSTEM_ASSIGNED:
+            if identity_type == ManagedIdentityType.SYSTEM_ASSIGNED:
                 managed_identity = AzureManagedIdentity(principal_id=identity.get('principalId'),
                                                         tenant_id=identity.get('tenantId'),
                                                         identity_type=ManagedIdentityType(identity['type']))

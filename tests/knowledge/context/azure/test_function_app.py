@@ -115,7 +115,7 @@ class TestFunctionApp(AzureContextTest):
         self.assertIsNotNone(func_app)
         self.assertEqual(len(func_app.get_managed_identities()), 0)
 
-    @context(module_path="identity/use_user_assigned_v1")
+    @context(module_path="identity/use_user_assigned_v2")
     def test_use_user_assigned(self, ctx: AzureEnvironmentContext):
         func_app: AzureFunctionApp = ctx.function_apps.get('cr2152fidx-functionapp')
         self.assertIsNotNone(func_app)

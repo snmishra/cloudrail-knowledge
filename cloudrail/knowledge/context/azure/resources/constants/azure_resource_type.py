@@ -51,5 +51,8 @@ class AzureResourceType(Enum):
     AZURERM_SERVICEBUS_NAMESPACE = 'azurerm_servicebus_namespace'
     AZURERM_VIRTUAL_MACHINE_EXTENSION = 'azurerm_virtual_machine_extension'
     AZURERM_VIRTUAL_MACHINE_SCALE_SET_EXTENSION = 'azurerm_virtual_machine_scale_set_extension'
+    AZURERM_MSSQL_SERVER_SECURITY_ALERT_POLICY = 'azurerm_mssql_server_security_alert_policy'
+    AZURERM_MSSQL_SERVER_VULNERABILITY_ASSESSMENT = 'azurerm_mssql_server_vulnerability_assessment'
     AZURERM_EVENTHUB_NAMESPACE = 'azurerm_eventhub_namespace'
     AZURERM_USER_ASSIGNED_IDENTITY = 'azurerm_user_assigned_identity'
+    AZURERM_MSSQL_SERVER_TRANSPARENT_DATA_ENCRYPTION = 'azurerm_mssql_server_transparent_data_encryption'

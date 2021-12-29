@@ -1,3 +1,4 @@
+
 locals {
   resource_prefix = "cr2152fidx"
   environment = "Tests"

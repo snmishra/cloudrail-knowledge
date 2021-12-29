@@ -6,8 +6,7 @@ from cloudrail.knowledge.context.azure.resources_builders.terraform.azure_terraf
 class AssignedUserIdentityBuilder(AzureTerraformBuilder):
 
     def do_build(self, attributes: dict) -> AzureAssignedUserIdentity:
-        return AzureAssignedUserIdentity(identity_id=attributes['id'],
-                                         identity_name=attributes['name'],
+        return AzureAssignedUserIdentity(identity_name=attributes['name'],
                                          client_id=attributes.get('client_id'),
                                          principal_id=attributes.get('principal_id'),
                                          tenant_id=attributes.get('tenant_id') or attributes['tenant_id'])

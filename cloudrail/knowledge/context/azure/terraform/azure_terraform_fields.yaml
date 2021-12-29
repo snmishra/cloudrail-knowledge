@@ -17,9 +17,23 @@ azurerm_mssql_server:
       - name
       - version
       - administrator_login
-      - administrator_login_password
       - public_network_access_enabled
       - extended_auditing_policy
+      - azuread_administrator
+      - identity
+      - connection_policy
+      - minimum_tls_version
+      - primary_user_assigned_identity_id
+
+azurerm_sql_server:
+  known_fields:
+    pass:
+      - name
+      - version
+      - administrator_login
+      - extended_auditing_policy
+      - identity
+      - connection_policy
 
 azurerm_sql_database:
   known_fields:
@@ -581,3 +595,31 @@ azurerm_user_assigned_identity:
       - principal_id
       - client_id
       - tenant_id
+
+azurerm_mssql_server_vulnerability_assessment:
+  known_fields:
+    pass:
+      - server_security_alert_policy_id
+      - storage_container_path
+      - storage_account_access_key
+      - storage_container_sas_key
+      - recurring_scans
+
+azurerm_mssql_server_security_alert_policy:
+  known_fields:
+    pass:
+      - server_name
+      - state
+      - disabled_alerts
+      - email_account_admins
+      - email_addresses
+      - retention_days
+      - state
+      - storage_account_access_key
+      - storage_endpoint
+
+azurerm_mssql_server_transparent_data_encryption:
+  known_fields:
+    pass:
+      - server_id
+      - key_vault_key_id

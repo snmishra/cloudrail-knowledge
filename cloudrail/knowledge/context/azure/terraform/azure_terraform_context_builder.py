@@ -41,7 +41,7 @@ from cloudrail.knowledge.context.azure.resources_builders.terraform.public_ip_bu
 from cloudrail.knowledge.context.azure.resources_builders.terraform.security_center_auto_provisioning_builder import SecurityCenterAutoProvisioningBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.security_center_contact_builder import SecurityCenterContactBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.security_center_subscription_pricing_builder import SecurityCenterSubscriptionPricingBuilder
-from cloudrail.knowledge.context.azure.resources_builders.terraform.sql_server_builder import SqlServerBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.sql_server_builder import MsSqlServerBuilder, StandardSqlServerBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.network_security_group_builder import NetworkSecurityGroupBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.storage_account_builder import StorageAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.storage_account_network_rule_builder import StorageAccountNetworkRuleBuilder
@@ -59,6 +59,10 @@ from cloudrail.knowledge.context.azure.resources_builders.terraform.virtual_mach
 from cloudrail.knowledge.context.azure.resources_builders.terraform.vnet_gateway_builder import VnetGatewayBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.batch_account_builder import BatchAccountBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.stream_analytics_job_builder import StreamAnalyticsJobBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.sql_server_vulnerability_assessment_builder import SqlServerVulnerabilityAssessmentBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.sql_server_security_alert_policy_builder import SqlServerSecurityAlertPolicyBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.sql_server_transparent_data_encryption_builder import \
+    SqlServerTransparentEncryptionDataBuilder
 from cloudrail.knowledge.context.environment_context.terraform_resources_helper import get_raw_resources_by_type
 from cloudrail.knowledge.context.environment_context.terraform_resources_metadata_parser import TerraformResourcesMetadataParser
 from cloudrail.knowledge.context.environment_context.terraform_unknown_blocks_parser import TerraformUnknownBlocksParser
@@ -97,10 +101,11 @@ class AzureTerraformContextBuilder(IacContextBuilder):
                                           LinuxVirtualMachineScaleSetBuilder(resources).build() + \
                                           WindowsVirtualMachineScaleSetBuilder(resources).build()
             vmss_extentions = VmssBasicExtensionBuilder(resources).build() + VmssNestedExtensionBuilder(resources).build() + VmExtensionBuilder(resources).build()
+            sql_servers = MsSqlServerBuilder(resources).build() + StandardSqlServerBuilder(resources).build()
 
             context: AzureEnvironmentContext = AzureEnvironmentContext()
             context.unknown_blocks = TerraformUnknownBlocksParser.parse(dic['resource_changes'])
-            context.sql_servers = AliasesDict(*SqlServerBuilder(resources).build())
+            context.sql_servers = AliasesDict(*sql_servers)
             context.app_services = AliasesDict(*AppServiceBuilder(resources).build())
             context.app_service_configs = AliasesDict(*AppServiceConfigBuilder(resources).build())
             context.function_apps = AliasesDict(*FunctionAppBuilder(resources).build())
@@ -148,4 +153,7 @@ class AzureTerraformContextBuilder(IacContextBuilder):
             context.event_hub_namespaces = AliasesDict(*EventHubNamespaceBuilder(resources).build())
             context.event_hub_network_rule_sets = AliasesDict(*EventHubNetworkRuleSetBuilder(resources).build())
             context.assigned_user_identities = AliasesDict(*AssignedUserIdentityBuilder(resources).build())
+            context.sql_server_vulnerability_assessments = AliasesDict(*SqlServerVulnerabilityAssessmentBuilder(resources).build())
+            context.sql_server_security_alert_policies = AliasesDict(*SqlServerSecurityAlertPolicyBuilder(resources).build())
+            context.sql_server_transparent_data_encryptions = AliasesDict(*SqlServerTransparentEncryptionDataBuilder(resources).build())
             return context
