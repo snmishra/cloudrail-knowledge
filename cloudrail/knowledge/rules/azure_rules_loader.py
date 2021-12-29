@@ -7,6 +7,9 @@ from cloudrail.knowledge.rules.azure.context_aware.disgnostics_logs_enabled_rule
     ServiceBusNamespaceDiagnosticLogsEnabledRule, StreamAnalyitcsJobDiagnosticLogsEnabledRule, EventHubNamespaceDiagnosticLogsEnabledRule
 from cloudrail.knowledge.rules.azure.context_aware.not_publicly_accessible_rule import VirtualMachineNotPubliclyAccessibleRdpRule, \
     VirtualMachineNotPubliclyAccessibleSshRule
+from cloudrail.knowledge.rules.azure.non_context_aware.abstract_postgresql_servers_have_configuration_value_enabled_rule import \
+    PostgresqlServersHaveLogCheckpointsEnabledRule, PostgresqlServersHaveConnectionThrottlingEnabledRule, \
+    PostgresqlServersHaveLogDisconnectionsEnabledRule
 from cloudrail.knowledge.rules.azure.context_aware.vmss_diagnostics_logs_enabled_rule import VmssDiagnosticsLogsEnabledRule
 from cloudrail.knowledge.rules.azure.non_context_aware.abstract_web_app_using_managed_identity_rule import \
     FunctionAppUseManagedIdentityRule, AppServiceUseManagedIdentityRule
@@ -124,6 +127,9 @@ class AzureRulesLoader(AbstractRulesLoader):
             ServiceBusNamespaceDiagnosticLogsEnabledRule(),
             EnsureStorageAccountAllowsNetworkAccessUsingVnetRule(),
             StreamAnalyitcsJobDiagnosticLogsEnabledRule(),
+            PostgresqlServersHaveLogCheckpointsEnabledRule(),
+            PostgresqlServersHaveLogDisconnectionsEnabledRule(),
+            PostgresqlServersHaveConnectionThrottlingEnabledRule(),
             VmssDiagnosticsLogsEnabledRule(),
             EventHubNamespaceDiagnosticLogsEnabledRule(),
             EnsureStorageAccountEncryptedCustomerManagedKeyRule()
