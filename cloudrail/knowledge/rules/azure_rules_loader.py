@@ -30,6 +30,7 @@ from cloudrail.knowledge.rules.azure.non_context_aware.ensure_sql_server_audit_e
 from cloudrail.knowledge.rules.azure.non_context_aware.ensure_storage_account_allows_network_access_using_vnet_rule import EnsureStorageAccountAllowsNetworkAccessUsingVnetRule
 from cloudrail.knowledge.rules.azure.non_context_aware.ensure_storage_account_default_network_deny_rule import \
     EnsureStorageAccountDefaultNetworkDenyRule
+from cloudrail.knowledge.rules.azure.non_context_aware.ensure_storage_account_encrypted_customer_managed_key_rule import EnsureStorageAccountEncryptedCustomerManagedKeyRule
 from cloudrail.knowledge.rules.azure.non_context_aware.ensure_vms_and_vmss_use_managed_disks_rule import EnsureVmAndVmssUseManagedDisksRule
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_accessible_only_via_https_rule import FunctionAppAccessibleOnlyViaHttpsRule
 from cloudrail.knowledge.rules.azure.non_context_aware.function_app_authentication_enable_rule import FunctionAppAuthenticationEnableRule
@@ -124,6 +125,7 @@ class AzureRulesLoader(AbstractRulesLoader):
             EnsureStorageAccountAllowsNetworkAccessUsingVnetRule(),
             StreamAnalyitcsJobDiagnosticLogsEnabledRule(),
             VmssDiagnosticsLogsEnabledRule(),
-            EventHubNamespaceDiagnosticLogsEnabledRule()
+            EventHubNamespaceDiagnosticLogsEnabledRule(),
+            EnsureStorageAccountEncryptedCustomerManagedKeyRule()
         ]
         return {rule.get_id(): rule for rule in rules}

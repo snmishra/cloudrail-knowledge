@@ -44,6 +44,7 @@ from cloudrail.knowledge.context.azure.resources.security.azure_security_center_
 from cloudrail.knowledge.context.azure.resources.security.azure_security_center_subscription_pricing import AzureSecurityCenterSubscriptionPricing
 from cloudrail.knowledge.context.azure.resources.storage.azure_data_lake_store import AzureDataLakeStore
 from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account import AzureStorageAccount
+from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account_customer_managed_key import AzureStorageAccountCustomerManagedKey
 from cloudrail.knowledge.context.azure.resources.storage.azure_storage_account_network_rules import AzureStorageAccountNetworkRules
 from cloudrail.knowledge.context.azure.resources.stream_analytics.azure_stream_analytics_job import AzureStreamAnalyticsJob
 from cloudrail.knowledge.context.azure.resources.subscription.azure_subscription import AzureSubscription
@@ -83,6 +84,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
                  postgresql_servers: AliasesDict[AzurePostgreSqlServer] = None,
                  postgresql_servers_configuration: AliasesDict[AzurePostgreSqlServerConfiguration] = None,
                  storage_accounts: AliasesDict[AzureStorageAccount] = None,
+                 storage_accounts_customer_managed_key: AliasesDict[AzureStorageAccountCustomerManagedKey] = None,
                  storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = None,
                  security_center_auto_provisioning: AliasesDict[AzureSecurityCenterAutoProvisioning] = None,
                  key_vaults: AliasesDict[AzureKeyVault] = None,
@@ -137,6 +139,7 @@ class AzureEnvironmentContext(BaseEnvironmentContext):
         self.my_sql_servers: AliasesDict[AzureMySqlServer] = my_sql_servers or AliasesDict()
         self.sql_server_extended_audit_policies: AliasesDict[AzureSqlServerExtendedAuditingPolicy] = sql_server_extended_audit_policies or AliasesDict()
         self.storage_accounts: AliasesDict[AzureStorageAccount] = storage_accounts or AliasesDict()
+        self.storage_accounts_customer_managed_key: AliasesDict[AzureStorageAccountCustomerManagedKey] = storage_accounts_customer_managed_key or AliasesDict()
         self.storage_account_network_rules: AliasesDict[AzureStorageAccountNetworkRules] = storage_account_network_rules or AliasesDict()
         self.key_vaults: AliasesDict[AzureKeyVault] = key_vaults or AliasesDict()
         self.monitor_diagnostic_settings: AliasesDict[AzureMonitorDiagnosticSetting] = monitor_diagnostic_settings or AliasesDict()
