@@ -28,6 +28,7 @@ from cloudrail.knowledge.rules.azure.non_context_aware.defender_enabled_rules im
     SqlServersOnVirtualMachinesDefenderEnabledRule, AppServicesDefenderEnabledRule, KeyVaultsDefenderEnabledRule
 from cloudrail.knowledge.rules.azure.non_context_aware.email_notification_high_severity_alerts_enabled_rule import \
     EmailNotificationHighSeverityAlertsEnabledRule
+from cloudrail.knowledge.rules.azure.non_context_aware.ensure_activity_log_storage_account_encrypted_customer_managed_key_rule import EnsureActivityLogStorageAccountEncryptedCustomerManagedKeyRule
 from cloudrail.knowledge.rules.azure.non_context_aware.ensure_managed_disks_encrypted_rule import EnsureManagedDisksEncryptedRule
 from cloudrail.knowledge.rules.azure.non_context_aware.ensure_sql_server_audit_enabled_rule import EnsureSqlServerAuditEnabledRule
 from cloudrail.knowledge.rules.azure.non_context_aware.ensure_storage_account_allows_network_access_using_vnet_rule import EnsureStorageAccountAllowsNetworkAccessUsingVnetRule
@@ -132,6 +133,7 @@ class AzureRulesLoader(AbstractRulesLoader):
             PostgresqlServersHaveConnectionThrottlingEnabledRule(),
             VmssDiagnosticsLogsEnabledRule(),
             EventHubNamespaceDiagnosticLogsEnabledRule(),
-            EnsureStorageAccountEncryptedCustomerManagedKeyRule()
+            EnsureStorageAccountEncryptedCustomerManagedKeyRule(),
+            EnsureActivityLogStorageAccountEncryptedCustomerManagedKeyRule()
         ]
         return {rule.get_id(): rule for rule in rules}

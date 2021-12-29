@@ -20,7 +20,7 @@ class TestEnsureStorageAccountEncryptedCustomerManagedKeyRule(unittest.TestCase)
             ['Storage account encrypted not_enabled', False, 1, RuleResultType.FAILED],
         ]
     )
-    def test_non_car_storage_account_public_access(self, unused_name: str, is_encrypted: bool, total_issues: int, rule_status: RuleResultType):
+    def test_storage_account_encrypted_customer_managed_key(self, unused_name: str, is_encrypted: bool, total_issues: int, rule_status: RuleResultType):
         # Arrange
         storage_account: AzureStorageAccount = create_empty_entity(AzureStorageAccount)
         storage_account.storage_account_customer_managed_key = create_empty_entity(AzureStorageAccountCustomerManagedKey) if is_encrypted else None

@@ -2641,3 +2641,31 @@ rules_metadata:
   severity: medium
   supported_iac_types:
   - terraform
+
+- cloud_provider: azure
+  description: Cloudrail will review the Activity Log configuration in your environment.
+    If the Storage Account used to store the logs is not encrypted with BYOK, Cloudrail will highlight it as a violation.
+  human_readable_logic: Cloudrail will review the Activity Log configuration within your Azure subscription and Terraform plan.
+    If it is sending the logs to a Storage Account (the resource azurerm_monitor_diagnostic_setting should have the storage_account_id argument set),
+    it will check the configuration of such Storage Account to ensure that it is encrypted with BYOK (KeySource is “Microsoft.KeyVault”).
+  name: Ensure that Activity Log Storage Account is encrypted with BYOK
+  remediation_steps:
+    console: Follow the guide at <https://docs.microsoft.com/en-us/azure/storage/common/customer-managed-keys-configure-key-vault?tabs=portal>
+      in order to configure the Storage Account with customer-managed keys (BYOK) encryption.
+    terraform: Create an azurerm_storage_account_customer_managed_key resource and set the storage_account_id argument to the ID of the Storage Account used for log storage.
+      Set also the key_vault_id and key_name arguments to the corresponding values.
+  compliance:
+    CIS:
+      1.3.1:
+      - 5.1.4
+    PCI DSS:
+      3.2.1:
+      - '3.4'
+  resource_type:
+  - storage
+  rule_id: non_car_activity_log_storage_account_encrypted_byok
+  rule_type: non_context_aware
+  security_layer: logging
+  severity: medium
+  supported_iac_types:
+  - terraform
