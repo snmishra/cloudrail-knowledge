@@ -3,6 +3,7 @@ common:
     pass:
     - id
     - tags
+    - self_link
     - labels:
         known_fields:
           pass:
@@ -92,9 +93,27 @@ google_compute_network:
   known_fields:
     pass:
       - name
+      - self_link
       - auto_create_subnetworks
       - routing_mode
       - delete_default_routes_on_create
+
+google_compute_subnetwork:
+  known_fields:
+    pass:
+      - name
+      - self_link
+      - region
+      - network
+      - ip_cidr_range
+      - log_config:
+          known_fields:
+            pass:
+              - aggregation_interval
+              - flow_sampling
+              - metadata
+              - metadata_fields
+              - filter_expr
 
 google_project:
   known_fields:
@@ -113,7 +132,9 @@ google_compute_firewall:
       - destination_ranges
       - direction
       - source_ranges
+      - priority
       - source_tags
+      - disabled
 
 google_container_cluster:
   known_fields:
@@ -153,6 +174,20 @@ google_compute_global_forwarding_rule:
       - target
       - self_link
 
+google_compute_target_pool:
+  known_fields:
+    pass:
+      - name
+      - instances
+      - region
+
+google_compute_forwarding_rule:
+  known_fields:
+    pass:
+      - name
+      - target
+      - port_range
+
 google_compute_ssl_policy:
   known_fields:
     pass:
@@ -188,3 +223,25 @@ google_dns_managed_zone:
       - dns_name
       - description
       - dnssec_config
+
+google_storage_bucket_iam_policy:
+  known_fields:
+    pass:
+      - bucket
+      - policy_data
+
+google_storage_bucket_iam_binding:
+  known_fields:
+    pass:
+      - bucket
+      - role
+      - members
+      - condition
+
+google_storage_bucket_iam_member:
+  known_fields:
+    pass:
+      - bucket
+      - role
+      - member
+      - condition

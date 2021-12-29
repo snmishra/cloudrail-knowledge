@@ -277,8 +277,7 @@ class AwsRelationsAssigner(DependencyInvocation):
             IterFunctionData(self._assign_subnet_id_to_nacl, ctx.network_acl_associations, (ctx.network_acls,)),
             ### EC2 ###
             IterFunctionData(self._assign_ec2_role_permissions, ctx.ec2s,
-                             ({role.role_name: role for role in ctx.roles},
-                              {profile.iam_instance_profile_name: profile for profile in ctx.iam_instance_profiles}),
+                             (AliasesDict(*ctx.roles), AliasesDict(*ctx.iam_instance_profiles)),
                              [self._add_auto_scale_ec2s]),
             IterFunctionData(self._assign_ec2_network_interfaces, ctx.ec2s, (ctx.network_interfaces, ctx.subnets, ctx.vpcs)),
             IterFunctionData(self._assign_ec2_images_data, ctx.ec2s, (ctx.ec2_images,)),
@@ -302,7 +301,8 @@ class AwsRelationsAssigner(DependencyInvocation):
                              ctx.load_balancers, (ctx.load_balancer_target_groups, ctx.load_balancer_target_group_associations)),
             IterFunctionData(self._assign_load_balancer_listener_ports,
                              ctx.load_balancers, (ctx.load_balancer_listeners,)),
-            IterFunctionData(self._assign_load_balancer_target_ec2_instance, ctx.load_balancer_targets, (ctx.ec2s,)),
+            IterFunctionData(self._assign_load_balancer_target_ec2_instance, ctx.load_balancer_targets, (ctx.ec2s,),
+                             [self._assign_ec2_network_interfaces]),
             IterFunctionData(self._assign_load_balancer_target_group_targets, ctx.load_balancer_target_groups, (ctx.load_balancer_targets,)),
             IterFunctionData(self._assign_load_balancer_attributes, ctx.load_balancers, (ctx.load_balancers_attributes,)),
             ### Network Interface ###
@@ -1029,19 +1029,19 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     def _assign_ec2_network_interfaces(self, ec2: Ec2Instance, network_interfaces: AliasesDict[NetworkInterface],
                                        subnets: AliasesDict[Subnet], vpcs: AliasesDict[Vpc]):
-        ec2.network_resource.network_interfaces = ResourceInvalidator.get_by_logic(
-            lambda: [eni for eni in network_interfaces if eni.eni_id in ec2.network_interfaces_ids],
-            False
-        )
+        def get_enis():
+            enis = [eni for eni in network_interfaces if eni.eni_id in ec2.network_interfaces_ids]
+            if not enis and ec2.is_managed_by_iac:
+                enis.append(self.pseudo_builder.create_ec2_network_interface(ec2, subnets, vpcs))
+            return enis if any(eni.is_primary for eni in enis) else None
 
-        if not ec2.network_resource.network_interfaces and ec2.is_managed_by_iac:
-            self.pseudo_builder.create_ec2_network_interface(ec2, subnets, vpcs)
+        ec2.network_resource.network_interfaces = ResourceInvalidator.get_by_logic(get_enis, True, ec2, 'Could not find primary ENI')
 
         for eni in ec2.network_resource.network_interfaces:
             eni.owner = ec2
 
     @staticmethod
-    def _assign_ec2_role_permissions(ec2: Ec2Instance, roles: Dict[str, Role], iam_instance_profiles: Dict[str, IamInstanceProfile]):
+    def _assign_ec2_role_permissions(ec2: Ec2Instance, roles: AliasesDict[Role], iam_instance_profiles: AliasesDict[IamInstanceProfile]):
         if ec2.iam_profile_name:
             def get_matching_role():
                 profile: IamInstanceProfile = iam_instance_profiles.get(ec2.iam_profile_name)
@@ -1178,7 +1178,7 @@ class AwsRelationsAssigner(DependencyInvocation):
                                                                                             monitoring=monitoring)
 
             for pseudo_ec2 in pseudo_ec2s:
-                self.pseudo_builder.create_ec2_network_interface(pseudo_ec2, subnets, vpcs, launch_configuration)
+                pseudo_ec2.network_resource.add_interface(self.pseudo_builder.create_ec2_network_interface(pseudo_ec2, subnets, vpcs, launch_configuration))
 
             self._attach_load_balancer_to_auto_scaling_group(auto_scaling_group=auto_scaling_group,
                                                              load_balancers=load_balancers,
@@ -2180,7 +2180,7 @@ class AwsRelationsAssigner(DependencyInvocation):
 
     def _assign_keys_data_to_ssm_parameter(self, ssm_param: SsmParameter, keys_data: List[KmsKey]):
         def get_kms_data():
-            kms_data = next((kms_keys_data for kms_keys_data in keys_data if ssm_param.kms_key_id in kms_keys_data.arn
+            kms_data = next((kms_keys_data for kms_keys_data in keys_data if kms_keys_data.arn and ssm_param.kms_key_id in kms_keys_data.arn
                              or ssm_param.kms_key_id == kms_keys_data.arn), None)
             if kms_data is None:
                 kms_data: KmsKey = self.pseudo_builder.create_kms_key(ssm_param.get_keys()[0], None,

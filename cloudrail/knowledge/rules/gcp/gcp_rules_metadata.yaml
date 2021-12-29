@@ -506,3 +506,147 @@ rules_metadata:
       - network
     supported_iac_types:
       - terraform
+
+  - rule_id: car_proxy_lb_ssl_policy_no_weak_ciphers
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '3.9'
+    name: Ensure no HTTPS or SSL proxy load balancers permit SSL policies with weak cipher suites
+    severity: major
+    description:
+      Secure Sockets Layer (SSL) policies determine which Transport Layer Security (TLS) features clients are permitted to use when connecting to external Google Cloud load balancers.
+      Using outdated and insecure ciphers for the SSL policies associated with your HTTPS/SSL Proxy load balancers could make the SSL connection between clients and load balancers vulnerable to exploits.
+    human_readable_logic:
+      Cloudrail will review the load balancer forwarding rules and target https/ssl proxy configuration within your GCP subscription and Terraform plan.
+      For each forwarding rule and proxy, it will check the associated SSL Policy to ensure that the min TLS version is 1.2
+      and the profile is set to modern or restricted or custom with ciphers not in
+      [TLS_RSA_WITH_AES_128_GCM_SHA256 or TLS_RSA_WITH_AES_256_GCM_SHA384 or TLS_RSA_WITH_AES_128_CBC_SHA or TLS_RSA_WITH_AES_256_CBC_SHA or TLS_RSA_WITH_3DES_EDE_CBC_SHA].
+    remediation_steps:
+      terraform: For the google_compute_ssl_policy resource, set the min_tls_version attribute to TLS_1_2
+        and profile attribute to MODERN or RESTRICTED or CUSTOM with ciphers not in
+        [TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_3DES_EDE_CBC_SHA].
+      console: Follow the guide at <https://cloud.google.com/load-balancing/docs/use-ssl-policies> in order to modify ssl polices to use a minimum of TLS version 1.2 and
+        set policy to modern or restricted or custom with ciphers not in
+        [TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_3DES_EDE_CBC_SHA].
+    rule_type: context_aware
+    security_layer: networking
+    resource_type:
+      - network
+    supported_iac_types:
+      - terraform
+
+  - rule_id: non_car_compute_subnetwork_ensure_vpc_flow_logs_enabled
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '3.8'
+    name: Ensure that VPC Flow Logs is enabled for every subnet in a VPC Network
+    severity: medium
+    description:
+      Flow Logs provide visibility into network traffic for each VM inside the subnet and can be used to detect anomalous traffic or insight during security workflows.
+      By default, the VPC Flow Logs feature is disabled when a new VPC network subnet is created. When enabled,
+      VPC Flow Logs will start collecting network traffic data to and from your Virtual Private Cloud (VPC) subnets.
+      Logging data can be useful for understanding network usage, network traffic expense optimization, network forensics, and real-time security analysis.
+    human_readable_logic:
+      Cloudrail will review the compute instances configuration within your GCP subscription and Terraform plan to
+      ensure that flow logging is enabled for all the subnets in a VPC network.
+    remediation_steps:
+      terraform: For the google_compute_subnetwork resource ensure the log_config block exists with attributes.
+      console: Follow the guides at <https://cloud.google.com/vpc/docs/using-flow-logs#enabling_vpc_flow_logging> in order to ensure VPC flow logging is enabled for every subnet in a VPC network.
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - logging
+    supported_iac_types:
+      - terraform
+
+  - rule_id: non_car_gke_manage_rbac_users_with_google_groups
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '5.8.3'
+    name: Manage Kubernetes RBAC users with Google Groups for GKE
+    severity: medium
+    description: 
+      Cluster administrators should leverage G suite groups and cloud iam to assign kubernetes user roles to a collection of users, instead of to individual emails using only cloud iam. This prevents users gaining unique permissions sets that increase the cost of audit.
+    human_readable_logic: 
+      Cloudrail will review the GKE container cluster resources configuration within your GCP subscription and Terraform plan to ensure that RBAC security group is being used for authentication.
+    remediation_steps:
+      terraform: For the resource google_container_cluster ensure the attribute block authenticator_groups_config is configured with the right security groups.
+      console: Follow the guides at <https://cloud.google.com/kubernetes-engine/docs/how-to/role-based-access-control#google-groups-for-gke> in order to manage Kubernetes RBAC users with google groups.
+    rule_type: non_context_aware
+    security_layer: networking
+    resource_type:
+      - kubernetes
+    supported_iac_types:
+      - terraform
+
+  - rule_id: car_vpc_not_publicly_accessible_ssh
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '3.6'
+    name: Ensure Compute Resources are not publicly accessible via SSH
+    severity: major
+    description:
+      Having compute resources in a VPC accessible publicly from the Internet on known administrative or management ports can be problematic. Cloudrail will attempt to determine if compute resources within VPC are accessible directly at their public IP address, or indirectly via NAT, on SSH's port. If they are, Cloudrail will highlight it as a violation. 
+    human_readable_logic: 
+      Cloudrail will review the VPC configuration within your GCP subscription and Terraform plan. For each VPC network, it will check the attached Firewall Rules that are reachable from the Internet, using nat ips of the compute instance(s) as well as the load balancers if there are any present in front of the compute instances. It will ensure that there is no rule matching the criteria a) Source Range is 0.0.0.0/0 b) Direction is Ingress c) IP protocol is tcp or all and d) Port is set to 22 or range containing 22 or Null (not set).
+    remediation_steps:
+      terraform: For the google_compute_firewall resource in the ingress direction, set the source_range argument to a specific source IP address.
+      console: Follow the guide at <https://cloud.google.com/vpc/docs/using-firewalls#updating_firewall_rules> in order to modify the VPC Firewall rule to restrict SSH access from the Internet by setting a specific source IP address.
+    rule_type: context_aware
+    security_layer: networking
+    resource_type:
+      - network
+    supported_iac_types:
+      - terraform
+
+  - rule_id: car_vpc_not_publicly_accessible_rdp
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '3.7'
+    name: Ensure Compute Resources are not publicly accessible via RDP
+    severity: major
+    description:
+      Having compute resources in a VPC accessible publicly from the Internet on known administrative or management ports can be problematic. Cloudrail will attempt to determine if compute resources within VPC are accessible directly at their public IP address, or indirectly via NAT, on RDP’s port. If they are, Cloudrail will highlight it as a violation. 
+    human_readable_logic: 
+      Cloudrail will review the VPC configuration within your GCP subscription and Terraform plan. For each VPC network, it will check the attached Firewall Rules that are reachable from the Internet, using nat ips of the compute instance(s). It will ensure that there is no rule matching the criteria a) Source Range is 0.0.0.0/0 b) Direction is Ingress c) IP protocol is tcp or all and d) Port is set to 3389 or range containing 3389 or Null (not set).
+    remediation_steps:
+      terraform: For the google_compute_firewall resource in the ingress direction, set the source_range argument to a specific source IP address.
+      console: Follow the guide at <https://cloud.google.com/vpc/docs/using-firewalls#updating_firewall_rules> in order to modify the VPC Firewall rule to restrict RDP access from the Internet by setting a specific source IP address.
+    rule_type: context_aware
+    security_layer: networking
+    resource_type:
+      - network
+    supported_iac_types:
+      - terraform
+
+  - rule_id: car_storage_bucket_ensure_no_anonymous_public_access
+    cloud_provider: google_cloud_provider
+    compliance:
+      CIS:
+        1.1.0:
+        - '5.1'
+    name: Ensure that Cloud Storage bucket is not anonymously or publicly accessible
+    severity: major
+    description:
+      It is recommended that IAM policy on Cloud Storage bucket does not allow anonymous or public access as allowing such access can compromise private and sensitive data. 
+    human_readable_logic: 
+      Cloudrail will review the storage bucket resources configuration within your GCP subscription and Terraform plan to ensure that they are not anonymously or publicly accessible.
+    remediation_steps:
+      terraform: For the resources google_storage_bucket_iam_member and google_storage_bucket_iam_binding ensure the attribute “members” doesn’t include allUsers and/or allAuthenticatedUsers.
+      console: Follow the guides at <https://cloud.google.com/storage/docs/access-control/iam-reference> and <https://cloud.google.com/storage/docs/access-control/making-data-public> in order to ensure cloud storage bucket is not anonymously or publicly accessible. 
+    rule_type: context_aware
+    security_layer: storage
+    resource_type:
+      - iam
+    supported_iac_types:
+      - terraform

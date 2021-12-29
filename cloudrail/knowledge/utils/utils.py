@@ -151,7 +151,7 @@ def hash_list(data: list) -> int:
     return hash(str(data))
 
 def is_iterable_with_values(iterable: Iterable) -> bool:
-    return any(x is not None for x in iterable)
+    return any(x in (True, False) or (x is not None and x) for x in iterable)
 
 # --- NETWORKING UTILS
 def compare_prefix_length(cidr1: str, cidr2: str) -> int:
