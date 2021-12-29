@@ -94,6 +94,8 @@ class AzureRelationsAssigner(DependencyInvocation):
             # Managed Identities
             IterFunctionData(self._assign_user_identities, AliasesDict(*ctx.get_all_assigned_user_identity_resources()),
                              (ctx.assigned_user_identities,)),
+            ### Monitor Diagnostic Setting
+            IterFunctionData(self._assign_storage_account_to_monitor_diagnostic_setting, ctx.monitor_diagnostic_settings, (ctx.storage_accounts,)),
         ]
 
         super().__init__(function_pool, context=ctx)
@@ -162,6 +164,13 @@ class AzureRelationsAssigner(DependencyInvocation):
         if not storage_account.storage_account_customer_managed_key:
             storage_account.storage_account_customer_managed_key = ResourceInvalidator.get_by_logic(
                 lambda: next((customer_managed_key for customer_managed_key in customer_managed_keys if customer_managed_key.storage_account_id == storage_account.get_id()), None)
+                , False)
+
+    @staticmethod
+    def _assign_storage_account_to_monitor_diagnostic_setting(monitor_diagnostic_setting: AzureMonitorDiagnosticSetting, storage_accounts: AliasesDict[AzureStorageAccount]):
+        if monitor_diagnostic_setting.storage_account_id:
+            monitor_diagnostic_setting.storage_account = ResourceInvalidator.get_by_logic(
+                lambda: next((storage_account for storage_account in storage_accounts if monitor_diagnostic_setting.storage_account_id == storage_account.get_id()), None)
                 , False)
 
     @staticmethod
