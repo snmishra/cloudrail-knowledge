@@ -2055,3 +2055,82 @@ rules_metadata:
   severity: medium
   supported_iac_types:
   - terraform
+
+- cloud_provider: azure
+  rule_id: non_car_sql_servers_vulnerability_assessment_email_scan_reports
+  name: Ensure SQL servers vulnerability assessment contains email address to receive scan reports
+  description: 
+    Recurring vulnerability assessment scans help to remediate potential database vulnerabilities by sending the scan reports to email recipients.
+    Cloudrail will review the SQL servers configuration in your environment and if a server does not have configured an email address to send the vulnerability assessment scan report, Cloudrail will highlight it as a violation.
+  human_readable_logic: 
+    Cloudrail will review the SQL servers configuration within your Azure subscription and Terraform plan to ensure that vulnerability assessment scans have configured email addresses for sending scan reports.
+  remediation_steps:
+    console: 
+       Follow the guide at <https://docs.microsoft.com/en-us/azure/azure-sql/database/sql-vulnerability-assessment> in order set the email address for Send scan reports to.
+    terraform: 
+      For the azurerm_mssql_server_vulnerability_assessment resource, in the recurring_scans block, set the emails argument to a list of valid email address for send scan reports to.
+  resource_type:
+  - database
+  rule_type: non_context_aware
+  security_layer: logging
+  severity: medium
+  supported_iac_types:
+  - terraform
+  compliance:
+    CIS:
+      1.3.1:
+      - '4.2.5'
+    PCI DSS:
+      3.2.1:
+        - '5.4'
+
+- cloud_provider: azure
+  rule_id: non_car_sql_servers_encrypt_data_at_rest_customer_managed_keys
+  name: Ensure SQL servers encrypt data at rest with customer-managed keys
+  description: 
+    Implementing Transparent Data Encryption (TDE) with your own key provides increased transparency and control for the SQL servers data. Cloudrail will review the MS SQL servers configuration in your environment and if a server is not using a customer-managed key for data at rest encryption, Cloudrail will highlight it as a violation.
+  human_readable_logic: 
+    Cloudrail will review the SQL servers configuration within your Azure subscription and Terraform plan to ensure that those servers are using data encryption at rest with a customer-managed key instead of a service-managed key.
+  remediation_steps:
+    console: 
+       Follow the guide at <https://docs.microsoft.com/en-us/azure/azure-sql/database/transparent-data-encryption-tde-overview?tabs=azure-portal#customer-managed-transparent-data-encryption---bring-your-own-key> in order to configure SQL servers data encryption with your own keys.
+    terraform: 
+      For the azurerm_mssql_server_transparent_data_encryption resource, set the key_vault_key_id argument to the ID of your customer-managed key stored in Key Vault.
+  resource_type:
+  - database
+  rule_type: non_context_aware
+  security_layer: encryption
+  severity: medium
+  supported_iac_types:
+  - terraform
+  compliance:
+    PCI DSS:
+      3.2.1:
+        - '3.5'
+
+- cloud_provider: azure
+  rule_id: car_sql_servers_vulnerability_assessment_enabled
+  name: Ensure SQL servers have vulnerability assessment enabled
+  description: 
+    Recurring vulnerability assessment scans help to remediate potential database vulnerabilities. Cloudrail will review the SQL servers configuration in your environment, and if a server does not have vulnerability assessment scan enabled, Cloudrail will highlight it as a violation.
+  human_readable_logic: 
+    Cloudrail will review the SQL servers configuration within your Azure subscription and Terraform plan to ensure that vulnerability assessment scans are enabled.
+  remediation_steps:
+    console: 
+       Follow the guide at <https://docs.microsoft.com/en-us/azure/azure-sql/database/sql-vulnerability-assessment> in order to enable vulnerability assessment for the SQL server.
+    terraform: 
+      Create an azurerm_mssql_server_security_alert_policy resource and set server_name argument to the corresponding SQL server name and state argument to “Enabled”. Create an azurerm_mssql_server_vulnerability_assessment resource and set the server_security_alert_policy_id argument to the ID of the previously created resource. In the recurring_scans block, set the enabled argument to true, set email_subscription_admins to true and set emails argument to a list of valid email addresses to which the scan notification will be sent.
+  resource_type:
+  - database
+  rule_type: context_aware
+  security_layer: networking
+  severity: medium
+  supported_iac_types:
+  - terraform
+  compliance:
+    CIS:
+      1.3.1:
+      - '4.2.3'
+    PCI DSS:
+      3.2.1:
+        - '5.2'
