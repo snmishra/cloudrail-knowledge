@@ -1289,45 +1289,6 @@ rules_metadata:
   compliance:
     CIS:
       1.3.1:
-      - 5.1.5
-    PCI DSS:
-      3.2.1:
-      - '10.2'
-    ISO 27001:
-      2017:
-      - 'A.12.4.1'
-    SOC 2:
-      2017:
-      - 'CC7.2'
-    CCM:
-      4.0.3:
-      - 'LOG-08'
-  description: Cloudrail will review the Key Vault configuration in your environment.
-    If a vault does not have diagnostic logs enabled, Cloudrail will highlight it
-    as a violation.
-  human_readable_logic: Cloudrail will review the Security Center Contact configuration
-    within your Azure subscription and Terraform plan to ensure email notifications
-    of security alerts is enabled.
-  name: Ensure Key Vault has diagnostic logs enabled
-  remediation_steps:
-    console: Follow the guide at <https://docs.microsoft.com/en-us/azure/key-vault/general/alert>
-      in order to enable diagnostic logs for Key Vault.
-    terraform: Create an azurerm_monitor_diagnostic_setting resource and set the target_resource_id
-      to the Key Vault ID. In the log block, set the enabled argument to true. In
-      log block, retention_policy block, set enabled argument to true and days argument
-      to 0 (indefinitely) or a value greater than or equal to 365.
-  resource_type:
-  - security_services
-  rule_id: car_key_vault_diagnostic_logs_enabled
-  rule_type: context_aware
-  security_layer: logging
-  severity: medium
-  supported_iac_types:
-  - terraform
-- cloud_provider: azure
-  compliance:
-    CIS:
-      1.3.1:
       - '3.7'
     PCI DSS:
       3.2.1:
@@ -1758,20 +1719,6 @@ rules_metadata:
         - '2.1'
 
 - cloud_provider: azure
-  compliance:
-    ISO 27001:
-      2017:
-      - 'A.14.2.2'
-      - 'A.14.2.3'
-      - 'A.14.2.4'
-    SOC 2:
-      2017:
-      - 'CC6.1'
-      - 'CC6.8'
-      - 'CC7.1'
-    CCM:
-      4.0.3:
-      - 'IVS-04'
   name: Ensure Web App is using the latest Azure supported Python version
   rule_id: non_car_service_app_using_latest_python_version
   description: Cloudrail will review the Web Apps configuration in your environment.
@@ -1801,7 +1748,19 @@ rules_metadata:
     PCI DSS:
       3.2.1:
         - '6.2'
-
+    ISO 27001:
+      2017:
+        - 'A.14.2.2'
+        - 'A.14.2.3'
+        - 'A.14.2.4'
+    SOC 2:
+      2017:
+        - 'CC6.1'
+        - 'CC6.8'
+        - 'CC7.1'
+    CCM:
+      4.0.3:
+        - 'IVS-04'
 - cloud_provider: azure
   rule_id: non_car_service_app_using_latest_java_version
   name: Ensure Web App is using the latest Azure supported Java version
@@ -1949,6 +1908,15 @@ rules_metadata:
     PCI DSS:
       3.2.1:
       - '10.2'
+    ISO 27001:
+      2017:
+      - 'A.12.4.1'
+    SOC 2:
+      2017:
+      - 'CC7.2'
+    CCM:
+      4.0.3:
+      - 'LOG-08'
   resource_type:
   - security_services
   rule_id: car_key_vault_diagnostic_logs_enabled
