@@ -11,6 +11,7 @@ from cloudrail.knowledge.rules.azure.non_context_aware.abstract_postgresql_serve
     PostgresqlServersHaveLogCheckpointsEnabledRule, PostgresqlServersHaveConnectionThrottlingEnabledRule, \
     PostgresqlServersHaveLogDisconnectionsEnabledRule
 from cloudrail.knowledge.rules.azure.context_aware.vmss_diagnostics_logs_enabled_rule import VmssDiagnosticsLogsEnabledRule
+from cloudrail.knowledge.rules.azure.context_aware.sql_server_has_vulnerability_assesment_enabled import SqlServerHasVulnerabilityAssessmentEnabledRule
 from cloudrail.knowledge.rules.azure.non_context_aware.abstract_web_app_using_managed_identity_rule import \
     FunctionAppUseManagedIdentityRule, AppServiceUseManagedIdentityRule
 from cloudrail.knowledge.rules.azure.non_context_aware.app_service_accessible_only_via_https_rule import AppServiceAccessibleOnlyViaHttpsRule
@@ -49,6 +50,8 @@ from cloudrail.knowledge.rules.azure.non_context_aware.kubernetes_cluster_rbac_e
 from cloudrail.knowledge.rules.azure.non_context_aware.my_sql_server_enforcing_ssl_rule import MySqlServerEnforcingSslRule
 from cloudrail.knowledge.rules.azure.non_context_aware.postgresql_server_enforce_ssl_rule import PostgreSqlServerEnforceSslRule
 from cloudrail.knowledge.rules.azure.non_context_aware.public_access_sql_database_rule import PublicAccessSqlDatabaseRule
+from cloudrail.knowledge.rules.azure.non_context_aware.sql_server_encrypt_data_at_rest_with_customer_key_rule import SqlServerEncryptDataAtRestWithCustomerKeyRule
+from cloudrail.knowledge.rules.azure.non_context_aware.sql_server_include_vulnerability_assesment_with_email_rule import SqlServerIncludeVulnerabilityAssessmentWithEmailRule
 from cloudrail.knowledge.rules.azure.non_context_aware.storage_account_allow_network_access_trusted_azure_services_rule import \
     StorageAccountAllowNetworkAccessTrustedAzureResourcesRule
 from cloudrail.knowledge.rules.azure.non_context_aware.storage_account_public_access_rule import StorageAccountPublicAccessRule
@@ -133,7 +136,11 @@ class AzureRulesLoader(AbstractRulesLoader):
             PostgresqlServersHaveConnectionThrottlingEnabledRule(),
             VmssDiagnosticsLogsEnabledRule(),
             EventHubNamespaceDiagnosticLogsEnabledRule(),
+            SqlServerIncludeVulnerabilityAssessmentWithEmailRule(),
+            SqlServerEncryptDataAtRestWithCustomerKeyRule(),
+            SqlServerHasVulnerabilityAssessmentEnabledRule(),
             EnsureStorageAccountEncryptedCustomerManagedKeyRule(),
-            EnsureActivityLogStorageAccountEncryptedCustomerManagedKeyRule()
+            EnsureStorageAccountEncryptedCustomerManagedKeyRule(),
+            EnsureActivityLogStorageAccountEncryptedCustomerManagedKeyRule(),
         ]
         return {rule.get_id(): rule for rule in rules}
