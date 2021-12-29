@@ -23,8 +23,8 @@ class CloudformationLoadBalancerAttributesBuilder(BaseCloudformationBuilder):
             else:
                 attributes_dict.update({attribute['Key']: attribute['Value']})
         drop_invalid_header_fields = attributes_dict.get('routing.http.drop_invalid_header_fields.enabled', False)
-        access_logs = LoadBalancerAccessLogs(attributes_dict.get('access_logs.s3.bucket'),
-                                             attributes_dict.get('access_logs.s3.prefix'),
+        access_logs = LoadBalancerAccessLogs(attributes_dict.get('access_logs.s3.bucket', ''),
+                                             attributes_dict.get('access_logs.s3.prefix', ''),
                                              attributes_dict.get('access_logs.s3.enabled', False))
         return LoadBalancerAttributes(account=account, region=region, load_balancer_arn=load_balancer_arn,
                                       drop_invalid_header_fields=drop_invalid_header_fields, access_logs=access_logs)
