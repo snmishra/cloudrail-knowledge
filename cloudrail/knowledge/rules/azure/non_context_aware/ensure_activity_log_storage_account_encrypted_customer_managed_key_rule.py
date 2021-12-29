@@ -18,7 +18,7 @@ class EnsureActivityLogStorageAccountEncryptedCustomerManagedKeyRule(AzureBaseRu
                 if not storage_account.is_encrypted_by_customer_managed_key:
                     issues.append(
                         Issue(
-                            f'The {storage_account.get_type()} `{storage_account.get_friendly_name()}` used for Activity Log storage does not have BYOK encryption enabled',
+                            f'The {storage_account.get_type()} `{storage_account.get_friendly_name()}` used for {monitor.get_friendly_name()} does not have BYOK encryption enabled',
                             storage_account,
                             storage_account))
         return issues

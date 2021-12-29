@@ -21,9 +21,10 @@ class TestEnsureActivityLogStorageAccountEncryptedCustomerManagedKeyRule(unittes
             ['Activity log storage account encrypted not_enabled', False, 1, RuleResultType.FAILED],
         ]
     )
-    def test_non_car_activity_log_storage_account_encrypted_with_byok(self, unused_name: str, is_encrypted: bool, total_issues: int, rule_status: RuleResultType):
+    def test_activity_log_storage_account_encrypted_with_byok(self, unused_name: str, is_encrypted: bool, total_issues: int, rule_status: RuleResultType):
         # Arrange
         monitor_diagnostic_setting: AzureMonitorDiagnosticSetting = create_empty_entity(AzureMonitorDiagnosticSetting)
+        monitor_diagnostic_setting.name = 'Monitor diagnostic setting'
         storage_account: AzureStorageAccount = create_empty_entity(AzureStorageAccount)
         storage_account.storage_name = 'Storage account'
         storage_account.storage_account_customer_managed_key = create_empty_entity(AzureStorageAccountCustomerManagedKey) if is_encrypted else None

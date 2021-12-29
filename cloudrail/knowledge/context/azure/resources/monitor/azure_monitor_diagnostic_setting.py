@@ -25,6 +25,7 @@ class AzureMonitorDiagnosticSetting(AzureResource):
             name: The monitor diagnostic setting's name
             target_resource_id: The ID of the resource that is monitored
             logs_settings: The logs settings
+            storage_account_id: The ID of the Storage Account where logs should be sent.
     """
     def __init__(self, name: str, target_resource_id: str, logs_settings: Optional[AzureMonitorDiagnosticLogsSettings], storage_account_id: Optional[str]):
         super().__init__(AzureResourceType.AZURERM_MONITOR_DIAGNOSTIC_SETTING)
