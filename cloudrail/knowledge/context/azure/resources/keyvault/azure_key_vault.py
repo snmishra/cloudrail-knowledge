@@ -12,13 +12,15 @@ class AzureKeyVault(AzureResource, IMonitorSettings):
             name: The KeyVault name
             monitor_diagnostic_settings: The monitoring settings of this KeyVault
             purge_protection_enabled: Indication if Purge Protection is enabled for this KeyVault
+            vault_uri : The URI of the Key Vault, used for performing operations on keys and secrets.
     """
 
-    def __init__(self, name: str, purge_protection_enabled: bool):
+    def __init__(self, name: str, purge_protection_enabled: bool, vault_uri: str):
         super().__init__(AzureResourceType.AZURERM_KEY_VAULT)
         self.name: str = name
         self.monitor_diagnostic_settings: List[AzureMonitorDiagnosticSetting] = []
         self.purge_protection_enabled: bool = purge_protection_enabled
+        self.vault_uri: str = vault_uri
 
     def get_cloud_resource_url(self) -> Optional[str]:
         return f'https://portal.azure.com/#@{self.tenant_id}/resource/subscriptions/{self.subscription_id}/resourceGroups/' \

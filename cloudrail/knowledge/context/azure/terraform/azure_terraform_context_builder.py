@@ -14,6 +14,7 @@ from cloudrail.knowledge.context.azure.resources_builders.terraform.event_hub.ev
 from cloudrail.knowledge.context.azure.resources_builders.terraform.event_hub.event_hub_network_rule_set_builder import EventHubNetworkRuleSetBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.search_service_builder import SearchServiceBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.service_bus_namespace_builder import ServiceBusNamespaceBuilder
+from cloudrail.knowledge.context.azure.resources_builders.terraform.storage_account_customer_managed_key_builder import StorageAccountCustomerManagedKeyBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.subscription_builder import SubscriptionBuilder
 from cloudrail.knowledge.context.azure.resources_builders.terraform.cosmos_db_account_builder import \
     CosmosDBAccountBuilder
@@ -119,6 +120,7 @@ class AzureTerraformContextBuilder(IacContextBuilder):
             context.security_center_contacts = AliasesDict(*SecurityCenterContactBuilder(resources).build())
             context.security_center_auto_provisioning = AliasesDict(*SecurityCenterAutoProvisioningBuilder(resources).build())
             context.storage_accounts = AliasesDict(*StorageAccountBuilder(resources).build())
+            context.storage_accounts_customer_managed_key = AliasesDict(*StorageAccountCustomerManagedKeyBuilder(resources).build())
             context.storage_account_network_rules = AliasesDict(*StorageAccountNetworkRuleBuilder(resources).build())
             context.postgresql_servers = AliasesDict(*PostgreSqlServerBuilder(resources).build())
             context.postgresql_servers_configuration = AliasesDict(*AzurePostgreSqlServerConfigurationBuilder(resources).build())
