@@ -133,6 +133,7 @@ AWS::ElasticLoadBalancingV2::LoadBalancer:
             - Subnets
             - SecurityGroups
             - SubnetMappings
+            - LoadBalancerAttributes
 
 AWS::ElasticLoadBalancingV2::Listener:
     known_fields:

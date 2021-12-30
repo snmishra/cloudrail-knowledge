@@ -10,6 +10,7 @@ from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dms.cloud
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.iam.cloudformation_iam_instance_profile_builder import CloudformationIamInstanceProfileBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_builder import CloudformationDocumentDbClusterBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.docdb.cloudformation_docdb_cluster_parameter_group_builder import CloudformationDocDbClusterParameterGroupBuilder
+from cloudrail.knowledge.context.aws.resources_builders.cloudformation.load_balancer.cloudformation_load_balancer_attributes_builder import CloudformationLoadBalancerAttributesBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.kms.cloudformation_kms_key_policy_builder import CloudformationKmsKeyPolicyBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.nat_gw.cloudformation_nat_gw_builder import CloudformationNatGatewayBuilder
 from cloudrail.knowledge.context.aws.resources_builders.cloudformation.dynamodb.cloudformation_dynamodb_table_builder import CloudformationDynamoDbTableBuilder
@@ -211,6 +212,7 @@ class AwsCloudformationContextBuilder(IacContextBuilder):
             codebuild_projects=CloudformationCodeBuildProjectBuilder(cfn_by_type_map).build(),
             docdb_cluster=CloudformationDocumentDbClusterBuilder(cfn_by_type_map).build(),
             docdb_cluster_parameter_groups=CloudformationDocDbClusterParameterGroupBuilder(cfn_by_type_map).build(),
+            load_balancers_attributes=CloudformationLoadBalancerAttributesBuilder(cfn_by_type_map).build(),
             kms_aliases=CloudformationKmsAliasBuilder(cfn_by_type_map).build(),
             kms_keys_policies=CloudformationKmsKeyPolicyBuilder(cfn_by_type_map).build(),
             kinesis_streams=CloudformationKinesisStreamBuilder(cfn_by_type_map).build(),
