@@ -35,4 +35,4 @@ jobs:
                     ${{ github.event.commits[0].author.name }}
                     ${{ github.event.commits[0].message }}
 
-        if: success()
+        if: failure()
